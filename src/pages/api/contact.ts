@@ -55,10 +55,10 @@ export const POST: APIRoute = async ({ request }) => {
   const lines = [
     `Name:     ${name}`,
     `Email:    ${email}`,
-    `Business: ${business || '—'}`,
+    `Business: ${business || 'not given'}`,
     '',
     'Software they are running:',
-    stack || '—',
+    stack || 'not given',
   ].join('\n');
 
   try {
@@ -72,7 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
         from: CONTACT_FROM,
         to: [CONTACT_TO],
         reply_to: email,
-        subject: `System map request — ${name}`,
+        subject: `Systems map request · ${name}`,
         text: lines,
       }),
     });

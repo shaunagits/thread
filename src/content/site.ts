@@ -31,42 +31,47 @@ export const contact = {
 
 export const steps = [
   {
-    n: '01 — MAP',
-    title: 'We draw your systems',
-    body: 'About a week. We sit with your team, trace how work actually moves, and hand you a labelled map of every tool, handoff, and gap. Free, and yours to keep.',
+    n: '01 · MAP',
+    title: 'Thread draws your systems',
+    body: 'One conversation, then about a week. Thread traces how a single workflow actually moves through your business and hands back a labelled map of every tool, handoff and gap, with a ranked list of what’s worth fixing first. Free, and yours to keep whether or not you go further.',
   },
   {
-    n: '02 — BUILD',
-    title: 'We close the gaps',
-    body: 'Custom apps, dashboards, and automation built against your real process. You see working software in two-week increments, not a status update.',
+    n: '02 · BUILD',
+    title: 'Thread closes the gaps',
+    body: 'Custom apps, dashboards and automation built against your real process. You see working software every two weeks, not a status update.',
   },
   {
-    n: '03 — HAND OVER',
-    title: 'We document and step back',
-    body: 'Every build ships with an annotated plate explaining what it does and why. It runs in your accounts on your data. Support is optional, not a hostage situation.',
+    n: '03 · HAND OVER',
+    title: 'Thread documents and steps back',
+    body: 'Every build ships with a written plate explaining what it does and why. It runs in your accounts, on your data. Ongoing support is available and it is optional.',
   },
 ];
 
+/**
+ * Typical durations and price floors are deliberately absent. HOMEPAGE-COPY.md
+ * marks both `[CONFIRM]` and the owner has not supplied them. The meta lines
+ * carry only claims Thread controls outright. Do not invent the rest.
+ */
 export const services = [
   {
     title: 'Custom internal apps',
-    body: 'The software your business needs but nobody sells: job tracking shaped like your workflow, intake forms that route themselves, approval flows that match how decisions actually get made.',
-    meta: ['Typical: 6–10 weeks', 'Fixed price', 'You own the code'],
+    body: 'The software your business needs and nobody sells: job tracking shaped like your workflow, intake that routes itself, approvals that match how decisions actually get made.',
+    meta: ['Fixed price', 'You own the code'],
   },
   {
-    title: 'Dashboards & reporting panels',
-    body: 'One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, in the shape your team thinks in, on any device.',
-    meta: ['Typical: 3–6 weeks', 'Fixed price', 'Live data, no exports'],
+    title: 'Dashboards and reporting',
+    body: 'One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, arranged the way your team already thinks about the work.',
+    meta: ['Fixed price', 'Live data, no exports'],
   },
   {
-    title: 'AI automation',
-    body: 'Automation applied where it holds up: sorting and routing inbound work, drafting the repetitive correspondence, extracting data from documents, flagging what needs a human. We’re specific about where it does and doesn’t belong.',
-    meta: ['Typical: 4–8 weeks', 'Fixed price', 'Human review built in'],
+    title: 'Automation and integration',
+    body: 'Connecting the tools you already pay for so the retyping stops. Getting your systems to agree, so the same number means the same thing everywhere.',
+    meta: ['Fixed price or retainer', 'Monitored, not fire and forget'],
   },
   {
-    title: 'Integration & data plumbing',
-    body: 'The unglamorous half. Getting your systems to talk reliably, reconciling records that disagree, and building the pipes so the same number means the same thing everywhere.',
-    meta: ['Typical: 2–6 weeks', 'Fixed or retainer', 'Monitored, not fire-and-forget'],
+    title: 'Practical AI',
+    body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting repetitive correspondence, flagging what needs a person. Review by a human is built in.',
+    meta: ['Fixed price', 'Human review built in'],
   },
 ];
 
@@ -75,9 +80,9 @@ export const footerColumns = [
     heading: 'Services',
     links: [
       { label: 'Custom internal apps', href: '#services' },
-      { label: 'Dashboards', href: '#services' },
-      { label: 'AI automation', href: '#services' },
-      { label: 'Integration', href: '#services' },
+      { label: 'Dashboards and reporting', href: '#services' },
+      { label: 'Automation and integration', href: '#services' },
+      { label: 'Practical AI', href: '#services' },
     ],
   },
   {

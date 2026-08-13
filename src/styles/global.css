@@ -81,9 +81,10 @@
 }
 
 /* Newsreader draws no arrows at any codepoint, so U+2192 in a serif context
-   — the Specimen metric "7 → 1" — would otherwise fall to whatever the
-   visitor's OS supplies. Source that one glyph from JetBrains Mono instead,
-   which is a face already in the design. */
+   would otherwise fall to whatever the visitor's OS supplies. Source that one
+   glyph from JetBrains Mono instead, which is a face already in the design.
+   Nothing uses it since the Specimen ("7 → 1") was removed; kept because the
+   case-study shell comes back when there is real work to put in it. */
 @font-face {
   font-family: 'Newsreader';
   font-style: normal;

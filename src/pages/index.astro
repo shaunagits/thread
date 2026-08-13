@@ -18,43 +18,44 @@ import Footer from '../components/Footer.astro';
   <ConnectsStrip />
 
   <Section
-    eyebrow="§ 01 — The problem"
+    eyebrow="§ 01 · The problem"
     heading="Nothing is broken. That’s the problem."
     headingWidth={16}
     headingGap={24}
-    noteLabel="Typical intake"
+    noteLabel="Worth asking"
   >
     <p class="txt" style="margin-bottom:16px">
-      Every tool you bought works. QuickBooks does accounting. Square takes payments. The
-      scheduling app schedules. Each one is fine on its own, and none of them know the
-      others exist.
+      Every tool you bought works. The accounting software does accounting. The payment
+      processor takes payments. The scheduling app schedules. Each one is fine on its own,
+      and none of them know the others exist.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      So a person becomes the integration. Someone reads a number off one screen and types
-      it into another. Someone checks four tabs to answer one question. Someone remembers
-      to send the invoice. It never shows up as a line item, which is exactly why it never
-      gets fixed.
+      So a person becomes the connection between them. Someone reads a number off one
+      screen and types it into another. Someone opens four tabs to answer one question.
+      Someone remembers to send the invoice. That work never appears as a line item on
+      anything, which is exactly why it never gets fixed.
     </p>
-    <p class="txt">That work is the thing we remove.</p>
+    <p class="txt">That work is what Thread removes.</p>
 
     <Fragment slot="note">
-      The businesses we map are running <strong>six to eleven</strong> separate systems,
-      with two to four people spending part of every day moving data between them by hand.
+      What does a customer touch, from first contact to final payment? Which of those steps
+      happens because a person <strong>remembers</strong> to do it? Most businesses can’t
+      answer the first question from a single screen. That gap is the work.
     </Fragment>
   </Section>
 
   <Section
     id="how"
-    eyebrow="§ 02 — How it works"
+    eyebrow="§ 02 · How it works"
     heading="One line through everything you run."
     headingWidth={18}
   >
     <p class="lead" style="max-width:56ch">
-      We don’t replace your tools. We build the layer that runs through them — so the data
-      moves on its own and your team looks in one place.
+      Thread doesn’t replace the tools you already pay for. It builds the layer that runs
+      through them, so information moves on its own and your team looks in one place.
     </p>
 
-    <Figure caption="Fig. 2 — The thread, drawn">
+    <Figure caption="Fig. 2 · The thread, drawn">
       <Fig2ThreadDiagram />
     </Figure>
 
@@ -63,29 +64,43 @@ import Footer from '../components/Footer.astro';
 
   <Section
     id="services"
-    eyebrow="§ 03 — Services"
+    eyebrow="§ 03 · Services"
     heading="Four kinds of work, one underlying job."
     headingWidth={16}
     noteLabel="Engagement shape"
     docGap={44}
   >
     <p class="lead" style="max-width:52ch">
-      Most engagements are a combination. The map tells us which.
+      Most projects need more than one of these. The map is how you find out which, and it
+      will say so when the answer is none of them.
     </p>
 
     <Fragment slot="note">
-      Fixed-scope projects with a fixed price, or a monthly retainer for ongoing build and
-      support. No hourly billing, no change-order games.
+      Fixed scope at a fixed price, or a monthly retainer for ongoing build and support. No
+      hourly billing and no change-order games.
     </Fragment>
 
-    <ServiceList slot="after" />
+    <Fragment slot="after">
+      <ServiceList />
+
+      <p class="txt" style="margin-top:34px;max-width:52ch">
+        <strong>Care plan.</strong> Hosting, monitoring, small changes and a standing
+        monthly hour, offered as a line item in every proposal. Software nobody maintains
+        gets harder to change and easier to abandon.
+      </p>
+      <p class="txt" style="margin-top:16px;max-width:52ch">
+        <strong>Rescue work.</strong> Already have something half-built? Thread also takes
+        on software somebody else started: a tool that mostly works, an automation nobody
+        understands, a system the person who built it no longer supports.
+      </p>
+    </Fragment>
   </Section>
 
   <Section
     id="map"
-    eyebrow="§ 04 — The systems map"
+    eyebrow="§ 04 · The systems map"
     heading="Start with a map, not a quote."
-    headingWidth={18}
+    headingWidth={14}
     noteLabel="Two per month"
   >
     <p class="lead" style="max-width:56ch">
@@ -127,16 +142,16 @@ import Footer from '../components/Footer.astro';
 
   <Section
     id="work"
-    eyebrow="§ 05 — Work"
+    eyebrow="§ 05 · Work"
     heading="Every project ships with its plate."
     headingWidth={18}
   >
     <p class="lead" style="max-width:56ch">
-      We document what we built and why, in plain English, so the knowledge lives with you
-      and not only with us.
+      Thread documents what it built and why, in plain English, so the knowledge lives with
+      you and not only with the person who wrote it.
     </p>
 
-    <p class="txt" style="margin-top:16px">
+    <p class="txt" style="margin-top:16px;max-width:56ch">
       Thread is a new practice. The work behind it isn’t. Selected projects from before the
       name existed will appear here, shown without client names, as permission comes in.
     </p>
@@ -144,31 +159,31 @@ import Footer from '../components/Footer.astro';
 
   <Section
     id="about"
-    eyebrow="§ 06 — About"
+    eyebrow="§ 06 · About"
     heading="Built in Hawaiʻi. Useful anywhere."
     headingWidth={17}
-    noteLabel="Working with us"
+    noteLabel="Working with a small practice"
   >
     <p class="txt" style="margin-bottom:16px">
-      Thread is a small custom software practice based in Honolulu. We work with businesses
-      across the islands and with clients on the mainland who’d rather hire a team that
-      answers the phone than a firm that assigns them an account manager.
+      I’m Shauna, and Thread is my custom software practice, based in Honolulu. It takes on
+      work across the islands, and on the mainland for people who would rather hire someone
+      who answers the phone than a firm that assigns them an account manager.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      Being here shapes how we work. Island businesses tend to run lean, on tools chosen
-      years ago for good reasons, with no appetite for ripping everything out and starting
-      over. That constraint turned out to be the right way to build software for anyone.
+      Being here shapes the work. Island businesses tend to run lean, on tools chosen years
+      ago for reasons that were good at the time, with no appetite for tearing everything
+      out and starting over. That constraint turns out to be the right way to build
+      software for anyone.
     </p>
     <p class="txt">
-      The name is the whole idea: the connecting thread that runs through everything a
-      business already uses, and turns a pile of separate tools into one thing you can
-      actually operate.
+      The name is the whole idea. A thread runs through everything a business already uses
+      and turns a pile of separate tools into one thing you can operate.
     </p>
 
     <Fragment slot="note">
-      Time zones are real. We keep overlapping hours with the mainland West Coast and East
-      Coast, and we answer within one business day. Most clients never need a meeting that
-      isn’t a demo.
+      Thread is me. Everything runs in your accounts, on your infrastructure. You own the
+      source outright, and every build ships documented well enough that another developer
+      could pick it up without calling me.
     </Fragment>
   </Section>
 
