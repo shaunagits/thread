@@ -5,28 +5,31 @@ Replaces the `.buildnote` block from `index.html`, which is not ported.
 
 ---
 
-## 1. Placeholder content — 🔴 LIVE, and must be replaced
+## 1. Placeholder content — ✅ removed on `content/remove-fabrications`
 
-> **The site is already published at https://threadhawaii.com with everything
-> below still in place**, on the owner's explicit instruction after being told
-> twice. It is publicly readable and indexable: `robots.txt` allows crawling and
-> the sitemap advertises the page. This is the top outstanding task.
+`src/content/placeholders.ts` is deleted. So are `ProductGrid.astro` and
+`Specimen.astro`, which existed only to render it.
 
-All of it lives in [`src/content/placeholders.ts`](src/content/placeholders.ts).
-Nothing else in the site is invented.
+| What | Resolution |
+|---|---|
+| **Thread Panel / Handoff / Field Kit** and all three prices | Deleted. §04 is now the systems map offer. |
+| **Specimen 001**, the Kailua case study and its three metrics | Deleted. §05 states plainly that prior work will appear as permission comes in. |
+| **`OPERATIONS · KAILUA YARD`** in Fig. 1 | Now `OPERATIONS · SAMPLE ACCOUNT`, with `CONCEPT DRAWING` on the plate. |
+| **Integration strip** | Kept all nine and moved to `site.ts`. Owner confirmed 13 Aug 2026: the label is "Connects to", a capability claim, and every one exposes a public API. |
+| **Email address** `aloha@threadhawaii.com` | Real — Namecheap forwards it. Moved to `site.ts`. |
 
-| What | Where | Needs |
-|---|---|---|
-| **Thread Panel / Handoff / Field Kit** — names, descriptions, feature lists, and **all pricing** ($390/mo, $1,200, $2,400) | `products` | Your real lineup and real prices |
-| **Specimen 001** — the Kailua landscaping case study, both header lines, all three paragraphs, and **all three metrics** (1.5 days, −19 days, 7 → 1) | `specimen` | A real client **with written permission**, or delete §05 until you have one |
-| **Integration strip** — QuickBooks, Shopify, Square, Jobber, Airtable, Stripe, Slack, Google Workspace, HubSpot | `integrations` | Confirm you actually build against each before listing it |
-| **Email address** — `aloha@threadhawaii.com` | `contact.email` | Your real address (also needed for Stage 4) |
+**Still live on `main` until this branch merges.**
 
-Two more that aren't in that file:
+Two related items that were never in that file:
 
-- **The free system map offer.** It runs through the whole page as the primary
-  CTA and is the strongest thing here — but only ship it if you will honour it.
+- **The free systems map offer.** It is now §04 and the primary CTA, bounded at
+  two a month and one workflow each. Only ship it if you will honour that.
 - **`site` in `astro.config.mjs`** is set to a placeholder domain.
+
+The `Specimen.astro` shell — mono header rail, serif body, three big serif
+figures — was a good frame and is worth restoring when there is real work to put
+in it. It is in git history; `git show HEAD~1:src/components/Specimen.astro`
+from the tip of this branch brings it back.
 
 ---
 

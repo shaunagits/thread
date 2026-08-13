@@ -7,20 +7,30 @@ Astro 7 + Tailwind 4, statically prerendered, **zero client JavaScript**.
 
 ---
 
-## ⚠️ Read this before publishing anything
+## ⚠️ What `index.html` is still binding for
 
-§04 Products and §05 Work contain **invented products, invented pricing, and a
-fabricated client case study with fabricated metrics**. All of it is isolated in
-[`src/content/placeholders.ts`](src/content/placeholders.ts).
+`index.html` remains the source of truth for **layout, type scale, colour and
+spacing**. It is **no longer binding for content.** Copy, section content,
+figures and form fields are specified by
+[`HOMEPAGE-COPY.md`](HOMEPAGE-COPY.md) and [`GRAPHICS.md`](GRAPHICS.md).
 
-**This is already live and publicly indexable.** The owner deployed it knowingly,
-having been told twice. Do not treat that as settled — replacing it is the top
-outstanding task. See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) §1.
+New figures reuse existing tokens and the existing `Figure.astro` wrapper. Still
+no new colours, no new spacing values, no new component patterns.
 
-Decisions already taken with the owner:
-- §04 becomes forward-looking ("what we're building"), not a storefront
-- §05 becomes a real, anonymised engagement — **needs real numbers from the owner**
-- Pricing goes on §03 as a floor (`From $X fixed` in the meta column), not on §04
+Decided with the owner, 13 Aug 2026. Do not re-litigate it.
+
+## Content that must never be invented
+
+The site previously carried invented products, invented pricing and a fabricated
+client case study with fabricated metrics, all isolated in
+`src/content/placeholders.ts`. **That file is now deleted and must not come
+back.** §04 is the systems map offer; §05 carries real prior work or an honest
+statement that there isn't any yet.
+
+`HOMEPAGE-COPY.md` uses `[CONFIRM: …]` markers for every number and claim the
+owner has not supplied. **Never fill one in.** A plausible placeholder price is
+how the site got into trouble the first time. If a section cannot be built
+without one, ship it without the claim or stop and ask.
 
 ## Accounts
 

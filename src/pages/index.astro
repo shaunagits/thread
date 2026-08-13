@@ -8,8 +8,6 @@ import Figure from '../components/Figure.astro';
 import Fig2ThreadDiagram from '../components/Fig2ThreadDiagram.astro';
 import StepRow from '../components/StepRow.astro';
 import ServiceList from '../components/ServiceList.astro';
-import ProductGrid from '../components/ProductGrid.astro';
-import Specimen from '../components/Specimen.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -84,23 +82,47 @@ import Footer from '../components/Footer.astro';
   </Section>
 
   <Section
-    id="products"
-    eyebrow="§ 04 — Products"
-    heading="Some of it we’ve already built."
+    id="map"
+    eyebrow="§ 04 — The systems map"
+    heading="Start with a map, not a quote."
     headingWidth={18}
-    noteLabel="Note"
+    noteLabel="Two per month"
   >
-    <p class="lead" style="max-width:54ch">
-      Where the same problem kept showing up, we turned the solution into a product. Buy it
-      outright or subscribe — either way it’s the same software we’d build you.
+    <p class="lead" style="max-width:56ch">
+      Before anyone talks about building anything, Thread draws how your work actually
+      moves today. One workflow, start to finish. Every tool it touches, every handoff,
+      every point where a person is doing a job a system should be doing.
+    </p>
+    <p class="txt" style="margin-bottom:16px">
+      You get the map, a list of where the time is going, and a ranked view of what’s worth
+      fixing first. It’s free, it’s yours to keep, and there’s no obligation to do anything
+      with it. If the honest answer is that you don’t need custom software, the map will
+      say so.
+    </p>
+    <p class="txt" style="margin-bottom:16px">
+      <strong>You fill in a short intake.</strong> Ten minutes. What the business does, what
+      the process is, which tools it touches, what already went wrong.
+    </p>
+    <p class="txt" style="margin-bottom:16px">
+      <strong>One conversation, ninety minutes.</strong> Thread walks the process with
+      whoever actually does it, not just whoever owns it.
+    </p>
+    <p class="txt">
+      <strong>You get the map within five business days.</strong> A drawn current-state
+      diagram, an inventory of where time and information leak, and a ranked list of fixes
+      with rough cost and effort against each one.
     </p>
 
-    <Fragment slot="note">
-      Every product includes the source. If you outgrow us, you leave with what you paid
-      for.
-    </Fragment>
+    <div class="btn-row">
+      <a href="#contact" class="btn">Start a systems map</a>
+    </div>
 
-    <ProductGrid slot="after" />
+    <Fragment slot="note">
+      A map is real work, and it’s free, so it’s capped at two a month and one workflow
+      each. Choose the process that costs you the most time: lead to invoice, job to
+      payment, intake to delivery. Mapping a whole business is a paid engagement, and the
+      free one is a reasonable way to find out whether it’s worth doing.
+    </Fragment>
   </Section>
 
   <Section
@@ -114,7 +136,10 @@ import Footer from '../components/Footer.astro';
       and not only with us.
     </p>
 
-    <Specimen />
+    <p class="txt" style="margin-top:16px">
+      Thread is a new practice. The work behind it isn’t. Selected projects from before the
+      name existed will appear here, shown without client names, as permission comes in.
+    </p>
   </Section>
 
   <Section

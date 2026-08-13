@@ -1,15 +1,33 @@
 /**
  * Real site content — repeating structures lifted out of the markup so the
- * components stay about layout. Copy is verbatim from the approved design.
- * (Invented content lives in placeholders.ts, not here.)
+ * components stay about layout.
+ *
+ * Nothing in this file may be invented. Every claim here is either verbatim
+ * from the approved design or confirmed by the owner. See CLAUDE.md.
  */
 
 export const nav = [
   { label: 'Services', href: '#services' },
-  { label: 'Products', href: '#products' },
+  { label: 'The map', href: '#map' },
   { label: 'Work', href: '#work' },
   { label: 'About', href: '#about' },
 ];
+
+/**
+ * The "Connects to" strip. This is a capability claim, not a client list —
+ * every one of these exposes a public API Thread can build against. Confirmed
+ * by the owner 13 Aug 2026. Anything added here must clear the same bar.
+ */
+export const integrations = [
+  'QuickBooks', 'Shopify', 'Square', 'Jobber', 'Airtable',
+  'Stripe', 'Slack', 'Google Workspace', 'HubSpot',
+];
+
+/** Real address — Namecheap forwards it. See CLAUDE.md landmine 9. */
+export const contact = {
+  email: 'aloha@threadhawaii.com',
+  location: 'Honolulu, Hawaiʻi',
+};
 
 export const steps = [
   {
@@ -63,11 +81,11 @@ export const footerColumns = [
     ],
   },
   {
-    heading: 'Products',
+    heading: 'Ways to work',
     links: [
-      { label: 'Thread Panel', href: '#products' },
-      { label: 'Handoff', href: '#products' },
-      { label: 'Field Kit', href: '#products' },
+      { label: 'Systems map', href: '#map' },
+      { label: 'Care plan', href: '#services' },
+      { label: 'Rescue work', href: '#services' },
     ],
   },
   {
