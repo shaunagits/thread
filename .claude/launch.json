@@ -1,11 +1,15 @@
 {
   "version": "0.0.1",
+  "autoPort": true,
   "configurations": [
     {
       "name": "thread-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 4321
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 4327
     }
   ]
 }

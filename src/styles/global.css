@@ -28,7 +28,9 @@
      These are not new colours; they are already in the design. Naming them
      here is what keeps hex out of the components. Flagged for review. */
   --color-plate:           #4A5044; /* label text inside Fig. 1 and Fig. 2 */
-  --color-ochre-hover:     #B87B33; /* .btn:hover and .nav-cta:hover */
+  --color-ochre-hover:     #B87B33; /* the original's .btn:hover — now unused,
+                                       superseded by --color-koa-hover when the
+                                       fills moved to koa. Kept for reference. */
   --color-foot-text:       #D8D4C9; /* footer body + links */
   --color-foot-label:      #9AA08E; /* footer column headings, bottom bar */
   --color-foot-link-hover: #E8AE6B; /* footer link hover */
@@ -54,6 +56,10 @@
 :root {
   --col: 1180px;
   --side: 220px;
+
+  /* Pressed state for the koa fills. Derived from the token rather than
+     hardcoded, so it tracks --color-koa if that ever changes. */
+  --color-koa-hover: color-mix(in srgb, var(--color-koa) 86%, black);
 }
 
 /* ============================================================
@@ -204,17 +210,22 @@ p.txt {
   line-height: 1.66; color: var(--color-body);
 }
 
-/* ---------- buttons ---------- */
+/* ---------- buttons ----------
+   Light text on koa rather than dark text on ochre. Ochre is a 2.9:1 ground
+   for light text — the token's own comment in index.html says "fills only"
+   — so the fill darkens to koa, which carries paper text at 5.56:1. Ochre
+   still fills everything that holds no text. */
 .btn {
   display: inline-block; padding: 14px 28px; border-radius: 2px;
   font-size: 14px; font-weight: 600; letter-spacing: .005em;
-  background: var(--color-ochre); color: var(--color-ink);
-  border: 1px solid var(--color-ochre); cursor: pointer;
+  background: var(--color-koa); color: var(--color-paper);
+  border: 1px solid var(--color-koa); cursor: pointer;
   transition: background .15s ease, border-color .15s ease;
 }
 .btn:hover {
-  background: var(--color-ochre-hover);
-  border-color: var(--color-ochre-hover);
+  background: var(--color-koa-hover);
+  border-color: var(--color-koa-hover);
+  color: var(--color-paper);
   text-decoration: none;
 }
 .btn-ghost {

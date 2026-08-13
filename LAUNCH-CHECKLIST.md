@@ -121,21 +121,50 @@ from the sitemap.
 
 ## 6. Deployment — threadhawaii.com
 
-### Current state (preview only)
+### Current state — production deployed, DNS pending
 
 | | |
 |---|---|
 | Vercel team | `peopleengineers-projects` |
 | Project | `thread` |
-| Preview URL | `https://thread-pw5dy5kfp-peopleengineers-projects.vercel.app` |
-| Protection | Vercel Authentication — sign-in required, `x-robots-tag: noindex` |
-| Public aliases | none |
-| threadhawaii.com | untouched, still parked at `162.255.119.38` |
+| Production URL | `https://thread-nine-alpha.vercel.app` — **public** |
+| Domains attached | `threadhawaii.com`, `www.threadhawaii.com` |
+| DNS | **not yet pointed** — still parked at `162.255.119.38` |
+| GitHub | `shaunagits/thread` — public |
 
-The preview needs a Vercel login, so it opens for you but is not shareable as-is.
-To show it to someone outside the team, either turn off Deployment Protection in
-project settings, or add a Protection Bypass token — say the word and I'll walk
-through it.
+Deployed with the placeholder products, pricing and case study still in place,
+on the owner's explicit instruction.
+
+### 🔴 The contact form does not work in production
+
+No Resend env vars are set, so every submission redirects to
+`/thanks?status=error`. The page's entire primary CTA is that form. Two fixes,
+both quick:
+
+1. **Namecheap:** forward `aloha@threadhawaii.com` → your Gmail. The error page
+   tells visitors to email that address directly, so right now the fallback is
+   a dead address too.
+2. **Vercel:** add `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` under
+   Settings → Environment Variables (see `.env.example` — phase 1 needs no DNS),
+   then redeploy.
+
+Until both are done, the site cannot receive an enquiry by any route.
+
+### DNS records to add at Namecheap
+
+Replace the existing parking A record. Advanced DNS → Host Records:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `76.76.21.21` |
+| CNAME | `www` | `cname.vercel-dns.com` |
+
+Delete Namecheap's parking record (`162.255.119.38`) and any URL Redirect record
+on `@` or `www`. **Leave every MX and TXT record exactly as it is.**
+
+**⚠️ Vercel will offer to take over the nameservers — decline it.** Switching to
+`ns1/ns2.vercel-dns.com` drops the MX and SPF records and breaks email
+forwarding on the domain.
 
 **⚠️ Note on the first deploy.** Vercel automatically promotes a *new* project's
 first deployment to production, which it did here — creating two public aliases

@@ -34,9 +34,11 @@
       <path d="M604 141 C660 141, 656 62, 722 62"/><path d="M604 141 H722"/>
       <path d="M604 141 C660 141, 656 220, 722 220"/>
     </g>
+    {/* The node holds no text, so it keeps the ochre fill. The block behind
+        the "thread" wordmark takes koa so the wordmark can be light. */}
     <circle class="f-ochre" cx="323" cy="141" r="5.5"/>
-    <rect class="f-ochre" x="452" y="113" width="152" height="56" rx="2"/>
-    <text class="f-ink f-serif" x="497" y="147" font-size="20" font-weight="600" letter-spacing="-0.3">thread</text>
+    <rect class="f-block" x="452" y="113" width="152" height="56" rx="2"/>
+    <text class="f-block-text f-serif" x="497" y="147" font-size="20" font-weight="600" letter-spacing="-0.3">thread</text>
     <g class="f-hair-stroke" stroke-width="1">
       <rect x="722" y="45" width="152" height="34" rx="2"/><rect x="722" y="124" width="152" height="34" rx="2"/>
       <rect x="722" y="203" width="152" height="34" rx="2"/>
@@ -55,5 +57,7 @@
   .f-line        { stroke: var(--color-line); }
   .f-ochre       { fill: var(--color-ochre); }
   .f-ink         { fill: var(--color-ink); }
+  .f-block       { fill: var(--color-koa); }
+  .f-block-text  { fill: var(--color-paper); }
   .f-plate       { fill: var(--color-plate); }
 </style>

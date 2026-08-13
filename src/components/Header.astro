@@ -52,11 +52,18 @@ const CTA = 'Get your systems mapped';
   }
   .nav-links a { color: var(--color-quiet); }
   .nav-links a:hover { color: var(--color-ink); }
-  .nav-cta {
-    padding: 10px 20px; font-size: 13px; background: var(--color-ochre);
-    color: var(--color-ink); border-radius: 2px; font-weight: 600;
+  /* Selector must out-specify `.nav-links a` above, which is class+element and
+     would otherwise win and paint the CTA label --color-quiet. The original
+     had the same collision; it was just less visible against ochre. */
+  .nav-links a.nav-cta {
+    padding: 10px 20px; font-size: 13px; background: var(--color-koa);
+    color: var(--color-paper); border-radius: 2px; font-weight: 600;
   }
-  .nav-cta:hover { text-decoration: none; background: var(--color-ochre-hover); }
+  .nav-links a.nav-cta:hover {
+    text-decoration: none;
+    background: var(--color-koa-hover);
+    color: var(--color-paper);
+  }
 
   /* ---------- phone menu ---------- */
   .menu { display: none; position: relative; }

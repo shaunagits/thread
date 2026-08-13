@@ -91,11 +91,13 @@
     <circle cx="270" cy="113" r="2.5"/><circle cx="270" cy="241" r="2.5"/><circle cx="270" cy="396" r="2.5"/>
     <circle cx="910" cy="113" r="2.5"/><circle cx="910" cy="241" r="2.5"/><circle cx="910" cy="468" r="2.5"/>
   </g>
-  <g class="f-ochre">
+  {/* Badges carry numerals, so they take the koa fill with light text.
+      Every other ochre fill in this plate holds no text and stays ochre. */}
+  <g class="f-badge">
     <circle cx="220" cy="113" r="12"/><circle cx="220" cy="241" r="12"/><circle cx="220" cy="396" r="12"/>
     <circle cx="960" cy="113" r="12"/><circle cx="960" cy="241" r="12"/><circle cx="960" cy="468" r="12"/>
   </g>
-  <g class="f-ink" font-size="11.5" font-weight="500" text-anchor="middle">
+  <g class="f-badge-num" font-size="11.5" font-weight="500" text-anchor="middle">
     <text x="220" y="117">1</text><text x="220" y="245">2</text><text x="220" y="400">3</text>
     <text x="960" y="117">4</text><text x="960" y="245">5</text><text x="960" y="472">6</text>
   </g>
@@ -131,6 +133,8 @@
   .f-line       { stroke: var(--color-line); }
   .f-line-fill  { fill: var(--color-line); }
   .f-ink        { fill: var(--color-ink); }
+  .f-badge      { fill: var(--color-koa); }
+  .f-badge-num  { fill: var(--color-paper); }
   .f-plate      { fill: var(--color-plate); }
   .f-faint      { fill: var(--color-faint); }
   .f-koa        { fill: var(--color-koa); }

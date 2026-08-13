@@ -33,6 +33,10 @@ export default defineConfig({
     }),
   ],
 
+  // Honour PORT so the dev server can be assigned a free port instead of
+  // colliding on Astro's default 4321.
+  server: { port: Number(process.env.PORT) || 4321 },
+
   vite: {
     plugins: [tailwindcss()],
   },
