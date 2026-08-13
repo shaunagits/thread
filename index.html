@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thread — Custom software, dashboards & AI automation | Honolulu, Hawaiʻi</title>
+<meta name="description" content="Thread builds custom internal apps, dashboards, and AI automation that connect the software your business already runs. Based in Honolulu, working with clients across Hawaiʻi and the mainland.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THREAD — Field Guide / ʻAlaea Ochre
+   Type:  Newsreader (editorial) · Public Sans (UI) · JetBrains Mono (annotation)
+   ============================================================ */
+:root{
+  --paper:#FCFBF7;
+  --wash:#F4F0E6;
+  --white:#FFFFFF;
+  --ink:#1C2118;
+  --body:#2E3329;
+  --quiet:#5A6053;
+  --faint:#666D5E;
+  --rule:#E0DCD0;
+  --hair:#C3C0B4;
+  --ochre:#C8873F;   /* fills only — 2.9:1 on paper */
+  --line:#AE7126;    /* strokes, diagram lines */
+  --koa:#8F5A1C;     /* links, small text — AA on paper, wash, and white */
+
+  --col: 1180px;
+  --side: 220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Public Sans',system-ui,-apple-system,sans-serif;
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--col);margin:0 auto;padding:0 40px}
+
+/* ---------- shared type ---------- */
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--koa);
+}
+h1,h2,h3,h4{font-family:'Newsreader',serif;font-weight:500;letter-spacing:-.015em;line-height:1.12}
+h1{font-size:clamp(38px,5.4vw,62px)}
+h2{font-size:clamp(30px,3.8vw,44px)}
+h3{font-size:clamp(20px,2.1vw,25px)}
+.serif{font-family:'Newsreader',serif}
+p.lead{font-family:'Newsreader',serif;font-size:clamp(18px,1.9vw,21px);line-height:1.55;color:var(--body)}
+p.txt{font-family:'Newsreader',serif;font-size:17.5px;line-height:1.66;color:var(--body)}
+a{color:var(--koa);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-block;padding:14px 28px;border-radius:2px;
+  font-size:14px;font-weight:600;letter-spacing:.005em;
+  background:var(--ochre);color:var(--ink);border:1px solid var(--ochre);
+  transition:background .15s ease, border-color .15s ease;
+}
+.btn:hover{background:#B87B33;border-color:#B87B33;text-decoration:none}
+.btn-ghost{
+  display:inline-block;padding:14px 26px;border-radius:2px;font-size:14px;font-weight:600;
+  background:transparent;color:var(--ink);border:1px solid var(--hair);
+}
+.btn-ghost:hover{border-color:var(--ink);text-decoration:none}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;align-items:center}
+
+/* ---------- nav ---------- */
+header.nav{position:sticky;top:0;z-index:50;background:rgba(252,251,247,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;height:70px}
+.mark{font-family:'Newsreader',serif;font-weight:600;font-size:25px;letter-spacing:-.025em;color:var(--ink)}
+.mark span{color:var(--ochre)}
+.nav-links{display:flex;gap:30px;font-size:13.5px;color:var(--quiet);align-items:center}
+.nav-links a{color:var(--quiet)}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{padding:10px 20px;font-size:13px;background:var(--ochre);color:var(--ink);border-radius:2px;font-weight:600}
+.nav-cta:hover{text-decoration:none;background:#B87B33}
+
+/* ---------- annotated document grid ---------- */
+.doc{display:grid;grid-template-columns:minmax(0,1fr) var(--side);gap:56px;align-items:start}
+aside.side{
+  font-size:13px;line-height:1.55;color:var(--quiet);
+  border-left:1px solid var(--rule);padding-left:22px;padding-top:7px;
+}
+aside.side .lbl{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--koa);display:block;margin-bottom:9px;
+}
+
+/* ---------- section frame ---------- */
+section{padding:96px 0;border-top:1px solid var(--rule)}
+section.hero{padding:76px 0 88px;border-top:0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:14px}
+.figcap{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--faint);margin:52px 0 18px;padding-top:16px;border-top:1px solid var(--rule);
+}
+svg.plate{width:100%;height:auto;display:block}
+.plate-scroll{position:relative}
+.scroll-hint{display:none}
+
+/* ---------- integration strip ---------- */
+.strip{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--wash);padding:26px 0}
+.strip-in{display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center}
+.strip-lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--koa)}
+.strip-item{font-family:'Newsreader',serif;font-size:17px;color:var(--quiet)}
+
+/* ---------- numbered list (services) ---------- */
+.items{margin-top:8px}
+.item{display:grid;grid-template-columns:56px minmax(0,1fr) 250px;gap:32px;padding:34px 0;border-bottom:1px solid var(--rule);align-items:start}
+.item:first-child{border-top:1px solid var(--rule)}
+.num{
+  width:34px;height:34px;border-radius:50%;background:var(--ochre);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;margin-top:3px;
+}
+.item h3{margin-bottom:9px}
+.item p{font-family:'Newsreader',serif;font-size:16.5px;line-height:1.6;color:var(--body);max-width:52ch}
+.item .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);line-height:1.9;padding-top:5px}
+
+/* ---------- steps ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:54px;border-top:1px solid var(--rule)}
+.step{padding:28px 30px 8px;border-right:1px solid var(--rule)}
+.step:last-child{border-right:0}
+.step .n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--koa);display:block;margin-bottom:12px}
+.step h4{font-size:21px;margin-bottom:9px}
+.step p{font-family:'Newsreader',serif;font-size:15.5px;line-height:1.58;color:var(--body)}
+
+/* ---------- products ---------- */
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+.card{border:1px solid var(--hair);border-radius:3px;background:var(--white);padding:30px 28px 28px;display:flex;flex-direction:column}
+.card .tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--koa);margin-bottom:16px;display:block}
+.card h3{margin-bottom:10px}
+.card .price{font-family:'Newsreader',serif;font-size:32px;font-weight:600;color:var(--ink);margin:16px 0 4px;letter-spacing:-.02em}
+.card .price small{font-size:14px;font-weight:400;color:var(--quiet);letter-spacing:0}
+.card p{font-family:'Newsreader',serif;font-size:15.5px;line-height:1.58;color:var(--body)}
+.card ul{list-style:none;margin:18px 0 24px;padding-top:18px;border-top:1px solid var(--rule)}
+.card li{font-size:13.5px;color:var(--body);padding-left:18px;position:relative;margin-bottom:9px;line-height:1.5}
+.card li::before{content:'';position:absolute;left:0;top:8px;width:8px;height:1.5px;background:var(--line)}
+.card .foot{margin-top:auto}
+.card .btn,.card .btn-ghost{width:100%;text-align:center;padding:12px 20px}
+
+/* ---------- specimen / case study ---------- */
+.specimen{border:1px solid var(--hair);border-radius:3px;background:var(--white);overflow:hidden;margin-top:48px}
+.spec-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:22px 32px;border-bottom:1px solid var(--rule);background:var(--wash)}
+.spec-head .id{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--koa)}
+.spec-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.spec-text{padding:34px 32px}
+.spec-text p{font-family:'Newsreader',serif;font-size:16.5px;line-height:1.62;color:var(--body);margin-bottom:14px;max-width:54ch}
+.spec-figs{border-left:1px solid var(--rule);padding:34px 32px}
+.fig{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--rule)}
+.fig:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.fig .v{font-family:'Newsreader',serif;font-size:34px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+.fig .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:6px;display:block}
+
+/* ---------- final cta ---------- */
+.cta-band{background:var(--wash);border-top:1px solid var(--rule)}
+.cta-in{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:64px;padding:88px 0;align-items:start}
+.form{background:var(--white);border:1px solid var(--hair);border-radius:3px;padding:28px}
+.form label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:7px}
+.form input,.form textarea{
+  width:100%;padding:11px 13px;border:1px solid var(--hair);border-radius:2px;background:var(--paper);
+  font-family:'Public Sans',sans-serif;font-size:14px;color:var(--ink);margin-bottom:18px;
+}
+.form input:focus,.form textarea:focus{outline:2px solid var(--line);outline-offset:-1px;border-color:var(--line)}
+.form textarea{resize:vertical;min-height:82px}
+.form .btn{width:100%;text-align:center}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:#D8D4C9;padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid #333A2E}
+footer .mark{color:#FCFBF7;font-size:24px}
+footer h5{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:#9AA08E;font-weight:500;margin-bottom:15px}
+footer ul{list-style:none}
+footer li{margin-bottom:9px;font-size:13.5px}
+footer a{color:#D8D4C9}
+footer a:hover{color:#E8AE6B}
+.foot-bot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;font-size:12.5px;color:#9AA08E}
+footer p.blurb{font-size:14px;color:#B0B5A4;max-width:34ch;margin-top:14px;line-height:1.6}
+
+/* ---------- build note (not part of the design) ---------- */
+.buildnote{background:#14100E;color:#B5ACA2;padding:56px 0 72px;font-size:14px;line-height:1.65}
+.buildnote h4{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#C8873F;margin-bottom:18px;font-weight:500}
+.buildnote ul{list-style:none;max-width:70ch}
+.buildnote li{padding-left:20px;position:relative;margin-bottom:10px}
+.buildnote li::before{content:'→';position:absolute;left:0;color:#6E645A}
+.buildnote strong{color:#EDE7DF;font-weight:500}
+
+/* ---------- responsive ---------- */
+@media(max-width:1000px){
+  .doc,.cta-in{grid-template-columns:1fr;gap:34px}
+  aside.side{border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:18px;max-width:52ch}
+  .item{grid-template-columns:48px minmax(0,1fr);gap:22px}
+  .item .meta{grid-column:2;padding-top:14px}
+  .steps{grid-template-columns:1fr}
+  .step{border-right:0;border-bottom:1px solid var(--rule);padding:26px 0 22px}
+  .step:last-child{border-bottom:0}
+  .products{grid-template-columns:1fr}
+  .spec-body{grid-template-columns:1fr}
+  .spec-figs{border-left:0;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .fig{border-bottom:0;padding-bottom:0;margin-bottom:0}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  /* annotated plates can't shrink to phone width — let them pan instead */
+  .plate-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -22px;padding:0 22px 10px}
+  .plate-scroll svg.plate{min-width:860px}
+  .scroll-hint{
+    display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);margin-top:8px;
+  }
+}
+@media(max-width:640px){
+  .wrap{padding:0 22px}
+  .nav-links{display:none}
+  section{padding:66px 0}
+  .spec-figs{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="mark">thread<span>.</span></a>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#products">Products</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="nav-cta">Get your systems mapped</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="doc">
+      <div>
+        <div class="eyebrow">Custom software &amp; AI automation · Honolulu, Hawaiʻi</div>
+        <h1 style="margin:20px 0 22px;max-width:15ch">A field guide to the software you already own.</h1>
+        <p class="lead" style="max-width:54ch">Most businesses don't need another tool. They need the seven they're already paying for to stop being seven separate jobs. We map what you're running, find where the handoffs break, and build the layer that closes them.</p>
+        <div class="btn-row">
+          <a href="#contact" class="btn">Get your systems mapped</a>
+          <a href="#how" class="btn-ghost">See how it works</a>
+        </div>
+      </div>
+      <aside class="side">
+        <span class="lbl">In the margin</span>
+        Every engagement opens with a system map — yours, drawn from your actual stack, before a line of code is written. It's free, it takes about a week, and it's yours whether or not you hire us.
+      </aside>
+    </div>
+
+    <div class="figcap">Fig. 1 — Operations panel, annotated</div>
+    <div class="plate-scroll">
+    <svg class="plate" viewBox="0 0 1180 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An operations dashboard drawing with six numbered callouts describing what each part does: live counts pulled from Jobber, revenue reconciled against QuickBooks, invoices sent automatically, one login with roles you control, a layout shaped to your process, and data that runs in your own account.">
+      <g font-family="JetBrains Mono, monospace">
+
+        <!-- ======== the panel ======== -->
+        <rect x="270" y="30" width="640" height="460" rx="4" fill="#FFFFFF" stroke="#C3C0B4" stroke-width="1"/>
+        <path d="M270 66 H910" stroke="#E0DCD0" stroke-width="1"/>
+        <circle cx="289" cy="49" r="4.5" fill="#C8873F"/>
+        <text x="304" y="53" fill="#4A5044" font-size="10" letter-spacing="1.1">OPERATIONS · KAILUA YARD</text>
+
+        <!-- sidebar -->
+        <path d="M338 66 V490" stroke="#E0DCD0" stroke-width="1"/>
+        <g fill="#C3C0B4">
+          <rect x="286" y="88" width="36" height="4.5" rx="2"/><rect x="286" y="110" width="28" height="4.5" rx="2"/>
+          <rect x="286" y="132" width="34" height="4.5" rx="2"/><rect x="286" y="154" width="24" height="4.5" rx="2"/>
+          <rect x="286" y="176" width="32" height="4.5" rx="2"/>
+        </g>
+        <rect x="278" y="125" width="3.5" height="20" rx="1.75" fill="#C8873F"/>
+
+        <!-- kpi tiles -->
+        <g stroke="#E0DCD0" stroke-width="1">
+          <rect x="354" y="84" width="126" height="60" rx="2"/><rect x="490" y="84" width="126" height="60" rx="2"/>
+          <rect x="626" y="84" width="126" height="60" rx="2"/><rect x="762" y="84" width="126" height="60" rx="2"/>
+        </g>
+        <g fill="#1C2118" font-family="Newsreader, serif" font-size="25" font-weight="600" letter-spacing="-0.5">
+          <text x="368" y="120">142</text><text x="504" y="120">$18.4k</text><text x="640" y="120">6</text><text x="776" y="120">94%</text>
+        </g>
+        <g fill="#666D5E" font-size="8.5" letter-spacing="0.8">
+          <text x="368" y="136">OPEN JOBS</text><text x="504" y="136">UNBILLED</text>
+          <text x="640" y="136">OVERDUE</text><text x="776" y="136">ON TIME</text>
+        </g>
+
+        <!-- chart -->
+        <rect x="354" y="166" width="350" height="150" rx="2" stroke="#E0DCD0" stroke-width="1"/>
+        <text x="368" y="188" fill="#4A5044" font-size="9" letter-spacing="0.9">REVENUE BY WEEK</text>
+        <g fill="#C8873F">
+          <rect x="368" y="266" width="18" height="34"/><rect x="406" y="246" width="18" height="54"/>
+          <rect x="444" y="226" width="18" height="74"/><rect x="482" y="254" width="18" height="46"/>
+          <rect x="520" y="212" width="18" height="88"/><rect x="558" y="236" width="18" height="64"/>
+          <rect x="596" y="200" width="18" height="100"/><rect x="634" y="220" width="18" height="80"/>
+          <rect x="672" y="240" width="18" height="60"/>
+        </g>
+
+        <!-- side list -->
+        <rect x="718" y="166" width="170" height="150" rx="2" stroke="#E0DCD0" stroke-width="1"/>
+        <text x="732" y="188" fill="#4A5044" font-size="9" letter-spacing="0.9">TODAY</text>
+        <g stroke="#E0DCD0" stroke-width="1"><path d="M732 226 H874"/><path d="M732 258 H874"/></g>
+        <g fill="#4A5044" font-size="9.5">
+          <text x="732" y="218">4 crews dispatched</text><text x="732" y="250">2 invoices sent</text>
+          <text x="732" y="282">1 needs your review</text>
+        </g>
+
+        <!-- table -->
+        <text x="354" y="346" fill="#4A5044" font-size="9" letter-spacing="0.9">ACTIVE JOBS</text>
+        <g stroke="#E0DCD0" stroke-width="1"><path d="M354 376 H888"/><path d="M354 406 H888"/></g>
+        <g fill="#4A5044" font-size="10">
+          <text x="354" y="368">Kahala remodel · invoice queued</text>
+          <text x="354" y="398">Waimea install · awaiting parts</text>
+          <text x="354" y="428">ʻAiea maintenance · scheduled</text>
+        </g>
+        <g fill="#8F5A1C" font-size="8.5" text-anchor="end" letter-spacing="0.7">
+          <text x="888" y="368">AUTO</text><text x="888" y="398">AUTO</text><text x="888" y="428">AUTO</text>
+        </g>
+
+        <!-- status bar -->
+        <path d="M270 448 H910" stroke="#E0DCD0" stroke-width="1"/>
+        <circle cx="362" cy="468" r="3.5" fill="#C8873F"/>
+        <text x="374" y="472" fill="#666D5E" font-size="8.5" letter-spacing="0.7">SYNCED 42 SECONDS AGO · YOUR ACCOUNT</text>
+
+        <!-- ======== callouts ======== -->
+        <g stroke="#AE7126" stroke-width="1">
+          <path d="M270 113 H232"/><path d="M270 241 H232"/><path d="M270 396 H232"/>
+          <path d="M910 113 H948"/><path d="M910 241 H948"/><path d="M910 468 H948"/>
+        </g>
+        <g fill="#AE7126">
+          <circle cx="270" cy="113" r="2.5"/><circle cx="270" cy="241" r="2.5"/><circle cx="270" cy="396" r="2.5"/>
+          <circle cx="910" cy="113" r="2.5"/><circle cx="910" cy="241" r="2.5"/><circle cx="910" cy="468" r="2.5"/>
+        </g>
+        <g fill="#C8873F">
+          <circle cx="220" cy="113" r="12"/><circle cx="220" cy="241" r="12"/><circle cx="220" cy="396" r="12"/>
+          <circle cx="960" cy="113" r="12"/><circle cx="960" cy="241" r="12"/><circle cx="960" cy="468" r="12"/>
+        </g>
+        <g fill="#1C2118" font-size="11.5" font-weight="500" text-anchor="middle">
+          <text x="220" y="117">1</text><text x="220" y="245">2</text><text x="220" y="400">3</text>
+          <text x="960" y="117">4</text><text x="960" y="245">5</text><text x="960" y="472">6</text>
+        </g>
+
+        <!-- callout copy -->
+        <g font-family="Public Sans, sans-serif" font-size="13" fill="#2E3329" text-anchor="end">
+          <text x="194" y="108">Live counts, pulled from</text>
+          <text x="194" y="126">Jobber every 90 seconds</text>
+          <text x="194" y="236">Revenue reconciled</text>
+          <text x="194" y="254">against QuickBooks</text>
+          <text x="194" y="391">Invoices sent the moment</text>
+          <text x="194" y="409">a job is marked closed</text>
+        </g>
+        <g font-family="Public Sans, sans-serif" font-size="13" fill="#2E3329">
+          <text x="982" y="108">One login for the team.</text>
+          <text x="982" y="126">You set who sees what.</text>
+          <text x="982" y="236">Shaped around your</text>
+          <text x="982" y="254">process, not a template</text>
+          <text x="982" y="463">Runs in your account,</text>
+          <text x="982" y="481">on your data. You own it.</text>
+        </g>
+      </g>
+    </svg>
+    </div>
+    <span class="scroll-hint">Scroll sideways to read →</span>
+  </div>
+</section>
+
+<!-- ==================== INTEGRATION STRIP ==================== -->
+<div class="strip">
+  <div class="wrap strip-in">
+    <span class="strip-lbl">Connects to</span>
+    <span class="strip-item">QuickBooks</span>
+    <span class="strip-item">Shopify</span>
+    <span class="strip-item">Square</span>
+    <span class="strip-item">Jobber</span>
+    <span class="strip-item">Airtable</span>
+    <span class="strip-item">Stripe</span>
+    <span class="strip-item">Slack</span>
+    <span class="strip-item">Google Workspace</span>
+    <span class="strip-item">HubSpot</span>
+  </div>
+</div>
+
+<!-- ==================== PROBLEM ==================== -->
+<section>
+  <div class="wrap">
+    <div class="doc">
+      <div>
+        <div class="eyebrow">§ 01 — The problem</div>
+        <h2 style="margin:16px 0 24px;max-width:16ch">Nothing is broken. That's the problem.</h2>
+        <p class="txt" style="margin-bottom:16px">Every tool you bought works. QuickBooks does accounting. Square takes payments. The scheduling app schedules. Each one is fine on its own, and none of them know the others exist.</p>
+        <p class="txt" style="margin-bottom:16px">So a person becomes the integration. Someone reads a number off one screen and types it into another. Someone checks four tabs to answer one question. Someone remembers to send the invoice. It never shows up as a line item, which is exactly why it never gets fixed.</p>
+        <p class="txt">That work is the thing we remove.</p>
+      </div>
+      <aside class="side">
+        <span class="lbl">Typical intake</span>
+        The businesses we map are running <strong style="color:var(--ink)">six to eleven</strong> separate systems, with two to four people spending part of every day moving data between them by hand.
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">§ 02 — How it works</div>
+    <h2 style="margin:16px 0 22px;max-width:18ch">One line through everything you run.</h2>
+    <p class="lead" style="max-width:56ch">We don't replace your tools. We build the layer that runs through them — so the data moves on its own and your team looks in one place.</p>
+
+    <div class="figcap">Fig. 2 — The thread, drawn</div>
+    <div class="plate-scroll">
+    <svg class="plate" viewBox="0 0 880 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five business tools on the left converge through a single point into Thread, which outputs one dashboard, automated handoffs, and a client portal.">
+      <g font-family="JetBrains Mono, monospace" font-size="11">
+        <g stroke="#C3C0B4" stroke-width="1">
+          <rect x="6" y="12" width="132" height="34" rx="2"/><rect x="6" y="68" width="132" height="34" rx="2"/>
+          <rect x="6" y="124" width="132" height="34" rx="2"/><rect x="6" y="180" width="132" height="34" rx="2"/>
+          <rect x="6" y="236" width="132" height="34" rx="2"/>
+        </g>
+        <g fill="#4A5044">
+          <text x="20" y="34">QuickBooks</text><text x="20" y="90">Shopify</text><text x="20" y="146">Jobber</text>
+          <text x="20" y="202">Square POS</text><text x="20" y="258">Spreadsheets</text>
+        </g>
+        <g stroke="#AE7126" stroke-width="1.6" stroke-linecap="round">
+          <path d="M138 29 C222 29, 236 122, 316 141"/><path d="M138 85 C218 85, 240 130, 316 141"/>
+          <path d="M138 141 C214 141, 244 141, 316 141"/><path d="M138 197 C218 197, 240 152, 316 141"/>
+          <path d="M138 253 C222 253, 236 160, 316 141"/>
+          <path d="M330 141 H452"/>
+          <path d="M604 141 C660 141, 656 62, 722 62"/><path d="M604 141 H722"/>
+          <path d="M604 141 C660 141, 656 220, 722 220"/>
+        </g>
+        <circle cx="323" cy="141" r="5.5" fill="#C8873F"/>
+        <rect x="452" y="113" width="152" height="56" rx="2" fill="#C8873F"/>
+        <text x="497" y="147" fill="#1C2118" font-family="Newsreader, serif" font-size="20" font-weight="600" letter-spacing="-0.3">thread</text>
+        <g stroke="#C3C0B4" stroke-width="1">
+          <rect x="722" y="45" width="152" height="34" rx="2"/><rect x="722" y="124" width="152" height="34" rx="2"/>
+          <rect x="722" y="203" width="152" height="34" rx="2"/>
+        </g>
+        <g fill="#4A5044">
+          <text x="736" y="67">One dashboard</text><text x="736" y="146">Automated handoffs</text><text x="736" y="225">Client portal</text>
+        </g>
+      </g>
+    </svg>
+    </div>
+    <span class="scroll-hint">Scroll sideways to read →</span>
+
+    <div class="steps">
+      <div class="step">
+        <span class="n">01 — MAP</span>
+        <h4>We draw your systems</h4>
+        <p>About a week. We sit with your team, trace how work actually moves, and hand you a labelled map of every tool, handoff, and gap. Free, and yours to keep.</p>
+      </div>
+      <div class="step">
+        <span class="n">02 — BUILD</span>
+        <h4>We close the gaps</h4>
+        <p>Custom apps, dashboards, and automation built against your real process. You see working software in two-week increments, not a status update.</p>
+      </div>
+      <div class="step">
+        <span class="n">03 — HAND OVER</span>
+        <h4>We document and step back</h4>
+        <p>Every build ships with an annotated plate explaining what it does and why. It runs in your accounts on your data. Support is optional, not a hostage situation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SERVICES ==================== -->
+<section id="services">
+  <div class="wrap">
+    <div class="doc" style="margin-bottom:44px">
+      <div>
+        <div class="eyebrow">§ 03 — Services</div>
+        <h2 style="margin:16px 0 22px;max-width:16ch">Four kinds of work, one underlying job.</h2>
+        <p class="lead" style="max-width:52ch">Most engagements are a combination. The map tells us which.</p>
+      </div>
+      <aside class="side">
+        <span class="lbl">Engagement shape</span>
+        Fixed-scope projects with a fixed price, or a monthly retainer for ongoing build and support. No hourly billing, no change-order games.
+      </aside>
+    </div>
+
+    <div class="items">
+      <div class="item">
+        <div class="num">1</div>
+        <div>
+          <h3>Custom internal apps</h3>
+          <p>The software your business needs but nobody sells: job tracking shaped like your workflow, intake forms that route themselves, approval flows that match how decisions actually get made.</p>
+        </div>
+        <div class="meta">Typical: 6–10 weeks<br>Fixed price<br>You own the code</div>
+      </div>
+      <div class="item">
+        <div class="num">2</div>
+        <div>
+          <h3>Dashboards &amp; reporting panels</h3>
+          <p>One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, in the shape your team thinks in, on any device.</p>
+        </div>
+        <div class="meta">Typical: 3–6 weeks<br>Fixed price<br>Live data, no exports</div>
+      </div>
+      <div class="item">
+        <div class="num">3</div>
+        <div>
+          <h3>AI automation</h3>
+          <p>Automation applied where it holds up: sorting and routing inbound work, drafting the repetitive correspondence, extracting data from documents, flagging what needs a human. We're specific about where it does and doesn't belong.</p>
+        </div>
+        <div class="meta">Typical: 4–8 weeks<br>Fixed price<br>Human review built in</div>
+      </div>
+      <div class="item">
+        <div class="num">4</div>
+        <div>
+          <h3>Integration &amp; data plumbing</h3>
+          <p>The unglamorous half. Getting your systems to talk reliably, reconciling records that disagree, and building the pipes so the same number means the same thing everywhere.</p>
+        </div>
+        <div class="meta">Typical: 2–6 weeks<br>Fixed or retainer<br>Monitored, not fire-and-forget</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PRODUCTS ==================== -->
+<section id="products">
+  <div class="wrap">
+    <div class="doc">
+      <div>
+        <div class="eyebrow">§ 04 — Products</div>
+        <h2 style="margin:16px 0 22px;max-width:18ch">Some of it we've already built.</h2>
+        <p class="lead" style="max-width:54ch">Where the same problem kept showing up, we turned the solution into a product. Buy it outright or subscribe — either way it's the same software we'd build you.</p>
+      </div>
+      <aside class="side">
+        <span class="lbl">Note</span>
+        Every product includes the source. If you outgrow us, you leave with what you paid for.
+      </aside>
+    </div>
+
+    <div class="products">
+      <div class="card">
+        <span class="tag">Subscription</span>
+        <h3>Thread Panel</h3>
+        <p>The operations dashboard from Fig. 1, configured for your stack. Live counts, revenue, and job status from every system you run.</p>
+        <div class="price">$390<small> /month</small></div>
+        <ul>
+          <li>Up to 8 connected systems</li>
+          <li>Unlimited team logins with roles</li>
+          <li>Setup and configuration included</li>
+          <li>Hosted, or run it yourself</li>
+        </ul>
+        <div class="foot"><a href="#contact" class="btn">Start a trial</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">One-time purchase</span>
+        <h3>Handoff</h3>
+        <p>A library of automation blueprints for the twelve handoffs that break most often — quote to invoice, job to schedule, payment to books.</p>
+        <div class="price">$1,200<small> once</small></div>
+        <ul>
+          <li>12 production-ready blueprints</li>
+          <li>Works with n8n, Make, or Zapier</li>
+          <li>Written setup guide for each</li>
+          <li>Free updates for one year</li>
+        </ul>
+        <div class="foot"><a href="#contact" class="btn-ghost">Buy Handoff</a></div>
+      </div>
+
+      <div class="card">
+        <span class="tag">One-time purchase</span>
+        <h3>Field Kit</h3>
+        <p>A starter codebase for internal tools — auth, roles, audit logging, and the panel components we use on every build. For teams with a developer.</p>
+        <div class="price">$2,400<small> once</small></div>
+        <ul>
+          <li>Full source, commercial licence</li>
+          <li>Auth, roles, and audit trail built in</li>
+          <li>Component library and design tokens</li>
+          <li>Two hours of onboarding</li>
+        </ul>
+        <div class="foot"><a href="#contact" class="btn-ghost">Buy Field Kit</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WORK / SPECIMEN ==================== -->
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow">§ 05 — Work</div>
+    <h2 style="margin:16px 0 22px;max-width:18ch">Every project ships with its plate.</h2>
+    <p class="lead" style="max-width:56ch">We document what we built and why, in plain English, so the knowledge lives with you and not only with us.</p>
+
+    <div class="specimen">
+      <div class="spec-head">
+        <span class="id">Specimen 001 — Landscaping &amp; maintenance · Kailua, Oʻahu</span>
+        <span class="id">18 staff · 7 systems · 9 weeks</span>
+      </div>
+      <div class="spec-body">
+        <div class="spec-text">
+          <p><strong style="font-weight:600">Before.</strong> Jobs booked in one app, invoiced in another, paid through a third, and reconciled by hand every Friday afternoon. The owner's daughter spent roughly a day and a half each week retyping numbers between systems, and nobody could answer "what did we make last month" without a two-hour spreadsheet exercise.</p>
+          <p><strong style="font-weight:600">What we built.</strong> A single operations panel pulling live from their scheduling, POS, and accounting systems, plus automation that generates and sends the invoice the moment a crew marks a job complete. Overdue accounts surface themselves instead of being discovered.</p>
+          <p><strong style="font-weight:600">After.</strong> The Friday reconciliation is gone. Invoicing happens same-day instead of same-week, which pulled average time-to-payment down by nearly three weeks. The daughter went back to running sales.</p>
+        </div>
+        <div class="spec-figs">
+          <div class="fig"><span class="v">1.5 days</span><span class="k">Weekly admin removed</span></div>
+          <div class="fig"><span class="v">−19 days</span><span class="k">Average time to payment</span></div>
+          <div class="fig"><span class="v">7 → 1</span><span class="k">Screens to answer a question</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ABOUT ==================== -->
+<section id="about">
+  <div class="wrap">
+    <div class="doc">
+      <div>
+        <div class="eyebrow">§ 06 — About</div>
+        <h2 style="margin:16px 0 22px;max-width:17ch">Built in Hawaiʻi. Useful anywhere.</h2>
+        <p class="txt" style="margin-bottom:16px">Thread is a small custom software practice based in Honolulu. We work with businesses across the islands and with clients on the mainland who'd rather hire a team that answers the phone than a firm that assigns them an account manager.</p>
+        <p class="txt" style="margin-bottom:16px">Being here shapes how we work. Island businesses tend to run lean, on tools chosen years ago for good reasons, with no appetite for ripping everything out and starting over. That constraint turned out to be the right way to build software for anyone.</p>
+        <p class="txt">The name is the whole idea: the connecting thread that runs through everything a business already uses, and turns a pile of separate tools into one thing you can actually operate.</p>
+      </div>
+      <aside class="side">
+        <span class="lbl">Working with us</span>
+        Time zones are real. We keep overlapping hours with the mainland West Coast and East Coast, and we answer within one business day. Most clients never need a meeting that isn't a demo.
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<div class="cta-band" id="contact">
+  <div class="wrap cta-in">
+    <div>
+      <div class="eyebrow">§ 07 — Start here</div>
+      <h2 style="margin:16px 0 22px;max-width:15ch">Let's map what you're running.</h2>
+      <p class="lead" style="max-width:48ch">Tell us what systems you use and we'll draw the map — every tool, every handoff, every gap. About a week, no cost, no obligation, and the map is yours regardless of what you decide.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:30px;line-height:2">
+        aloha@threadhawaii.com<br>Honolulu, Hawaiʻi
+      </p>
+    </div>
+    <form class="form" onsubmit="return false">
+      <label for="f-name">Name</label>
+      <input id="f-name" type="text" autocomplete="name">
+      <label for="f-email">Email</label>
+      <input id="f-email" type="email" autocomplete="email">
+      <label for="f-biz">What does the business do?</label>
+      <input id="f-biz" type="text">
+      <label for="f-stack">What software are you running?</label>
+      <textarea id="f-stack" placeholder="QuickBooks, Square, a scheduling app, and a lot of spreadsheets…"></textarea>
+      <button type="submit" class="btn">Request my system map</button>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="mark">thread<span style="color:#C8873F">.</span></span>
+        <p class="blurb">Custom software, dashboards, and AI automation that connect the tools your business already runs.</p>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Custom internal apps</a></li>
+          <li><a href="#services">Dashboards</a></li>
+          <li><a href="#services">AI automation</a></li>
+          <li><a href="#services">Integration</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Products</h5>
+        <ul>
+          <li><a href="#products">Thread Panel</a></li>
+          <li><a href="#products">Handoff</a></li>
+          <li><a href="#products">Field Kit</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Thread · Honolulu, Hawaiʻi</span>
+      <span>Privacy · Terms</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== BUILD NOTE — delete before launch ==================== -->
+<div class="buildnote">
+  <div class="wrap">
+    <h4>Placeholder content — replace before launch</h4>
+    <ul>
+      <li><strong>Products:</strong> Thread Panel, Handoff, and Field Kit are invented, including all pricing. Replace names, descriptions, and prices with your real lineup.</li>
+      <li><strong>Specimen 001:</strong> the Kailua landscaping case study and all three metrics are fabricated. Swap in a real client — with permission — or remove the section until you have one.</li>
+      <li><strong>Integration strip:</strong> confirm you actually build against each of these before listing them.</li>
+      <li><strong>Email:</strong> aloha@threadhawaii.com is a guess. Set your real address.</li>
+      <li><strong>Free system map:</strong> this offer runs through the whole page as the primary CTA. It's the strongest thing here — but only ship it if you'll honour it.</li>
+      <li><strong>Form:</strong> not wired to anything. Point it at Formspree, Basin, or your own endpoint.</li>
+      <li><strong>Fonts:</strong> Newsreader, Public Sans, and JetBrains Mono — all open licence, free for commercial use. Self-host them for speed.</li>
+      <li><strong>This block:</strong> delete the entire <code>.buildnote</code> div and its CSS before going live.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

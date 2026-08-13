@@ -1,0 +1,22 @@
+---
+/**
+ * Shared frame for the two annotated plates.
+ *
+ * The original marked captions up as a plain <div class="figcap"> sitting
+ * above the SVG. This uses real <figure>/<figcaption>, per the handoff's
+ * accessibility item. Rendering is unchanged — .figcap keeps its styles.
+ */
+interface Props {
+  /** e.g. "Fig. 1 — Operations panel, annotated" */
+  caption: string;
+}
+const { caption } = Astro.props;
+---
+
+<figure>
+  <figcaption class="figcap">{caption}</figcaption>
+  <div class="plate-scroll">
+    <slot />
+  </div>
+  <span class="scroll-hint" aria-hidden="true">Scroll sideways to read →</span>
+</figure>

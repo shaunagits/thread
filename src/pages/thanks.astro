@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { contact } from '../content/placeholders';
+
+// Server-rendered so it can show the outcome. The homepage stays fully
+// prerendered — only this page and /api/contact run on request.
+export const prerender = false;
+
+const status = Astro.url.searchParams.get('status');
+
+const STATES = {
+  ok: {
+    eyebrow: '§ — Received',
+    heading: 'Your request is in.',
+    body: 'We’ll read what you sent and come back within one business day — usually with a couple of questions before we start drawing. The map takes about a week from there.',
+    back: 'Back to the field guide',
+  },
+  invalid: {
+    eyebrow: '§ — Incomplete',
+    heading: 'We need a bit more.',
+    body: 'A name and a working email address are the two things we can’t do without. Nothing else was lost — go back and the rest of the form is still there.',
+    back: 'Back to the form',
+  },
+  error: {
+    eyebrow: '§ — Not sent',
+    heading: 'That didn’t go through.',
+    body: `Something broke on our end, not yours. Email us directly at ${contact.email} and we’ll pick it up from there — it reaches the same place.`,
+    back: 'Back to the field guide',
+  },
+} as const;
+
+const state =
+  status === 'invalid' ? STATES.invalid : status === 'error' ? STATES.error : STATES.ok;
+
+const backHref = state === STATES.invalid ? '/#contact' : '/#top';
+---
+
+<Base
+  title={`${state.heading} — Thread`}
+  description="Thread — custom software, dashboards and AI automation in Honolulu, Hawaiʻi."
+>
+  <Header />
+
+  <section class="result">
+    <div class="wrap">
+      <div class="eyebrow">{state.eyebrow}</div>
+      <h1>{state.heading}</h1>
+      <p class="lead">{state.body}</p>
+      <div class="btn-row">
+        <a href={backHref} class="btn">{state.back}</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>
+
+<style>
+  .result { border-top: 0; padding: 120px 0 140px; }
+  .result h1 {
+    font-size: clamp(34px, 4.4vw, 52px);
+    margin: 20px 0 22px;
+    max-width: 16ch;
+  }
+  .result p.lead { max-width: 52ch; }
+
+  @media (max-width: 640px) {
+    .result { padding: 76px 0 88px; }
+  }
+</style>

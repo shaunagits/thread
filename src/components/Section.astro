@@ -1,0 +1,63 @@
+---
+/**
+ * Shared section wrapper: the "§ NN — Label" eyebrow, the heading, and an
+ * optional margin note in the right-hand column.
+ *
+ * Passing anything into the `note` slot switches the section to the annotated
+ * document grid; without it the section runs full width. The `after` slot is
+ * for content that sits below the grid at full width — the services list, the
+ * product cards, the step row.
+ */
+interface Props {
+  id?: string;
+  /** e.g. "§ 01 — The problem" */
+  eyebrow: string;
+  heading: string;
+  /** max-width of the heading, in ch — matches the original's inline styles */
+  headingWidth: number;
+  /** bottom margin under the heading; §01 is the only section using 24 */
+  headingGap?: number;
+  /** mono label above the margin note, e.g. "In the margin" */
+  noteLabel?: string;
+  /** gap under the document grid, where the original set one inline */
+  docGap?: number;
+}
+
+const {
+  id,
+  eyebrow,
+  heading,
+  headingWidth,
+  headingGap = 22,
+  noteLabel,
+  docGap,
+} = Astro.props;
+
+const hasNote = Astro.slots.has('note');
+const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
+---
+
+<section id={id}>
+  <div class="wrap">
+    {hasNote ? (
+      <div class="doc" style={docGap ? `margin-bottom:${docGap}px` : undefined}>
+        <div>
+          <div class="eyebrow">{eyebrow}</div>
+          <h2 style={headStyle}>{heading}</h2>
+          <slot />
+        </div>
+        <aside class="side">
+          {noteLabel && <span class="lbl">{noteLabel}</span>}
+          <slot name="note" />
+        </aside>
+      </div>
+    ) : (
+      <>
+        <div class="eyebrow">{eyebrow}</div>
+        <h2 style={headStyle}>{heading}</h2>
+        <slot />
+      </>
+    )}
+    <slot name="after" />
+  </div>
+</section>

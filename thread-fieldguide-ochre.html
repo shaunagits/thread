@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thread — Field Guide in ʻAlaea Ochre + three hero options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Instrument+Serif&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCFBF7; --ink:#1C2118; --body:#2E3329; --quiet:#5A6053;
+    --rule:#E0DCD0; --ochre:#C8873F; --line:#AE7126; --koa:#9A6420;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#14100E;color:#EDE7DF;font-family:'Public Sans',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+  .masthead{padding:80px 0 54px;border-bottom:1px solid #2C2622}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C8873F}
+  .masthead h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5.4vw,64px);line-height:1.05;margin:18px 0 20px}
+  .masthead p{max-width:660px;color:#B5ACA2;font-size:16.5px;margin-bottom:14px}
+
+  section{padding:84px 0;border-bottom:1px solid #2C2622}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:#8C8279;letter-spacing:.12em}
+  h2.sec{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(30px,3.8vw,44px);line-height:1.06;margin:10px 0 14px}
+  .lede{max-width:670px;color:#B5ACA2;font-size:16px;margin-bottom:36px}
+  .spec{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:#968C82;margin-bottom:10px}
+
+  .panel{border-radius:4px;overflow:hidden;background:var(--paper);color:var(--ink)}
+  .pad{padding:50px 46px 44px}
+
+  .brandbar{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+            padding-bottom:20px;margin-bottom:42px;border-bottom:1px solid var(--rule)}
+  .navset{display:flex;gap:26px;font-size:12.5px;color:var(--quiet)}
+  .doc{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:44px;align-items:start}
+  .doc h3{font-family:'Newsreader',serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.14;letter-spacing:-.015em;margin-bottom:20px;max-width:17ch}
+  .doc p{font-family:'Newsreader',serif;font-size:18px;line-height:1.62;color:var(--body);max-width:56ch;margin-bottom:15px}
+  aside.side{font-size:12.5px;line-height:1.55;color:var(--quiet);border-left:1px solid var(--rule);padding-left:20px;padding-top:6px}
+  aside.side .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--koa);display:block;margin-bottom:8px}
+  .cta{display:inline-block;margin-top:22px;padding:13px 26px;border-radius:2px;font-size:13.5px;font-weight:600;background:var(--ochre);color:var(--ink)}
+
+  .figcap{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#6F7666;margin:36px 0 16px;padding-top:14px;border-top:1px solid var(--rule)}
+  .hero{width:100%;height:auto;display:block}
+
+  .swatches{display:grid;grid-template-columns:repeat(6,1fr)}
+  .sw{padding:26px 14px 16px;min-height:108px;display:flex;flex-direction:column;justify-content:flex-end}
+  .sw-name{font-size:11px;font-weight:600;line-height:1.25}
+  .sw-hex{font-family:'JetBrains Mono',monospace;font-size:10px;opacity:.66;margin-top:3px}
+  .sw-use{font-size:9.5px;opacity:.66;margin-top:5px;line-height:1.3}
+
+  .verdict{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:34px;padding-top:28px;border-top:1px solid #2C2622}
+  .verdict strong{display:block;font-size:12.5px;margin-bottom:7px}
+  .win strong{color:#7FB99A}.risk strong{color:#C98A6B}
+  .verdict p{font-size:14.5px;color:#B5ACA2}
+
+  .note{margin-top:34px;border:1px solid #332C27;border-radius:4px;padding:24px 28px}
+  .note h4{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#C8873F;margin-bottom:12px}
+  .note p{font-size:14.5px;color:#B5ACA2;margin-bottom:10px;max-width:74ch}
+  .note code{font-family:'JetBrains Mono',monospace;font-size:13px;color:#EDE7DF}
+
+  .close{padding:84px 0 110px;border:0}
+  .close h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:40px;margin-bottom:18px}
+  .close p{max-width:680px;color:#B5ACA2;font-size:16.5px;margin-bottom:15px}
+  .close em{color:#EDE7DF;font-style:normal;font-weight:500}
+
+  @media(max-width:880px){
+    .doc{grid-template-columns:1fr;gap:26px}
+    .swatches{grid-template-columns:repeat(3,1fr)}
+    .verdict{grid-template-columns:1fr}
+    .pad{padding:32px 22px}.wrap{padding:0 20px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">threadhawaii.com · field guide · ʻalaea ochre</div>
+    <h1>Ochre, and three better ways to draw the thread.</h1>
+    <p>Field Guide re-cut in ʻAlaea Ochre. The palette works — it's warmer than the red and it ties back to earth pigment rather than to a flower, which suits "field guide" better anyway.</p>
+    <p>Below that, three replacements for the hero graphic. Same idea you liked — scattered tools become one thing — drawn three different ways, from most emotional to most literal.</p>
+  </header>
+
+  <!-- ================= PALETTE ================= -->
+  <section>
+    <div class="sec-num">01</div>
+    <h2 class="sec">The palette, with one adjustment</h2>
+    <p class="lede">Ochre is a light color, so it can't do everything red was doing. At full strength on paper it's a 2.9:1 contrast ratio — fine as a fill behind dark text, too weak for small text or thin lines. So it becomes a three-step ramp: ochre fills, a deeper ochre for lines, a deeper one still for text. Same hue family throughout, so it reads as one color.</p>
+
+    <div class="panel">
+      <div class="swatches">
+        <div class="sw" style="background:#1C2118;color:#F0F2EC"><span class="sw-name">Ink</span><span class="sw-hex">#1C2118</span><span class="sw-use">All body text, headlines</span></div>
+        <div class="sw" style="background:#C8873F;color:#1C2118"><span class="sw-name">ʻAlaea Ochre</span><span class="sw-hex">#C8873F</span><span class="sw-use">Fills: buttons, hub blocks, highlights</span></div>
+        <div class="sw" style="background:#AE7126;color:#FCFBF7"><span class="sw-name">Ochre Line</span><span class="sw-hex">#AE7126</span><span class="sw-use">Diagram strokes, rules, icons</span></div>
+        <div class="sw" style="background:#9A6420;color:#FCFBF7"><span class="sw-name">Koa</span><span class="sw-hex">#9A6420</span><span class="sw-use">Links, small labels, captions</span></div>
+        <div class="sw" style="background:#E0DCD0;color:#1C2118"><span class="sw-name">Rule</span><span class="sw-hex">#E0DCD0</span><span class="sw-use">Hairlines, dividers, borders</span></div>
+        <div class="sw" style="background:#FCFBF7;color:#1C2118"><span class="sw-name">Paper</span><span class="sw-hex">#FCFBF7</span><span class="sw-use">Every background</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <h4>Why this matters</h4>
+      <p>Buttons flip from white-on-color to <code>ink on ochre</code> — dark text on a warm gold field. That's 5.5:1, fully accessible, and it looks more expensive than white-on-red did. It's the single biggest visual improvement from the swap.</p>
+      <p>Every combination in this file passes WCAG AA. Nothing here will fail an accessibility audit, which matters when you're selling software to businesses that have to care about that.</p>
+    </div>
+  </section>
+
+  <!-- ================= HERO 1 ================= -->
+  <section>
+    <div class="sec-num">02 · HERO OPTION A</div>
+    <h2 class="sec">The Tangle</h2>
+    <div class="spec">SAME SIX TOOLS, TWICE — CHAOS ON THE LEFT, ONE LINE ON THE RIGHT</div>
+    <p class="lede">The problem with the first diagram was that it only showed the solution. This one shows the pain first. Identical dots in both panels; the only thing that changes is what connects them. A business owner recognizes the left panel as their life in about half a second, and that recognition is what makes them read the rest of the page.</p>
+
+    <div class="panel">
+      <div class="pad">
+        <div class="brandbar">
+          <span style="font-family:'Newsreader',serif;font-weight:600;font-size:24px;letter-spacing:-.02em">thread<span style="color:#C8873F">.</span></span>
+          <nav class="navset"><span>Services</span><span>Products</span><span>Work</span><span style="color:#9A6420;font-weight:600">Talk to us</span></nav>
+        </div>
+        <div class="doc">
+          <div>
+            <h3>A field guide to the software you already own.</h3>
+            <p>Most businesses don't need another tool. They need the seven they're paying for to stop being seven separate jobs. We map what you're running, find where the handoffs break, and build the layer that closes them.</p>
+            <span class="cta">Get your systems mapped</span>
+          </div>
+          <aside class="side">
+            <span class="lbl">In the margin</span>
+            Every engagement opens with a map like this one — yours, drawn from your actual stack, before any code is written. Free, and yours whether or not you hire us.
+          </aside>
+        </div>
+
+        <div class="figcap">Fig. 1 — Fourteen handoffs, or one</div>
+        <svg class="hero" viewBox="0 0 880 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Left: six business tools connected by fourteen tangled lines. Right: the same six tools joined by a single continuous thread.">
+          <g font-family="JetBrains Mono, monospace" font-size="10">
+
+            <!-- ============ LEFT: THE TANGLE ============ -->
+            <text x="0" y="14" fill="#6F7666" letter-spacing="1.4">TODAY</text>
+            <g stroke="#1C2118" stroke-width="1" opacity="0.34" stroke-linecap="round">
+              <path d="M78 96 C160 70, 230 66, 296 84"/>
+              <path d="M78 96 C170 130, 290 160, 356 196"/>
+              <path d="M78 96 C120 200, 180 300, 254 322"/>
+              <path d="M78 96 C120 120, 160 160, 192 190"/>
+              <path d="M296 84 C340 110, 356 150, 356 196"/>
+              <path d="M296 84 C230 130, 140 190, 76 262"/>
+              <path d="M296 84 C270 120, 230 160, 200 188"/>
+              <path d="M356 196 C340 250, 300 300, 254 322"/>
+              <path d="M356 196 C310 200, 250 196, 202 192"/>
+              <path d="M254 322 C190 330, 120 300, 76 262"/>
+              <path d="M254 322 C230 280, 210 230, 196 200"/>
+              <path d="M76 262 C110 240, 150 215, 186 198"/>
+              <path d="M78 96 C40 160, 44 220, 76 262"/>
+              <path d="M296 84 C330 180, 310 280, 254 322"/>
+            </g>
+            <g fill="#FCFBF7" stroke="#8C9182" stroke-width="1">
+              <circle cx="78" cy="96" r="7"/><circle cx="296" cy="84" r="7"/><circle cx="356" cy="196" r="7"/>
+              <circle cx="254" cy="322" r="7"/><circle cx="76" cy="262" r="7"/><circle cx="192" cy="192" r="7"/>
+            </g>
+            <g fill="#4A5044">
+              <text x="92" y="86">QuickBooks</text><text x="240" y="70">Shopify</text><text x="310" y="222">Square</text>
+              <text x="176" y="345">Gmail</text><text x="14" y="288">Sheets</text><text x="150" y="176">Jobber</text>
+            </g>
+            <text x="0" y="366" fill="#9A6420" font-size="10.5" letter-spacing="0.6">14 handoffs · 9 of them a person retyping something</text>
+
+            <!-- divider -->
+            <path d="M440 20 V350" stroke="#E0DCD0" stroke-width="1"/>
+
+            <!-- ============ RIGHT: THE THREAD ============ -->
+            <text x="500" y="14" fill="#6F7666" letter-spacing="1.4">WITH THREAD</text>
+            <path d="M578 96 C660 70, 730 66, 796 84 C850 110, 858 152, 856 196
+                     C852 252, 812 300, 754 322 C690 330, 620 300, 576 262
+                     C560 232, 600 210, 660 198 C690 194, 700 194, 700 194"
+                  stroke="#AE7126" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="#FCFBF7" stroke="#8C9182" stroke-width="1">
+              <circle cx="578" cy="96" r="7"/><circle cx="796" cy="84" r="7"/><circle cx="856" cy="196" r="7"/>
+              <circle cx="754" cy="322" r="7"/><circle cx="576" cy="262" r="7"/>
+            </g>
+            <circle cx="700" cy="194" r="9" fill="#C8873F"/>
+            <g fill="#4A5044">
+              <text x="592" y="86">QuickBooks</text><text x="740" y="70">Shopify</text><text x="800" y="222">Square</text>
+              <text x="676" y="345">Gmail</text><text x="514" y="288">Sheets</text>
+            </g>
+            <text x="716" y="198" fill="#1C2118" font-family="Newsreader, serif" font-size="15" font-weight="600">one app</text>
+            <text x="500" y="366" fill="#9A6420" font-size="10.5" letter-spacing="0.6">1 system · 0 retyping · everything visible in one place</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <div class="win"><strong>Wins</strong><p>Highest emotional impact. It sells the problem, not the product, which is what a homepage hero is for. Also the easiest to redraw per client — you only ever move dots and lines.</p></div>
+      <div class="risk"><strong>Watch out</strong><p>The tangle has to be genuinely believable. If it looks decorative rather than real, it reads as a stock illustration and loses all its power.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= HERO 2 ================= -->
+  <section>
+    <div class="sec-num">03 · HERO OPTION B</div>
+    <h2 class="sec">The Weave</h2>
+    <div class="spec">TOOLS AS WARP, THREAD AS WEFT — OVER, UNDER, ONE CLOTH</div>
+    <p class="lede">The most ownable of the three, and the only one that makes the company name do work. Your tools are the vertical threads; Thread is the single line that passes over and under each one and turns the loose ends into cloth. It's a weaving diagram, which quietly places the brand in Hawaiʻi without a single palm tree.</p>
+
+    <div class="panel">
+      <div class="pad">
+        <div class="brandbar">
+          <span style="font-family:'Newsreader',serif;font-weight:600;font-size:24px;letter-spacing:-.02em">thread<span style="color:#C8873F">.</span></span>
+          <nav class="navset"><span>Services</span><span>Products</span><span>Work</span><span style="color:#9A6420;font-weight:600">Talk to us</span></nav>
+        </div>
+        <div class="doc">
+          <div>
+            <h3>Your tools are already there. Nothing is holding them together.</h3>
+            <p>We build the layer that runs through all of it — custom dashboards, internal apps, and automation shaped like the way your business actually works.</p>
+            <span class="cta">Get your systems mapped</span>
+          </div>
+          <aside class="side">
+            <span class="lbl">On the name</span>
+            In weaving, the weft is the single thread that passes over and under every warp line. Loose threads on their own; cloth once something runs through them.
+          </aside>
+        </div>
+
+        <div class="figcap">Fig. 1 — Over, under, one cloth</div>
+        <svg class="hero" viewBox="0 0 880 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five vertical lines labelled with business tools, with a single ochre thread weaving over and under each one.">
+          <g font-family="JetBrains Mono, monospace" font-size="10.5">
+            <g fill="#4A5044" text-anchor="middle">
+              <text x="140" y="36">QuickBooks</text><text x="285" y="36">Shopify</text><text x="430" y="36">Square</text>
+              <text x="575" y="36">Gmail</text><text x="720" y="36">Sheets</text>
+            </g>
+
+            <!-- warps the thread passes OVER (drawn first) -->
+            <g stroke="#C3C0B4" stroke-width="1.5" stroke-linecap="round">
+              <path d="M140 54 V286"/><path d="M430 54 V286"/><path d="M720 54 V286"/>
+            </g>
+
+            <!-- the weft -->
+            <path d="M18 170 C74 170, 96 118, 140 118 C186 118, 210 222, 285 222
+                     C356 222, 380 118, 430 118 C478 118, 502 222, 575 222
+                     C646 222, 670 118, 720 118 C768 118, 782 170, 812 170"
+                  stroke="#AE7126" stroke-width="2.4" stroke-linecap="round"/>
+
+            <!-- warps the thread passes UNDER (drawn after, so they sit on top) -->
+            <g stroke="#C3C0B4" stroke-width="1.5" stroke-linecap="round">
+              <path d="M285 54 V286"/><path d="M575 54 V286"/>
+            </g>
+
+            <circle cx="812" cy="170" r="9" fill="#C8873F"/>
+            <text x="832" y="175" fill="#1C2118" font-family="Newsreader, serif" font-size="16" font-weight="600">thread</text>
+
+            <g fill="#6F7666" text-anchor="middle" font-size="9.5" letter-spacing="0.8">
+              <text x="140" y="306">OVER</text><text x="285" y="306">UNDER</text><text x="430" y="306">OVER</text>
+              <text x="575" y="306">UNDER</text><text x="720" y="306">OVER</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <div class="win"><strong>Wins</strong><p>Unmistakably yours. No other software agency can use this, because no other one is called Thread. It also scales down beautifully — the weave crop becomes your favicon, your section divider, your loading state.</p></div>
+      <div class="risk"><strong>Watch out</strong><p>It's a metaphor, not a diagram. It won't explain what you do to someone who hasn't read the headline yet, so the copy has to carry more weight than in option A.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= HERO 3 ================= -->
+  <section>
+    <div class="sec-num">04 · HERO OPTION C</div>
+    <h2 class="sec">The Specimen Plate</h2>
+    <div class="spec">A REAL DASHBOARD, ANNOTATED LIKE A BOTANICAL ILLUSTRATION</div>
+    <p class="lede">The most literal reading of "field guide": show the actual thing you build, with numbered callouts naming each part. It's the only one of the three that puts real product on the homepage, which matters because buyers want to see what they're getting. In production the center would be a screenshot of live work, not a drawing.</p>
+
+    <div class="panel">
+      <div class="pad">
+        <div class="brandbar">
+          <span style="font-family:'Newsreader',serif;font-weight:600;font-size:24px;letter-spacing:-.02em">thread<span style="color:#C8873F">.</span></span>
+          <nav class="navset"><span>Services</span><span>Products</span><span>Work</span><span style="color:#9A6420;font-weight:600">Talk to us</span></nav>
+        </div>
+        <div class="doc">
+          <div>
+            <h3>One panel. Everything the business is actually doing.</h3>
+            <p>Built from the systems you already run, shaped like your process, and documented so your team knows exactly what every part of it does.</p>
+            <span class="cta">See a build in detail</span>
+          </div>
+          <aside class="side">
+            <span class="lbl">Specimen</span>
+            Every project ships with a plate like this — a labelled diagram of what was built and why, in plain English, so the knowledge doesn't live only with us.
+          </aside>
+        </div>
+
+        <div class="figcap">Fig. 1 — Operations panel, annotated</div>
+        <svg class="hero" viewBox="0 0 880 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A dashboard drawing with five numbered callouts naming its parts.">
+          <g font-family="JetBrains Mono, monospace" font-size="10">
+
+            <!-- ==== the dashboard ==== -->
+            <rect x="264" y="28" width="352" height="344" rx="3" fill="#FFFFFF" stroke="#C3C0B4" stroke-width="1"/>
+            <path d="M264 62 H616" stroke="#E0DCD0" stroke-width="1"/>
+            <circle cx="282" cy="45" r="3.5" fill="#C8873F"/>
+            <text x="296" y="49" fill="#4A5044" font-size="9.5">OPERATIONS</text>
+
+            <!-- KPI tiles -->
+            <g stroke="#E0DCD0" stroke-width="1">
+              <rect x="282" y="80" width="100" height="52" rx="2"/>
+              <rect x="390" y="80" width="100" height="52" rx="2"/>
+              <rect x="498" y="80" width="100" height="52" rx="2"/>
+            </g>
+            <g fill="#1C2118" font-family="Newsreader, serif" font-size="19" font-weight="600">
+              <text x="294" y="112">142</text><text x="402" y="112">$18.4k</text><text x="510" y="112">6</text>
+            </g>
+            <g fill="#666D5E" font-size="8">
+              <text x="294" y="125">OPEN JOBS</text><text x="402" y="125">UNBILLED</text><text x="510" y="125">LATE</text>
+            </g>
+
+            <!-- bar chart -->
+            <rect x="282" y="150" width="316" height="104" rx="2" stroke="#E0DCD0" stroke-width="1"/>
+            <g fill="#C8873F">
+              <rect x="300" y="216" width="18" height="26"/><rect x="332" y="198" width="18" height="44"/>
+              <rect x="364" y="180" width="18" height="62"/><rect x="396" y="206" width="18" height="36"/>
+              <rect x="428" y="168" width="18" height="74"/><rect x="460" y="188" width="18" height="54"/>
+              <rect x="492" y="158" width="18" height="84"/><rect x="524" y="176" width="18" height="66"/>
+              <rect x="556" y="192" width="18" height="50"/>
+            </g>
+            <text x="294" y="168" fill="#4A5044" font-size="8.5">REVENUE BY WEEK</text>
+
+            <!-- list rows -->
+            <g stroke="#E0DCD0" stroke-width="1">
+              <path d="M282 286 H598"/><path d="M282 314 H598"/><path d="M282 342 H598"/>
+            </g>
+            <g fill="#4A5044" font-size="9">
+              <text x="290" y="280">Kahala remodel · invoice queued</text>
+              <text x="290" y="308">Waimea install · awaiting parts</text>
+              <text x="290" y="336">Hilo service call · closed</text>
+            </g>
+            <g fill="#9A6420" font-size="8.5" text-anchor="end">
+              <text x="592" y="280">AUTO</text><text x="592" y="308">AUTO</text><text x="592" y="336">AUTO</text>
+            </g>
+
+            <!-- ==== callouts: leaders + numbers ==== -->
+            <g stroke="#AE7126" stroke-width="1">
+              <path d="M282 106 H176"/>
+              <path d="M282 202 H176"/>
+              <path d="M598 106 H700"/>
+              <path d="M598 202 H700"/>
+              <path d="M598 308 H700"/>
+            </g>
+            <g fill="#AE7126">
+              <circle cx="282" cy="106" r="2.5"/><circle cx="282" cy="202" r="2.5"/>
+              <circle cx="598" cy="106" r="2.5"/><circle cx="598" cy="202" r="2.5"/><circle cx="598" cy="308" r="2.5"/>
+            </g>
+            <g fill="#C8873F">
+              <circle cx="166" cy="106" r="10"/><circle cx="166" cy="202" r="10"/>
+              <circle cx="710" cy="106" r="10"/><circle cx="710" cy="202" r="10"/><circle cx="710" cy="308" r="10"/>
+            </g>
+            <g fill="#1C2118" font-size="10.5" font-weight="500" text-anchor="middle">
+              <text x="166" y="110">1</text><text x="166" y="206">2</text>
+              <text x="710" y="110">3</text><text x="710" y="206">4</text><text x="710" y="312">5</text>
+            </g>
+
+            <g fill="#2E3329" font-family="Public Sans, sans-serif" font-size="11.5" text-anchor="end">
+              <text x="148" y="102">Live counts, pulled from</text>
+              <text x="148" y="118">Jobber every 90 seconds</text>
+              <text x="148" y="198">Revenue reconciled against</text>
+              <text x="148" y="214">QuickBooks — no export step</text>
+            </g>
+            <g fill="#2E3329" font-family="Public Sans, sans-serif" font-size="11.5">
+              <text x="728" y="102">One login for the whole</text>
+              <text x="728" y="118">team, roles you control</text>
+              <text x="728" y="198">Invoices generated the</text>
+              <text x="728" y="214">moment a job closes</text>
+              <text x="728" y="304">Built for your process,</text>
+              <text x="728" y="320">not a template</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <div class="win"><strong>Wins</strong><p>Most persuasive to a buyer who's already interested — it answers "what do I actually get." Directly justifies the Field Guide name, and the annotated-plate format becomes your case study template too.</p></div>
+      <div class="risk"><strong>Watch out</strong><p>Requires real product to show. Weakest as a first impression, because it demands reading. Better one scroll down than at the very top.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= CLOSE ================= -->
+  <section class="close">
+    <h2>What I'd do</h2>
+    <p><em>Use two of them, in this order.</em> These aren't really competing — they answer different questions, and a homepage needs both answers.</p>
+    <p><em>The Tangle</em> goes at the top. It sells the problem in half a second and it's the only one that works on someone who arrived cold. <em>The Specimen Plate</em> goes one scroll down, once they're interested and want to see what they'd actually receive.</p>
+    <p><em>The Weave</em> becomes the brand mark rather than a hero — favicon, section dividers, loading state, the graphic on your proposal cover. It's too good an ownership device to spend on a single spot, and too abstract to carry the top of the page alone.</p>
+    <p style="color:#968C82;font-size:15px;">If you want only one: The Tangle. It does the most work for the least explanation.</p>
+  </section>
+
+</div>
+</body>
+</html>

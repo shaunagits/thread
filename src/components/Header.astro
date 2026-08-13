@@ -1,0 +1,90 @@
+---
+import { nav } from '../content/site';
+
+const CTA = 'Get your systems mapped';
+---
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="mark">thread<span>.</span></a>
+
+    <nav class="nav-links" aria-label="Primary">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a href="#contact" class="nav-cta">{CTA}</a>
+    </nav>
+
+    {/* Phone menu. A native <details> disclosure — keyboard-operable and
+        announced by screen readers with no client JavaScript. Replaces the
+        original's behaviour, which hid the links and the CTA together. */}
+    <details class="menu">
+      <summary>Menu</summary>
+      <div class="menu-panel">
+        <nav aria-label="Primary, phone">
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+        <a href="#contact" class="btn menu-cta">{CTA}</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--color-paper) 94%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .nav-in {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; height: 70px;
+  }
+  .mark {
+    font-family: var(--font-serif); font-weight: 600; font-size: 25px;
+    letter-spacing: -.025em; color: var(--color-ink);
+  }
+  .mark span { color: var(--color-ochre); }
+  .mark:hover { text-decoration: none; }
+
+  .nav-links {
+    display: flex; gap: 30px; font-size: 13.5px;
+    color: var(--color-quiet); align-items: center;
+  }
+  .nav-links a { color: var(--color-quiet); }
+  .nav-links a:hover { color: var(--color-ink); }
+  .nav-cta {
+    padding: 10px 20px; font-size: 13px; background: var(--color-ochre);
+    color: var(--color-ink); border-radius: 2px; font-weight: 600;
+  }
+  .nav-cta:hover { text-decoration: none; background: var(--color-ochre-hover); }
+
+  /* ---------- phone menu ---------- */
+  .menu { display: none; position: relative; }
+  .menu summary {
+    list-style: none; cursor: pointer; user-select: none;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--color-koa);
+    padding: 10px 2px;
+  }
+  .menu summary::-webkit-details-marker { display: none; }
+  /* 280px is the narrowest that keeps "Get your systems mapped" on one line
+     at the CTA's 14px/600 with its 28px side padding. */
+  .menu-panel {
+    position: absolute; top: calc(100% + 10px); right: 0;
+    min-width: 280px; background: var(--color-paper);
+    border: 1px solid var(--color-hair); border-radius: 3px;
+    padding: 8px; display: flex; flex-direction: column;
+  }
+  .menu-panel nav { display: flex; flex-direction: column; }
+  .menu-panel nav a {
+    color: var(--color-quiet); font-size: 14px; padding: 11px 12px;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .menu-panel nav a:hover { color: var(--color-ink); text-decoration: none; }
+  .menu-cta { margin: 12px 8px 8px; text-align: center; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .menu { display: block; }
+  }
+</style>

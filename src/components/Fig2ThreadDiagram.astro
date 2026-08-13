@@ -1,0 +1,59 @@
+---
+/**
+ * Fig. 2 — The thread, drawn.
+ *
+ * Ported from index.html. The bezier control points are the design: five
+ * tools converge through a single node into the thread block, then fan out
+ * to three outputs. Coordinates and curve geometry are unchanged.
+ */
+---
+
+<svg
+  class="plate f-mono"
+  viewBox="0 0 880 300"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Five business tools on the left converge through a single point into Thread, which outputs one dashboard, automated handoffs, and a client portal."
+>
+  <g font-size="11">
+    <g class="f-hair-stroke" stroke-width="1">
+      <rect x="6" y="12" width="132" height="34" rx="2"/><rect x="6" y="68" width="132" height="34" rx="2"/>
+      <rect x="6" y="124" width="132" height="34" rx="2"/><rect x="6" y="180" width="132" height="34" rx="2"/>
+      <rect x="6" y="236" width="132" height="34" rx="2"/>
+    </g>
+    <g class="f-plate">
+      <text x="20" y="34">QuickBooks</text><text x="20" y="90">Shopify</text><text x="20" y="146">Jobber</text>
+      <text x="20" y="202">Square POS</text><text x="20" y="258">Spreadsheets</text>
+    </g>
+    <g class="f-line" stroke-width="1.6" stroke-linecap="round">
+      <path d="M138 29 C222 29, 236 122, 316 141"/><path d="M138 85 C218 85, 240 130, 316 141"/>
+      <path d="M138 141 C214 141, 244 141, 316 141"/><path d="M138 197 C218 197, 240 152, 316 141"/>
+      <path d="M138 253 C222 253, 236 160, 316 141"/>
+      <path d="M330 141 H452"/>
+      <path d="M604 141 C660 141, 656 62, 722 62"/><path d="M604 141 H722"/>
+      <path d="M604 141 C660 141, 656 220, 722 220"/>
+    </g>
+    <circle class="f-ochre" cx="323" cy="141" r="5.5"/>
+    <rect class="f-ochre" x="452" y="113" width="152" height="56" rx="2"/>
+    <text class="f-ink f-serif" x="497" y="147" font-size="20" font-weight="600" letter-spacing="-0.3">thread</text>
+    <g class="f-hair-stroke" stroke-width="1">
+      <rect x="722" y="45" width="152" height="34" rx="2"/><rect x="722" y="124" width="152" height="34" rx="2"/>
+      <rect x="722" y="203" width="152" height="34" rx="2"/>
+    </g>
+    <g class="f-plate">
+      <text x="736" y="67">One dashboard</text><text x="736" y="146">Automated handoffs</text><text x="736" y="225">Client portal</text>
+    </g>
+  </g>
+</svg>
+
+<style>
+  .f-mono  { font-family: var(--font-mono); }
+  .f-serif { font-family: var(--font-serif); }
+
+  .f-hair-stroke { stroke: var(--color-hair); }
+  .f-line        { stroke: var(--color-line); }
+  .f-ochre       { fill: var(--color-ochre); }
+  .f-ink         { fill: var(--color-ink); }
+  .f-plate       { fill: var(--color-plate); }
+</style>
