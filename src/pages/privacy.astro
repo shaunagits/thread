@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { contact } from '../content/site';
+
+/**
+ * Describes what this site actually does, not what a template says a site does.
+ * Verified against the code on 13 Aug 2026:
+ *
+ *  - no analytics, no cookies, no tracking pixels, no third-party scripts
+ *  - fonts are self-hosted, so a page load makes no external request at all
+ *  - the only data collected is what someone types into one of the two forms
+ *  - that data goes to Resend, which delivers it to Thread's inbox
+ *
+ * If any of those change — an analytics script, an embedded map, a hosted
+ * video, a newsletter signup — this page has to change in the same commit.
+ */
+const updated = '13 August 2026';
+---
+
+<Base
+  title="Privacy · Thread"
+  description="What Thread collects when you use this site, what happens to it, and how to have it removed. Short, because the site collects almost nothing."
+>
+  <Header />
+
+  <section class="legal">
+    <div class="wrap">
+      <div class="eyebrow">Privacy</div>
+      <h1>What this site collects.</h1>
+      <p class="lead" style="max-width:56ch">
+        Almost nothing, and none of it automatically. This page says exactly what happens
+        to the information you do send.
+      </p>
+
+      <h2>Visiting the site</h2>
+      <p>
+        There are no analytics, no cookies, no tracking pixels and no third-party scripts
+        on this site. Typefaces are served from this domain rather than from a font
+        service, so loading a page here makes no request to anyone else.
+      </p>
+      <p>
+        The site is hosted by Vercel. Like any web host, Vercel's servers handle the
+        request and keep short-term operational logs, which can include your IP address
+        and browser. Thread does not use those logs to build any profile of you.
+      </p>
+
+      <h2>Using one of the forms</h2>
+      <p>
+        The contact form and the systems map form collect only what you type into them:
+        your name, your email address, and your answers to the questions on the form. There
+        are no hidden fields beyond a single unused box that catches automated spam.
+      </p>
+      <p>
+        When you submit, the contents are sent by email to Thread through Resend, an email
+        delivery service, and land in Thread's ordinary email inbox. They are stored there
+        like any other email.
+      </p>
+
+      <h2>What it's used for</h2>
+      <ul>
+        <li>Replying to you</li>
+        <li>Working on the thing you asked about</li>
+      </ul>
+      <p>
+        That is the whole list. Your details are not sold, not shared with anyone else, not
+        used for advertising, and not added to a mailing list. There is no mailing list.
+      </p>
+
+      <h2>How long it's kept</h2>
+      <p>
+        Enquiries are kept while the conversation is active and for as long as the work or
+        the relationship is relevant afterwards. If you would rather they weren't, say so
+        and they will be deleted.
+      </p>
+
+      <h2>Asking for a copy, a correction or a deletion</h2>
+      <p>
+        Email <a href={`mailto:${contact.email}`}>{contact.email}</a> and ask. You do not
+        need to explain why, and there is no form for it.
+      </p>
+
+      <h2>Changes to this page</h2>
+      <p>
+        If the site starts doing something it doesn’t do today, such as analytics, an
+        embedded map or a newsletter, this page changes at the same time and the date
+        below changes with it.
+      </p>
+
+      <p class="updated">Last updated {updated}</p>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

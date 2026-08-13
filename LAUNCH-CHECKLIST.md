@@ -35,7 +35,7 @@ from the tip of this branch brings it back.
 
 ## 2. Open questions for you
 
-**a. The §07 contact band is 40px out of alignment on desktop.**
+**a. ~~The §07 contact band is 40px out of alignment on desktop.~~ FIXED 13 Aug 2026.**
 In `index.html`, `.cta-in{padding:88px 0}` and `.wrap{padding:0 40px}` are both
 single-class selectors, so source order alone decides which wins. The result:
 
@@ -45,11 +45,11 @@ single-class selectors, so source order alone decides which wins. The result:
   shorthand outright, deleting all 176px of the band's vertical padding on
   phones
 
-The build reproduces both faithfully rather than silently correcting them, so
-nothing looks different from the approved file. If you want it fixed, the change
-is `padding-block: 88px` in `ContactSection.astro` and letting `.wrap` supply the
-horizontal padding — that aligns §07 with the other sections and restores phone
-padding. **Your call.**
+Both were reproduced faithfully until the form was rebuilt. Adding fields made
+the missing phone padding obvious, so it is now `padding-block` in
+`ContactSection.astro` with `.wrap` supplying the horizontal padding. All seven
+sections align at x=170, and the band has 66px of vertical padding on phones
+instead of none. Recorded as deviation 2 in §3 below.
 
 **b. Double rule under the connects-to strip.** `.strip` has a `border-bottom`
 and the section immediately after has a `border-top`, so that one seam renders
@@ -75,7 +75,9 @@ It is currently shipped because the handoff's type spec lists 400/500/600.
 
 | Change | Why |
 |---|---|
-| Submit button now renders in Public Sans, not Arial | `.btn` set no `font-family` and `<button>` doesn't inherit it. Also brings the button to the same 52.4px height as the anchor CTAs — **the only pixel difference anywhere in the build** |
+| Submit button now renders in Public Sans, not Arial | `.btn` set no `font-family` and `<button>` doesn't inherit it. Also brings the button to the same 52.4px height as the anchor CTAs |
+| `.cta-in` padding collision fixed | §07 aligned with every other section, and 66px of vertical padding restored on phones. See §2a |
+| Content no longer matches `index.html` | Deliberate, and the point of the rebuild. Copy, figures, sections and form fields now come from `HOMEPAGE-COPY.md` and `GRAPHICS.md`. The shell still matches |
 | ʻokina (U+02BB) added to Newsreader and JetBrains Mono | Neither font contains it, upstream or in any subset. See [FONTS.md](FONTS.md) |
 | U+2192 restored to JetBrains Mono; sourced from it for serif contexts | Dropped by Google's latin subset; Newsreader has no arrow at all |
 | Phone menu added (`<details>`, no JavaScript) | The original hid the nav links *and* the CTA together below 640px |
@@ -94,16 +96,21 @@ It is currently shipped because the handoff's type spec lists 400/500/600.
 
 ## 4. Verification status
 
-- **Visual parity** — build vs `index.html` diffed at **1440 / 1024 / 768 / 390**
-  across 24 layout probes. Identical at every width apart from the +6.4px
-  submit-button fix above.
+- **Shell parity** — build vs `index.html` diffed at **1440 / 1024 / 768 / 390**
+  across 24 layout probes. Type scale, section rhythm, grid, colour and spacing
+  unchanged. Content deliberately differs; probe geometry, not words.
 - **Contrast** — 18 foreground/background pairs checked, all pass WCAG AA.
 - **Headings** — no skipped levels, single `h1`.
-- **Figures** — both have `<figcaption>`, `role="img"` and a descriptive
-  `aria-label`.
-- **Form fields** — all labelled.
-- **Client JavaScript** — none. `dist/` is one HTML file, one 24 KB stylesheet
-  and six woff2.
+- **Figures** — all five have `<figcaption>`, `role="img"` and a descriptive
+  `aria-label`. Fig. 4 is the only one that fits a phone without scrolling.
+- **Form fields** — all labelled. Every field rendered by `IntakeForm.astro` has
+  a matching entry in `FIELDS` and `LIMITS` in the handler, checked by diffing
+  the two; nothing is collected and dropped.
+- **Form behaviour** — both forms post and redirect correctly, the honeypot
+  returns a success page and sends nothing, a missing email returns `invalid`
+  and remembers which form it came from, and with credentials set the request
+  reaches Resend.
+- **Client JavaScript** — none.
 
 ---
 
@@ -114,9 +121,10 @@ It is currently shipped because the handoff's type spec lists 400/500/600.
 | `favicon.svg` | The wordmark's ochre period, which is also Fig. 2's node and Fig. 1's badges. Pure geometry — legible at 16px, no webfont needed |
 | `favicon.ico` | 16px + 32px, for older browsers |
 | `apple-touch-icon.png` | 180×180, iOS home screen |
-| `og.png` | 1200×630 social card, rendered by real Chrome against a production preview so it uses the actual Newsreader and JetBrains Mono — including the ʻokina |
+| `og.png` | 1200×630 social card, rendered by real Chrome against the built output so it uses the actual Newsreader and JetBrains Mono — including the ʻokina. Regenerated 13 Aug 2026 for the new headline |
 | `robots.txt` | Generated from `site`, so the domain lives in one place |
-| `sitemap-index.xml` | Homepage only; `/og` is filtered out |
+| `sitemap-index.xml` | `/`, `/systems-map`, `/privacy`, `/terms`; `/og` and `/thanks` filtered out |
+| `ProfessionalService` JSON-LD | Homepage only, in `Base.astro`. No street address, phone, hours, price range, rating or `sameAs` — all would be invented. Add `sameAs` once LinkedIn and Google Business Profile exist |
 | Meta | Canonical, full Open Graph set with dimensions and alt text, Twitter `summary_large_image`, `theme-color` |
 
 Regenerate the rasters any time the copy changes:

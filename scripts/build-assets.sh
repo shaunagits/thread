@@ -8,9 +8,14 @@
 # Newsreader and JetBrains Mono — including the ʻokina, which an SVG rasteriser
 # would miss because the fonts are not installed system-wide.
 #
-# It renders against a production preview, not the dev server: the Astro dev
+# It renders against the built output, not the dev server: the Astro dev
 # toolbar is a dark pill at the bottom-centre of the viewport and lands in the
 # screenshot.
+#
+# It serves dist/client with a plain static server rather than `astro preview`.
+# The Vercel adapter has no preview server — `astro preview` exits with
+# "Preview server process exited before becoming ready" — and /og is prerendered
+# static anyway, so a file server is all it needs.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -25,23 +30,31 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for tool in "$CHROME" rsvg-convert magick; do
+for tool in "$CHROME" rsvg-convert magick python3; do
   command -v "$tool" >/dev/null 2>&1 || [ -x "$tool" ] || {
     echo "error: missing required tool: $tool" >&2; exit 1; }
 done
 
+if lsof -ti:"$PORT" >/dev/null 2>&1; then
+  echo "error: port $PORT is already in use. Free it and try again:" >&2
+  echo "  lsof -ti:$PORT | xargs kill" >&2
+  exit 1
+fi
+
 echo "Building…"
 npx astro build >/dev/null
 
-echo "Starting preview on port ${PORT}"
-npx astro preview --port "$PORT" >/dev/null 2>&1 &
+echo "Serving dist/client on port ${PORT}"
+# `exec` so the subshell is replaced by python and $! is the real process —
+# otherwise the cleanup trap kills the shell and leaves the port held.
+(cd dist/client && exec python3 -m http.server "$PORT" >/dev/null 2>&1) &
 PREVIEW_PID=$!
 for _ in $(seq 1 40); do
   curl -sf --max-time 2 "http://localhost:$PORT/og/" -o /dev/null && break
   sleep 0.25
 done
 curl -sf --max-time 2 "http://localhost:$PORT/og/" -o /dev/null || {
-  echo "error: preview server did not come up" >&2; exit 1; }
+  echo "error: static server did not come up" >&2; exit 1; }
 
 echo "Social card → public/og.png"
 "$CHROME" \

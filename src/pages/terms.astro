@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { contact } from '../content/site';
+
+/**
+ * Terms for a marketing site: no accounts, no payments, no downloads, nothing
+ * to log into. Kept to what's actually true of this site rather than padded
+ * out with clauses about services it doesn't offer.
+ *
+ * Two things here are the owner's call and were flagged at the time of
+ * writing: the governing-law line, and whether a registered legal entity name
+ * should appear instead of "Thread".
+ */
+const updated = '13 August 2026';
+---
+
+<Base
+  title="Terms · Thread"
+  description="The terms that apply to using threadhawaii.com: what's on it, what it is and isn't, and where the actual agreement for a project lives."
+>
+  <Header />
+
+  <section class="legal">
+    <div class="wrap">
+      <div class="eyebrow">Terms</div>
+      <h1>Terms of use.</h1>
+      <p class="lead" style="max-width:56ch">
+        These cover this website. They are not the terms of a project. Those live in a
+        written proposal, signed before any work starts.
+      </p>
+
+      <h2>What this site is</h2>
+      <p>
+        threadhawaii.com describes Thread, a custom software practice based in Honolulu.
+        Everything on it is descriptive. Nothing on it is an offer, a quote, or a promise
+        of a particular result.
+      </p>
+
+      <h2>The drawings are drawings</h2>
+      <p>
+        The plates on this site are marked as concept drawings and specimens. They
+        illustrate the kind of thing Thread builds and the shape of what a systems map
+        contains. They are not screenshots of any client's software, and the businesses,
+        figures and workflows in them are illustrative.
+      </p>
+
+      <h2>The systems map</h2>
+      <p>
+        The map is offered free, limited to two a month and one workflow each. Requesting
+        one does not commit you to anything, and it does not commit Thread to taking the
+        work on. If more requests arrive than can be honoured, they are taken in order and
+        you will be told where you stand rather than left waiting.
+      </p>
+
+      <h2>Work Thread takes on</h2>
+      <p>
+        Any actual engagement is governed by a written proposal covering scope, price,
+        timing and ownership. Where that proposal and this website disagree, the proposal
+        wins.
+      </p>
+
+      <h2>Accuracy</h2>
+      <p>
+        This site is kept accurate and current as far as is reasonable, but it is provided
+        as it is, without warranty. Thread is not liable for loss arising from relying on
+        the general information here rather than on advice given about your specific
+        situation.
+      </p>
+
+      <h2>Content</h2>
+      <p>
+        The text, drawings and design on this site belong to Thread. You are welcome to
+        quote or link to any of it with attribution. Please don't republish the plates or
+        the page design wholesale as your own.
+      </p>
+
+      <h2>Links elsewhere</h2>
+      <p>
+        Where this site names other companies' products, it does so descriptively. Those
+        names belong to their owners, and naming them implies no partnership, endorsement
+        or certification in either direction.
+      </p>
+
+      <h2>Governing law</h2>
+      <p>
+        These terms are governed by the laws of the State of Hawaiʻi.
+      </p>
+
+      <h2>Questions</h2>
+      <p>
+        Email <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+      </p>
+
+      <p class="updated">Last updated {updated}</p>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

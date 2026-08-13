@@ -1,9 +1,12 @@
 # Thread — working notes
 
-Marketing site for Thread, a custom software / dashboards / AI automation studio
+Marketing site for Thread, a custom software / dashboards / automation practice
 in Honolulu. **Live at https://threadhawaii.com.**
 
 Astro 7 + Tailwind 4, statically prerendered, **zero client JavaScript**.
+
+Pages: `/` · `/systems-map` · `/privacy` · `/terms` · `/thanks` · `/og` (card
+generator, noindex, excluded in robots.txt).
 
 ---
 
@@ -96,10 +99,11 @@ Each of these cost real debugging time. Don't rediscover them.
    without it every field grows 5.9px and the contact band 24px.
 7. **Astro scoped styles don't cross slot boundaries.** Anything used by slotted
    content must live in `global.css`, not a component `<style>`.
-8. **`.cta-in` is deliberately bug-compatible** with a shorthand collision in the
-   original — see the long comment in `ContactSection.astro`. §07 sits 40px out of
-   alignment on desktop and loses its vertical padding below 640px. **Intentional
-   until the owner decides.**
+8. **`.cta-in` used to be deliberately bug-compatible** with a shorthand collision
+   in the original. **Fixed 13 Aug 2026** — `padding-block` here, horizontal
+   padding left to `.wrap`. §07 now aligns with every other section and keeps
+   66px of vertical padding on phones. See the comment in `ContactSection.astro`
+   before reintroducing a `padding` shorthand on that element.
 9. **Namecheap: never change Mail Settings, and never switch nameservers to
    Vercel.** MX records live behind that dropdown; either action breaks email
    forwarding for `aloha@threadhawaii.com`.
@@ -107,6 +111,19 @@ Each of these cost real debugging time. Don't rediscover them.
     the domain in Resend, its SPF must go on the `send.` subdomain.
 11. **`git push` was blocked by session permissions** throughout. Expect to hand
     the command to the owner rather than running it.
+12. **`astro preview` does not work under the Vercel adapter** — it exits with
+    "Preview server process exited before becoming ready". `scripts/build-assets.sh`
+    serves `dist/client` with `python3 -m http.server` instead. Don't switch it
+    back. The script also refuses to start if its port is already held, because a
+    stale server there silently screenshots an old build.
+13. **Nav and footer hrefs must stay root-relative** (`/#services`, not
+    `#services`). They render on `/systems-map`, `/privacy`, `/terms` and
+    `/thanks`, where a bare fragment resolves against the wrong document and does
+    nothing.
+14. **`IntakeForm.astro` and `src/pages/api/contact.ts` must be edited together.**
+    A field rendered in the form but absent from `FIELDS`/`LIMITS` is collected
+    from the visitor and silently dropped. The cross-check is a one-liner:
+    compare `name="…"` in the component against the `FIELDS` table.
 
 ## Verification approach
 
@@ -116,17 +133,25 @@ probes compared on position, size, type and colour. That's more reliable than
 screenshots and it caught a 24px regression screenshots would have missed. If you
 change layout, re-run that rather than eyeballing.
 
-The build is identical to `index.html` at every width apart from one deliberate
-6.4px fix (the submit button, which the original left in the UA font).
+The **shell** — type scale, section rhythm, colour, spacing, grid — is still
+verified this way, and still matches. **Content is not**: copy, figures, sections
+and form fields are now specified by `HOMEPAGE-COPY.md` and `GRAPHICS.md`, so
+text differences against `index.html` are expected. Probe geometry, ignore words.
+
+Two deliberate deviations from the original, both recorded above:
+1. The submit button's font (6.4px), which the original left in the UA font.
+2. `.cta-in`'s padding collision — landmine 8.
 
 ## Outstanding
 
 See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) for the full list. Highest value first:
 
-1. Replace the fabricated §04 / §05 content — **it is live**
+1. **Blocked on the owner:** real prior work for §05, price floors and typical
+   durations for §03, a background line and photo for §06. All are absent rather
+   than invented — keep it that way.
 2. Gmail filter so form notifications stop landing in spam, or verify the domain
    in Resend for a proper fix
-3. Privacy and Terms pages (footer links to them as plain text; the form collects
-   personal data)
-4. Owner decisions still open: §07 alignment, the doubled rule under the
+3. `sameAs` links in the `ProfessionalService` schema in `Base.astro`, once the
+   LinkedIn and Google Business Profile URLs exist
+4. Owner decisions still open: the doubled rule under the
    connects-to strip, dropping the unused Public Sans 500
