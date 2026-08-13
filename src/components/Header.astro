@@ -6,11 +6,11 @@ const CTA = 'Get your systems mapped';
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a href="#top" class="mark">thread<span>.</span></a>
+    <a href="/#top" class="mark">thread<span>.</span></a>
 
     <nav class="nav-links" aria-label="Primary">
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      <a href="#contact" class="nav-cta">{CTA}</a>
+      <a href="/#contact" class="nav-cta">{CTA}</a>
     </nav>
 
     {/* Phone menu. A native <details> disclosure — keyboard-operable and
@@ -22,7 +22,7 @@ const CTA = 'Get your systems mapped';
         <nav aria-label="Primary, phone">
           {nav.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
-        <a href="#contact" class="btn menu-cta">{CTA}</a>
+        <a href="/#contact" class="btn menu-cta">{CTA}</a>
       </div>
     </details>
   </div>

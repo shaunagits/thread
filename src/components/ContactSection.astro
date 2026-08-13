@@ -1,5 +1,6 @@
 ---
 import { contact } from '../content/site';
+import IntakeForm from './IntakeForm.astro';
 ---
 
 <div class="cta-band" id="contact">
@@ -13,70 +14,47 @@ import { contact } from '../content/site';
         somewhere better.
       </p>
 
+      <p class="cta-note">
+        Replies come within one business day. Not a fit is a normal answer, and you’ll
+        hear it plainly rather than not hearing back.
+      </p>
+      <p class="cta-note">
+        Would rather start with the free systems map? <a href="/systems-map">Start one
+        here</a>. Occasionally I take on MVP work for founders, too. Ask.
+      </p>
+
       <p class="contact-meta">
         <a href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.location}
       </p>
     </div>
 
-    {/* A native POST to a server endpoint — no client bundle, and it still
-        works with JavaScript disabled. */}
-    <form class="form" action="/api/contact" method="POST">
-      {/* Honeypot. Positioned off-screen rather than display:none, which bots
-          check for. Hidden from assistive tech and skipped by the tab order. */}
-      <div class="hp" aria-hidden="true">
-        <label for="f-company-website">Company website</label>
-        <input
-          id="f-company-website"
-          name="company_website"
-          type="text"
-          tabindex="-1"
-          autocomplete="off"
-        />
-      </div>
-
-      <label for="f-name">Name</label>
-      <input id="f-name" name="name" type="text" autocomplete="name" required />
-
-      <label for="f-email">Email</label>
-      <input id="f-email" name="email" type="email" autocomplete="email" required />
-
-      <label for="f-biz">What does the business do?</label>
-      <input id="f-biz" name="business" type="text" />
-
-      <label for="f-stack">What software are you running?</label>
-      <textarea
-        id="f-stack"
-        name="stack"
-        placeholder="QuickBooks, Square, a scheduling app, and a lot of spreadsheets…"
-      ></textarea>
-
-      <button type="submit" class="btn">Request my systems map</button>
-    </form>
+    <IntakeForm kind="enquiry" />
   </div>
 </div>
 
 <style>
   .cta-band { background: var(--color-wash); border-top: 1px solid var(--color-rule); }
 
-  /* ⚠️ Reproduces a shorthand collision in index.html rather than correcting it.
-     There, `.cta-in{padding:88px 0}` and `.wrap{padding:0 40px}` are both single
-     class selectors, so source order alone decides the winner:
+  /* index.html had `.cta-in{padding:88px 0}` and `.wrap{padding:0 40px}` as two
+     single-class selectors, so source order alone decided the winner. The
+     result was accidental in both directions: §07 sat 40px out of alignment
+     with every other section above 640px, and lost all 176px of its vertical
+     padding below it.
 
-       above 640px  →  padding 88px 0    (§07 content sits at x=130, while every
-                                          other section sits at x=170 — the band
-                                          is 40px out of alignment)
-       at/below 640 →  padding 0 22px    (the later `@media(max-width:640px)
-                                          .wrap` rule replaces the shorthand
-                                          outright, deleting all 176px of
-                                          vertical padding on phones)
+     Both were reproduced faithfully until now. The band is being rebuilt and
+     the phone case is a visible bug, so this is the fix the original's own
+     shorthand was reaching for: padding-block here, horizontal padding left to
+     .wrap at every width. §07 now starts at x=170 like everything else.
 
-     Astro's scoping raises this rule's specificity, so it would otherwise win at
-     every width and change the rendering. Held bug-compatible pending a decision
-     — see LAUNCH-CHECKLIST.md. The fix, if wanted, is `padding-block: 88px` and
-     letting `.wrap` supply the horizontal padding. */
+     This is the second deliberate deviation from index.html, after the submit
+     button's font. Recorded in CLAUDE.md and LAUNCH-CHECKLIST.md. */
   .cta-in {
     display: grid; grid-template-columns: minmax(0, 1fr) 380px;
-    gap: 64px; padding: 88px 0; align-items: start;
+    gap: 64px; padding-block: 88px; align-items: start;
+  }
+  .cta-note {
+    font-family: var(--font-sans); font-size: 14px; line-height: 1.66;
+    color: var(--color-faint); max-width: 46ch; margin-top: 18px;
   }
   .contact-meta {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
@@ -86,37 +64,10 @@ import { contact } from '../content/site';
   .contact-meta a { color: var(--color-faint); }
   .contact-meta a:hover { color: var(--color-koa); }
 
-  .form {
-    background: var(--color-white); border: 1px solid var(--color-hair);
-    border-radius: 3px; padding: 28px;
-  }
-  .hp {
-    position: absolute; width: 1px; height: 1px;
-    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
-  }
-  .form label {
-    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em;
-    text-transform: uppercase; color: var(--color-faint);
-    display: block; margin-bottom: 7px;
-  }
-  .form input, .form textarea {
-    width: 100%; padding: 11px 13px; border: 1px solid var(--color-hair);
-    border-radius: 2px; background: var(--color-paper);
-    font-family: var(--font-sans); font-size: 14px;
-    color: var(--color-ink); margin-bottom: 18px;
-  }
-  .form input:focus, .form textarea:focus {
-    outline: 2px solid var(--color-line); outline-offset: -1px;
-    border-color: var(--color-line);
-  }
-  .form textarea { resize: vertical; min-height: 82px; }
-  .form .btn { width: 100%; text-align: center; }
-
   @media (max-width: 1000px) {
     .cta-in { grid-template-columns: 1fr; gap: 34px; }
   }
-  /* see the note above — this is the original's accidental result, reproduced */
   @media (max-width: 640px) {
-    .cta-in { padding: 0 22px; }
+    .cta-in { padding-block: 66px; }
   }
 </style>

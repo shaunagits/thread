@@ -1,0 +1,166 @@
+---
+/**
+ * The two intake forms. Both post to /api/contact, which reads `kind` to
+ * decide which fields to expect and what to put in the subject line.
+ *
+ * `enquiry` — the short one in §07. Five fields. The lead above it promises
+ *   "a short description is enough to start", so it has to stay short.
+ * `map` — the long one on /systems-map. This is the front half of the map
+ *   engagement, not a contact form: the answers are the research, which is
+ *   most of why a map costs hours rather than a week.
+ *
+ * Field names here must match LIMITS and FIELDS in src/pages/api/contact.ts.
+ * Adding a field in one place and not the other collects the answer and
+ * silently drops it.
+ *
+ * Native POST, no client bundle, works with JavaScript disabled.
+ */
+interface Props {
+  kind: 'enquiry' | 'map';
+}
+const { kind } = Astro.props;
+
+const BUDGET = [
+  'No figure yet',
+  'Under $10k',
+  '$10k to $25k',
+  '$25k to $50k',
+  '$50k+',
+];
+const TIMING = [
+  'No fixed date',
+  'Within a month',
+  'One to three months',
+  'Three to six months',
+  'Later than that',
+];
+const USERS = ['Just me', '2 to 5', '6 to 20', '21 to 100', 'More than 100'];
+const WORKFLOWS = [
+  'Lead to invoice',
+  'Job to payment',
+  'Intake to delivery',
+  'Something else, described below',
+];
+---
+
+<form class="form" action="/api/contact" method="POST">
+  <input type="hidden" name="kind" value={kind} />
+
+  {/* Honeypot. Positioned off-screen rather than display:none, which bots
+      check for. Hidden from assistive tech and skipped by the tab order. */}
+  <div class="hp" aria-hidden="true">
+    <label for="f-company-website">Company website</label>
+    <input
+      id="f-company-website"
+      name="company_website"
+      type="text"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+
+  <label for="f-name">Name</label>
+  <input id="f-name" name="name" type="text" autocomplete="name" required />
+
+  <label for="f-email">Email</label>
+  <input id="f-email" name="email" type="email" autocomplete="email" required />
+
+  <label for="f-biz">What does the business do?</label>
+  <input id="f-biz" name="business" type="text" autocomplete="organization" />
+
+  {kind === 'enquiry' && (
+    <>
+      <label for="f-problem">What isn’t working?</label>
+      <textarea
+        id="f-problem"
+        name="problem"
+        placeholder="The thing that made you open this form."
+      ></textarea>
+
+      <label for="f-budget">Roughly what have you budgeted?</label>
+      <select id="f-budget" name="budget">
+        {BUDGET.map((o) => <option value={o}>{o}</option>)}
+      </select>
+    </>
+  )}
+
+  {kind === 'map' && (
+    <>
+      <label for="f-workflow">Which workflow should the map follow?</label>
+      <select id="f-workflow" name="workflow">
+        {WORKFLOWS.map((o) => <option value={o}>{o}</option>)}
+      </select>
+
+      <label for="f-today">What happens today?</label>
+      <textarea
+        id="f-today"
+        name="today"
+        placeholder="Walk it through from the first contact to the money landing. Rough is fine."
+      ></textarea>
+
+      <label for="f-instead">What would you like to happen instead?</label>
+      <textarea id="f-instead" name="instead"></textarea>
+
+      <label for="f-tools">Which tools does this touch?</label>
+      <input
+        id="f-tools"
+        name="tools"
+        type="text"
+        placeholder="QuickBooks, Square, a scheduling app, a lot of spreadsheets…"
+      />
+
+      <label for="f-tried">What have you already tried?</label>
+      <textarea id="f-tried" name="tried"></textarea>
+
+      <label for="f-users">How many people would use it?</label>
+      <select id="f-users" name="users">
+        {USERS.map((o) => <option value={o}>{o}</option>)}
+      </select>
+
+      <label for="f-budget">Roughly what have you budgeted?</label>
+      <select id="f-budget" name="budget">
+        {BUDGET.map((o) => <option value={o}>{o}</option>)}
+      </select>
+
+      <label for="f-timing">When do you need it?</label>
+      <select id="f-timing" name="timing">
+        {TIMING.map((o) => <option value={o}>{o}</option>)}
+      </select>
+
+      <label for="f-deciders">Who else decides?</label>
+      <input id="f-deciders" name="deciders" type="text" />
+    </>
+  )}
+
+  <button type="submit" class="btn">
+    {kind === 'map' ? 'Request my systems map' : 'Send it'}
+  </button>
+</form>
+
+<style>
+  .form {
+    background: var(--color-white); border: 1px solid var(--color-hair);
+    border-radius: 3px; padding: 28px; max-width: 560px;
+  }
+  .hp {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .form label {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--color-faint);
+    display: block; margin-bottom: 7px;
+  }
+  .form input, .form textarea, .form select {
+    width: 100%; padding: 11px 13px; border: 1px solid var(--color-hair);
+    border-radius: 2px; background: var(--color-paper);
+    font-family: var(--font-sans); font-size: 14px;
+    color: var(--color-ink); margin-bottom: 18px;
+  }
+  .form input:focus, .form textarea:focus, .form select:focus {
+    outline: 2px solid var(--color-line); outline-offset: -1px;
+    border-color: var(--color-line);
+  }
+  .form textarea { resize: vertical; min-height: 82px; }
+  .form .btn { width: 100%; text-align: center; }
+</style>

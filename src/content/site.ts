@@ -6,11 +6,17 @@
  * from the approved design or confirmed by the owner. See CLAUDE.md.
  */
 
+/**
+ * Root-relative, not bare fragments. These render on /systems-map and /thanks
+ * too, where `#services` would resolve against the wrong document and do
+ * nothing. From the homepage `/#services` is still a fragment jump, not a
+ * reload.
+ */
 export const nav = [
-  { label: 'Services', href: '#services' },
-  { label: 'The map', href: '#map' },
-  { label: 'Work', href: '#work' },
-  { label: 'About', href: '#about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'The map', href: '/#map' },
+  { label: 'Work', href: '/#work' },
+  { label: 'About', href: '/#about' },
 ];
 
 /**
@@ -79,26 +85,26 @@ export const footerColumns = [
   {
     heading: 'Services',
     links: [
-      { label: 'Custom internal apps', href: '#services' },
-      { label: 'Dashboards and reporting', href: '#services' },
-      { label: 'Automation and integration', href: '#services' },
-      { label: 'Practical AI', href: '#services' },
+      { label: 'Custom internal apps', href: '/#services' },
+      { label: 'Dashboards and reporting', href: '/#services' },
+      { label: 'Automation and integration', href: '/#services' },
+      { label: 'Practical AI', href: '/#services' },
     ],
   },
   {
     heading: 'Ways to work',
     links: [
-      { label: 'Systems map', href: '#map' },
-      { label: 'Care plan', href: '#services' },
-      { label: 'Rescue work', href: '#services' },
+      { label: 'Systems map', href: '/systems-map' },
+      { label: 'Care plan', href: '/#services' },
+      { label: 'Rescue work', href: '/#services' },
     ],
   },
   {
     heading: 'Company',
     links: [
-      { label: 'About', href: '#about' },
-      { label: 'Work', href: '#work' },
-      { label: 'Contact', href: '#contact' },
+      { label: 'About', href: '/#about' },
+      { label: 'Work', href: '/#work' },
+      { label: 'Contact', href: '/#contact' },
     ],
   },
 ];
