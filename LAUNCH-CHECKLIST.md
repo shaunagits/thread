@@ -5,7 +5,12 @@ Replaces the `.buildnote` block from `index.html`, which is not ported.
 
 ---
 
-## 1. Placeholder content — must be replaced before launch
+## 1. Placeholder content — 🔴 LIVE, and must be replaced
+
+> **The site is already published at https://threadhawaii.com with everything
+> below still in place**, on the owner's explicit instruction after being told
+> twice. It is publicly readable and indexable: `robots.txt` allows crawling and
+> the sitemap advertises the page. This is the top outstanding task.
 
 All of it lives in [`src/content/placeholders.ts`](src/content/placeholders.ts).
 Nothing else in the site is invented.
@@ -77,6 +82,10 @@ It is currently shipped because the handoff's type spec lists 400/500/600.
 | `prefers-reduced-motion` guard on `scroll-behavior` | The design is deliberately still |
 | Footer year computed at build time | Was hardcoded `2026` |
 | `.buildnote` block not ported | Replaced by this file |
+| **Light text on `--koa` for every fill carrying a label** | Requested by the owner. Light-on-`--ochre` would have been **2.90:1** — the token's own comment reads "fills only". Moving the fill to `--koa` gives **5.56:1**, marginally better than the 5.46:1 dark text it replaced. Covers CTAs, nav button, phone menu, service numbers, Fig. 1 badges, Fig. 2 thread block. Ochre still fills everything with no text on it |
+| `.nav-links a.nav-cta` specificity fix | `.nav-links a` is class+element and outranked `.nav-cta`, so the nav button's label was always `--color-quiet`. Latent in the original; invisible at 1.13:1 once the fill darkened |
+| `www` → apex 308 redirect | Both hostnames served identical content. Vercel's `has: host` rule only matches with `(.*)`/`$1` |
+| `server.port` reads `$PORT` | So the dev server can take an assigned port |
 
 ---
 
@@ -119,187 +128,102 @@ from the sitemap.
 
 ---
 
-## 6. Deployment — threadhawaii.com
-
-### Current state — production deployed, DNS pending
+## 6. Deployment — live
 
 | | |
 |---|---|
-| Vercel team | `peopleengineers-projects` |
-| Project | `thread` |
-| Production URL | `https://thread-nine-alpha.vercel.app` — **public** |
-| Domains attached | `threadhawaii.com`, `www.threadhawaii.com` |
-| DNS | **not yet pointed** — still parked at `162.255.119.38` |
+| **Live** | **https://threadhawaii.com** |
+| Vercel | `shaunagits` / `shaunagits-projects`, project `thread` |
 | GitHub | `shaunagits/thread` — public |
+| Registrar | Namecheap (`Sharnold83`), nameservers unchanged |
+| TLS | Let's Encrypt, both hostnames, expires 11 Nov 2026 |
+| `www` | 308 → apex, path-preserving |
 
-Deployed with the placeholder products, pricing and case study still in place,
-on the owner's explicit instruction.
+Deployed with the placeholder products, pricing and case study still in place, on
+the owner's explicit instruction.
 
-### 🔴 The contact form does not work in production
-
-No Resend env vars are set, so every submission redirects to
-`/thanks?status=error`. The page's entire primary CTA is that form. Two fixes,
-both quick:
-
-1. **Namecheap:** forward `aloha@threadhawaii.com` → your Gmail. The error page
-   tells visitors to email that address directly, so right now the fallback is
-   a dead address too.
-2. **Vercel:** add `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` under
-   Settings → Environment Variables (see `.env.example` — phase 1 needs no DNS),
-   then redeploy.
-
-Until both are done, the site cannot receive an enquiry by any route.
-
-### DNS records to add at Namecheap
-
-Replace the existing parking A record. Advanced DNS → Host Records:
+### DNS as it now stands
 
 | Type | Host | Value |
 |---|---|---|
 | A | `@` | `76.76.21.21` |
 | CNAME | `www` | `cname.vercel-dns.com` |
+| MX × 5 | `@` | `eforward1–5.registrar-servers.com` — **untouched** |
+| TXT | `@` | `v=spf1 include:spf.efwd.registrar-servers.com ~all` — **untouched** |
 
-Delete Namecheap's parking record (`162.255.119.38`) and any URL Redirect record
-on `@` or `www`. **Leave every MX and TXT record exactly as it is.**
+The original parking setup was a **URL Redirect Record** on `@` plus a CNAME on
+`www` — there was no A record at all. Both were replaced.
 
-**⚠️ Vercel will offer to take over the nameservers — decline it.** Switching to
-`ns1/ns2.vercel-dns.com` drops the MX and SPF records and breaks email
-forwarding on the domain.
+**⚠️ Never switch the nameservers to Vercel.** It will offer. Doing so drops the
+MX and SPF records and breaks email forwarding. Equally, never change Namecheap's
+**Mail Settings** dropdown — the MX records live behind it.
 
-**⚠️ Note on the first deploy.** Vercel automatically promotes a *new* project's
-first deployment to production, which it did here — creating two public aliases
-(`thread-nine-alpha.vercel.app` and `thread-peopleengineers-projects.vercel.app`)
-carrying the placeholder content, with no `noindex`, for roughly two minutes.
-Both aliases were removed and now return 404. Nothing linked to them and the
-domain was never involved. Subsequent deploys are genuine previews — the
-auto-promote only happens once, on a project's first deploy.
+### It was originally deployed to the wrong account
 
-The original production deployment still exists without any alias, and is
-sign-in protected. Harmless; say if you'd rather I delete it.
+The first deploys went to `peopleengineers-projects`, a Vercel account the owner
+uses **only for client work**. The project, its domains and its deployments were
+migrated to `shaunagits-projects`.
 
-**The form does not send on the preview** — no env vars are set, so it correctly
-shows the "not sent" state and logs the missing configuration. Add the three
-variables from `.env.example` in Vercel to make it live.
+Moving a domain between Vercel accounts needs it removed in **two** places — the
+project's domain settings *and* the team's account-level Domains page. Removing it
+from just the project leaves it claimed, and the new account gets a flat 403.
 
----
+A **TLS certificate may still remain** in the client account; certificates are
+account-level and survive both removals. Check
+`vercel.com/peopleengineers-projects/~/settings/certs` when next in that account.
 
+### Email
 
-`site` in `astro.config.mjs` is set to `https://threadhawaii.com`. Canonical URL,
-`og:url`, `og:image`, `sitemap.xml` and `robots.txt` all derive from it.
-
-### What's currently on the domain
-
-| | |
-|---|---|
-| Registrar / DNS | Namecheap (`dns1/dns2.registrar-servers.com`) |
-| A record | `162.255.119.38` — a **parked page**, not a real site |
-| MX | Namecheap email forwarding (`eforward1–5.registrar-servers.com`) |
-| SPF | `v=spf1 include:spf.efwd.registrar-servers.com ~all` |
-| DMARC | none |
-
-Nothing of value is being served, so this is a clean launch rather than a
-cutover — no traffic or SEO to preserve. But **email forwarding is live on this
-domain**, and that constrains two things below.
-
-### ⚠️ Do not move the nameservers to Vercel
-
-Vercel will offer it. Taking it would drop the MX and SPF records above and
-**break email forwarding to `@threadhawaii.com`** — including whatever address
-you use for contact. Keep Namecheap's nameservers and change only the host
-records:
-
-| Type | Host | Value |
-|---|---|---|
-| A | `@` | `76.76.21.21` |
-| CNAME | `www` | `cname.vercel-dns.com` |
-
-Vercel shows the exact values when the domain is added — use those if they
-differ. Leave every MX and TXT record alone.
-
-### Email — no DNS work needed to launch
-
-Two separate problems, two separate answers.
-
-**Receiving** at `aloha@threadhawaii.com`. The site prints this address publicly
-as a `mailto:` link, so it has to work no matter how the form is wired.
-Namecheap's forwarding MX records are already in place — create the alias in the
-Namecheap dashboard pointing `aloha@` → your Gmail. No DNS changes. **Do this
-regardless.**
-
-**Sending** from the form. Resend's shared sender `onboarding@resend.dev` works
-without verifying any domain. Its one restriction — it can only deliver to the
-address you signed up with — is exactly what this form needs, since it only ever
-writes to one inbox. So: sign up for Resend with your Gmail, set `CONTACT_TO` to
-that Gmail, and `CONTACT_FROM` to `Thread <onboarding@resend.dev>`. Nothing
-touches DNS. `Reply-To` still carries the visitor's address, so replying from
-Gmail reaches them directly. See `.env.example`.
-
-### ⚠️ Later, when you send from your own domain
-
-Only relevant once you switch `CONTACT_FROM` to an `@threadhawaii.com` address.
-
-There is already an SPF record at the root, and a domain can only have one.
-**Adding a second breaks SPF entirely** — they don't merge. Resend's verification
-asks for records on a `send.threadhawaii.com` subdomain plus a DKIM key at
-`resend._domainkey`; that's the safe shape, because the sending SPF lives on the
-subdomain and the root record stays untouched. If it instead asks you to put
-`include:amazonses.com` at the root, don't add a second record — merge it into
-the existing one and check with me first.
-
-### Division of labour
-
-| Step | Who |
-|---|---|
-| `@astrojs/vercel`, `vercel.json`, cache + security headers | ✅ done |
-| Namecheap: forward `aloha@` → your Gmail | **You** |
-| Resend: sign up with that Gmail, copy the API key | **You** |
-| `vercel login` | **You** — I never handle credentials |
-| Set `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` in Vercel | **You** — see `.env.example` |
-| First deploy to a preview URL | Me, on your say-so |
-| Verify the preview: fonts, live form send, social card, four widths | Me |
-| Add the domain in Vercel, then the two host records above | **You** |
-| Promote to production | Me, on your say-so |
-
-Domain verification in Resend is **not** on this list — it isn't needed until you
-want mail sent from `@threadhawaii.com`.
-
-I won't change DNS, buy domains, or deploy anything without you asking each time.
+`aloha@threadhawaii.com` and a catch-all forward to `shauna.coy@gmail.com` via
+Namecheap's free forwarding. Already configured; needs nothing.
 
 ---
 
-## 7. The contact form — built
+## 7. The contact form — live and working
 
-`POST /api/contact` → validate → send via Resend → 303 redirect to `/thanks`.
-Post-Redirect-Get, so refreshing the result page never resubmits. **No client
-JavaScript**, and it works with JS disabled.
+`POST /api/contact` → validate → send via Resend → 303 to `/thanks`.
+Post-Redirect-Get, **no client JavaScript**, works with JS disabled.
+
+Verified end to end on production — a real submission was delivered.
 
 | Behaviour | Result |
 |---|---|
-| Valid submission | Emails `CONTACT_TO`, `Reply-To` set to the sender, → `/thanks` |
-| Honeypot filled (bot) | Silently → `/thanks`. Telling a bot it failed just invites a retry |
-| Missing name / bad email | → `/thanks?status=invalid`, nothing lost |
-| Resend down or misconfigured | → `/thanks?status=error` showing the direct email address, and a loud server log |
+| Valid submission | Emails `CONTACT_TO`, `Reply-To` = sender, → `/thanks` |
+| Honeypot filled | Silently → `/thanks`. Telling a bot it failed invites a retry |
+| Missing name / bad email | → `/thanks?status=invalid` |
+| Resend down or misconfigured | → `/thanks?status=error` showing the direct address |
 | Cross-origin POST | `403` — Astro's CSRF origin check |
 | Oversized fields | Truncated (name 200, email 320, business 500, stack 5000) |
 
-All six verified locally. The success path was exercised against Resend's real
-API with a dummy key: the request was accepted and rejected **only** on the key,
-confirming the endpoint, auth header and JSON body are well-formed. The genuine
-send gets verified on the preview deploy, once a real key exists.
+Three env vars in Vercel; see `.env.example`. **They only apply to a new build** —
+redeploy after changing them.
 
-Three env vars are needed — see `.env.example`. The site builds and previews
-fine without them; only sending needs them.
+### 🟡 Notifications land in spam
 
-**Not included:** rate limiting. The honeypot stops naive bots but not a
-determined one. If it gets abused, Vercel's WAF or a Resend-side cap is the fix.
+Expected: `onboarding@resend.dev` is a shared sender with no DKIM alignment to
+this domain. **Only the owner receives mail from this site**, so it affects one
+inbox — but a system-map request in spam is a missed lead.
+
+- **Now:** a Gmail filter on `subject:("System map request")` → *Never send it to
+  Spam*. Filter on the subject, not the sender — the subject is set in code and
+  survives a change of sending domain.
+- **Properly:** verify `threadhawaii.com` in Resend and switch `CONTACT_FROM` to
+  an address on it. Keep Resend's SPF on the `send.` subdomain — **there is
+  already an SPF record at the root and a domain may only have one.**
+
+**Not implemented:** rate limiting. The honeypot stops naive bots, not a
+determined one.
 
 ---
 
 ## 8. Still to do
 
-- [ ] Privacy and Terms pages — the footer links to them as plain text today,
-      and a privacy policy becomes necessary once the form collects data.
+- [ ] **Replace the fabricated §04 and §05 content — it is live.** See §1 and §2.
+      Owner has decided the shape; the material itself is still outstanding.
+- [ ] Gmail filter for form notifications (or verify the domain in Resend)
+- [ ] Privacy and Terms pages — the footer links to them as plain text, and the
+      form collects personal data
 - [ ] A 404 page in the design language — not built; Vercel's default shows
-      otherwise. Say the word.
-- [ ] Decide on items 2a–2e above.
-- [ ] Replace everything in section 1.
+- [ ] Check for the leftover certificate in the client Vercel account
+- [ ] Decide items 2a–2e: §07 alignment, the doubled rule under the strip, token
+      names, the `--koa` discrepancy, dropping the unused Public Sans 500

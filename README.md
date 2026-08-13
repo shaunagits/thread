@@ -4,13 +4,17 @@ Marketing site for Thread — a custom software, dashboards, and AI automation
 studio in Honolulu, Hawaiʻi. Astro + Tailwind, statically rendered, **no client
 JavaScript**.
 
-> ### ⚠️ Not ready to launch
-> §04 Products and §05 Work currently contain **invented products, invented
-> pricing, and a fabricated client case study with fabricated metrics**. They
-> are placeholders from the design file, isolated in
-> [`src/content/placeholders.ts`](src/content/placeholders.ts).
-> Read [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) before deploying to a public
-> domain.
+**Live: https://threadhawaii.com**
+
+> ### ⚠️ Live with placeholder content
+> §04 Products and §05 Work contain **invented products, invented pricing, and a
+> fabricated client case study with fabricated metrics** — all isolated in
+> [`src/content/placeholders.ts`](src/content/placeholders.ts). This is
+> published and publicly indexable. Replacing it is the top outstanding task.
+> See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md).
+
+Working on this? Start with [CLAUDE.md](CLAUDE.md) — constraints, accounts, and
+the landmines worth not rediscovering.
 
 ## Commands
 
