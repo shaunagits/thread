@@ -272,6 +272,11 @@ svg.plate { width: 100%; height: auto; display: block; }
 .plate-scroll { position: relative; }
 .scroll-hint { display: none; }
 
+/* Narrow plates (Fig. 4) are drawn small and stay small — capped at the
+   drawing's own 560 units so they render about 1:1 instead of being blown up
+   to the full 1100px column. */
+.plate-scroll.is-narrow svg.plate { max-width: 560px; }
+
 /* ---------- responsive ----------
    Breakpoints are the original's, verbatim, including the inclusive
    max-width form. They are tuned to where the margin column and the
@@ -290,6 +295,10 @@ svg.plate { width: 100%; height: auto; display: block; }
     margin: 0 -22px; padding: 0 22px 10px;
   }
   .plate-scroll svg.plate { min-width: 860px; }
+  /* Fig. 4 is drawn small enough to read on a phone, so it opts out of the
+     min-width rather than being forced into a sideways scroll. */
+  .plate-scroll.is-narrow { overflow-x: visible; margin: 0; padding: 0; }
+  .plate-scroll.is-narrow svg.plate { min-width: 0; }
   .scroll-hint {
     display: block; font-family: var(--font-mono); font-size: 9.5px;
     letter-spacing: .14em; text-transform: uppercase;

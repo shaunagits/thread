@@ -5,7 +5,10 @@ import Hero from '../components/Hero.astro';
 import ConnectsStrip from '../components/ConnectsStrip.astro';
 import Section from '../components/Section.astro';
 import Figure from '../components/Figure.astro';
-import Fig2ThreadDiagram from '../components/Fig2ThreadDiagram.astro';
+import Fig2CurrentState from '../components/Fig2CurrentState.astro';
+import Fig3ThreadDiagram from '../components/Fig3ThreadDiagram.astro';
+import Fig4CarePlate from '../components/Fig4CarePlate.astro';
+import Fig5SystemsMap from '../components/Fig5SystemsMap.astro';
 import StepRow from '../components/StepRow.astro';
 import ServiceList from '../components/ServiceList.astro';
 import ContactSection from '../components/ContactSection.astro';
@@ -42,6 +45,10 @@ import Footer from '../components/Footer.astro';
       happens because a person <strong>remembers</strong> to do it? Most businesses can’t
       answer the first question from a single screen. That gap is the work.
     </Fragment>
+
+    <Figure slot="after" caption="Fig. 2 · Current state, typical intake">
+      <Fig2CurrentState />
+    </Figure>
   </Section>
 
   <Section
@@ -55,8 +62,8 @@ import Footer from '../components/Footer.astro';
       through them, so information moves on its own and your team looks in one place.
     </p>
 
-    <Figure caption="Fig. 2 · The thread, drawn">
-      <Fig2ThreadDiagram />
+    <Figure caption="Fig. 3 · The thread, drawn">
+      <Fig3ThreadDiagram />
     </Figure>
 
     <StepRow />
@@ -93,6 +100,10 @@ import Footer from '../components/Footer.astro';
         on software somebody else started: a tool that mostly works, an automation nobody
         understands, a system the person who built it no longer supports.
       </p>
+
+      <Figure caption="Fig. 4 · What ships with every build" narrow>
+        <Fig4CarePlate />
+      </Figure>
     </Fragment>
   </Section>
 
@@ -138,6 +149,10 @@ import Footer from '../components/Footer.astro';
       payment, intake to delivery. Mapping a whole business is a paid engagement, and the
       free one is a reasonable way to find out whether it’s worth doing.
     </Fragment>
+
+    <Figure slot="after" caption="Fig. 5 · Systems map, specimen sheet">
+      <Fig5SystemsMap />
+    </Figure>
   </Section>
 
   <Section

@@ -1,22 +1,30 @@
 ---
 /**
- * Shared frame for the two annotated plates.
+ * Shared frame for the annotated plates.
  *
  * The original marked captions up as a plain <div class="figcap"> sitting
  * above the SVG. This uses real <figure>/<figcaption>, per the handoff's
  * accessibility item. Rendering is unchanged — .figcap keeps its styles.
  */
 interface Props {
-  /** e.g. "Fig. 1 — Operations panel, annotated" */
+  /** e.g. "Fig. 1 · Operations panel, annotated" */
   caption: string;
+  /**
+   * Set on plates narrow enough to fit a phone. Drops the 860px mobile
+   * min-width the wide plates need, so the plate doesn't scroll sideways for
+   * no reason — and hides the hint that says it does. Fig. 4 only.
+   */
+  narrow?: boolean;
 }
-const { caption } = Astro.props;
+const { caption, narrow = false } = Astro.props;
 ---
 
 <figure>
   <figcaption class="figcap">{caption}</figcaption>
-  <div class="plate-scroll">
+  <div class:list={['plate-scroll', { 'is-narrow': narrow }]}>
     <slot />
   </div>
-  <span class="scroll-hint" aria-hidden="true">Scroll sideways to read →</span>
+  {!narrow && (
+    <span class="scroll-hint" aria-hidden="true">Scroll sideways to read →</span>
+  )}
 </figure>
