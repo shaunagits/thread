@@ -16,13 +16,17 @@ import HeroGraphic from './HeroGraphic.astro';
         buttons, and nothing else. Don't reintroduce a note here without
         checking §04 doesn't already say it. */}
     <div class="doc hero-doc">
-      <div>
+      <div class="hero-copy">
         {/* The place name is held together so the wrap falls at the ·. The
             eyebrow needs 399px on one line and no phone gives it that, so it
             always wraps — this only decides where. Unwrapped, it orphans
             "Hawaiʻi" onto a second line and splits the place name. */}
         <div class="eyebrow">Custom software and automation · <span class="eyebrow-place">Honolulu, Hawaiʻi</span></div>
-        <h1 style="margin:20px 0 22px;max-width:19ch">
+        {/* `auto` rather than `0` for the inline margins so the centring in
+            the stacked layout below can take hold. It changes nothing above
+            1000px: the 19ch cap never binds there, the box already fills its
+            grid column, and auto margins on a full-width box resolve to 0. */}
+        <h1 style="margin:20px auto 22px;max-width:19ch">
           Software that brings your business together.
         </h1>
         <p class="lead" style="max-width:54ch">
@@ -67,7 +71,23 @@ import HeroGraphic from './HeroGraphic.astro';
      Restate it. Breakpoint is the original's, verbatim. */
   @media (max-width: 1000px) {
     .hero-doc { grid-template-columns: 1fr; gap: 34px; }
-    .hero-figure { max-width: 420px; margin-left: 0; }
+    .hero-figure { max-width: 420px; }
+
+    /* Centred once the grid collapses, agreed with the owner 14 Aug 2026.
+
+       Stacked, every element keeps a measure far narrower than the column it
+       now sits in — at 834 the copy left 265–531px of empty space against 40
+       on the left, and the 420px graphic left 374. Flush left under that much
+       slack reads as a two-column layout with the right column missing.
+
+       Centring the text alone isn't enough: h1 and .lead are capped at 19ch
+       and 54ch, so their *boxes* stay pinned left and only the ink inside
+       them would move. The auto inline margins centre the boxes; text-align
+       centres the ink within them. Both are needed. */
+    .hero-copy { text-align: center; }
+    .hero-copy .lead { margin-inline: auto; }
+    .hero-copy .btn-row { justify-content: center; }
+    .hero-figure { margin-inline: auto; }
   }
 
   .eyebrow-place { white-space: nowrap; }
