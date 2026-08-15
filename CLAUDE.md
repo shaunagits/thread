@@ -214,7 +214,18 @@ Each of these cost real debugging time. Don't rediscover them.
     A field rendered in the form but absent from `FIELDS`/`LIMITS` is collected
     from the visitor and silently dropped. The cross-check is a one-liner:
     compare `name="…"` in the component against the `FIELDS` table.
-15. **The honeypot is `contact_fax`, and it must never share a name with a real
+15. **`vercel.json` takes no comments, not even `"//"` keys.** Vercel validates
+    it against a strict schema and rejects unknown properties outright:
+    ``redirects[1] should NOT have additional property `//` ``. The deployment
+    fails **before the build starts**, so there are no build logs to read, and
+    `npm run build` never looks at the file — it passes locally every time.
+    This cost a failed production deploy on 14 Aug 2026. Explain redirects here
+    in `CLAUDE.md`, never in the JSON.
+
+    The `/systems-map` → `/#contact` 301 is the deleted page's redirect: it was
+    indexed and linked from the footer. It sits after the www rule so a www
+    request resolves host first, then path.
+16. **The honeypot is `contact_fax`, and it must never share a name with a real
     field.** It was `company_website` until 14 Aug 2026, when the v3 copy began
     asking visitors for their company website as a genuine question. Had both
     kept that name, every real submission would have tripped the bot check in
