@@ -7,12 +7,15 @@
  * accessibility item. Rendering is unchanged — .figcap keeps its styles.
  */
 interface Props {
-  /** e.g. "Fig. 1 · Operations panel, annotated" */
+  /**
+   * e.g. "Current state, typical intake". Plates are deliberately unnumbered —
+   * decided with the owner 14 Aug 2026. Don't reintroduce a "Fig. N ·" prefix.
+   */
   caption: string;
   /**
    * Set on plates narrow enough to fit a phone. Drops the 860px mobile
    * min-width the wide plates need, so the plate doesn't scroll sideways for
-   * no reason — and hides the hint that says it does. Fig. 4 only.
+   * no reason — and hides the hint that says it does. The care plate only.
    */
   narrow?: boolean;
 }

@@ -229,6 +229,22 @@ determined one.
 
 ## 8. Still to do
 
+- [ ] **The primary CTA's booking URL.** The owner killed the free systems map
+      as the call to action on 14 Aug 2026 and replaced it with "book a call".
+      A scheduling link exists but has not been supplied, so `Hero.astro`'s
+      primary button points at `#contact` as a **placeholder**. Swap the href
+      when the URL lands.
+- [ ] **Retire the systems map everywhere else.** Killing it as the CTA stranded
+      it across the site. All of these still reference it: the nav CTA constant
+      in `Header.astro`, the whole of §04 in `index.astro`, §02's step 01
+      (labelled `MAP`, and it still says "Free, and yours to keep"), the
+      "rather start with the free systems map?" link in `ContactSection.astro`,
+      the `kind === 'map'` branch in `IntakeForm.astro`, the meta description
+      and the `OfferCatalog` entry in `Base.astro`, and the entire
+      `/systems-map` page, which the footer links to. The structured data and
+      meta description are indexed, so they outlive the page edit.
+      `OFFER-AND-PIPELINE.md` and `STRATEGY.md` are now stale on this point too.
+
 - [ ] **Replace the fabricated §04 and §05 content — it is live.** See §1 and §2.
       Owner has decided the shape; the material itself is still outstanding.
 - [ ] Gmail filter for form notifications (or verify the domain in Resend)

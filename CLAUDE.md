@@ -22,6 +22,53 @@ no new colours, no new spacing values, no new component patterns.
 
 Decided with the owner, 13 Aug 2026. Do not re-litigate it.
 
+**One layout deviation, decided with the owner 14 Aug 2026.** The hero no longer
+stacks a full-width plate under the copy. `HeroGraphic.astro` sits *beside* the
+copy in the `.doc` grid. Reason: the graphic animates on load and rotates
+continuously, and the stacked version put it below the fold on a laptop, which
+spends both for nothing. The grid override lives in `Hero.astro`'s scoped
+styles. Everything else on the page still uses the original `.doc` grid
+unchanged.
+
+**The hero copy was rewritten on the same date, second pass.** It is now
+eyebrow, headline, one 15-word paragraph, two buttons, and nothing else:
+
+> Software that brings your business together.
+> Thread builds software that fits how your business already works. Not the
+> other way around.
+> **[ Book a call ]**  [ See how it works ]
+
+The margin note was **deleted outright** — it restated the lead and pre-explained
+the systems map. `aside.side-note` and its media-query override went with it;
+the class is now unused anywhere in `src/`. Don't reintroduce a note under the
+buttons without checking §04 doesn't already say it.
+
+**⚠️ The free systems map is no longer the CTA.** The owner killed it 14 Aug
+2026; the first step is now a conversation. This is not yet done anywhere but
+the hero, and the hero's primary `href` is a **placeholder** (`#contact`) until
+the owner supplies a scheduling link. Nine other places still sell the map,
+including indexed structured data and the whole `/systems-map` page. They are
+listed in `LAUNCH-CHECKLIST.md` §8. **`OFFER-AND-PIPELINE.md` and `STRATEGY.md`
+are stale on this point** — read them for voice and audience, not offer.
+
+The hero copy went through roughly a dozen rejected drafts. What the rejections
+were about, every time: **too long, too convoluted, written for someone who
+already knows software.** The reader doesn't. `HOMEPAGE-COPY.md` lists the exact
+phrasings that are dead.
+
+`Fig1OperationsPanel.astro` was **deleted** in the same change — it was the plate
+the hero graphic replaces, and the last visual descendant of the fabricated case
+study. Don't restore it.
+
+**Plates are no longer numbered, decided with the owner 14 Aug 2026.** Captions
+are the label alone — `Current state, typical intake`, not `Fig. 1 · Current
+state, typical intake`. The numbering was load-bearing for nothing and went
+stale every time a plate moved. `BUILD-HANDOFF.md`, `BUILD-BRIEF.md`,
+`GRAPHICS.md`, `HOMEPAGE-COPY.md`, `STRATEGY.md` and `LAUNCH-CHECKLIST.md` still
+refer to plates by number; they're history, not instructions. Component
+filenames still carry the old numbers (`Fig2CurrentState.astro`) — left alone
+deliberately, renaming them is churn for no reader.
+
 ## Content that must never be invented
 
 The site previously carried invented products, invented pricing and a fabricated
@@ -70,7 +117,15 @@ changing them.
 - **No client JavaScript.** The phone menu is a `<details>`; the contact form is
   a native POST.
 - **No new colours, fonts, spacing scales, or components** beyond the design.
-- **No animation or scroll effects.** The page is deliberately still.
+- ~~**No animation or scroll effects.**~~ **Lifted by the owner, 14 Aug 2026.**
+  Motion on the plates is now allowed. The replacement rule is narrower, not
+  absent: **CSS only, no JavaScript, no libraries, no SMIL.** Scroll-driven
+  reveals use `animation-timeline: view()` behind `@supports`, because Firefox
+  still has it behind a flag, so the no-support path must land on the finished
+  composition rather than an empty one. Everything sits inside
+  `@media (prefers-reduced-motion: no-preference)`. `GRAPHICS.md` still argues
+  against motion in "Ideas I considered and would not do" — that entry is now
+  superseded, not policy.
 - If something in the design looks like a mistake, **raise it — don't silently
   fix it.**
 

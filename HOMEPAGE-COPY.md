@@ -34,38 +34,58 @@ colon, or a line break. Your call.
 
 > Custom software and automation · Honolulu, Hawaiʻi
 
-**Headline**
+**Headline** *(revised 14 Aug 2026)*
 
-> Custom software for Hawaiʻi businesses.
+> Software that brings your business together.
 
-*This is the brand guide's core positioning and it carries the Tier 1 search
-term. It is also the safer of the two options. The alternative, which is a
-stronger hook but weaker for search, is the guide's primary homepage message:*
-> Your business shouldn't run on disconnected pieces.
+*Replaces "Custom software for Hawaiʻi businesses." Reason: the eyebrow, the
+title tag, the meta description and the schema all already carry that phrase, so
+the page's largest type was restating what the visitor had just read in the
+search result. The keyword is not lost, it is carried four times above the fold
+regardless. `STRATEGY.md` §1 estimates the term at 10 to 50 searches a month and
+calls SEO a credibility channel rather than an acquisition one, so optimising the
+H1 for it was the wrong trade. "Software that" keeps the category legible to a
+cold visitor, which a pure hook headline would not.*
 
-*You can have both if the second becomes the §01 heading. That's how it's set up below.*
+*Note for later: §02's heading, "One line through everything you run," now makes
+the same argument as the hero. Worth a look, not a blocker.*
 
-**Lead**
+**Lead** *(revised 14 Aug 2026, 45 words to 15)*
 
-> Most businesses don't need another tool. They need the six or seven they
-> already pay for to stop being six or seven separate jobs. Thread maps how work
-> actually moves through your business, finds where the handoffs break, and
-> builds what closes them.
+> Thread builds software that fits how your business already works. Not the
+> other way around.
 
-**Buttons**
+*Chosen by the owner after rejecting roughly a dozen alternatives. What the
+rejections were consistently about, and what any future rewrite has to respect:
+**too long, too convoluted, and written for someone who already knows what
+software is.** The reader is a business owner who does not. Plain words, short
+sentences, no vocabulary they wouldn't use themselves.*
 
-> **[ Get your systems mapped ]**  **[ See how it works ]**
+*Specifically dead, do not resurrect: the "six or seven" repetition, "don't need
+another tool", "separate jobs", "closes the gap", "handoffs", "a person in the
+middle", "outgrown the tools they run on".*
 
-*Keep the destinations as they are: primary to `#map`, secondary to `#how`.
-Note the primary CTA now points at the map section rather than the contact form.
-That is the whole point of the change: a smaller first step.*
+*"Not the other way around" is a separate sentence deliberately. As a trailing
+comma clause it dribbles; as its own sentence the contrast lands.*
 
-**Margin note**
+**Buttons** *(revised 14 Aug 2026)*
 
-> Every engagement starts with a systems map. One conversation, then about a
-> week. Thread draws how one workflow really moves through your business, with a
-> ranked list of what's worth fixing first. It's free, it's yours to keep, and
-> there's no obligation to go further.
+> **[ Book a call ]**  **[ See how it works ]**
+
+*The free systems map was **killed as the CTA** by the owner on 14 Aug 2026. The
+first step is now a conversation. Secondary still goes to `#how`.*
+
+*⚠️ The primary button's `href` is a **placeholder**, pointing at `#contact`.
+The owner has a scheduling link but has not supplied it. Swap it when it lands.
+Tracked in `LAUNCH-CHECKLIST.md` §8, along with the nine other places on the
+site that still sell the map and now contradict this.*
+
+**Margin note** *(cut 14 Aug 2026)*
+
+*Removed, not rewritten. It restated the lead and pre-explained the systems map,
+which §04 carries in full a screen later. The hero is now eyebrow, headline, one
+paragraph, two buttons, and nothing else. Before reintroducing anything here,
+check §04 doesn't already say it.*
 
 ---
 

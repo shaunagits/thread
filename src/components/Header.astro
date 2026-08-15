@@ -6,7 +6,10 @@ const CTA = 'Get your systems mapped';
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a href="/#top" class="mark">thread<span>.</span></a>
+    {/* Word and period are separate elements so the entry can reveal them
+        independently — see the wordmark block in the styles below. Kept on one
+        line: a newline between them renders as a word space. */}
+    <a href="/#top" class="mark"><span class="mark-word">thread</span><span class="mark-dot">.</span></a>
 
     <nav class="nav-links" aria-label="Primary">
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -42,8 +45,25 @@ const CTA = 'Get your systems mapped';
   .mark {
     font-family: var(--font-serif); font-weight: 600; font-size: 25px;
     letter-spacing: -.025em; color: var(--color-ink);
+    position: relative;
   }
-  .mark span { color: var(--color-ochre); }
+  /* inline-block because neither transform nor clip-path applies to an inline
+     box. Neither changes the advance width, so the wordmark's metrics hold. */
+  .mark-word { display: inline-block; }
+  .mark-dot {
+    color: var(--color-ochre);
+    display: inline-block;
+    transform-origin: 50% 72%;
+  }
+  /* The thread. Sits on the baseline across the whole wordmark and is
+     invisible unless the entry animation is running — a visitor with reduced
+     motion must never catch a stray rule under the logo. */
+  .mark::before {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+    background: var(--color-ochre);
+    opacity: 0;
+  }
   .mark:hover { text-decoration: none; }
 
   .nav-links {
@@ -93,5 +113,73 @@ const CTA = 'Get your systems mapped';
   @media (max-width: 640px) {
     .nav-links { display: none; }
     .menu { display: block; }
+  }
+
+  /* ============================================================
+     Wordmark — CSS only, same rules as the plates.
+
+     The logo gets threaded. An ochre hairline is pulled left to right
+     along the baseline; the word appears in its wake, letter by letter as
+     the thread passes; the thread carries on off the right edge, and the
+     period drops into the space it vacates.
+
+     That last beat is the whole reason for the sequence. The ochre period
+     is the brand's node — it's what `favicon.svg` is, and it's the point
+     the thread diagram converges on — so the thread has to arrive at it,
+     not merely near it. The period is also the only part that answers to
+     hover.
+
+     Reveals are clip-path rather than opacity so the letters are wiped
+     across rather than faded, which is what makes it read as drawn by the
+     line instead of merely timed with it.
+
+     ~1.0s end to end. This runs on every page load, so it has to be over
+     before it's noticed a second time.
+     ============================================================ */
+  @keyframes mark-thread {
+    0%   { opacity: 1; clip-path: inset(0 100% 0 0) }
+    46%  { opacity: 1; clip-path: inset(0 0 0 0) }
+    100% { opacity: 1; clip-path: inset(0 0 0 100%) }
+  }
+  /* Shares mark-thread's duration, delay and easing so the two run off one
+     timeline: the word finishes revealing at 52% where the thread's leading
+     edge arrives at 46%, which holds the letters a constant ~11% of the
+     wordmark behind the line no matter what the easing is doing. Timing this
+     with an independent duration doesn't work — the eased curves diverge and
+     the letters overtake the thread that's supposed to be drawing them.
+
+     Vertical insets are negative so the clip never shaves the antialiasing
+     off the ascenders; only the horizontal edge is doing work. */
+  @keyframes mark-word {
+    0%   { clip-path: inset(-30% 100% -30% 0) }
+    52%  { clip-path: inset(-30% -8% -30% 0) }
+    100% { clip-path: inset(-30% -8% -30% 0) }
+  }
+  @keyframes mark-dot {
+    from { transform: scale(0) }
+    to   { transform: scale(1) }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* in-out, not ease-out: a thread being drawn through accelerates off the
+       start and decelerates into the finish. Ease-out alone reads as a wipe. */
+    .mark::before { animation: mark-thread .72s cubic-bezier(.65, 0, .35, 1) backwards .04s; }
+    .mark-word    { animation: mark-word  .72s cubic-bezier(.65, 0, .35, 1) backwards .04s; }
+
+    /* `backwards`, not `forwards`, on the period. A forwards fill keeps
+       asserting the animation's own scale(1) after it ends, at a priority the
+       hover rule below can't outrank — the period would never respond to
+       hover again. backwards holds the from-state during the delay, then
+       lets go and hands the property back to the cascade. */
+    .mark-dot {
+      animation: mark-dot .42s cubic-bezier(.34, 1.56, .64, 1) backwards .62s;
+      transition: transform .28s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .mark:hover .mark-dot { transform: scale(1.35); }
+
+    .nav-links a.nav-cta {
+      transition: background .15s ease, transform .18s cubic-bezier(.16, 1, .3, 1);
+    }
+    .nav-links a.nav-cta:hover { transform: translateY(-1px); }
   }
 </style>

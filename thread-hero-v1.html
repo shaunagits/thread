@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thread — hero plate, three directions</title>
+<style>
+  @font-face { font-family:'Newsreader'; font-style:normal; font-weight:200 800; font-display:swap;
+    src:url('public/fonts/newsreader-latin-var.woff2') format('woff2'); }
+  @font-face { font-family:'Public Sans'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('public/fonts/public-sans-latin-400.woff2') format('woff2'); }
+  @font-face { font-family:'Public Sans'; font-style:normal; font-weight:500; font-display:swap;
+    src:url('public/fonts/public-sans-latin-500.woff2') format('woff2'); }
+  @font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('public/fonts/jetbrains-mono-latin-400.woff2') format('woff2'); }
+  @font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:500; font-display:swap;
+    src:url('public/fonts/jetbrains-mono-latin-500.woff2') format('woff2'); }
+
+  /* Standalone review file, so the tokens are inlined here the way
+     thread-figures-v1.html does it. Nothing below invents a colour: every
+     value is copied from @theme static in src/styles/global.css. When a
+     direction is chosen these lift straight back into class names. */
+  :root{
+    --color-paper:#FCFBF7; --color-wash:#F4F0E6; --color-white:#fff;
+    --color-ink:#1C2118; --color-body:#2E3329; --color-quiet:#5A6053; --color-faint:#666D5E;
+    --color-rule:#E0DCD0; --color-hair:#C3C0B4;
+    --color-ochre:#C8873F; --color-line:#AE7126; --color-koa:#8F5A1C;
+    --color-plate:#4A5044;
+    --font-serif:'Newsreader',Georgia,serif;
+    --font-sans:'Public Sans',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  body{margin:0;background:var(--color-paper);color:var(--color-ink);font-family:var(--font-sans);}
+  .wrap{max-width:1280px;margin:0 auto;padding:64px 32px 140px;}
+  .eyebrow{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-koa);}
+  h1{font-family:var(--font-serif);font-weight:500;font-size:38px;letter-spacing:-.02em;margin:14px 0 12px;max-width:22ch;}
+  h2{font-family:var(--font-serif);font-weight:500;font-size:27px;letter-spacing:-.015em;margin:0 0 6px;}
+  h3{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-koa);margin:34px 0 10px;font-weight:500;}
+  p.lead{font-family:var(--font-serif);font-size:19px;line-height:1.55;color:var(--color-body);max-width:64ch;margin:0 0 10px;}
+  p.note{font-family:var(--font-sans);font-size:14px;line-height:1.65;color:var(--color-faint);max-width:74ch;margin:0 0 6px;}
+  p.note b{color:var(--color-body);font-weight:500;}
+  .fig{margin:64px 0 0;padding-top:44px;border-top:1px solid var(--color-rule);}
+  .figcap{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--color-koa);margin:30px 0 12px;}
+  .plate{display:block;width:100%;height:auto;background:var(--color-paper);}
+  .scrollbox{overflow-x:auto;}
+  .phone{width:390px;max-width:100%;border:1px solid var(--color-rule);padding:16px;background:var(--color-paper);}
+  .phone svg{display:block;width:100%;height:auto;}
+  .cols{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;}
+  table.cmp{border-collapse:collapse;font-size:13.5px;margin-top:14px;max-width:900px;}
+  table.cmp th,table.cmp td{border-bottom:1px solid var(--color-rule);padding:9px 16px 9px 0;text-align:left;vertical-align:top;color:var(--color-body);}
+  table.cmp th{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-koa);font-weight:500;}
+
+  /* ============================================================
+     Motion.
+
+     Everything is inside prefers-reduced-motion: no-preference, so the
+     default state with no rules applied is the finished composition.
+     Nothing here needs JavaScript, a library or SMIL.
+
+     These are on-load draws rather than scroll-driven, deliberately: the
+     hero plate is above the fold, so animation-timeline: view() would
+     already be past its trigger point on load and would never run. Scroll
+     driving is the right mechanism for Figs. 2 to 5, not for this one.
+
+     Leader paths carry pathLength="1", so dasharray and dashoffset are
+     both just 1 and no path length has to be measured.
+     ============================================================ */
+  @keyframes draw { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
+  @keyframes fade { from { opacity:0; } to { opacity:1; } }
+  @keyframes pop  { from { opacity:0; transform:scale(.55); } to { opacity:1; transform:scale(1); } }
+  @keyframes grow { from { transform:scaleY(0); } to { transform:scaleY(1); } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .plate .ldr   { stroke-dasharray:1; stroke-dashoffset:1; animation:draw .5s ease-out forwards; }
+    .plate .frame  { stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.1s ease-in-out forwards; }
+    .plate .bdg    { opacity:0; transform-box:fill-box; transform-origin:center; animation:pop .34s cubic-bezier(.2,.8,.3,1) forwards; }
+    .plate .cp     { opacity:0; animation:fade .4s ease-out forwards; }
+    .plate .mark   { opacity:0; animation:fade .32s ease-out forwards; }
+    .plate .bar    { transform-box:fill-box; transform-origin:bottom; animation:grow .5s cubic-bezier(.3,.7,.3,1) both; }
+
+    /* stagger */
+    .d1 { animation-delay:.35s } .d2 { animation-delay:.50s } .d3 { animation-delay:.65s }
+    .d4 { animation-delay:.80s } .d5 { animation-delay:.95s } .d6 { animation-delay:1.10s }
+    .t1 { animation-delay:.70s } .t2 { animation-delay:.85s } .t3 { animation-delay:1.00s }
+    .t4 { animation-delay:1.15s } .t5 { animation-delay:1.30s } .t6 { animation-delay:1.45s }
+    .b1{animation-delay:.10s}.b2{animation-delay:.14s}.b3{animation-delay:.18s}
+    .b4{animation-delay:.22s}.b5{animation-delay:.26s}.b6{animation-delay:.30s}
+    .b7{animation-delay:.34s}.b8{animation-delay:.38s}.b9{animation-delay:.42s}
+  }
+
+  /* ---- shared plate paint ---- */
+  .f-mono{font-family:var(--font-mono)} .f-sans{font-family:var(--font-sans)} .f-serif{font-family:var(--font-serif)}
+  .f-panel{fill:var(--color-white);stroke:var(--color-hair)}
+  .f-open{fill:none;stroke:var(--color-hair)}
+  .f-rule{stroke:var(--color-rule)}
+  .f-hair{fill:var(--color-hair)}
+  .f-ochre{fill:var(--color-ochre)}
+  .f-wash{fill:var(--color-wash)}
+  .f-line{stroke:var(--color-line)}
+  .f-line-fill{fill:var(--color-line)}
+  .f-ink{fill:var(--color-ink)}
+  .f-badge{fill:var(--color-koa)}
+  .f-badge-num{fill:var(--color-paper)}
+  .f-plate{fill:var(--color-plate)}
+  .f-faint{fill:var(--color-faint)}
+  .f-koa{fill:var(--color-koa)}
+  .f-body{fill:var(--color-body)}
+  .dotted{stroke-dasharray:2 3.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Thread · hero plate · three directions · 14 Aug 2026</div>
+  <h1>Same dashboard. Three ways to make it a drawing instead of a screenshot.</h1>
+  <p class="lead">All three keep the operations panel, its content and its six callouts. Nothing here
+  invents a colour, a font or a spacing value. What changes is how the annotation behaves, and in one
+  case whether the plate needs side margins at all.</p>
+  <p class="note">Every direction animates on load, CSS only, no JavaScript, roughly 1.6 to 1.9 seconds,
+  and sits behind <code>prefers-reduced-motion</code> so the default for anyone who asks for less motion
+  is the finished still drawing. Reload the page to replay.</p>
+
+  <!-- ==================================================================
+       A — THE PLATE
+       =================================================================== -->
+  <div class="fig">
+    <h2>A. The plate</h2>
+    <p class="note">The panel stops pretending to be a screenshot. No white card, no rounded corners,
+    no boxes around the figures: one hairline weight throughout, drawn straight onto the paper. A double
+    plate frame surrounds the whole composition and two vertical rules separate the annotation margins
+    from the field, so the numerals sit in a margin the way they would on a botanical plate rather than
+    floating next to the drawing. Plate number bottom right.</p>
+    <p class="note"><b>What it buys.</b> The annotation becomes the subject, because the panel is no
+    longer competing for attention. <b>What it costs.</b> It is the most conservative of the three and it
+    is still 1180 units wide, so the margins still pan sideways on a phone.</p>
+    <p class="note"><b>Motion.</b> The plate frame draws itself first, then the six leader lines in
+    sequence with the badges landing behind them. It reads like someone annotating a drawing while you
+    watch, which is exactly the thing Thread sells.</p>
+
+    <div class="figcap">Fig. 1 · Operations panel, annotated</div>
+    <div class="scrollbox">
+    <svg class="plate f-mono" viewBox="0 0 1180 570" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="A concept drawing of an operations dashboard, drawn in hairlines on a framed plate, with six numbered callouts in the margins describing live counts pulled from Jobber, revenue reconciled against QuickBooks, invoices sent automatically, one login with roles you control, a layout shaped to your process, and data that runs in your own account.">
+
+      <!-- plate frame, double rule -->
+      <rect class="f-open frame" x="10" y="10" width="1160" height="550" stroke-width="1" pathLength="1"/>
+      <rect class="f-rule" x="16" y="16" width="1148" height="538" stroke-width="1"/>
+      <!-- margin rules -->
+      <g class="f-rule" stroke-width="1"><path d="M244 16 V554"/><path d="M936 16 V554"/></g>
+
+      <!-- ======== the panel, flattened ======== -->
+      <rect class="f-open" x="270" y="40" width="640" height="440" stroke-width="1"/>
+      <path class="f-rule" d="M270 76 H910" stroke-width="1"/>
+      <circle class="f-ochre" cx="286" cy="58" r="4"/>
+      <text class="f-plate" x="301" y="62" font-size="10" letter-spacing="1.1">OPERATIONS · SAMPLE ACCOUNT</text>
+
+      <!-- sidebar -->
+      <path class="f-rule" d="M338 76 V440" stroke-width="1"/>
+      <g class="f-hair">
+        <rect x="286" y="96" width="36" height="4.5" rx="2"/><rect x="286" y="118" width="28" height="4.5" rx="2"/>
+        <rect x="286" y="140" width="34" height="4.5" rx="2"/><rect x="286" y="162" width="24" height="4.5" rx="2"/>
+        <rect x="286" y="184" width="32" height="4.5" rx="2"/>
+      </g>
+      <rect class="f-ochre" x="278" y="135" width="3.5" height="20" rx="1.75"/>
+
+      <!-- kpi row: baselines, not boxes -->
+      <g class="f-rule" stroke-width="1">
+        <path d="M354 154 H466"/><path d="M494 154 H606"/><path d="M634 154 H746"/><path d="M774 154 H886"/>
+      </g>
+      <g class="f-ink f-serif" font-size="25" font-weight="600" letter-spacing="-0.5">
+        <text x="354" y="146">142</text><text x="494" y="146">$18.4k</text><text x="634" y="146">6</text><text x="774" y="146">94%</text>
+      </g>
+      <g class="f-faint" font-size="8.5" letter-spacing="0.8">
+        <text x="354" y="170">OPEN JOBS</text><text x="494" y="170">UNBILLED</text>
+        <text x="634" y="170">OVERDUE</text><text x="774" y="170">ON TIME</text>
+      </g>
+
+      <!-- chart: two axes, no box -->
+      <text class="f-plate" x="354" y="200" font-size="9" letter-spacing="0.9">REVENUE BY WEEK</text>
+      <g class="f-rule" stroke-width="1"><path d="M354 212 V330"/><path d="M354 330 H704"/></g>
+      <g class="f-ochre">
+        <rect class="bar b1" x="366" y="298" width="16" height="32"/><rect class="bar b2" x="404" y="278" width="16" height="52"/>
+        <rect class="bar b3" x="442" y="258" width="16" height="72"/><rect class="bar b4" x="480" y="286" width="16" height="44"/>
+        <rect class="bar b5" x="518" y="244" width="16" height="86"/><rect class="bar b6" x="556" y="268" width="16" height="62"/>
+        <rect class="bar b7" x="594" y="232" width="16" height="98"/><rect class="bar b8" x="632" y="252" width="16" height="78"/>
+        <rect class="bar b9" x="670" y="272" width="16" height="58"/>
+      </g>
+
+      <!-- today list -->
+      <path class="f-rule" d="M712 190 V310" stroke-width="1"/>
+      <text class="f-plate" x="724" y="200" font-size="9" letter-spacing="0.9">TODAY</text>
+      <g class="f-rule" stroke-width="1"><path d="M724 240 H886"/><path d="M724 272 H886"/></g>
+      <g class="f-plate" font-size="9.5">
+        <text x="724" y="230">4 crews dispatched</text><text x="724" y="262">2 invoices sent</text>
+        <text x="724" y="294">1 needs your review</text>
+      </g>
+
+      <!-- table -->
+      <text class="f-plate" x="354" y="366" font-size="9" letter-spacing="0.9">ACTIVE JOBS</text>
+      <g class="f-rule" stroke-width="1"><path d="M354 402 H886"/><path d="M354 430 H886"/></g>
+      <g class="f-plate" font-size="10">
+        <text x="354" y="392">Kahala remodel · invoice queued</text>
+        <text x="354" y="420">Waimea install · awaiting parts</text>
+        <text x="354" y="448">ʻAiea maintenance · scheduled</text>
+      </g>
+      <g class="f-koa" font-size="8.5" text-anchor="end" letter-spacing="0.7">
+        <text x="886" y="392">AUTO</text><text x="886" y="420">AUTO</text><text x="886" y="448">AUTO</text>
+      </g>
+
+      <!-- status -->
+      <path class="f-rule" d="M270 456 H910" stroke-width="1"/>
+      <circle class="f-ochre" cx="354" cy="470" r="3.5"/>
+      <text class="f-faint" x="366" y="474" font-size="8.5" letter-spacing="0.7">SYNCED 42 SECONDS AGO · YOUR ACCOUNT</text>
+
+      <!-- ======== leaders ======== -->
+      <g class="f-line" stroke-width="1">
+        <path class="ldr d1" pathLength="1" d="M270 128 H226"/>
+        <path class="ldr d2" pathLength="1" d="M270 262 H226"/>
+        <path class="ldr d3" pathLength="1" d="M270 420 H226"/>
+        <path class="ldr d4" pathLength="1" d="M910 128 H954"/>
+        <path class="ldr d5" pathLength="1" d="M910 262 H954"/>
+        <path class="ldr d6" pathLength="1" d="M910 470 H954"/>
+      </g>
+      <g class="f-line-fill">
+        <circle class="mark t1" cx="270" cy="128" r="2.5"/><circle class="mark t2" cx="270" cy="262" r="2.5"/>
+        <circle class="mark t3" cx="270" cy="420" r="2.5"/><circle class="mark t4" cx="910" cy="128" r="2.5"/>
+        <circle class="mark t5" cx="910" cy="262" r="2.5"/><circle class="mark t6" cx="910" cy="470" r="2.5"/>
+      </g>
+
+      <!-- badges: koa fill with paper numerals, per landmine 5 -->
+      <g class="bdg t1"><circle class="f-badge" cx="214" cy="128" r="12"/><text class="f-badge-num" x="214" y="132" font-size="11.5" font-weight="500" text-anchor="middle">1</text></g>
+      <g class="bdg t2"><circle class="f-badge" cx="214" cy="262" r="12"/><text class="f-badge-num" x="214" y="266" font-size="11.5" font-weight="500" text-anchor="middle">2</text></g>
+      <g class="bdg t3"><circle class="f-badge" cx="214" cy="420" r="12"/><text class="f-badge-num" x="214" y="424" font-size="11.5" font-weight="500" text-anchor="middle">3</text></g>
+      <g class="bdg t4"><circle class="f-badge" cx="966" cy="128" r="12"/><text class="f-badge-num" x="966" y="132" font-size="11.5" font-weight="500" text-anchor="middle">4</text></g>
+      <g class="bdg t5"><circle class="f-badge" cx="966" cy="262" r="12"/><text class="f-badge-num" x="966" y="266" font-size="11.5" font-weight="500" text-anchor="middle">5</text></g>
+      <g class="bdg t6"><circle class="f-badge" cx="966" cy="470" r="12"/><text class="f-badge-num" x="966" y="474" font-size="11.5" font-weight="500" text-anchor="middle">6</text></g>
+
+      <!-- callout copy -->
+      <g class="f-body f-sans" font-size="13" text-anchor="end">
+        <g class="cp t1"><text x="188" y="123">Live counts, pulled from</text><text x="188" y="141">Jobber every 90 seconds</text></g>
+        <g class="cp t2"><text x="188" y="257">Revenue reconciled</text><text x="188" y="275">against QuickBooks</text></g>
+        <g class="cp t3"><text x="188" y="415">Invoices sent the moment</text><text x="188" y="433">a job is marked closed</text></g>
+      </g>
+      <g class="f-body f-sans" font-size="13">
+        <g class="cp t4"><text x="992" y="123">One login for the team.</text><text x="992" y="141">You set who sees what.</text></g>
+        <g class="cp t5"><text x="992" y="257">Shaped around your</text><text x="992" y="275">process, not a template</text></g>
+        <g class="cp t6"><text x="992" y="465">Runs in your account,</text><text x="992" y="483">on your data. You own it.</text></g>
+      </g>
+
+      <text class="f-koa" x="24" y="548" font-size="8.5" letter-spacing="0.7">CONCEPT DRAWING</text>
+      <text class="f-koa" x="1156" y="548" font-size="8.5" letter-spacing="0.7" text-anchor="end">PL. 01</text>
+    </svg>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       B — THE CUTAWAY
+       =================================================================== -->
+  <div class="fig">
+    <h2>B. The cutaway</h2>
+    <p class="note">The panel geometry is untouched, coordinate for coordinate. One thing changes: the
+    leader lines stop dying at the panel edge. Each one crosses into the drawing as a dotted segment and
+    terminates on the specific element it is talking about, and that element is marked. Callout 1 lands
+    on the open-jobs figure. Callout 2 lands on the chart. Callout 3 runs the full width of a job row to
+    the AUTO tag, and the row is washed to show which one. Callout 6 runs back along the status bar.</p>
+    <p class="note"><b>Why this is the real fix.</b> Right now six annotations point at a rectangle.
+    A reader has to guess which part of the panel each sentence is about, and mostly does not bother.
+    Once the leaders land on things, the drawing explains itself in the order you drew it. This is the
+    difference between a caption and an annotation.</p>
+    <p class="note"><b>What it costs.</b> Least visual change of the three, so if you wanted the hero to
+    feel new, this will not read as new. Same 1180 width, same sideways pan on a phone.</p>
+    <p class="note"><b>Motion.</b> The solid margin segment draws, then the dotted segment travels inward,
+    then the target marks itself. The eye is walked from the sentence to the thing.</p>
+
+    <div class="figcap">Fig. 1 · Operations panel, annotated</div>
+    <div class="scrollbox">
+    <svg class="plate f-mono" viewBox="0 0 1180 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="A concept drawing of an operations dashboard with six numbered callouts, each connected by a dotted leader line to the specific part of the dashboard it describes: the open jobs count pulled from Jobber, the revenue chart reconciled against QuickBooks, an automatically invoiced job row, the roles indicator in the header, the daily list shaped to your process, and the status bar showing the data runs in your own account.">
+
+      <!-- ======== the panel ======== -->
+      <rect class="f-panel" x="270" y="30" width="640" height="460" rx="4" stroke-width="1"/>
+      <path class="f-rule" d="M270 66 H910" stroke-width="1"/>
+      <circle class="f-ochre" cx="289" cy="49" r="4.5"/>
+      <text class="f-plate" x="304" y="53" font-size="10" letter-spacing="1.1">OPERATIONS · SAMPLE ACCOUNT</text>
+      <!-- roles indicator: the thing callout 4 actually points at -->
+      <text class="mark t4 f-plate" x="886" y="53" font-size="8.5" letter-spacing="0.9" text-anchor="end">3 ROLES</text>
+
+      <!-- sidebar -->
+      <path class="f-rule" d="M338 66 V490" stroke-width="1"/>
+      <g class="f-hair">
+        <rect x="286" y="88" width="36" height="4.5" rx="2"/><rect x="286" y="110" width="28" height="4.5" rx="2"/>
+        <rect x="286" y="132" width="34" height="4.5" rx="2"/><rect x="286" y="154" width="24" height="4.5" rx="2"/>
+        <rect x="286" y="176" width="32" height="4.5" rx="2"/>
+      </g>
+      <rect class="f-ochre" x="278" y="125" width="3.5" height="20" rx="1.75"/>
+
+      <!-- kpi tiles; tile 1 is a callout target so it takes the line stroke -->
+      <g class="f-rule" stroke-width="1">
+        <rect x="490" y="84" width="126" height="60" rx="2"/>
+        <rect x="626" y="84" width="126" height="60" rx="2"/><rect x="762" y="84" width="126" height="60" rx="2"/>
+      </g>
+      <rect class="mark t1 f-line" x="354" y="84" width="126" height="60" rx="2" stroke-width="1.4"/>
+      <g class="f-ink f-serif" font-size="25" font-weight="600" letter-spacing="-0.5">
+        <text x="368" y="120">142</text><text x="504" y="120">$18.4k</text><text x="640" y="120">6</text><text x="776" y="120">94%</text>
+      </g>
+      <g class="f-faint" font-size="8.5" letter-spacing="0.8">
+        <text x="368" y="136">OPEN JOBS</text><text x="504" y="136">UNBILLED</text>
+        <text x="640" y="136">OVERDUE</text><text x="776" y="136">ON TIME</text>
+      </g>
+
+      <!-- chart; callout 2 target -->
+      <rect class="mark t2 f-line" x="354" y="166" width="350" height="150" rx="2" stroke-width="1.4"/>
+      <text class="f-plate" x="368" y="188" font-size="9" letter-spacing="0.9">REVENUE BY WEEK</text>
+      <g class="f-ochre">
+        <rect class="bar b1" x="368" y="266" width="18" height="34"/><rect class="bar b2" x="406" y="246" width="18" height="54"/>
+        <rect class="bar b3" x="444" y="226" width="18" height="74"/><rect class="bar b4" x="482" y="254" width="18" height="46"/>
+        <rect class="bar b5" x="520" y="212" width="18" height="88"/><rect class="bar b6" x="558" y="236" width="18" height="64"/>
+        <rect class="bar b7" x="596" y="200" width="18" height="100"/><rect class="bar b8" x="634" y="220" width="18" height="80"/>
+        <rect class="bar b9" x="672" y="240" width="18" height="60"/>
+      </g>
+
+      <!-- today list; callout 5 target -->
+      <rect class="mark t5 f-line" x="718" y="166" width="170" height="150" rx="2" stroke-width="1.4"/>
+      <text class="f-plate" x="732" y="188" font-size="9" letter-spacing="0.9">TODAY</text>
+      <g class="f-rule" stroke-width="1"><path d="M732 226 H874"/><path d="M732 258 H874"/></g>
+      <g class="f-plate" font-size="9.5">
+        <text x="732" y="218">4 crews dispatched</text><text x="732" y="250">2 invoices sent</text>
+        <text x="732" y="282">1 needs your review</text>
+      </g>
+
+      <!-- table; callout 3 washes row 2 -->
+      <rect class="mark t3 f-wash" x="354" y="378" width="534" height="28"/>
+      <text class="f-plate" x="354" y="346" font-size="9" letter-spacing="0.9">ACTIVE JOBS</text>
+      <g class="f-rule" stroke-width="1"><path d="M354 376 H888"/><path d="M354 406 H888"/></g>
+      <g class="f-plate" font-size="10">
+        <text x="354" y="368">Kahala remodel · invoice queued</text>
+        <text x="354" y="398">Waimea install · awaiting parts</text>
+        <text x="354" y="428">ʻAiea maintenance · scheduled</text>
+      </g>
+      <g class="f-koa" font-size="8.5" text-anchor="end" letter-spacing="0.7">
+        <text x="888" y="368">AUTO</text><text x="888" y="398" font-weight="500">AUTO</text><text x="888" y="428">AUTO</text>
+      </g>
+
+      <!-- status -->
+      <path class="f-rule" d="M270 448 H910" stroke-width="1"/>
+      <circle class="f-ochre" cx="362" cy="468" r="3.5"/>
+      <text class="f-faint" x="374" y="472" font-size="8.5" letter-spacing="0.7">SYNCED 42 SECONDS AGO · YOUR ACCOUNT</text>
+      <text class="f-koa" x="270" y="510" font-size="8.5" letter-spacing="0.7">CONCEPT DRAWING</text>
+
+      <!-- ======== leaders: solid in the margin, dotted inside the panel ======== -->
+      <g class="f-line" stroke-width="1">
+        <path class="ldr d1" pathLength="1" d="M270 100 H232"/>
+        <path class="ldr d2" pathLength="1" d="M270 241 H232"/>
+        <path class="ldr d3" pathLength="1" d="M270 398 H232"/>
+        <path class="ldr d4" pathLength="1" d="M910 49 H948"/>
+        <path class="ldr d5" pathLength="1" d="M910 241 H948"/>
+        <path class="ldr d6" pathLength="1" d="M910 468 H948"/>
+      </g>
+      <g class="f-line dotted" stroke-width="1">
+        <path class="ldr t1" pathLength="1" d="M270 100 H354"/>
+        <path class="ldr t2" pathLength="1" d="M270 241 H354"/>
+        <path class="ldr t3" pathLength="1" d="M270 398 H348"/>
+        <path class="ldr t4" pathLength="1" d="M910 49 H828"/>
+        <path class="ldr t5" pathLength="1" d="M910 241 H888"/>
+        <path class="ldr t6" pathLength="1" d="M910 468 H610"/>
+      </g>
+      <g class="f-line-fill">
+        <circle class="mark t1" cx="354" cy="100" r="3"/><circle class="mark t2" cx="354" cy="241" r="3"/>
+        <circle class="mark t3" cx="348" cy="398" r="3"/><circle class="mark t4" cx="828" cy="49" r="3"/>
+        <circle class="mark t5" cx="888" cy="241" r="3"/><circle class="mark t6" cx="610" cy="468" r="3"/>
+      </g>
+
+      <g class="bdg t1"><circle class="f-badge" cx="220" cy="100" r="12"/><text class="f-badge-num" x="220" y="104" font-size="11.5" font-weight="500" text-anchor="middle">1</text></g>
+      <g class="bdg t2"><circle class="f-badge" cx="220" cy="241" r="12"/><text class="f-badge-num" x="220" y="245" font-size="11.5" font-weight="500" text-anchor="middle">2</text></g>
+      <g class="bdg t3"><circle class="f-badge" cx="220" cy="398" r="12"/><text class="f-badge-num" x="220" y="402" font-size="11.5" font-weight="500" text-anchor="middle">3</text></g>
+      <g class="bdg t4"><circle class="f-badge" cx="960" cy="49" r="12"/><text class="f-badge-num" x="960" y="53" font-size="11.5" font-weight="500" text-anchor="middle">4</text></g>
+      <g class="bdg t5"><circle class="f-badge" cx="960" cy="241" r="12"/><text class="f-badge-num" x="960" y="245" font-size="11.5" font-weight="500" text-anchor="middle">5</text></g>
+      <g class="bdg t6"><circle class="f-badge" cx="960" cy="468" r="12"/><text class="f-badge-num" x="960" y="472" font-size="11.5" font-weight="500" text-anchor="middle">6</text></g>
+
+      <g class="f-body f-sans" font-size="13" text-anchor="end">
+        <g class="cp t1"><text x="194" y="95">Live counts, pulled from</text><text x="194" y="113">Jobber every 90 seconds</text></g>
+        <g class="cp t2"><text x="194" y="236">Revenue reconciled</text><text x="194" y="254">against QuickBooks</text></g>
+        <g class="cp t3"><text x="194" y="393">Invoices sent the moment</text><text x="194" y="411">a job is marked closed</text></g>
+      </g>
+      <g class="f-body f-sans" font-size="13">
+        <g class="cp t4"><text x="982" y="44">One login for the team.</text><text x="982" y="62">You set who sees what.</text></g>
+        <g class="cp t5"><text x="982" y="236">Shaped around your</text><text x="982" y="254">process, not a template</text></g>
+        <g class="cp t6"><text x="982" y="463">Runs in your account,</text><text x="982" y="481">on your data. You own it.</text></g>
+      </g>
+    </svg>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       C — LEGEND BELOW
+       =================================================================== -->
+  <div class="fig">
+    <h2>C. Legend below</h2>
+    <p class="note">The side margins are deleted. Numbered markers sit directly on the drawing at the six
+    points they refer to, and the sentences move to a numbered legend under a rule. That is standard
+    field-guide practice, and it means the plate no longer has to be 1180 units wide to hold two columns
+    of prose: it is 900, and the legend is three columns that become one on a phone.</p>
+    <p class="note"><b>Why I would pick this one.</b> The margins are what force the sideways pan on
+    mobile, and the sideways pan is where the entire selling argument currently disappears. Directions A
+    and B both need a separate phone composition to fix that. C is the phone composition. It also puts
+    the markers on the things they describe, so it inherits B's craft gain for free.</p>
+    <p class="note"><b>What it costs.</b> The reading order becomes two steps, marker then legend, rather
+    than one glance. On a wide screen a margin annotation is slightly more elegant. Worth trading.</p>
+    <p class="note"><b>Motion.</b> Markers land on the drawing one at a time and each legend entry fades
+    in with its marker, so the numbering teaches itself.</p>
+
+    <div class="figcap">Fig. 1 · Operations panel, annotated</div>
+    <svg class="plate f-mono" viewBox="0 0 900 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="A concept drawing of an operations dashboard with six numbered markers on the drawing and a numbered legend beneath it: live counts pulled from Jobber, revenue reconciled against QuickBooks, invoices sent automatically when a job closes, one login with roles you control, a daily list shaped to your process, and data that runs in your own account.">
+
+      <rect class="f-panel" x="20" y="20" width="860" height="380" rx="3" stroke-width="1"/>
+      <path class="f-rule" d="M20 56 H880" stroke-width="1"/>
+      <circle class="f-ochre" cx="38" cy="38" r="4"/>
+      <text class="f-plate" x="53" y="42" font-size="9.5" letter-spacing="1.1">OPERATIONS · SAMPLE ACCOUNT</text>
+      <text class="f-plate" x="866" y="42" font-size="8.5" letter-spacing="0.9" text-anchor="end">3 ROLES</text>
+
+      <!-- sidebar -->
+      <path class="f-rule" d="M88 56 V370" stroke-width="1"/>
+      <g class="f-hair">
+        <rect x="34" y="74" width="32" height="4" rx="2"/><rect x="34" y="94" width="24" height="4" rx="2"/>
+        <rect x="34" y="114" width="30" height="4" rx="2"/><rect x="34" y="134" width="20" height="4" rx="2"/>
+        <rect x="34" y="154" width="28" height="4" rx="2"/>
+      </g>
+      <rect class="f-ochre" x="26" y="109" width="3" height="16" rx="1.5"/>
+
+      <!-- kpi -->
+      <g class="f-rule" stroke-width="1">
+        <rect x="104" y="72" width="180" height="52" rx="2"/><rect x="300" y="72" width="180" height="52" rx="2"/>
+        <rect x="496" y="72" width="180" height="52" rx="2"/><rect x="692" y="72" width="180" height="52" rx="2"/>
+      </g>
+      <g class="f-ink f-serif" font-size="21" font-weight="600" letter-spacing="-0.4">
+        <text x="116" y="102">142</text><text x="312" y="102">$18.4k</text><text x="508" y="102">6</text><text x="704" y="102">94%</text>
+      </g>
+      <g class="f-faint" font-size="8" letter-spacing="0.8">
+        <text x="116" y="116">OPEN JOBS</text><text x="312" y="116">UNBILLED</text>
+        <text x="508" y="116">OVERDUE</text><text x="704" y="116">ON TIME</text>
+      </g>
+
+      <!-- chart -->
+      <rect class="f-rule" x="104" y="142" width="470" height="126" rx="2" stroke-width="1"/>
+      <text class="f-plate" x="116" y="162" font-size="8.5" letter-spacing="0.9">REVENUE BY WEEK</text>
+      <g class="f-ochre">
+        <rect class="bar b1" x="120" y="230" width="22" height="26"/><rect class="bar b2" x="168" y="212" width="22" height="44"/>
+        <rect class="bar b3" x="216" y="196" width="22" height="60"/><rect class="bar b4" x="264" y="220" width="22" height="36"/>
+        <rect class="bar b5" x="312" y="184" width="22" height="72"/><rect class="bar b6" x="360" y="204" width="22" height="52"/>
+        <rect class="bar b7" x="408" y="174" width="22" height="82"/><rect class="bar b8" x="456" y="192" width="22" height="64"/>
+        <rect class="bar b9" x="504" y="208" width="22" height="48"/>
+      </g>
+
+      <!-- today -->
+      <rect class="f-rule" x="594" y="142" width="278" height="126" rx="2" stroke-width="1"/>
+      <text class="f-plate" x="608" y="162" font-size="8.5" letter-spacing="0.9">TODAY</text>
+      <g class="f-rule" stroke-width="1"><path d="M608 200 H858"/><path d="M608 224 H858"/></g>
+      <g class="f-plate" font-size="9">
+        <text x="608" y="192">4 crews dispatched</text><text x="608" y="216">2 invoices sent</text>
+        <text x="608" y="240">1 needs your review</text>
+      </g>
+
+      <!-- table -->
+      <text class="f-plate" x="104" y="294" font-size="8.5" letter-spacing="0.9">ACTIVE JOBS</text>
+      <g class="f-rule" stroke-width="1"><path d="M104 328 H872"/><path d="M104 352 H872"/></g>
+      <g class="f-plate" font-size="9.5">
+        <text x="104" y="318">Kahala remodel · invoice queued</text>
+        <text x="104" y="342">Waimea install · awaiting parts</text>
+        <text x="104" y="366">ʻAiea maintenance · scheduled</text>
+      </g>
+      <g class="f-koa" font-size="8" text-anchor="end" letter-spacing="0.7">
+        <text x="872" y="318">AUTO</text><text x="872" y="342">AUTO</text><text x="872" y="366">AUTO</text>
+      </g>
+
+      <!-- status -->
+      <path class="f-rule" d="M20 376 H880" stroke-width="1"/>
+      <circle class="f-ochre" cx="104" cy="388" r="3"/>
+      <text class="f-faint" x="114" y="391" font-size="8" letter-spacing="0.7">SYNCED 42 SECONDS AGO · YOUR ACCOUNT</text>
+
+      <!-- ======== markers on the drawing ======== -->
+      <g class="bdg t1"><circle class="f-badge" cx="104" cy="72" r="10"/><text class="f-badge-num" x="104" y="75.5" font-size="10" font-weight="500" text-anchor="middle">1</text></g>
+      <g class="bdg t2"><circle class="f-badge" cx="104" cy="142" r="10"/><text class="f-badge-num" x="104" y="145.5" font-size="10" font-weight="500" text-anchor="middle">2</text></g>
+      <g class="bdg t3"><circle class="f-badge" cx="858" cy="294" r="10"/><text class="f-badge-num" x="858" y="297.5" font-size="10" font-weight="500" text-anchor="middle">3</text></g>
+      <g class="bdg t4"><circle class="f-badge" cx="804" cy="38" r="10"/><text class="f-badge-num" x="804" y="41.5" font-size="10" font-weight="500" text-anchor="middle">4</text></g>
+      <g class="bdg t5"><circle class="f-badge" cx="594" cy="142" r="10"/><text class="f-badge-num" x="594" y="145.5" font-size="10" font-weight="500" text-anchor="middle">5</text></g>
+      <g class="bdg t6"><circle class="f-badge" cx="60" cy="388" r="10"/><text class="f-badge-num" x="60" y="391.5" font-size="10" font-weight="500" text-anchor="middle">6</text></g>
+
+      <!-- ======== legend ======== -->
+      <path class="f-rule" d="M20 436 H880" stroke-width="1"/>
+      <g class="f-body f-sans" font-size="12.5">
+        <g class="cp t1"><text x="52" y="466">Live counts, pulled from</text><text x="52" y="484">Jobber every 90 seconds</text></g>
+        <g class="cp t2"><text x="340" y="466">Revenue reconciled</text><text x="340" y="484">against QuickBooks</text></g>
+        <g class="cp t3"><text x="628" y="466">Invoices sent the moment</text><text x="628" y="484">a job is marked closed</text></g>
+        <g class="cp t4"><text x="52" y="532">One login for the team.</text><text x="52" y="550">You set who sees what.</text></g>
+        <g class="cp t5"><text x="340" y="532">Shaped around your process,</text><text x="340" y="550">not a template</text></g>
+        <g class="cp t6"><text x="628" y="532">Runs in your account, on</text><text x="628" y="550">your data. You own it.</text></g>
+      </g>
+      <g class="f-badge">
+        <circle class="bdg t1" cx="31" cy="470" r="11"/><circle class="bdg t2" cx="319" cy="470" r="11"/><circle class="bdg t3" cx="607" cy="470" r="11"/>
+        <circle class="bdg t4" cx="31" cy="536" r="11"/><circle class="bdg t5" cx="319" cy="536" r="11"/><circle class="bdg t6" cx="607" cy="536" r="11"/>
+      </g>
+      <g class="f-badge-num" font-size="10.5" font-weight="500" text-anchor="middle">
+        <text class="bdg t1" x="31" y="474">1</text><text class="bdg t2" x="319" y="474">2</text><text class="bdg t3" x="607" y="474">3</text>
+        <text class="bdg t4" x="31" y="540">4</text><text class="bdg t5" x="319" y="540">5</text><text class="bdg t6" x="607" y="540">6</text>
+      </g>
+
+      <text class="f-koa" x="20" y="586" font-size="8.5" letter-spacing="0.7">CONCEPT DRAWING</text>
+      <text class="f-koa" x="880" y="586" font-size="8.5" letter-spacing="0.7" text-anchor="end">PL. 01</text>
+    </svg>
+  </div>
+
+  <!-- ==================================================================
+       PHONE
+       =================================================================== -->
+  <div class="fig">
+    <h2>The phone composition</h2>
+    <p class="note">Shown at 390 units, which is an iPhone in portrait. This is a second SVG that swaps in
+    under the 820px breakpoint with a plain <code>display:none</code>, so it costs no JavaScript and no
+    container queries. Panel simplified to two columns of figures, table kept, TODAY list dropped because
+    it is the least load-bearing block. Legend stacks to one column. Nothing pans sideways and the
+    <code>Scroll sideways to read</code> hint disappears.</p>
+    <p class="note"><b>The finding worth acting on:</b> this is the same answer for all three directions.
+    A and B need it bolted on. C already is it, which is most of why C is my recommendation.</p>
+
+    <div class="figcap">Fig. 1 · Operations panel, annotated · 390px</div>
+    <div class="phone">
+    <svg class="plate f-mono" viewBox="0 0 360 830" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="The same operations dashboard concept drawing, redrawn for a narrow screen, with six numbered markers on the drawing and a stacked numbered legend beneath: live counts pulled from Jobber, revenue reconciled against QuickBooks, invoices sent automatically when a job closes, one login with roles you control, a daily list shaped to your process, and data that runs in your own account.">
+
+      <rect class="f-panel" x="8" y="8" width="344" height="492" rx="3" stroke-width="1"/>
+      <path class="f-rule" d="M8 40 H352" stroke-width="1"/>
+      <circle class="f-ochre" cx="22" cy="26" r="3.5"/>
+      <text class="f-plate" x="33" y="29" font-size="8" letter-spacing="1">OPERATIONS · SAMPLE</text>
+      <text class="f-plate" x="340" y="29" font-size="7.5" letter-spacing="0.8" text-anchor="end">3 ROLES</text>
+
+      <!-- kpi, two by two -->
+      <g class="f-rule" stroke-width="1">
+        <rect x="20" y="54" width="152" height="46" rx="2"/><rect x="188" y="54" width="152" height="46" rx="2"/>
+        <rect x="20" y="108" width="152" height="46" rx="2"/><rect x="188" y="108" width="152" height="46" rx="2"/>
+      </g>
+      <g class="f-ink f-serif" font-size="17" font-weight="600" letter-spacing="-0.3">
+        <text x="32" y="80">142</text><text x="200" y="80">$18.4k</text><text x="32" y="134">6</text><text x="200" y="134">94%</text>
+      </g>
+      <g class="f-faint" font-size="7" letter-spacing="0.7">
+        <text x="32" y="92">OPEN JOBS</text><text x="200" y="92">UNBILLED</text>
+        <text x="32" y="146">OVERDUE</text><text x="200" y="146">ON TIME</text>
+      </g>
+
+      <!-- chart -->
+      <text class="f-plate" x="20" y="176" font-size="7.5" letter-spacing="0.8">REVENUE BY WEEK</text>
+      <rect class="f-rule" x="20" y="188" width="320" height="76" rx="2" stroke-width="1"/>
+      <g class="f-ochre">
+        <rect class="bar b1" x="32" y="238" width="22" height="18"/><rect class="bar b2" x="66" y="226" width="22" height="30"/>
+        <rect class="bar b3" x="100" y="214" width="22" height="42"/><rect class="bar b4" x="134" y="232" width="22" height="24"/>
+        <rect class="bar b5" x="168" y="206" width="22" height="50"/><rect class="bar b6" x="202" y="220" width="22" height="36"/>
+        <rect class="bar b7" x="236" y="200" width="22" height="56"/><rect class="bar b8" x="270" y="212" width="22" height="44"/>
+        <rect class="bar b9" x="304" y="224" width="22" height="32"/>
+      </g>
+
+      <!-- today -->
+      <rect class="f-rule" x="20" y="280" width="320" height="80" rx="2" stroke-width="1"/>
+      <text class="f-plate" x="32" y="296" font-size="7.5" letter-spacing="0.8">TODAY</text>
+      <g class="f-rule" stroke-width="1"><path d="M32 322 H328"/><path d="M32 340 H328"/></g>
+      <g class="f-plate" font-size="8.5">
+        <text x="32" y="316">4 crews dispatched</text><text x="32" y="334">2 invoices sent</text>
+        <text x="32" y="352">1 needs your review</text>
+      </g>
+
+      <!-- table -->
+      <text class="f-plate" x="20" y="386" font-size="7.5" letter-spacing="0.8">ACTIVE JOBS</text>
+      <g class="f-rule" stroke-width="1"><path d="M20 412 H340"/><path d="M20 434 H340"/></g>
+      <g class="f-plate" font-size="8.5">
+        <text x="20" y="406">Kahala remodel</text><text x="20" y="428">Waimea install</text><text x="20" y="450">ʻAiea maintenance</text>
+      </g>
+      <g class="f-koa" font-size="7" text-anchor="end" letter-spacing="0.6">
+        <text x="340" y="406">AUTO</text><text x="340" y="428">AUTO</text><text x="340" y="450">AUTO</text>
+      </g>
+
+      <!-- status -->
+      <path class="f-rule" d="M8 466 H352" stroke-width="1"/>
+      <circle class="f-ochre" cx="52" cy="478" r="3"/>
+      <text class="f-faint" x="62" y="481" font-size="7" letter-spacing="0.6">SYNCED 42 SECONDS AGO · YOUR ACCOUNT</text>
+
+      <!-- markers -->
+      <g class="bdg t1"><circle class="f-badge" cx="20" cy="54" r="9"/><text class="f-badge-num" x="20" y="57" font-size="9" font-weight="500" text-anchor="middle">1</text></g>
+      <g class="bdg t2"><circle class="f-badge" cx="20" cy="188" r="9"/><text class="f-badge-num" x="20" y="191" font-size="9" font-weight="500" text-anchor="middle">2</text></g>
+      <g class="bdg t3"><circle class="f-badge" cx="332" cy="386" r="9"/><text class="f-badge-num" x="332" y="389" font-size="9" font-weight="500" text-anchor="middle">3</text></g>
+      <g class="bdg t4"><circle class="f-badge" cx="288" cy="26" r="9"/><text class="f-badge-num" x="288" y="29" font-size="9" font-weight="500" text-anchor="middle">4</text></g>
+      <g class="bdg t5"><circle class="f-badge" cx="20" cy="280" r="9"/><text class="f-badge-num" x="20" y="283" font-size="9" font-weight="500" text-anchor="middle">5</text></g>
+      <g class="bdg t6"><circle class="f-badge" cx="24" cy="478" r="9"/><text class="f-badge-num" x="24" y="481" font-size="9" font-weight="500" text-anchor="middle">6</text></g>
+
+      <text class="f-koa" x="8" y="518" font-size="7.5" letter-spacing="0.6">CONCEPT DRAWING</text>
+
+      <!-- legend, one column -->
+      <path class="f-rule" d="M8 536 H352" stroke-width="1"/>
+      <g class="f-body f-sans" font-size="11">
+        <g class="cp t1"><text x="38" y="559">Live counts, pulled from</text><text x="38" y="575">Jobber every 90 seconds</text></g>
+        <g class="cp t2"><text x="38" y="605">Revenue reconciled</text><text x="38" y="621">against QuickBooks</text></g>
+        <g class="cp t3"><text x="38" y="651">Invoices sent the moment</text><text x="38" y="667">a job is marked closed</text></g>
+        <g class="cp t4"><text x="38" y="697">One login for the team.</text><text x="38" y="713">You set who sees what.</text></g>
+        <g class="cp t5"><text x="38" y="743">Shaped around your process,</text><text x="38" y="759">not a template</text></g>
+        <g class="cp t6"><text x="38" y="789">Runs in your account, on</text><text x="38" y="805">your data. You own it.</text></g>
+      </g>
+      <g class="f-badge">
+        <circle class="bdg t1" cx="19" cy="564" r="10"/><circle class="bdg t2" cx="19" cy="610" r="10"/><circle class="bdg t3" cx="19" cy="656" r="10"/>
+        <circle class="bdg t4" cx="19" cy="702" r="10"/><circle class="bdg t5" cx="19" cy="748" r="10"/><circle class="bdg t6" cx="19" cy="794" r="10"/>
+      </g>
+      <g class="f-badge-num" font-size="9.5" font-weight="500" text-anchor="middle">
+        <text class="bdg t1" x="19" y="567.5">1</text><text class="bdg t2" x="19" y="613.5">2</text><text class="bdg t3" x="19" y="659.5">3</text>
+        <text class="bdg t4" x="19" y="705.5">4</text><text class="bdg t5" x="19" y="751.5">5</text><text class="bdg t6" x="19" y="797.5">6</text>
+      </g>
+    </svg>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <div class="fig">
+    <h2>What I would do</h2>
+    <p class="note"><b>C, with B's targeting, and A's plate frame as an option.</b> They are not really
+    mutually exclusive. C is the layout decision, B is the annotation decision, and A is a surface
+    treatment you can apply to either. If you want one answer: ship C.</p>
+
+    <table class="cmp">
+      <tr><th>&nbsp;</th><th>A · Plate</th><th>B · Cutaway</th><th>C · Legend below</th></tr>
+      <tr><td><b>Width</b></td><td>1180</td><td>1180</td><td>900</td></tr>
+      <tr><td><b>Pans on a phone</b></td><td>Yes, needs a second composition</td><td>Yes, needs a second composition</td><td>No</td></tr>
+      <tr><td><b>Annotation points at</b></td><td>The panel edge</td><td>The specific element</td><td>The specific element</td></tr>
+      <tr><td><b>Visual change</b></td><td>Large</td><td>Small</td><td>Medium</td></tr>
+      <tr><td><b>Effort to ship</b></td><td>Half a day</td><td>Two hours</td><td>Half a day</td></tr>
+    </table>
+
+    <h3>Open questions for you</h3>
+    <p class="note">
+      <b>1.</b> Callout 1 names Jobber and callout 2 names QuickBooks. <code>GRAPHICS.md</code> still has
+      an unresolved <code>[CONFIRM]</code> on whether you have actually built against both. This is above
+      the fold, so it is the one claim on the page a visitor is most likely to test.<br>
+      <b>2.</b> Direction B introduces a <code>3 ROLES</code> marker in the panel header so the roles
+      callout has something to point at. That is a new element in the drawing, not a new token. Fine by you?<br>
+      <b>3.</b> The phone composition drops the TODAY list. Alternative is dropping the chart, which I
+      think is worse because the chart is the only thing on the plate that looks alive.<br>
+      <b>4.</b> Renumbering. Whichever way this goes, the callout order changes, and Figs. 2 to 5 keep
+      their numbers. Caption strings are literals in the components, so it is a five minute change.
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
