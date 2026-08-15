@@ -199,8 +199,18 @@ Each of these cost real debugging time. Don't rediscover them.
    forwarding for `aloha@threadhawaii.com`.
 10. **One SPF record per domain.** The root already has Namecheap's. If verifying
     the domain in Resend, its SPF must go on the `send.` subdomain.
-11. **`git push` was blocked by session permissions** throughout. Expect to hand
-    the command to the owner rather than running it.
+11. **Pushing to `main` deploys straight to production.** The Vercel project is
+    connected to `shaunagits/thread` via the GitHub integration, so every push
+    to `main` starts a production deployment on its own — there is no separate
+    deploy step and no staging in between. `vercel --prod` is only needed when
+    deploying without a push. (This entry used to say pushing was blocked by
+    session permissions; the owner corrected that 14 Aug 2026.)
+
+    Because there is no staging, a bad `vercel.json` or a broken build reaches
+    production as a failed deploy: the previous deployment keeps serving, so
+    the site does not break, but the change silently does not ship. Check the
+    deployment state after pushing rather than assuming the push was the end
+    of it.
 12. **`astro preview` does not work under the Vercel adapter** — it exits with
     "Preview server process exited before becoming ready". `scripts/build-assets.sh`
     serves `dist/client` with `python3 -m http.server` instead. Don't switch it
