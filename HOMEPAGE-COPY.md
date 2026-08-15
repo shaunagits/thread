@@ -1,3 +1,14 @@
+> ## ⚠️ Superseded for the homepage, 14 Aug 2026
+>
+> The owner supplied a full rewrite ("Thread · Website Copy, v3") and that is
+> what `/` now renders: first person throughout, no invented proof, no em
+> dashes, no systems map, and a Pricing section carrying durations and terms
+> with **no figures**.
+>
+> This document is **history for the homepage, not instructions.** Its
+> `[CONFIRM: $X]` markers still stand as the record of which numbers remain
+> unconfirmed, and that rule is unchanged: never fill one in.
+
 # Thread homepage copy
 
 Ready to build. Written against the decisions taken 13 Aug 2026:

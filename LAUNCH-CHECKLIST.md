@@ -234,19 +234,30 @@ determined one.
       A scheduling link exists but has not been supplied, so `Hero.astro`'s
       primary button points at `#contact` as a **placeholder**. Swap the href
       when the URL lands.
-- [ ] **Retire the systems map everywhere else.** Killing it as the CTA stranded
-      it across the site. All of these still reference it: the nav CTA constant
-      in `Header.astro`, the whole of §04 in `index.astro`, §02's step 01
-      (labelled `MAP`, and it still says "Free, and yours to keep"), the
-      "rather start with the free systems map?" link in `ContactSection.astro`,
-      the `kind === 'map'` branch in `IntakeForm.astro`, the meta description
-      and the `OfferCatalog` entry in `Base.astro`, and the entire
-      `/systems-map` page, which the footer links to. The structured data and
-      meta description are indexed, so they outlive the page edit.
-      `OFFER-AND-PIPELINE.md` and `STRATEGY.md` are now stale on this point too.
+- [x] **Retire the systems map everywhere else.** Done 14 Aug 2026 with the v3
+      copy. Nav CTA now "Book a call", §04 replaced by "What you own", step 01
+      relabelled `LEARN`, the contact link and the `map` branch of both
+      `IntakeForm.astro` and `api/contact.ts` removed, `Base.astro`'s meta
+      description and `makesOffer` rewritten, `/systems-map` deleted and 301'd
+      to `/#contact` in `vercel.json` because it was indexed. `thanks.astro`
+      lost its `form=map` branch. `Fig5SystemsMap.astro` is now unreferenced.
+      `OFFER-AND-PIPELINE.md` and `STRATEGY.md` remain stale on this point.
 
-- [ ] **Replace the fabricated §04 and §05 content — it is live.** See §1 and §2.
-      Owner has decided the shape; the material itself is still outstanding.
+- [x] **Replace the fabricated §04 and §05 content.** Done 14 Aug 2026. §04 is
+      gone with the systems map; §05 (Work) is removed entirely and does not
+      return until there is a real project with real numbers to put in it.
+
+- [ ] **Confirm the numbers v3 is shipping without.** Pricing carries durations
+      and terms only: the `$14,000`, `$28,000` and `$2,400/month` in the draft
+      were the owner's own placeholders, and the `$20 to $200` hosting range in
+      the Questions section was never confirmed. All are absent rather than
+      invented. Supply them and they go in `plans` in `site.ts`, the hosting
+      answer in `questions`, and only then a `priceSpecification` in the schema.
+
+- [ ] **Reassess the guarantee after a production check.** It ships as written:
+      working software in two weeks, either side can stop, nothing owed beyond
+      that point. The owner wants to revisit whether to soften it to a
+      scope-and-price checkpoint once the site is live.
 - [ ] Gmail filter for form notifications (or verify the domain in Resend)
 - [ ] Privacy and Terms pages — the footer links to them as plain text, and the
       form collects personal data

@@ -1,0 +1,59 @@
+---
+/**
+ * The Questions section.
+ *
+ * This is the one new component the v3 copy required, and it deliberately
+ * introduces no new design language. It is ServiceList's row: the same
+ * `--color-rule` separators, the same top rule on the first item, the same
+ * 34px row padding, the same serif body at the same size and measure. What it
+ * drops is the ochre number circle and the mono meta column, because a
+ * question is not a numbered service and has nothing to put in a meta rail.
+ *
+ * Marked up as a description list. The questions really are terms and the
+ * answers really are definitions, and `dl` gives screen readers the pairing
+ * for free — a heading-and-paragraph stack would only imply it.
+ *
+ * Not a <details> accordion. That would hide the answers behind a click, and
+ * these answers are the argument: the ownership terms and the fixed price are
+ * most of what stands in for testimonials on this page.
+ */
+import { questions } from '../content/site';
+---
+
+<dl class="qs">
+  {questions.map((item) => (
+    <div class="q">
+      <dt>{item.q}</dt>
+      <dd>{item.a}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .qs { margin-top: 8px; }
+  .q {
+    display: grid; grid-template-columns: minmax(0, 27ch) minmax(0, 1fr);
+    gap: 32px; padding: 34px 0;
+    border-bottom: 1px solid var(--color-rule); align-items: start;
+  }
+  .q:first-child { border-top: 1px solid var(--color-rule); }
+
+  /* Matches .item h3 in ServiceList: the h3 scale from global.css, which the
+     question column is standing in for. dt carries no weight of its own. */
+  dt {
+    font-family: var(--font-serif); font-weight: 500;
+    font-size: clamp(20px, 2.1vw, 25px);
+    letter-spacing: -.015em; line-height: 1.12;
+    color: var(--color-ink);
+  }
+  dd {
+    font-family: var(--font-serif); font-size: 16.5px;
+    line-height: 1.6; color: var(--color-body); max-width: 52ch;
+  }
+
+  /* Same breakpoint and the same collapse as ServiceList, so the two sections
+     reflow together rather than at different widths. */
+  @media (max-width: 1000px) {
+    .q { grid-template-columns: 1fr; gap: 14px; }
+  }
+</style>

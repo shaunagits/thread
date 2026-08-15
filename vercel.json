@@ -6,6 +6,12 @@
       "has": [{ "type": "host", "value": "www.threadhawaii.com" }],
       "destination": "https://threadhawaii.com/$1",
       "permanent": true
+    },
+    {
+      "//": "The systems map page was deleted 14 Aug 2026 when the owner killed the offer. It was indexed and linked from the footer, so it redirects rather than 404s. Listed after the www rule so a www request resolves host first, then path.",
+      "source": "/systems-map",
+      "destination": "/#contact",
+      "permanent": true
     }
   ],
   "headers": [

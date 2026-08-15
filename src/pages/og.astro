@@ -28,11 +28,18 @@ import '../styles/global.css';
 
       <div class="middle">
         <div class="eyebrow">Custom software and automation · Honolulu, Hawaiʻi</div>
-        <h1>Custom software for Hawaiʻi businesses.</h1>
+        {/* Mirrors the hero headline. This card is the link preview everywhere
+            the site gets shared, so a stale line here outlives the page edit in
+            every already-scraped cache. Kept in sync by hand, deliberately: the
+            hero's copy lives in Hero.astro's markup, not in a shared constant,
+            and hoisting it would be a bigger change than this file deserves. */}
+        <h1>Software that brings your business together.</h1>
       </div>
 
       <div class="bottom">
-        <span class="meta">Custom internal apps · Dashboards · Automation · Practical AI</span>
+        {/* The four old service names went with the v3 copy. These are the
+            three engagements it actually sells. */}
+        <span class="meta">Connect · Build · Ongoing</span>
         <svg class="motif" viewBox="0 0 120 24" fill="none" aria-hidden="true">
           <path d="M2 6 C40 6, 44 12, 74 12" stroke="#AE7126" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M2 12 H74" stroke="#AE7126" stroke-width="1.6" stroke-linecap="round"/>

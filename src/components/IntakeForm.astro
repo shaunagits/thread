@@ -1,58 +1,40 @@
 ---
 /**
- * The two intake forms. Both post to /api/contact, which reads `kind` to
- * decide which fields to expect and what to put in the subject line.
+ * The intake form. Posts to /api/contact.
  *
- * `enquiry` — the short one in §07. Five fields. The lead above it promises
- *   "a short description is enough to start", so it has to stay short.
- * `map` — the long one on /systems-map. This is the front half of the map
- *   engagement, not a contact form: the answers are the research, which is
- *   most of why a map costs hours rather than a week.
+ * There used to be two of these, switched on a `kind` prop: this short one and
+ * a long research questionnaire on /systems-map. The owner killed the systems
+ * map offer on 14 Aug 2026 and that page is gone, so the prop and the second
+ * branch went with it. One form, six fields.
  *
- * Field names here must match LIMITS and FIELDS in src/pages/api/contact.ts.
+ * ⚠️ Field names here must match LIMITS and FIELDS in src/pages/api/contact.ts.
  * Adding a field in one place and not the other collects the answer and
- * silently drops it.
+ * silently drops it. See CLAUDE.md landmine 14.
  *
  * Native POST, no client bundle, works with JavaScript disabled.
  */
-interface Props {
-  kind: 'enquiry' | 'map';
-}
-const { kind } = Astro.props;
-
-const BUDGET = [
-  'No figure yet',
-  'Under $10k',
-  '$10k to $25k',
-  '$25k to $50k',
-  '$50k+',
-];
-const TIMING = [
-  'No fixed date',
-  'Within a month',
-  'One to three months',
-  'Three to six months',
-  'Later than that',
-];
-const USERS = ['Just me', '2 to 5', '6 to 20', '21 to 100', 'More than 100'];
-const WORKFLOWS = [
-  'Lead to invoice',
-  'Job to payment',
-  'Intake to delivery',
-  'Something else, described below',
-];
 ---
 
 <form class="form" action="/api/contact" method="POST">
-  <input type="hidden" name="kind" value={kind} />
+  {/* ⚠️ Honeypot, and note the name.
 
-  {/* Honeypot. Positioned off-screen rather than display:none, which bots
-      check for. Hidden from assistive tech and skipped by the tab order. */}
+      It used to be `company_website`, labelled "Company website". The v3 copy
+      asks visitors for their company website as a real question, so that name
+      is now taken by a field real people fill in. Had both kept it, every
+      genuine submission would have tripped the bot check in contact.ts, been
+      dropped without an email, and still shown the visitor a success page.
+      Silent lead loss with no error anywhere.
+
+      The trap is the label as much as the name, so this one is a fax number:
+      nothing on this site asks for one, and no visitor will ever see it.
+
+      Positioned off-screen rather than display:none, which bots check for.
+      Hidden from assistive tech and skipped by the tab order. */}
   <div class="hp" aria-hidden="true">
-    <label for="f-company-website">Company website</label>
+    <label for="f-contact-fax">Fax number</label>
     <input
-      id="f-company-website"
-      name="company_website"
+      id="f-contact-fax"
+      name="contact_fax"
       type="text"
       tabindex="-1"
       autocomplete="off"
@@ -65,76 +47,35 @@ const WORKFLOWS = [
   <label for="f-email">Email</label>
   <input id="f-email" name="email" type="email" autocomplete="email" required />
 
+  <label for="f-website">Company website</label>
+  <input
+    id="f-website"
+    name="website"
+    type="text"
+    autocomplete="url"
+    placeholder="threadhawaii.com"
+  />
+
   <label for="f-biz">What does the business do?</label>
   <input id="f-biz" name="business" type="text" autocomplete="organization" />
 
-  {kind === 'enquiry' && (
-    <>
-      <label for="f-problem">What isn’t working?</label>
-      <textarea
-        id="f-problem"
-        name="problem"
-        placeholder="The thing that made you open this form."
-      ></textarea>
+  <label for="f-tools">What software are you running?</label>
+  <textarea
+    id="f-tools"
+    name="tools"
+    placeholder="A rough list is fine."
+  ></textarea>
 
-      <label for="f-budget">Roughly what have you budgeted?</label>
-      <select id="f-budget" name="budget">
-        {BUDGET.map((o) => <option value={o}>{o}</option>)}
-      </select>
-    </>
-  )}
+  <label for="f-timesink">What eats the most time right now?</label>
+  <textarea
+    id="f-timesink"
+    name="timesink"
+    placeholder="The thing that made you open this form."
+  ></textarea>
 
-  {kind === 'map' && (
-    <>
-      <label for="f-workflow">Which workflow should the map follow?</label>
-      <select id="f-workflow" name="workflow">
-        {WORKFLOWS.map((o) => <option value={o}>{o}</option>)}
-      </select>
+  <button type="submit" class="btn">Book a call</button>
 
-      <label for="f-today">What happens today?</label>
-      <textarea
-        id="f-today"
-        name="today"
-        placeholder="Walk it through from the first contact to the money landing. Rough is fine."
-      ></textarea>
-
-      <label for="f-instead">What would you like to happen instead?</label>
-      <textarea id="f-instead" name="instead"></textarea>
-
-      <label for="f-tools">Which tools does this touch?</label>
-      <input
-        id="f-tools"
-        name="tools"
-        type="text"
-        placeholder="QuickBooks, Square, a scheduling app, a lot of spreadsheets…"
-      />
-
-      <label for="f-tried">What have you already tried?</label>
-      <textarea id="f-tried" name="tried"></textarea>
-
-      <label for="f-users">How many people would use it?</label>
-      <select id="f-users" name="users">
-        {USERS.map((o) => <option value={o}>{o}</option>)}
-      </select>
-
-      <label for="f-budget">Roughly what have you budgeted?</label>
-      <select id="f-budget" name="budget">
-        {BUDGET.map((o) => <option value={o}>{o}</option>)}
-      </select>
-
-      <label for="f-timing">When do you need it?</label>
-      <select id="f-timing" name="timing">
-        {TIMING.map((o) => <option value={o}>{o}</option>)}
-      </select>
-
-      <label for="f-deciders">Who else decides?</label>
-      <input id="f-deciders" name="deciders" type="text" />
-    </>
-  )}
-
-  <button type="submit" class="btn">
-    {kind === 'map' ? 'Request my systems map' : 'Send it'}
-  </button>
+  <p class="form-note">One reply from a person, usually same day. No sales sequence.</p>
 </form>
 
 <style>
@@ -163,4 +104,11 @@ const WORKFLOWS = [
   }
   .form textarea { resize: vertical; min-height: 82px; }
   .form .btn { width: 100%; text-align: center; }
+
+  /* Sits under the button, so it reads as a promise about what happens next
+     rather than as a field hint. Sans at the .cta-note size. */
+  .form-note {
+    font-family: var(--font-sans); font-size: 12.5px; line-height: 1.6;
+    color: var(--color-faint); margin-top: 14px; text-align: center;
+  }
 </style>

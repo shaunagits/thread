@@ -69,6 +69,41 @@ refer to plates by number; they're history, not instructions. Component
 filenames still carry the old numbers (`Fig2CurrentState.astro`) — left alone
 deliberately, renaming them is churn for no reader.
 
+## ⚠️ The site copy is v3, adopted 14 Aug 2026
+
+The owner supplied a full rewrite ("Thread · Website Copy, v3") and it is now
+live on `/`. It is **first person throughout**, carries **no case studies and no
+invented proof**, and uses **no em dashes in anything a visitor reads** (code
+comments are unaffected). `HOMEPAGE-COPY.md` predates it and is now **history
+for the homepage**, not instructions.
+
+Four decisions the owner made when it landed, none of which should be
+re-litigated:
+
+1. **Prices are absent, deliberately.** v3 carried `$14,000`, `$28,000` and
+   `$2,400/month`, and its own call-out marked all three as placeholders. The
+   Pricing section ships **durations and terms only** until real figures exist.
+   The same applies to the hosting range in the Questions section, which said
+   `$20 to $200` and now says the real figure comes on the call. There is no
+   `priceSpecification` in the structured data either, for the same reason.
+   **Do not fill any of these in.** See the section below.
+2. **The guarantee ships as written** — working software in two weeks, either
+   side can stop, nothing owed beyond that point. The owner will reassess after
+   a production check. It is doing the job testimonials would normally do.
+3. **`/systems-map` is deleted**, and the offer is retired everywhere: nav CTA,
+   §04, the step labelled `MAP`, the contact link, the `map` branch of the
+   intake form and API, the meta description and the `makesOffer` schema. The
+   page was indexed, so `vercel.json` 301s it to `/#contact` rather than
+   letting it 404.
+4. **`ConnectsStrip` stays**, under the owner's "existing graphics" exception,
+   even though v3's body copy replaces it with a prose line.
+
+`Fig5SystemsMap.astro` is now **unreferenced** — its subject no longer exists.
+Left in place rather than deleted, because plates are the owner's call.
+
+`QuestionList.astro` is the one new component v3 required. It reuses
+ServiceList's row, rules and type exactly and introduces no new tokens.
+
 ## Content that must never be invented
 
 The site previously carried invented products, invented pricing and a fabricated
@@ -179,6 +214,15 @@ Each of these cost real debugging time. Don't rediscover them.
     A field rendered in the form but absent from `FIELDS`/`LIMITS` is collected
     from the visitor and silently dropped. The cross-check is a one-liner:
     compare `name="…"` in the component against the `FIELDS` table.
+15. **The honeypot is `contact_fax`, and it must never share a name with a real
+    field.** It was `company_website` until 14 Aug 2026, when the v3 copy began
+    asking visitors for their company website as a genuine question. Had both
+    kept that name, every real submission would have tripped the bot check in
+    `contact.ts`, been dropped without an email, and still shown the sender a
+    success page — silent lead loss with nothing in the logs and no bounce. If
+    the honeypot name changes it changes in both files in the same commit. The
+    label matters as much as the name: nothing on this site asks for a fax
+    number, so no visitor will ever fill it in.
 
 ## Verification approach
 

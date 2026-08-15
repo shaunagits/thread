@@ -4,25 +4,30 @@
  *
  * Nothing in this file may be invented. Every claim here is either verbatim
  * from the approved design or confirmed by the owner. See CLAUDE.md.
+ *
+ * Copy is the v3 draft, supplied by the owner 14 Aug 2026. First person
+ * throughout, and no em dashes in anything a visitor reads.
  */
 
 /**
- * Root-relative, not bare fragments. These render on /systems-map and /thanks
- * too, where `#services` would resolve against the wrong document and do
- * nothing. From the homepage `/#services` is still a fragment jump, not a
+ * Root-relative, not bare fragments. These render on /thanks, /privacy and
+ * /terms too, where `#pricing` would resolve against the wrong document and do
+ * nothing. From the homepage `/#pricing` is still a fragment jump, not a
  * reload.
  */
 export const nav = [
-  { label: 'Services', href: '/#services' },
-  { label: 'The map', href: '/#map' },
-  { label: 'Work', href: '/#work' },
+  { label: 'What I do', href: '/#services' },
+  { label: 'How it works', href: '/#how' },
+  { label: 'Pricing', href: '/#pricing' },
   { label: 'About', href: '/#about' },
 ];
 
 /**
  * The "Connects to" strip. This is a capability claim, not a client list —
  * every one of these exposes a public API Thread can build against. Confirmed
- * by the owner 13 Aug 2026. Anything added here must clear the same bar.
+ * by the owner 13 Aug 2026, and kept under the "existing graphics" exception
+ * when the v3 copy landed on 14 Aug. Anything added here must clear the same
+ * bar.
  */
 export const integrations = [
   'QuickBooks', 'Shopify', 'Square', 'Jobber', 'Airtable',
@@ -35,76 +40,111 @@ export const contact = {
   location: 'Honolulu, Hawaiʻi',
 };
 
+/**
+ * Step 01 was `MAP` and sold the free systems map. The owner killed that offer
+ * on 14 Aug 2026; the first step is now learning how the business works, and
+ * the fixed scope and price land at the end of it.
+ */
 export const steps = [
   {
-    n: '01 · MAP',
-    title: 'Thread draws your systems',
-    body: 'One conversation, then about a week. Thread traces how a single workflow actually moves through your business and hands back a labelled map of every tool, handoff and gap, with a ranked list of what’s worth fixing first. Free, and yours to keep whether or not you go further.',
+    n: '01 · LEARN',
+    title: 'I learn how you actually work',
+    body: 'A call, then a couple of sessions with the people who do the job. Not how the org chart says work moves. How it moves. Then you get a fixed scope and a fixed price, in writing, before anything gets built.',
   },
   {
     n: '02 · BUILD',
-    title: 'Thread closes the gaps',
-    body: 'Custom apps, dashboards and automation built against your real process. You see working software every two weeks, not a status update.',
+    title: 'I build it',
+    body: 'You see working software every two weeks. Not a status update, not a progress bar. Something you can click. If something I assumed turns out to be wrong, you hear it in week two, not week ten.',
   },
   {
     n: '03 · HAND OVER',
-    title: 'Thread documents and steps back',
-    body: 'Every build ships with a written plate explaining what it does and why. It runs in your accounts, on your data. Ongoing support is available and it is optional.',
+    title: 'I hand it over',
+    body: 'It ships documented in plain English: what it does, why it works that way, and what to do when your business changes. It runs in your accounts on your data. Ongoing support is available, and optional.',
   },
 ];
 
 /**
- * Typical durations and price floors are deliberately absent. HOMEPAGE-COPY.md
- * marks both `[CONFIRM]` and the owner has not supplied them. The meta lines
- * carry only claims Thread controls outright. Do not invent the rest.
+ * ⚠️ PRICES ARE DELIBERATELY ABSENT. The v3 draft carried $14,000, $28,000 and
+ * $2,400/month and its own call-out marked all three as placeholders. The
+ * owner confirmed on 14 Aug 2026: durations and terms only until the real
+ * numbers exist. HOMEPAGE-COPY.md still marks them `[CONFIRM]`.
+ *
+ * Do not fill these in. Inventing a plausible price is how this site got into
+ * trouble the first time. See CLAUDE.md, "Content that must never be
+ * invented".
  */
-export const services = [
+export const plans = [
   {
-    title: 'Custom internal apps',
-    body: 'The software your business needs and nobody sells: job tracking shaped like your workflow, intake that routes itself, approvals that match how decisions actually get made.',
-    meta: ['Fixed price', 'You own the code'],
+    title: 'Connect',
+    body: 'One place to see and run everything. Live data from the systems you already use, in the shape your team thinks in, with automation closing the handoffs between them. Roles and permissions included.',
+    meta: ['4 to 6 weeks', 'Fixed price', 'You own the code'],
   },
   {
-    title: 'Dashboards and reporting',
-    body: 'One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, arranged the way your team already thinks about the work.',
-    meta: ['Fixed price', 'Live data, no exports'],
+    title: 'Build',
+    body: 'The custom application: work tracked the way you track it, intake that routes itself, approvals that match how decisions actually get made, plus the integrations that keep it fed. This is the one that replaces the spreadsheet, the group chat, and the person who remembers.',
+    meta: ['8 to 12 weeks', 'Fixed price', 'You own the code'],
   },
   {
-    title: 'Automation and integration',
-    body: 'Connecting the tools you already pay for so the retyping stops. Getting your systems to agree, so the same number means the same thing everywhere.',
-    meta: ['Fixed price or retainer', 'Monitored, not fire and forget'],
+    title: 'Ongoing',
+    body: 'After handover, for teams who would rather not think about it. Monitoring, fixes, and a set amount of new work each month as the business changes.',
+    meta: ['Month to month', 'Cancel with thirty days', 'Optional, never bundled'],
+  },
+];
+
+/**
+ * The six questions from the v3 draft, in its order. Every answer is a claim
+ * the owner controls outright: structure, process and terms. Nothing here
+ * cites a number, a client or a result.
+ */
+export const questions = [
+  {
+    q: 'What if you get hit by a bus?',
+    a: 'You have the source code, the documentation, and everything running in accounts with your name on them. Any developer can pick it up. That is the structure of every project, not a favor.',
   },
   {
-    title: 'Practical AI',
-    body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting repetitive correspondence, flagging what needs a person. Review by a human is built in.',
-    meta: ['Fixed price', 'Human review built in'],
+    q: 'We tried custom software before and it went badly.',
+    a: 'Usually one of three ways. The scope moved and the bill followed. Nobody used it because it got built from a wishlist instead of a workflow. Or the vendor owned it and the relationship went sour. Fixed price handles the first, sitting with your team handles the second, and the ownership terms handle the third.',
+  },
+  {
+    q: 'Can we just use Zapier?',
+    a: 'Sometimes, and when that is the real answer I will say so on the call. Automation tools move a record from A to B well. They get expensive and fragile the moment there is logic, history, permissions, or anything a person needs to look at.',
+  },
+  {
+    q: 'How much of my team’s time does this take?',
+    a: 'A few hours up front from the people who do the work, then a demo every two weeks. You will never sit in a meeting with me that is not a demo.',
+  },
+  {
+    q: 'We’re not in Hawaiʻi.',
+    a: 'Neither are a lot of the businesses I talk to. I keep hours that overlap the West Coast and the East Coast and reply within one business day.',
+  },
+  {
+    q: 'What does it cost to run after it’s built?',
+    a: 'Your existing subscriptions, plus hosting, billed to you directly. I do not mark it up. I will give you the real figure for your setup on the call.',
   },
 ];
 
 export const footerColumns = [
   {
-    heading: 'Services',
+    heading: 'Work together',
     links: [
-      { label: 'Custom internal apps', href: '/#services' },
-      { label: 'Dashboards and reporting', href: '/#services' },
-      { label: 'Automation and integration', href: '/#services' },
-      { label: 'Practical AI', href: '/#services' },
+      { label: 'Connect', href: '/#pricing' },
+      { label: 'Build', href: '/#pricing' },
+      { label: 'Ongoing', href: '/#pricing' },
     ],
   },
   {
-    heading: 'Ways to work',
+    heading: 'The detail',
     links: [
-      { label: 'Systems map', href: '/systems-map' },
-      { label: 'Care plan', href: '/#services' },
-      { label: 'Rescue work', href: '/#services' },
+      { label: 'How it works', href: '/#how' },
+      { label: 'What you own', href: '/#own' },
+      { label: 'Questions', href: '/#questions' },
     ],
   },
   {
     heading: 'Company',
     links: [
       { label: 'About', href: '/#about' },
-      { label: 'Work', href: '/#work' },
-      { label: 'Contact', href: '/#contact' },
+      { label: 'Book a call', href: '/#contact' },
     ],
   },
 ];

@@ -14,8 +14,8 @@ interface Props {
 }
 
 const {
-  title = 'Custom software for Hawaiʻi businesses · Thread, Honolulu',
-  description = 'Thread builds custom apps, dashboards, automation and practical AI for Hawaiʻi businesses. Based in Honolulu. Every engagement starts with a free systems map.',
+  title = 'Thread · Custom software and automation, Honolulu, Hawaiʻi',
+  description = 'Thread builds custom software that fits how your business already works. I connect the tools you run, or build the one nobody sells. You own the code, the data, and the accounts it lives in.',
   businessSchema = false,
 } = Astro.props;
 
@@ -40,7 +40,7 @@ const businessLd = {
   '@id': new URL('/#thread', Astro.site).href,
   name: 'Thread',
   description:
-    'Custom software, dashboards, automation and practical AI for Hawaiʻi businesses. Thread maps how work moves through a business, then builds what closes the gaps.',
+    'Custom software for Hawaiʻi businesses. Thread connects the tools a business already runs, or builds the one nobody sells, and hands over the source code, the data and the accounts it runs in.',
   url: new URL('/', Astro.site).href,
   email: contact.email,
   founder: { '@type': 'Person', name: 'Shauna' },
@@ -61,20 +61,44 @@ const businessLd = {
     'Operations dashboards',
     'Applied AI for small business',
   ],
+  /**
+   * The three engagements from the v3 copy. The free systems map was here
+   * until 14 Aug 2026, when the owner killed it as an offer — and because this
+   * block is indexed, it outlives the page edit, so it had to come out in the
+   * same change rather than later.
+   *
+   * No `priceSpecification` on any of these. The prices are still
+   * `[CONFIRM]` and a structured-data price is the most quotable kind of
+   * invented number there is.
+   */
   makesOffer: [
     {
       '@type': 'Offer',
       itemOffered: {
         '@type': 'Service',
-        name: 'Systems map',
+        name: 'Connect',
         description:
-          'A free map of how one workflow moves through your business, with a ranked list of what is worth fixing first.',
+          'One place to see and run everything: live data from the systems you already use, with automation closing the handoffs between them.',
       },
     },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Custom internal apps' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dashboards and reporting' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automation and integration' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Practical AI' } },
+    {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Build',
+        description:
+          'The custom application a business needs and nobody sells, plus the integrations that keep it fed.',
+      },
+    },
+    {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Ongoing',
+        description:
+          'Monitoring, fixes and a set amount of new work each month after handover. Month to month, and optional.',
+      },
+    },
   ],
 };
 ---

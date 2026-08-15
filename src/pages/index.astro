@@ -1,4 +1,16 @@
 ---
+/**
+ * Homepage. Copy is the owner's v3 draft, supplied 14 Aug 2026: first person
+ * throughout, no em dashes in anything a visitor reads, no case studies and no
+ * invented proof. The hero and the plates were explicitly out of scope for
+ * that rewrite and are unchanged.
+ *
+ * Two sections from the previous structure are gone. §04 sold the free systems
+ * map, which the owner killed as an offer on the same date. §05 was Work, and
+ * it is not coming back until there is a real project to put in it — the
+ * owner's own note: one real client with one real number will outperform every
+ * sentence on this page.
+ */
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
@@ -8,9 +20,9 @@ import Figure from '../components/Figure.astro';
 import Fig2CurrentState from '../components/Fig2CurrentState.astro';
 import Fig3ThreadDiagram from '../components/Fig3ThreadDiagram.astro';
 import Fig4CarePlate from '../components/Fig4CarePlate.astro';
-import Fig5SystemsMap from '../components/Fig5SystemsMap.astro';
 import StepRow from '../components/StepRow.astro';
 import ServiceList from '../components/ServiceList.astro';
+import QuestionList from '../components/QuestionList.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -22,23 +34,25 @@ import Footer from '../components/Footer.astro';
 
   <Section
     eyebrow="§ 01 · The problem"
-    heading="Nothing is broken. That’s the problem."
-    headingWidth={16}
+    heading="Your software works. It just doesn’t work together."
+    headingWidth={20}
     headingGap={24}
     noteLabel="Worth asking"
   >
     <p class="txt" style="margin-bottom:16px">
-      Every tool you bought works. The accounting software does accounting. The payment
-      processor takes payments. The scheduling app schedules. Each one is fine on its own,
-      and none of them know the others exist.
+      QuickBooks does the accounting. Square takes the payments. The scheduling app
+      schedules. Every tool you bought does its job, and not one of them knows the others
+      exist.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      So a person becomes the connection between them. Someone reads a number off one
-      screen and types it into another. Someone opens four tabs to answer one question.
-      Someone remembers to send the invoice. That work never appears as a line item on
-      anything, which is exactly why it never gets fixed.
+      So a person becomes the connection. Someone reads a number off one screen and types
+      it into another. Someone opens four tabs to answer one question. Someone remembers to
+      send the invoice, until the week they don’t.
     </p>
-    <p class="txt">That work is what Thread removes.</p>
+    <p class="txt">
+      That work never shows up on a report, which is why it never gets fixed. It’s also the
+      first thing I remove.
+    </p>
 
     <Fragment slot="note">
       What does a customer touch, from first contact to final payment? Which of those steps
@@ -52,153 +66,176 @@ import Footer from '../components/Footer.astro';
   </Section>
 
   <Section
-    id="how"
-    eyebrow="§ 02 · How it works"
-    heading="One line through everything you run."
+    id="services"
+    eyebrow="§ 02 · What I do"
+    heading="Connect what you have. Build what you don’t."
     headingWidth={18}
+    noteLabel="Which one you need"
   >
-    <p class="lead" style="max-width:56ch">
-      Thread doesn’t replace the tools you already pay for. It builds the layer that runs
-      through them, so information moves on its own and your team looks in one place.
+    <p class="lead" style="max-width:52ch;margin-bottom:22px">
+      Most businesses need some of both.
     </p>
 
-    <Figure caption="The thread, drawn">
-      <Fig3ThreadDiagram />
-    </Figure>
-
-    <StepRow />
-  </Section>
-
-  <Section
-    id="services"
-    eyebrow="§ 03 · Services"
-    heading="Four kinds of work, one underlying job."
-    headingWidth={16}
-    noteLabel="Engagement shape"
-    docGap={44}
-  >
-    <p class="lead" style="max-width:52ch">
-      Most projects need more than one of these. The map is how you find out which, and it
-      will say so when the answer is none of them.
+    <p class="txt" style="margin-bottom:16px">
+      <strong>Your tools are fine. The gaps between them aren’t.</strong> You chose good
+      software for good reasons and you don’t want to replace any of it. So I don’t. I build
+      what runs between them: the dashboard that pulls from all of it, the automation that
+      moves the data, the handoffs that stop depending on someone remembering. Nothing gets
+      ripped out, and your team keeps working the way they already know how.
+    </p>
+    <p class="txt">
+      <strong>The tool you need isn’t for sale.</strong> Every business has a process no
+      product fits, so it lives in a spreadsheet, a group chat, and one person’s head. I
+      build that piece properly: shaped like your actual process, connected to everything
+      else you run, and built to outlast the person currently holding it together.
     </p>
 
     <Fragment slot="note">
-      Fixed scope at a fixed price, or a monthly retainer for ongoing build and support. No
-      hourly billing and no change-order games.
+      If it already connects to anything, I can connect to it. Accounting, payments, point
+      of sale, scheduling, inventory, email, whatever you’re running. The first call is
+      where we find out what’s possible with your particular stack.
     </Fragment>
 
     <Fragment slot="after">
-      <ServiceList />
-
-      <p class="txt" style="margin-top:34px;max-width:52ch">
-        <strong>Care plan.</strong> Hosting, monitoring, small changes and a standing
-        monthly hour, offered as a line item in every proposal. Software nobody maintains
-        gets harder to change and easier to abandon.
-      </p>
-      <p class="txt" style="margin-top:16px;max-width:52ch">
-        <strong>Rescue work.</strong> Already have something half-built? Thread also takes
-        on software somebody else started: a tool that mostly works, an automation nobody
-        understands, a system the person who built it no longer supports.
+      <p class="lead" style="max-width:52ch;margin-top:8px">
+        Either way you end up with one system instead of seven, and you own it.
       </p>
 
-      <Figure caption="What ships with every build" narrow>
-        <Fig4CarePlate />
+      <Figure caption="The thread, drawn">
+        <Fig3ThreadDiagram />
       </Figure>
     </Fragment>
   </Section>
 
   <Section
-    id="map"
-    eyebrow="§ 04 · The systems map"
-    heading="Start with a map, not a quote."
-    headingWidth={14}
-    noteLabel="Two per month"
+    id="how"
+    eyebrow="§ 03 · How it works"
+    heading="Three steps. You see it working before you’ve spent most of the money."
+    headingWidth={24}
   >
-    <p class="lead" style="max-width:56ch">
-      Before anyone talks about building anything, Thread draws how your work actually
-      moves today. One workflow, start to finish. Every tool it touches, every handoff,
-      every point where a person is doing a job a system should be doing.
+    <StepRow />
+  </Section>
+
+  <Section
+    id="own"
+    eyebrow="§ 04 · What you own"
+    heading="Custom means yours. I mean that literally."
+    headingWidth={17}
+    noteLabel="Worth asking"
+  >
+    <p class="lead" style="max-width:54ch;margin-bottom:22px">
+      Most software you buy, you rent. The price goes up at renewal, your data lives on
+      someone else’s server, and the day you stop paying, you stop operating. This is the
+      opposite of that.
+    </p>
+
+    <p class="txt" style="margin-bottom:16px">
+      <strong>It runs in your accounts.</strong> Your cloud, your database, your domain,
+      your billing. I build it there from day one.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      You get the map, a list of where the time is going, and a ranked view of what’s worth
-      fixing first. It’s free, it’s yours to keep, and there’s no obligation to do anything
-      with it. If the honest answer is that you don’t need custom software, the map will
-      say so.
+      <strong>You keep the source code.</strong> Handed over with documentation at the end
+      of every project, with full commercial rights. Not escrowed, not licensed back to
+      you.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      <strong>You fill in a short intake.</strong> Ten minutes. What the business does, what
-      the process is, which tools it touches, what already went wrong.
+      <strong>Your data stays yours.</strong> I don’t sell a product, so there’s no product
+      for your data to sit inside. Nothing pooled, nothing resold, nothing used to train
+      anything.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      <strong>One conversation, ninety minutes.</strong> Thread walks the process with
-      whoever actually does it, not just whoever owns it.
+      <strong>No per-seat pricing.</strong> Hire your tenth employee, or your fiftieth. The
+      software costs what it cost.
     </p>
     <p class="txt">
-      <strong>You get the map within five business days.</strong> A drawn current-state
-      diagram, an inventory of where time and information leak, and a ranked list of fixes
-      with rough cost and effort against each one.
+      <strong>You can replace me.</strong> Any competent developer can pick up what I built,
+      because it’s documented and it isn’t exotic. If I stop being useful you lose a vendor,
+      not your operations.
     </p>
 
-    <div class="btn-row">
-      <a href="/systems-map" class="btn">Start a systems map</a>
-    </div>
-
     <Fragment slot="note">
-      A map is real work, and it’s free, so it’s capped at two a month and one workflow
-      each. Choose the process that costs you the most time: lead to invoice, job to
-      payment, intake to delivery. Mapping a whole business is a paid engagement, and the
-      free one is a reasonable way to find out whether it’s worth doing.
+      Worth asking any software company you currently pay: what happens to my business the
+      day I cancel?
     </Fragment>
 
-    <Figure slot="after" caption="Systems map, specimen sheet">
-      <Fig5SystemsMap />
+    <Figure slot="after" caption="What ships with every build" narrow>
+      <Fig4CarePlate />
     </Figure>
   </Section>
 
   <Section
-    id="work"
-    eyebrow="§ 05 · Work"
-    heading="Every project ships with its plate."
-    headingWidth={18}
+    id="pricing"
+    eyebrow="§ 05 · Pricing"
+    heading="Fixed scope. Fixed price. Agreed before I start."
+    headingWidth={19}
+    noteLabel="On AI"
+    docGap={44}
   >
-    <p class="lead" style="max-width:56ch">
-      Thread documents what it built and why, in plain English, so the knowledge lives with
-      you and not only with the person who wrote it.
+    <p class="lead" style="max-width:52ch">
+      No hourly billing and no change orders. If I get the estimate wrong, that’s mine to
+      absorb.
     </p>
 
-    <p class="txt" style="margin-top:16px;max-width:56ch">
-      Thread is a new practice. The work behind it isn’t. Selected projects from before the
-      name existed will appear here, shown without client names, as permission comes in.
-    </p>
+    <Fragment slot="note">
+      I use it where it holds up. Sorting and routing incoming work, drafting the messages
+      you send fifty times a month, pulling data out of documents, flagging what needs a
+      person to look at it. It shows up inside the work rather than as something you buy
+      separately, because on its own it isn’t the answer to anything.
+    </Fragment>
+
+    <Fragment slot="after">
+      <ServiceList />
+
+      {/* PRICES DELIBERATELY ABSENT. The v3 draft carried $14,000, $28,000 and
+          $2,400/month and its own call-out marked all three as placeholders.
+          Owner confirmed 14 Aug 2026: durations and terms only until the real
+          figures exist. Do not fill these in. See CLAUDE.md. */}
+      <p class="txt" style="margin-top:34px;max-width:52ch">
+        <strong>My guarantee.</strong> Two weeks in, you’ll have working software in your
+        hands. If it’s clear by then that this isn’t going to work, either of us can stop
+        and you owe nothing beyond that point. I’d rather lose two weeks than build
+        something you don’t use.
+      </p>
+    </Fragment>
+  </Section>
+
+  <Section
+    id="questions"
+    eyebrow="§ 06 · Questions"
+    heading="The fair ones, answered plainly."
+    headingWidth={14}
+  >
+    <Fragment slot="after">
+      <QuestionList />
+    </Fragment>
   </Section>
 
   <Section
     id="about"
-    eyebrow="§ 06 · About"
+    eyebrow="§ 07 · About"
     heading="Built in Hawaiʻi. Useful anywhere."
     headingWidth={17}
     noteLabel="Working with a small practice"
   >
     <p class="txt" style="margin-bottom:16px">
-      I’m Shauna, and Thread is my custom software practice, based in Honolulu. It takes on
-      work across the islands, and on the mainland for people who would rather hire someone
-      who answers the phone than a firm that assigns them an account manager.
+      Thread is me. I build custom software for businesses across the islands, and for
+      clients on the mainland who’d rather talk to the person writing the code than to an
+      account manager.
     </p>
     <p class="txt" style="margin-bottom:16px">
-      Being here shapes the work. Island businesses tend to run lean, on tools chosen years
-      ago for reasons that were good at the time, with no appetite for tearing everything
-      out and starting over. That constraint turns out to be the right way to build
-      software for anyone.
+      Being here shapes the work. Island businesses run lean, on tools chosen years ago for
+      good reasons, with no appetite for tearing it all out and starting over. That
+      constraint turned out to be the right way to build software for anyone.
     </p>
     <p class="txt">
-      The name is the whole idea. A thread runs through everything a business already uses
-      and turns a pile of separate tools into one thing you can operate.
+      The name is the whole idea. A thread runs through everything and holds the separate
+      pieces together as one thing.
     </p>
 
     <Fragment slot="note">
-      Thread is me. Everything runs in your accounts, on your infrastructure. You own the
-      source outright, and every build ships documented well enough that another developer
-      could pick it up without calling me.
+      I take a few projects at a time, which is the point. You get the person who
+      understands your business, not whoever was available that week. It also means the
+      calendar fills, so if the timing matters to you, say so early.
     </Fragment>
   </Section>
 

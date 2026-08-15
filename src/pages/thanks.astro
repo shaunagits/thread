@@ -8,16 +8,15 @@ import { contact } from '../content/site';
 // prerendered — only this page and /api/contact run on request.
 export const prerender = false;
 
+// The `form` parameter and its `map` branch went with the systems map offer,
+// killed by the owner 14 Aug 2026. One form now, one message.
 const status = Astro.url.searchParams.get('status');
-const isMap = Astro.url.searchParams.get('form') === 'map';
 
 const STATES = {
   ok: {
     eyebrow: '§ · Received',
     heading: 'Your request is in.',
-    body: isMap
-      ? 'Thread will read it and come back within one business day to book the ninety minutes. The map follows within five business days of that conversation, and it’s yours whatever you decide to do with it.'
-      : 'Thread will read what you sent and reply within one business day. If it isn’t a fit, you’ll hear that plainly rather than not hearing back.',
+    body: 'I’ll read what you sent and reply within one business day, usually the same day. If it isn’t a fit, you’ll hear that plainly rather than not hearing back.',
     back: 'Back to the homepage',
   },
   invalid: {
@@ -37,8 +36,7 @@ const STATES = {
 const state =
   status === 'invalid' ? STATES.invalid : status === 'error' ? STATES.error : STATES.ok;
 
-const backHref =
-  state === STATES.invalid ? (isMap ? '/systems-map' : '/#contact') : '/#top';
+const backHref = state === STATES.invalid ? '/#contact' : '/#top';
 ---
 
 <Base

@@ -1,9 +1,14 @@
 ---
-import { services } from '../content/site';
+/**
+ * The engagement list. Was four services; now the three plans from the v3
+ * copy. Structure is unchanged — the meta column carries duration and terms
+ * and deliberately carries no price. See the note on `plans` in site.ts.
+ */
+import { plans } from '../content/site';
 ---
 
 <div class="items">
-  {services.map((service, i) => (
+  {plans.map((service, i) => (
     <div class="item">
       <div class="num">{i + 1}</div>
       <div>
