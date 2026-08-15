@@ -22,11 +22,12 @@ import HeroGraphic from './HeroGraphic.astro';
             always wraps — this only decides where. Unwrapped, it orphans
             "Hawaiʻi" onto a second line and splits the place name. */}
         <div class="eyebrow">Custom software and automation · <span class="eyebrow-place">Honolulu, Hawaiʻi</span></div>
-        {/* `auto` rather than `0` for the inline margins so the centring in
-            the stacked layout below can take hold. It changes nothing above
-            1000px: the 19ch cap never binds there, the box already fills its
-            grid column, and auto margins on a full-width box resolve to 0. */}
-        <h1 style="margin:20px auto 22px;max-width:19ch">
+        {/* The margin lives in the stylesheet rather than here so the tablet
+            band can centre this box and phones can leave it flush left. An
+            inline `margin` shorthand sets the inline margins to 0 at a
+            priority no stylesheet rule can reach without !important. Values
+            are unchanged from the original's inline style. */}
+        <h1 style="max-width:19ch">
           Software that brings your business together.
         </h1>
         <p class="lead" style="max-width:54ch">
@@ -66,26 +67,39 @@ import HeroGraphic from './HeroGraphic.astro';
      inflated next to the type, so cap it and hang it off the right edge. */
   .hero-figure { max-width: 440px; margin-left: auto; width: 100%; }
 
+  /* Was an inline style on the h1; moved here so the tablet band can centre
+     the box. Same values the original set inline. */
+  .hero-copy h1 { margin: 20px 0 22px; }
+
   /* global.css collapses `.doc` to one column here, but `.hero-doc` is more
      specific and is not itself inside a media query, so it would keep winning.
      Restate it. Breakpoint is the original's, verbatim. */
   @media (max-width: 1000px) {
     .hero-doc { grid-template-columns: 1fr; gap: 34px; }
-    .hero-figure { max-width: 420px; }
+    /* margin-left must be restated: the desktop rule above hangs the graphic
+       off the right with `auto`, which in a single column would push it flush
+       right wherever the 420px cap binds — from about 460px up. */
+    .hero-figure { max-width: 420px; margin-left: 0; }
+  }
 
-    /* Centred once the grid collapses, agreed with the owner 14 Aug 2026.
+  /* Centred through the tablet band only, agreed with the owner 14 Aug 2026.
 
-       Stacked, every element keeps a measure far narrower than the column it
-       now sits in — at 834 the copy left 265–531px of empty space against 40
-       on the left, and the 420px graphic left 374. Flush left under that much
-       slack reads as a two-column layout with the right column missing.
+     Stacked, every element keeps a measure far narrower than the column it
+     now sits in — at 834 the copy left 265–531px of empty space against 40 on
+     the left, and the 420px graphic left 374. Flush left under that much
+     slack reads as a two-column layout with the right column missing.
 
-       Centring the text alone isn't enough: h1 and .lead are capped at 19ch
-       and 54ch, so their *boxes* stay pinned left and only the ink inside
-       them would move. The auto inline margins centre the boxes; text-align
-       centres the ink within them. Both are needed. */
+     Phones are deliberately excluded. Below 641 the copy fills its measure,
+     so there is no slack to correct and centring would only re-rag the last
+     lines against the left-aligned language the rest of the page uses.
+
+     Centring the text alone isn't enough: h1 and .lead are capped at 19ch and
+     54ch, so their *boxes* stay pinned left and only the ink inside them
+     would move. The auto inline margins centre the boxes; text-align centres
+     the ink within them. Both are needed. */
+  @media (min-width: 641px) and (max-width: 1000px) {
     .hero-copy { text-align: center; }
-    .hero-copy .lead { margin-inline: auto; }
+    .hero-copy h1, .hero-copy .lead { margin-inline: auto; }
     .hero-copy .btn-row { justify-content: center; }
     .hero-figure { margin-inline: auto; }
   }
