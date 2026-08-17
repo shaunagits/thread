@@ -16,10 +16,9 @@
  * reload.
  */
 export const nav = [
-  { label: 'What I do', href: '/#services' },
-  { label: 'How it works', href: '/#how' },
-  { label: 'Pricing', href: '/#pricing' },
-  { label: 'About', href: '/#about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Process', href: '/#how' },
+  { label: 'Ownership', href: '/#ownership' },
 ];
 
 /**
@@ -47,19 +46,28 @@ export const contact = {
  */
 export const steps = [
   {
-    n: '01 · LEARN',
-    title: 'I learn how you actually work',
-    body: 'A call, then a couple of sessions with the people who do the job. Not how the org chart says work moves. How it moves. Then you get a fixed scope and a fixed price, in writing, before anything gets built.',
+    n: '01',
+    label: 'Fit call',
+    title: 'Tell us what is slowing you down',
+    body: 'Start with a free 30-minute fit call.',
   },
   {
-    n: '02 · BUILD',
-    title: 'I build it',
-    body: 'You see working software every two weeks. Not a status update, not a progress bar. Something you can click. If something I assumed turns out to be wrong, you hear it in week two, not week ten.',
+    n: '02',
+    label: 'Clear plan',
+    title: 'Get a clear plan',
+    body: 'Decide what is worth fixing first.',
   },
   {
-    n: '03 · HAND OVER',
-    title: 'I hand it over',
-    body: 'It ships documented in plain English: what it does, why it works that way, and what to do when your business changes. It runs in your accounts on your data. Ongoing support is available, and optional.',
+    n: '03',
+    label: 'Build together',
+    title: 'Build it around your team',
+    body: 'See working software as it takes shape.',
+  },
+  {
+    n: '04',
+    label: 'Keep it useful',
+    title: 'Keep it useful',
+    body: 'Get help when the business changes.',
   },
 ];
 
@@ -75,19 +83,22 @@ export const steps = [
  */
 export const plans = [
   {
-    title: 'Connect',
-    body: 'One place to see and run everything. Live data from the systems you already use, in the shape your team thinks in, with automation closing the handoffs between them. Roles and permissions included.',
-    meta: ['4 to 6 weeks', 'Fixed price', 'You own the code'],
+    label: 'Connect your tools',
+    title: 'Stop doing the same work twice.',
+    body: 'Connect the tools you already rely on.',
+    meta: ['Less manual work', 'Your existing tools'],
   },
   {
-    title: 'Build',
-    body: 'The custom application: work tracked the way you track it, intake that routes itself, approvals that match how decisions actually get made, plus the integrations that keep it fed. This is the one that replaces the spreadsheet, the group chat, and the person who remembers.',
-    meta: ['8 to 12 weeks', 'Fixed price', 'You own the code'],
+    label: 'Custom software',
+    title: 'Give your team one place to work.',
+    body: 'Replace the spreadsheet, inbox, or workaround holding a process together.',
+    meta: ['Built for your team', 'Clear next steps'],
   },
   {
-    title: 'Ongoing',
-    body: 'After handover, for teams who would rather not think about it. Monitoring, fixes, and a set amount of new work each month as the business changes.',
-    meta: ['Month to month', 'Cancel with thirty days', 'Optional, never bundled'],
+    label: 'Maintenance',
+    title: 'Keep improving what works.',
+    body: 'Get maintenance and small changes as the business changes.',
+    meta: ['Ongoing support', 'Always optional'],
   },
 ];
 
@@ -98,53 +109,52 @@ export const plans = [
  */
 export const questions = [
   {
-    q: 'What if you get hit by a bus?',
-    a: 'You have the source code, the documentation, and everything running in accounts with your name on them. Any developer can pick it up. That is the structure of every project, not a favor.',
+    q: 'Can another developer take this over?',
+    a: 'You have the source code, documentation, and accounts. Any competent developer can take it over.',
   },
   {
     q: 'We tried custom software before and it went badly.',
-    a: 'Usually one of three ways. The scope moved and the bill followed. Nobody used it because it got built from a wishlist instead of a workflow. Or the vendor owned it and the relationship went sour. Fixed price handles the first, sitting with your team handles the second, and the ownership terms handle the third.',
+    a: 'The scope moved, nobody used it, or the vendor owned it. Fixed scope, working demos, and clear ownership address those risks.',
   },
   {
     q: 'Can we just use Zapier?',
-    a: 'Sometimes, and when that is the real answer I will say so on the call. Automation tools move a record from A to B well. They get expensive and fragile the moment there is logic, history, permissions, or anything a person needs to look at.',
+    a: 'Sometimes. It is often the right answer for a simple task. When the work needs logic, history, or permissions, a stronger system may make more sense.',
   },
   {
     q: 'How much of my team’s time does this take?',
-    a: 'A few hours up front from the people who do the work, then a demo every two weeks. You will never sit in a meeting with me that is not a demo.',
+    a: 'A few hours up front from the people who do the work, then a demo every two weeks.',
   },
   {
     q: 'We’re not in Hawaiʻi.',
-    a: 'Neither are a lot of the businesses I talk to. I keep hours that overlap the West Coast and the East Coast and reply within one business day.',
+    a: 'That is fine. Thread works remotely with businesses outside Hawaiʻi too.',
   },
   {
     q: 'What does it cost to run after it’s built?',
-    a: 'Your existing subscriptions, plus hosting, billed to you directly. I do not mark it up. I will give you the real figure for your setup on the call.',
+    a: 'Your existing subscriptions and hosting, billed directly to you. I will outline the real cost for your setup before you decide.',
   },
 ];
 
 export const footerColumns = [
   {
-    heading: 'Work together',
+    heading: 'Services',
     links: [
-      { label: 'Connect', href: '/#pricing' },
-      { label: 'Build', href: '/#pricing' },
-      { label: 'Ongoing', href: '/#pricing' },
+      { label: 'Connect', href: '/#services' },
+      { label: 'Automate', href: '/#services' },
+      { label: 'Build', href: '/#services' },
     ],
   },
   {
-    heading: 'The detail',
+    heading: 'Approach',
     links: [
-      { label: 'How it works', href: '/#how' },
-      { label: 'What you own', href: '/#own' },
-      { label: 'Questions', href: '/#questions' },
+      { label: 'The process', href: '/#how' },
+      { label: 'Ownership', href: '/#ownership' },
     ],
   },
   {
-    heading: 'Company',
+    heading: 'Contact',
     links: [
-      { label: 'About', href: '/#about' },
       { label: 'Book a call', href: '/#contact' },
+      { label: 'Email Thread', href: `mailto:${contact.email}` },
     ],
   },
 ];

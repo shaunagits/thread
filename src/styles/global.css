@@ -11,31 +11,31 @@
    tokens referenced from scoped component CSS. */
 @theme static {
   /* ---- the twelve documented tokens ---- */
-  --color-paper: #FCFBF7;   /* page ground */
-  --color-wash:  #F4F0E6;   /* alternating band / connects-to strip */
+  --color-paper: #FCFCF9;   /* page ground */
+  --color-wash:  #F1F6F5;   /* quiet alternate ground */
   --color-white: #FFFFFF;   /* cards */
-  --color-ink:   #1C2118;   /* headlines */
-  --color-body:  #2E3329;   /* body copy */
-  --color-quiet: #5A6053;   /* secondary text */
-  --color-faint: #666D5E;   /* captions, margin notes */
-  --color-rule:  #E0DCD0;   /* section rules */
-  --color-hair:  #C3C0B4;   /* card borders, hairlines */
-  --color-ochre: #C8873F;   /* fills only — 2.9:1 on paper */
-  --color-line:  #AE7126;   /* strokes, diagram lines */
-  --color-koa:   #8F5A1C;   /* links, small text — AA on paper, wash, white */
+  --color-ink:   #172A2D;   /* deep blue-green headlines */
+  --color-body:  #314447;   /* body copy */
+  --color-quiet: #5B6A6C;   /* secondary text */
+  --color-faint: #6F7C7D;   /* captions */
+  --color-rule:  #DDE5E3;   /* section rules */
+  --color-hair:  #BBC9C7;   /* card borders, hairlines */
+  --color-ochre: #8DB9C4;   /* light ocean-blue fill */
+  --color-line:  #4D8798;   /* ocean-blue strokes */
+  --color-koa:   #235F70;   /* links and text-bearing fills */
 
   /* ---- present in index.html, absent from the handoff token table ----
      These are not new colours; they are already in the design. Naming them
      here is what keeps hex out of the components. Flagged for review. */
-  --color-plate:           #4A5044; /* label text inside Fig. 1 and Fig. 2 */
-  --color-ochre-hover:     #B87B33; /* the original's .btn:hover — now unused,
+  --color-plate:           #4F6062; /* label text inside legacy figures */
+  --color-ochre-hover:     #76A6B3; /* the original's .btn:hover — now unused,
                                        superseded by --color-koa-hover when the
                                        fills moved to koa. Kept for reference. */
-  --color-foot-text:       #D8D4C9; /* footer body + links */
-  --color-foot-label:      #9AA08E; /* footer column headings, bottom bar */
-  --color-foot-link-hover: #E8AE6B; /* footer link hover */
-  --color-foot-blurb:      #B0B5A4; /* footer blurb paragraph */
-  --color-foot-rule:       #333A2E; /* footer divider */
+  --color-foot-text:       #D8E2E0; /* footer body + links */
+  --color-foot-label:      #91A5A5; /* footer column headings, bottom bar */
+  --color-foot-link-hover: #A5D0D7; /* footer link hover */
+  --color-foot-blurb:      #B4C4C3; /* footer blurb paragraph */
+  --color-foot-rule:       #304548; /* footer divider */
 
   /* ---- type ---- */
   --font-serif: "Newsreader", Georgia, serif;
@@ -207,8 +207,8 @@ p.lead {
   line-height: 1.55; color: var(--color-body);
 }
 p.txt {
-  font-family: var(--font-serif); font-size: 17.5px;
-  line-height: 1.66; color: var(--color-body);
+  font-family: var(--font-sans); font-size: 16px;
+  line-height: 1.7; color: var(--color-body);
 }
 
 /* ---------- buttons ----------
@@ -217,45 +217,47 @@ p.txt {
    — so the fill darkens to koa, which carries paper text at 5.56:1. Ochre
    still fills everything that holds no text. */
 .btn {
-  display: inline-block; padding: 14px 28px; border-radius: 2px;
-  font-size: 14px; font-weight: 600; letter-spacing: .005em;
+  display: inline-flex; align-items:center; justify-content:center; min-height:48px;
+  padding: 12px 24px 12px 35px; border-radius: 0; position:relative; overflow:hidden;
+  font-size: 12.5px; font-weight: 650; letter-spacing: .025em;
   background: var(--color-koa); color: var(--color-paper);
-  border: 1px solid var(--color-koa); cursor: pointer;
-  transition: background .15s ease, border-color .15s ease;
+  border: 1px solid var(--color-koa); cursor: pointer; text-decoration:none;
+  transition: background .26s cubic-bezier(.22,1,.36,1), border-color .26s cubic-bezier(.22,1,.36,1), color .26s cubic-bezier(.22,1,.36,1);
+}
+.btn::before {
+  content:''; position:absolute; left:17px; top:50%; width:5px; height:5px;
+  border-radius:99px; background:var(--color-ochre); transform:translateY(-50%);
+  transition:width .28s cubic-bezier(.22,1,.36,1), border-radius .28s cubic-bezier(.22,1,.36,1);
+}
+.btn::after {
+  content:''; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:var(--color-line); transform:scaleX(0); transform-origin:left;
+  transition:transform .32s cubic-bezier(.22,1,.36,1);
 }
 .btn:hover {
-  background: var(--color-koa-hover);
-  border-color: var(--color-koa-hover);
-  color: var(--color-paper);
+  background: var(--color-white);
+  border-color: var(--color-koa);
+  color: var(--color-ink);
   text-decoration: none;
 }
 .btn-ghost {
-  display: inline-block; padding: 14px 26px; border-radius: 2px;
-  font-size: 14px; font-weight: 600; background: transparent;
-  color: var(--color-ink); border: 1px solid var(--color-hair);
+  display: inline-flex; align-items:center; min-height:48px; padding: 12px 0 11px; border-radius: 0;
+  font-size: 12.5px; font-weight: 650; letter-spacing:.02em; background: transparent;
+  color: var(--color-ink); border: 0; text-decoration: none; position:relative;
 }
-.btn-ghost:hover { border-color: var(--color-ink); text-decoration: none; }
+.btn-ghost::before { content:''; position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-hair); }
+.btn-ghost::after { content: '→'; color: var(--color-line); margin-left:8px; transition:transform .28s cubic-bezier(.22,1,.36,1), color .28s ease; }
+.btn-ghost:hover { color: var(--color-koa); text-decoration:none; }
+@media (hover:hover) and (prefers-reduced-motion: no-preference) {
+  .btn:hover::before { width:15px; border-radius:2px; }
+  .btn:hover::after { transform:scaleX(1); }
+  .btn-ghost:hover::after { transform:translateX(4px); color:var(--color-koa); }
+}
+.btn:focus-visible, .btn-ghost:focus-visible { outline:2px solid var(--color-line); outline-offset:3px; }
+@media (prefers-reduced-motion: reduce) { .btn, .btn::before, .btn::after, .btn-ghost::after { transition:none; } }
 
-/* Hover micro-motion, site-wide so the hero's buttons and §07's behave alike.
-   The colour transitions above stay outside this query — a colour change isn't
-   motion — but the lift and its shadow are, so they only exist for visitors who
-   haven't asked for less. The shadow is mixed from --color-ink rather than
-   introduced as a new token; no hex enters the stylesheet. */
-@media (prefers-reduced-motion: no-preference) {
-  .btn, .btn-ghost {
-    transition: background .15s ease, border-color .15s ease,
-                transform .18s cubic-bezier(.16, 1, .3, 1), box-shadow .18s ease;
-  }
-  .btn:hover, .btn-ghost:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-ink) 11%, transparent);
-  }
-  .btn:active, .btn-ghost:active {
-    transform: none; box-shadow: none; transition-duration: .05s;
-  }
-}
 .btn-row {
-  display: flex; gap: 12px; flex-wrap: wrap;
+  display: flex; gap: 20px; flex-wrap: wrap;
   margin-top: 30px; align-items: center;
 }
 
@@ -277,8 +279,8 @@ aside.side .lbl {
 aside.side strong { color: var(--color-ink); }
 
 /* ---------- section frame ---------- */
-section { padding: 96px 0; border-top: 1px solid var(--color-rule); }
-section.hero { padding: 76px 0 88px; border-top: 0; }
+section { padding: 104px 0; border-top: 1px solid var(--color-rule); }
+section.hero { padding: 58px 0 66px; border-top: 0; }
 
 /* ---------- figures ---------- */
 .figcap {

@@ -6,12 +6,10 @@ import IntakeForm from './IntakeForm.astro';
 <div class="cta-band" id="contact">
   <div class="wrap cta-in">
     <div>
-      <div class="eyebrow">§ 08 · Start here</div>
-      <h2 style="margin:16px 0 22px;max-width:15ch">Tell me what’s not talking to what.</h2>
+      <div class="eyebrow">§ 05 · Start here</div>
+      <h2 style="margin:16px 0 22px;max-width:18ch">Tell us what is taking too much time.</h2>
       <p class="lead" style="max-width:48ch">
-        Thirty minutes on a call. I’ll tell you what I’d build, roughly what it would cost,
-        and whether it’s worth building at all. If the answer is that you don’t need me,
-        you’ll hear that too.
+        If it is a fit, we will book a free 30-minute call. If not, we will tell you.
       </p>
 
       <p class="contact-meta">
@@ -24,7 +22,11 @@ import IntakeForm from './IntakeForm.astro';
 </div>
 
 <style>
-  .cta-band { background: var(--color-wash); border-top: 1px solid var(--color-rule); }
+  .cta-band {
+    background-color:var(--color-wash); border-top:1px solid var(--color-rule);
+    background-image:linear-gradient(to right, color-mix(in srgb, var(--color-rule) 50%, transparent) 1px, transparent 1px);
+    background-size:88px 100%;
+  }
 
   /* index.html had `.cta-in{padding:88px 0}` and `.wrap{padding:0 40px}` as two
      single-class selectors, so source order alone decided the winner. The

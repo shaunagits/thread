@@ -1,28 +1,11 @@
 ---
-/**
- * Homepage. Copy is the owner's v3 draft, supplied 14 Aug 2026: first person
- * throughout, no em dashes in anything a visitor reads, no case studies and no
- * invented proof. The hero and the plates were explicitly out of scope for
- * that rewrite and are unchanged.
- *
- * Two sections from the previous structure are gone. §04 sold the free systems
- * map, which the owner killed as an offer on the same date. §05 was Work, and
- * it is not coming back until there is a real project to put in it — the
- * owner's own note: one real client with one real number will outperform every
- * sentence on this page.
- */
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import ConnectsStrip from '../components/ConnectsStrip.astro';
-import Section from '../components/Section.astro';
-import Figure from '../components/Figure.astro';
-import Fig2CurrentState from '../components/Fig2CurrentState.astro';
-import Fig3ThreadDiagram from '../components/Fig3ThreadDiagram.astro';
-import Fig4CarePlate from '../components/Fig4CarePlate.astro';
-import StepRow from '../components/StepRow.astro';
 import ServiceList from '../components/ServiceList.astro';
-import QuestionList from '../components/QuestionList.astro';
+import Section from '../components/Section.astro';
+import StepRow from '../components/StepRow.astro';
+import Fig4CarePlate from '../components/Fig4CarePlate.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -30,215 +13,79 @@ import Footer from '../components/Footer.astro';
 <Base businessSchema>
   <Header />
   <Hero />
-  <ConnectsStrip />
 
   <Section
     eyebrow="§ 01 · The problem"
-    heading="Your software works. It just doesn’t work together."
-    headingWidth={20}
-    headingGap={24}
-    noteLabel="Worth asking"
+    heading="Good tools can still create busywork."
+    headingWidth={23}
   >
-    <p class="txt" style="margin-bottom:16px">
-      QuickBooks does the accounting. Square takes the payments. The scheduling app
-      schedules. Every tool you bought does its job, and not one of them knows the others
-      exist.
+    <p class="lead" style="max-width:52ch;margin-bottom:18px">
+      When information doesn’t move cleanly, your team carries it by hand.
     </p>
-    <p class="txt" style="margin-bottom:16px">
-      So a person becomes the connection. Someone reads a number off one screen and types
-      it into another. Someone opens four tabs to answer one question. Someone remembers to
-      send the invoice, until the week they don’t.
-    </p>
-    <p class="txt">
-      That work never shows up on a report, which is why it never gets fixed. It’s also the
-      first thing I remove.
-    </p>
-
-    <Fragment slot="note">
-      What does a customer touch, from first contact to final payment? Which of those steps
-      happens because a person <strong>remembers</strong> to do it? Most businesses can’t
-      answer the first question from a single screen. That gap is the work.
-    </Fragment>
-
-    <Figure slot="after" caption="Current state, typical intake">
-      <Fig2CurrentState />
-    </Figure>
+    <p class="problem-actions">Re-enter. Check. Remember.</p>
   </Section>
 
   <Section
     id="services"
     eyebrow="§ 02 · What I do"
-    heading="Connect what you have. Build what you don’t."
-    headingWidth={18}
-    noteLabel="Which one you need"
+    heading="Make the work easier to run."
+    headingWidth={23}
   >
-    <p class="lead" style="max-width:52ch;margin-bottom:22px">
-      Most businesses need some of both.
+    <p class="lead" style="max-width:50ch">
+      Thread fixes the gaps that slow your team down, then builds the tools your business has outgrown.
     </p>
-
-    <p class="txt" style="margin-bottom:16px">
-      <strong>Your tools are fine. The gaps between them aren’t.</strong> You chose good
-      software for good reasons and you don’t want to replace any of it. So I don’t. I build
-      what runs between them: the dashboard that pulls from all of it, the automation that
-      moves the data, the handoffs that stop depending on someone remembering. Nothing gets
-      ripped out, and your team keeps working the way they already know how.
-    </p>
-    <p class="txt">
-      <strong>The tool you need isn’t for sale.</strong> Every business has a process no
-      product fits, so it lives in a spreadsheet, a group chat, and one person’s head. I
-      build that piece properly: shaped like your actual process, connected to everything
-      else you run, and built to outlast the person currently holding it together.
-    </p>
-
-    <Fragment slot="note">
-      If it already connects to anything, I can connect to it. Accounting, payments, point
-      of sale, scheduling, inventory, email, whatever you’re running. The first call is
-      where we find out what’s possible with your particular stack.
-    </Fragment>
-
-    <Fragment slot="after">
-      <p class="lead" style="max-width:52ch;margin-top:8px">
-        Either way you end up with one system instead of seven, and you own it.
-      </p>
-
-      <Figure caption="The thread, drawn">
-        <Fig3ThreadDiagram />
-      </Figure>
-    </Fragment>
+    <ServiceList />
   </Section>
 
   <Section
     id="how"
-    eyebrow="§ 03 · How it works"
-    heading="Three steps. You see it working before you’ve spent most of the money."
-    headingWidth={24}
+    eyebrow="§ 03 · The process"
+    heading="Start small. Build with confidence."
+    headingWidth={22}
   >
+    <p class="lead" style="max-width:52ch">
+      You do not need to know the answer before the first call.
+    </p>
     <StepRow />
   </Section>
 
   <Section
-    id="own"
-    eyebrow="§ 04 · What you own"
-    heading="Custom means yours. I mean that literally."
-    headingWidth={17}
-    noteLabel="Worth asking"
+    id="ownership"
+    eyebrow="§ 04 · Ownership"
+    heading="The system is yours."
+    headingWidth={20}
   >
-    <p class="lead" style="max-width:54ch;margin-bottom:22px">
-      Most software you buy, you rent. The price goes up at renewal, your data lives on
-      someone else’s server, and the day you stop paying, you stop operating. This is the
-      opposite of that.
-    </p>
-
-    <p class="txt" style="margin-bottom:16px">
-      <strong>It runs in your accounts.</strong> Your cloud, your database, your domain,
-      your billing. I build it there from day one.
-    </p>
-    <p class="txt" style="margin-bottom:16px">
-      <strong>You keep the source code.</strong> Handed over with documentation at the end
-      of every project, with full commercial rights. Not escrowed, not licensed back to
-      you.
-    </p>
-    <p class="txt" style="margin-bottom:16px">
-      <strong>Your data stays yours.</strong> I don’t sell a product, so there’s no product
-      for your data to sit inside. Nothing pooled, nothing resold, nothing used to train
-      anything.
-    </p>
-    <p class="txt" style="margin-bottom:16px">
-      <strong>No per-seat pricing.</strong> Hire your tenth employee, or your fiftieth. The
-      software costs what it cost.
-    </p>
-    <p class="txt">
-      <strong>You can replace me.</strong> Any competent developer can pick up what I built,
-      because it’s documented and it isn’t exotic. If I stop being useful you lose a vendor,
-      not your operations.
-    </p>
-
-    <Fragment slot="note">
-      Worth asking any software company you currently pay: what happens to my business the
-      day I cancel?
-    </Fragment>
-
-    <Figure slot="after" caption="What ships with every build" narrow>
+    <div class="ownership-layout">
+      <div>
+        <p class="lead" style="max-width:42ch;margin-bottom:18px">
+          It runs in your accounts and works for your team.
+        </p>
+        <p class="txt" style="max-width:48ch">
+          Your data. Your code. Clear handover.
+        </p>
+      </div>
       <Fig4CarePlate />
-    </Figure>
-  </Section>
-
-  <Section
-    id="pricing"
-    eyebrow="§ 05 · Pricing"
-    heading="Fixed scope. Fixed price. Agreed before I start."
-    headingWidth={19}
-    noteLabel="On AI"
-    docGap={44}
-  >
-    <p class="lead" style="max-width:52ch">
-      No hourly billing and no change orders. If I get the estimate wrong, that’s mine to
-      absorb.
-    </p>
-
-    <Fragment slot="note">
-      I use it where it holds up. Sorting and routing incoming work, drafting the messages
-      you send fifty times a month, pulling data out of documents, flagging what needs a
-      person to look at it. It shows up inside the work rather than as something you buy
-      separately, because on its own it isn’t the answer to anything.
-    </Fragment>
-
-    <Fragment slot="after">
-      <ServiceList />
-
-      {/* PRICES DELIBERATELY ABSENT. The v3 draft carried $14,000, $28,000 and
-          $2,400/month and its own call-out marked all three as placeholders.
-          Owner confirmed 14 Aug 2026: durations and terms only until the real
-          figures exist. Do not fill these in. See CLAUDE.md. */}
-      <p class="txt" style="margin-top:34px;max-width:52ch">
-        <strong>My guarantee.</strong> Two weeks in, you’ll have working software in your
-        hands. If it’s clear by then that this isn’t going to work, either of us can stop
-        and you owe nothing beyond that point. I’d rather lose two weeks than build
-        something you don’t use.
-      </p>
-    </Fragment>
-  </Section>
-
-  <Section
-    id="questions"
-    eyebrow="§ 06 · Questions"
-    heading="The fair ones, answered plainly."
-    headingWidth={14}
-  >
-    <Fragment slot="after">
-      <QuestionList />
-    </Fragment>
-  </Section>
-
-  <Section
-    id="about"
-    eyebrow="§ 07 · About"
-    heading="Built in Hawaiʻi. Useful anywhere."
-    headingWidth={17}
-    noteLabel="Working with a small practice"
-  >
-    <p class="txt" style="margin-bottom:16px">
-      Thread is me. I build custom software for businesses across the islands, and for
-      clients on the mainland who’d rather talk to the person writing the code than to an
-      account manager.
-    </p>
-    <p class="txt" style="margin-bottom:16px">
-      Being here shapes the work. Island businesses run lean, on tools chosen years ago for
-      good reasons, with no appetite for tearing it all out and starting over. That
-      constraint turned out to be the right way to build software for anyone.
-    </p>
-    <p class="txt">
-      The name is the whole idea. A thread runs through everything and holds the separate
-      pieces together as one thing.
-    </p>
-
-    <Fragment slot="note">
-      I take a few projects at a time, which is the point. You get the person who
-      understands your business, not whoever was available that week. It also means the
-      calendar fills, so if the timing matters to you, say so early.
-    </Fragment>
+    </div>
   </Section>
 
   <ContactSection />
   <Footer />
 </Base>
+
+<style>
+  .problem-actions {
+    margin-top:42px; font-family:var(--font-serif); font-size:clamp(28px, 3.2vw, 42px);
+    line-height:1.15; letter-spacing:-.025em; color:var(--color-ink);
+  }
+  :global(#services) {
+    background-color:var(--color-wash);
+    background-image:linear-gradient(to right, color-mix(in srgb, var(--color-rule) 42%, transparent) 1px, transparent 1px);
+    background-size:88px 100%;
+  }
+  :global(#services) .wrap { position:relative; }
+  :global(#services) .wrap::after { content:''; position:absolute; right:0; top:0; width:74px; border-top:2px solid var(--color-line); }
+  :global(#ownership) { background:var(--color-paper); padding-block:88px; }
+  .ownership-layout { display:grid; grid-template-columns:minmax(0,.82fr) minmax(400px,1.18fr); align-items:center; gap:clamp(36px,7vw,100px); max-width:1100px; }
+  .ownership-layout :global(svg.plate) { max-width:560px; justify-self:end; }
+  @media (max-width:720px) { .ownership-layout { grid-template-columns:1fr; gap:30px; } .ownership-layout :global(svg.plate) { justify-self:start; } }
+</style>
