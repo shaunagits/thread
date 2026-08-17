@@ -12,15 +12,48 @@ generator, noindex, excluded in robots.txt).
 
 ## ⚠️ What `index.html` is still binding for
 
-`index.html` remains the source of truth for **layout, type scale, colour and
-spacing**. It is **no longer binding for content.** Copy, section content,
-figures and form fields are specified by
-[`HOMEPAGE-COPY.md`](HOMEPAGE-COPY.md) and [`GRAPHICS.md`](GRAPHICS.md).
+`index.html` remains the source of truth for **layout and spacing**. It is **no
+longer binding for content**, and **no longer binding for colour or for the body
+type scale** — see the palette section below. Copy, section content, figures and
+form fields are specified by [`HOMEPAGE-COPY.md`](HOMEPAGE-COPY.md) and
+[`GRAPHICS.md`](GRAPHICS.md).
 
 New figures reuse existing tokens and the existing `Figure.astro` wrapper. Still
-no new colours, no new spacing values, no new component patterns.
+no new spacing values and no new component patterns.
 
 Decided with the owner, 13 Aug 2026. Do not re-litigate it.
+
+## ⚠️ The palette is ocean, not earth, since 17 Aug 2026
+
+Every colour token in `global.css` was replaced with a blue-green palette. The
+ochre-and-koa earth palette in `index.html` is **history, not the target**. Do
+not "restore" it, and do not diff colour against `index.html` — it will differ
+everywhere, by design.
+
+The token **names did not change, only their values**, so several are now
+misleading and that is deliberate rather than an oversight:
+
+| Token | Now holds | Name suggests |
+|---|---|---|
+| `--color-ochre` | `#8DB9C4` light ocean blue | warm ochre |
+| `--color-line` | `#4D8798` ocean blue | — |
+| `--color-koa` | `#235F70` deep teal | koa brown |
+| `--color-ink` | `#172A2D` blue-green | — |
+
+Renaming them touches every component for no reader benefit, so it was not done.
+**Landmine 5 still applies in spirit:** `--color-ochre` remains the fills-only
+colour and `--color-koa` the one that carries text, but the contrast figures
+recorded there (2.9:1 and 5.56:1) were measured on the old hexes and have **not**
+been re-measured against the new ones. Re-check before relying on them.
+
+`p.txt` also moved from 17.5px serif to 16px sans in the same change, and the
+button and ghost-button treatments were rebuilt. The `.doc` grid, section rhythm
+and spacing scale are untouched, so the geometry probes described under
+Verification approach still apply — probe geometry, ignore colour and body type.
+
+This landed via several Codex sessions that were deployed straight to production
+with `vercel --prod` and never committed, which is why the repo and the live site
+had diverged. Committed and pushed 17 Aug 2026.
 
 **One layout deviation, decided with the owner 14 Aug 2026.** The hero no longer
 stacks a full-width plate under the copy. `HeroGraphic.astro` sits *beside* the
@@ -146,12 +179,19 @@ changing them.
 
 ## Hard constraints from the original brief
 
-- **`index.html` is the source of truth** for layout, type, colour and spacing.
-  It stays in the repo, untouched, as the reference. Do not edit it.
+- **`index.html` is the source of truth** for layout and spacing. It stays in the
+  repo, untouched, as the reference. Do not edit it. ~~colour and type~~
+  **superseded 17 Aug 2026** — the palette is now ocean and `p.txt` is 16px sans;
+  see the palette section above.
 - **No hardcoded hex in components.** Every colour is a token in `global.css`.
+  Still in force, and it is what made the palette swap a one-file change.
 - **No client JavaScript.** The phone menu is a `<details>`; the contact form is
   a native POST.
-- **No new colours, fonts, spacing scales, or components** beyond the design.
+- ~~**No new colours, fonts, spacing scales, or components** beyond the design.~~
+  **Narrowed 17 Aug 2026.** No new *spacing scales* or *fonts*, and no new
+  component patterns. Colour is now the owner's call and the tokens have already
+  been replaced wholesale. `simple-icons` was added as a dependency for the
+  connects-to marks in `HeroGraphic.astro`.
 - ~~**No animation or scroll effects.**~~ **Lifted by the owner, 14 Aug 2026.**
   Motion on the plates is now allowed. The replacement rule is narrower, not
   absent: **CSS only, no JavaScript, no libraries, no SMIL.** Scroll-driven
