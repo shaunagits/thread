@@ -107,20 +107,39 @@ import { steps } from '../content/site';
     line-height: var(--leading-body); color: var(--color-body);
   }
 
-  @keyframes tl-in   { to { opacity: 1; transform: none; } }
-  @keyframes tl-grow { to { transform: scaleY(1); } }
+  /* The from-state lives in the keyframes, NOT in the rule. That is the whole
+     point: if the animation declaration is ever dropped — by a minifier, an
+     unsupported value, anything — the content renders normally instead of
+     staying at opacity 0 forever. Never write `opacity: 0` outside a keyframe
+     for a scroll-driven reveal. */
+  @keyframes tl-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes tl-grow {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+  }
 
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
+      /* Longhands, not the `animation` shorthand. Lightning CSS folds
+         `animation-timeline` into the shorthand when it can, producing
+         `animation: linear both tl-in view()`, which no browser parses — so the
+         whole declaration is dropped and the element keeps whatever hidden
+         state the rule set. It only happens in production, because the dev
+         server does not minify. See landmine 22. */
       .tl-step {
-        opacity: 0; transform: translateY(10px);
-        animation: tl-in linear both;
+        animation-name: tl-in;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 12% cover 34%;
       }
       .timeline::after {
-        transform: scaleY(0);
-        animation: tl-grow linear both;
+        animation-name: tl-grow;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 18% cover 78%;
       }

@@ -1,0 +1,28 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Thread</title>
+  <desc id="d">The Thread ribbon mark, paper on ink, square. For profile avatars. Higher contrast in a feed.</desc>
+  <!--
+    Square avatar, 300x300 — LinkedIn's company logo size, and the same shape
+    every other profile surface wants.
+
+    The mark only. No wordmark: this renders at roughly 60px in a feed and gets
+    a rounded crop on several surfaces, and "thread" set beside the mark would
+    be illegible at that size and clipped by the crop.
+
+    The mark's visual bounds including its 5.8 stroke are x 6.1-147.9,
+    y 16.1-137.9, so its centre is (77, 77). Scaled 1.31x and translated by
+    49.1 that lands dead centre of the 300 box at ~62% width, leaving ~19%
+    clear on every side. That padding is what keeps a circular crop off the
+    strokes.
+
+    Colours are the tokens, hardcoded here because this file is exported as a
+    PNG and never sees the stylesheet: color-paper #FCFCF9, color-ink #172A2D.
+  -->
+  <rect width="300" height="300" fill="#172A2D"/>
+  <g transform="translate(49.1 49.1) scale(1.31)">
+    <path
+      d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82"
+      fill="none" stroke="#FCFCF9" stroke-width="5.8"
+      stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

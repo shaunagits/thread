@@ -86,16 +86,21 @@
       <g class="dp-chart">
         <rect class="dp-card" x="272" y="278" width="496" height="230" rx="2"/>
         <text class="dp-lbl" x="292" y="310">SALES · LAST 7 DAYS</text>
-        <path class="dp-rule" d="M292 480 H748"/>
-        <g class="dp-bars">
-          <rect class="dp-bar" x="294" y="422" width="40" height="58"/>
-          <rect class="dp-bar" x="358" y="394" width="40" height="86"/>
-          <rect class="dp-bar" x="422" y="430" width="40" height="50"/>
-          <rect class="dp-bar" x="486" y="370" width="40" height="110"/>
-          <rect class="dp-bar" x="550" y="404" width="40" height="76"/>
-          <rect class="dp-bar" x="614" y="348" width="40" height="132"/>
-          <rect class="dp-bar dp-bar-now" x="678" y="382" width="40" height="98"/>
+        {/* Three series, not bars and not one line. The hero graphic a scroll
+            above ends in a small bar chart, so a second bar chart read as the
+            same drawing twice — and a single line with a filled area under it
+            was both flat and fragile: the fill used color-mix against
+            transparent, which some engines resolve to opaque black. Three
+            strokes, no fills, nothing to fall back to. */}
+        <g class="dp-grid">
+          <path d="M292 410 H748" fill="none"/>
+          <path d="M292 445 H748" fill="none"/>
         </g>
+        <path class="dp-rule" d="M292 480 H748" fill="none"/>
+        <path class="dp-s3" pathLength="1" fill="none" d="M292.0 458 L368.0 450 L444.0 454 L520.0 440 L596.0 446 L672.0 428 L748.0 434"/>
+        <path class="dp-s2" pathLength="1" fill="none" d="M292.0 440 L368.0 428 L444.0 436 L520.0 410 L596.0 422 L672.0 394 L748.0 406"/>
+        <path class="dp-s1" pathLength="1" fill="none" d="M292.0 422 L368.0 394 L444.0 430 L520.0 370 L596.0 404 L672.0 348 L748.0 382"/>
+        <circle class="dp-point" cx="748" cy="382" r="5"/>
       </g>
 
       <!-- ============ crew ============ -->
@@ -225,16 +230,15 @@
       <g class="dp-chart">
         <rect class="dp-card" x="24" y="262" width="250" height="150" rx="2"/>
         <text class="dp-lbl-n" x="36" y="284">SALES · LAST 7 DAYS</text>
-        <path class="dp-rule" d="M36 396 H262"/>
-        <g class="dp-bars">
-          <rect class="dp-bar" x="38" y="366" width="22" height="30"/>
-          <rect class="dp-bar" x="70" y="350" width="22" height="46"/>
-          <rect class="dp-bar" x="102" y="370" width="22" height="26"/>
-          <rect class="dp-bar" x="134" y="336" width="22" height="60"/>
-          <rect class="dp-bar" x="166" y="356" width="22" height="40"/>
-          <rect class="dp-bar" x="198" y="324" width="22" height="72"/>
-          <rect class="dp-bar dp-bar-now" x="230" y="344" width="22" height="52"/>
+        <g class="dp-grid">
+          <path d="M36 344 H262" fill="none"/>
+          <path d="M36 370 H262" fill="none"/>
         </g>
+        <path class="dp-rule" d="M36 396 H262" fill="none"/>
+        <path class="dp-s3" pathLength="1" fill="none" d="M36.0 385 L73.7 381 L111.3 383 L149.0 374 L186.7 379 L224.3 368 L262.0 372"/>
+        <path class="dp-s2" pathLength="1" fill="none" d="M36.0 376 L73.7 368 L111.3 374 L149.0 358 L186.7 366 L224.3 350 L262.0 356"/>
+        <path class="dp-s1" pathLength="1" fill="none" d="M36.0 366 L73.7 350 L111.3 370 L149.0 336 L186.7 356 L224.3 324 L262.0 344"/>
+        <circle class="dp-point" cx="262" cy="344" r="4"/>
       </g>
 
       <g class="dp-list">
@@ -363,8 +367,15 @@
   .dp-markertext{ font-family: var(--font-mono); font-size: var(--fs-micro); fill: var(--color-koa); text-anchor: middle; }
   .dp-colabel   { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); text-transform: uppercase; fill: var(--color-body); }
 
-  .dp-bar       { fill: var(--color-ochre); }
-  .dp-bar-now   { fill: var(--color-line); }
+  .dp-grid path { stroke: var(--color-rule); stroke-width: 1; fill: none; }
+  /* Three series, darkest on top. All one hue family, so it reads as one chart
+     rather than three competing colours. No fills anywhere in here — see the
+     note in the markup. */
+  .dp-s1, .dp-s2, .dp-s3 { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  .dp-s1 { stroke: var(--color-koa);   stroke-width: 2; }
+  .dp-s2 { stroke: var(--color-line);  stroke-width: 1.5; }
+  .dp-s3 { stroke: var(--color-ochre); stroke-width: 1.5; }
+  .dp-point { fill: var(--color-white); stroke: var(--color-koa); stroke-width: 2; }
   .dp-status    { fill: var(--color-line); }
   .dp-status-off{ fill: var(--color-hair); }
 
@@ -375,9 +386,9 @@
      scroll-driven for the same reason HeroGraphic is.
      ============================================================ */
   @keyframes dp-reveal { to { opacity: 1; } }
+  @keyframes dp-draw   { to { stroke-dashoffset: 0; } }
   @keyframes dp-rise   { to { opacity: 1; transform: translateY(0); } }
-  @keyframes dp-grow   { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-
+  
   @media (prefers-reduced-motion: no-preference) {
     .dp-side, .dp-head, .dp-stat, .dp-chart, .dp-list { opacity: 0; }
     .dp-stat, .dp-chart, .dp-list { transform: translateY(8px); }
@@ -389,16 +400,14 @@
     .dp-chart { animation: dp-rise   .34s ease-out forwards .56s; }
     .dp-list  { animation: dp-rise   .34s ease-out forwards .64s; }
 
-    .dp-bar {
-      transform-box: fill-box; transform-origin: bottom;
-      animation: dp-grow .42s cubic-bezier(.3,.7,.3,1) both .78s;
-    }
-    .dp-bar:nth-child(2) { animation-delay: .84s; }
-    .dp-bar:nth-child(3) { animation-delay: .90s; }
-    .dp-bar:nth-child(4) { animation-delay: .96s; }
-    .dp-bar:nth-child(5) { animation-delay: 1.02s; }
-    .dp-bar:nth-child(6) { animation-delay: 1.08s; }
-    .dp-bar:nth-child(7) { animation-delay: 1.14s; }
+    /* The line draws itself, the fill follows, the current point lands last.
+       Same technique as the wires in HeroGraphic: pathLength normalises the
+       path to 1 so one dash length works for both compositions. */
+    .dp-s1, .dp-s2, .dp-s3 { stroke-dasharray: 1; stroke-dashoffset: 1; animation: dp-draw .85s cubic-bezier(.4,0,.2,1) both; }
+    .dp-s3 { animation-delay: .78s; }
+    .dp-s2 { animation-delay: .90s; }
+    .dp-s1 { animation-delay: 1.02s; }
+    .dp-point { opacity: 0; animation: dp-reveal .3s ease-out forwards 1.75s; }
 
     /* callouts land last, once the thing they point at exists */
     .co { opacity: 0; animation: dp-reveal .26s ease-out forwards; }

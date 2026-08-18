@@ -43,6 +43,13 @@ const businessLd = {
   '@type': 'ProfessionalService',
   '@id': new URL('/#thread', Astro.site).href,
   name: 'Thread',
+  /**
+   * What people actually type. The site is "Thread"; the search is "Thread
+   * Hawaii", and that phrase is contested locally by three long-established
+   * embroidery and threading businesses. alternateName is how the entity is
+   * told which strings refer to it.
+   */
+  alternateName: ['Thread Hawaii', 'Thread Hawaiʻi'],
   description:
     'Custom software for Hawaiʻi businesses. Thread connects the tools a business already runs, or builds the one nobody sells, and hands over the source code, the data and the accounts it runs in.',
   url: new URL('/', Astro.site).href,

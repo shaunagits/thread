@@ -435,6 +435,23 @@ Each of these cost real debugging time. Don't rediscover them.
     the local `main` ref, which reports "Everything up-to-date" and ships
     nothing. There is also a worktree at `.claude/worktrees/`.
 
+22. **Never put a scroll-driven animation's hidden state in the rule.** Lightning
+    CSS folds `animation-timeline` into the `animation` shorthand when both are
+    present, emitting `animation: linear both tl-in view()`. No browser parses
+    `view()` inside the shorthand, so the whole declaration is dropped — while
+    `opacity: 0` in the same rule survives. The result is a section that is
+    permanently invisible **in production only**, because the dev server does
+    not minify. `@supports (animation-timeline: view())` does not save you: the
+    property is supported, it is the minified value that is broken.
+
+    Two rules, both required. Use the **longhands** (`animation-name`,
+    `animation-timing-function`, `animation-fill-mode`) so there is no shorthand
+    to fold into. And put the from-state **inside the keyframes**, never in the
+    rule, so that if a declaration is ever dropped the content renders normally
+    instead of vanishing. This cost §02 on production on 17 Aug 2026.
+    **Always check the built CSS, not the dev server, after touching a
+    scroll-driven animation.**
+
 ## Verification approach
 
 Parity against `index.html` was established by diffing computed geometry

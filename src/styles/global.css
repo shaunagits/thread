@@ -228,6 +228,15 @@
 *::before,
 *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Smooth scrolling is for in-page anchor jumps, not for the browser restoring
+   your position on reload or on back. `scroll-behavior` on `html` applies to
+   both, so a reload part-way down the page animates the restore, which reads as
+   the page scrolling itself. Scoping it to `:focus-within` is the usual dodge
+   but breaks anchor clicks; scoping it to the anchor targets is not possible in
+   CSS. The honest fix is to keep it and accept the restore animation, or drop
+   it. Kept, because the nav is entirely anchor links and the jump is the more
+   common interaction by far. If the restore ever becomes the complaint, delete
+   this rule — nothing else depends on it. */
 html { scroll-behavior: smooth; }
 
 /* The design specifies no motion. Honour the OS setting as well. */
