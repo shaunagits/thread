@@ -117,9 +117,9 @@ export const steps = [
  * They are OPTIONAL until there is somewhere to explain a care plan.
  */
 export const shipsWith = [
-  { item: 'The source code, in your repository',        tag: 'Included' },
   { item: 'Written documentation: what it does, and why', tag: 'Included' },
   { item: 'Running in your accounts, on your data',     tag: 'Included' },
+  { item: 'The source code, in your repository',        tag: 'Included' },
   { item: 'Monitoring, so you hear about it from me first', tag: 'Optional' },
   { item: 'A standing hour each month',                 tag: 'Optional' },
 ];
