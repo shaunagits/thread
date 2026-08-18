@@ -13,19 +13,40 @@ import { shipsWith } from '../content/site';
  * This is the same information as real text, in the row-and-rule idiom the site
  * already uses. It needs no minimum width, so it fits a phone without the
  * sideways pan the wide plates need.
+ *
+ * Grouped by tag since 18 Aug 2026. It was one flat list with the tag repeated
+ * on every row, which set the right-hand column droning "Included, Included,
+ * Included, Optional, Optional" down the page — five rows saying two things.
+ * The tag is now a heading over its own set and appears once each, which is
+ * also the honest shape of the information: what you always get, and what you
+ * can add.
+ *
+ * Grouping is derived from the data rather than hardcoded, so site.ts stays the
+ * single source of both the copy and the order, and a third tag would just work.
+ * No copy changed here — see CLAUDE.md on content living in site.ts.
  */
+
+const groups = [...new Set(shipsWith.map((r) => r.tag))].map((tag) => ({
+  tag,
+  rows: shipsWith.filter((r) => r.tag === tag),
+}));
 ---
 
 <div class="ships">
   <div class="ships-head">Ships with every build</div>
-  <ul>
-    {shipsWith.map((row) => (
-      <li>
-        <span class="ships-item">{row.item}</span>
-        <span class="ships-tag">{row.tag}</span>
-      </li>
-    ))}
-  </ul>
+
+  {groups.map((group) => (
+    <div class="ships-group">
+      {/* The full stop is the wordmark's, not a drawn circle: `thread.` ends on
+          a koa period and so does each label here. A 4px dot at the far end of
+          the leader was tried first and read as a stray speck, because it sat
+          an entire column away from the word it was meant to punctuate. */}
+      <h3 class="ships-label"><span class="ships-word">{group.tag}</span><span class="ships-lead" aria-hidden="true"></span></h3>
+      <ul>
+        {group.rows.map((row) => <li>{row.item}</li>)}
+      </ul>
+    </div>
+  ))}
 </div>
 
 <style>
@@ -37,24 +58,39 @@ import { shipsWith } from '../content/site';
     padding-bottom: 14px; border-bottom: 1px solid var(--color-hair);
   }
 
+  /* A div, not a <section>. `section { padding: 104px 0; border-top: … }` is a
+     global element rule for the page's own sections, and a nested <section>
+     silently inherits all of it — 104px of dead space and a stray rule above
+     every group. Cost one measurement to find. */
+  .ships-group { margin-top: 30px; }
+  /* Adjacent-sibling, not :first-child — .ships-head is the first child, so
+     :first-child never matched a group and the tighter gap silently did
+     nothing. The head binds to its first set; the sets breathe from each
+     other. */
+  .ships-head + .ships-group { margin-top: 22px; }
+
+  /* Same type as .ships-head one level down, so the two read as a hierarchy
+     rather than two competing labels: quiet, not koa, and the rule carries the
+     emphasis instead of the colour. */
+  .ships-label {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    color: var(--color-quiet); margin-bottom: 4px;
+  }
+  .ships-lead {
+    flex: 1; height: 1px; background: var(--color-rule); position: relative;
+  }
+  .ships-word::after { content: '.'; color: var(--color-koa); }
+
   ul { list-style: none; margin: 0; padding: 0; }
   li {
-    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;
-    padding: 15px 0; border-bottom: 1px solid var(--color-rule);
-  }
-
-  .ships-item {
     font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
     color: var(--color-body);
+    padding: 13px 0; border-bottom: 1px solid var(--color-rule);
   }
-  .ships-tag {
-    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
-    text-transform: uppercase; color: var(--color-faint); white-space: nowrap;
-  }
-
-  /* 640 is --breakpoint-sm; 560 was an invented one. */
-  @media (max-width: 640px) {
-    li { grid-template-columns: 1fr; gap: 5px; }
-    .ships-tag { justify-self: start; }
-  }
+  /* The last row of the last group closes on the heavier rule the head opened
+     with, so the block reads as one enclosed object rather than a list that
+     stops. */
+  .ships-group:last-child li:last-child { border-bottom-color: var(--color-hair); }
 </style>
