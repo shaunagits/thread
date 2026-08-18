@@ -302,24 +302,40 @@
      drawing fills the column exactly rather than being letterboxed by the
      gutters the callouts need. */
   /* Drawing-space type. The unit here is the viewBox, not the screen, so the
-     numbers differ between the two compositions even though the three roles
-     are identical. Three roles, nothing else: a label, a name, a figure. */
-  .dp-wide   { --fs-micro: 11px; --fs-name: 16px; --fs-fig: 28px; }
+     numbers differ between the two compositions even though the roles are
+     identical. Four roles: a label, a name, a figure, and the callout.
+
+     The callout earned its own size on 18 Aug 2026. It is the only text in the
+     plate that is the page's content rather than part of the interface being
+     depicted — CLAUDE.md calls the six callouts content, not decoration — and
+     it is the only one whose rendered size has to hold across the narrow
+     composition's whole scale range. Every other role is drawn UI and can ride
+     the drawing's scale without anyone minding. */
+  .dp-wide   { --fs-micro: 11px; --fs-name: 16px; --fs-fig: 28px; --fs-colabel: 11px; }
 
   /* Between 821 and 1000 the wide drawing is still in use but the column has
      dropped to 740-920px, so a 1040-unit canvas renders at 0.71-0.89 and the
      names fell to 12.6px against 16.5px body copy. Name and figure are bumped
-     to compensate; --fs-micro deliberately is not, because the callout labels
-     are already close to the canvas edge and "Live counts from your tools"
-     overflows it above 12 units. */
+     to compensate; --fs-colabel deliberately is not, because the callout labels
+     sit close to the canvas edge and "Live counts from your tools" overflows it
+     above 12 units. (That constraint used to be written against --fs-micro,
+     which the wide callout shared until the callout took its own role.) */
   @media (min-width: 821px) and (max-width: 1000px) {
     .dp-wide { --fs-name: 21px; --fs-fig: 34px; }
   }
   /* Capped at its own 440-unit width for the same reason as the hero's narrow
      composition: unbounded, it scaled 1.56x at tablet and rendered its figures
-     at 31px. The name value is 18 rather than higher because the longest
-     callout, "Your process, not a template", has to clear the canvas. */
-  .dp-narrow { --fs-micro: 11px; --fs-name: 18px; --fs-fig: 24px; max-width: 440px; }
+     at 31px.
+
+     The cap is why --fs-colabel is 14 here and 11 in the wide drawing. This
+     composition does not render at one scale: a 375px phone gives the SVG
+     331px, or 0.75, while anything from 484px up hits the 440 cap at 1.0. So a
+     unit value lands at two different sizes. 14 splits the difference, at
+     10.5px on a phone and 14px above the cap, against a 10px --text-micro. It
+     was 18, inherited from --fs-name, which rendered at 18px above the cap —
+     larger than 16.5px body copy, and the size the owner reported. --fs-name is
+     absent here because the callout was its only consumer in this composition. */
+  .dp-narrow { --fs-micro: 11px; --fs-fig: 24px; --fs-colabel: 14px; max-width: 440px; }
 
   .dashboard-plate { margin-top: 46px; max-width: 1100px; }
   .dp-plate { display: block; width: 100%; height: auto; overflow: visible; }
@@ -333,7 +349,7 @@
   .dp-h-n       { font-family: var(--font-display); font-size: var(--fs-fig); letter-spacing: var(--tracking-tight); fill: var(--color-ink); }
   .dp-fig-n     { font-family: var(--font-display); font-size: var(--fs-fig); letter-spacing: var(--tracking-tight); fill: var(--color-ink); }
   .dp-btntext-n { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-paper); text-anchor: middle; }
-  .dp-colabel-n { font-family: var(--font-mono); font-size: var(--fs-name); letter-spacing: var(--tracking-wide); text-transform: uppercase; fill: var(--color-body); }
+  .dp-colabel-n { font-family: var(--font-mono); font-size: var(--fs-colabel); letter-spacing: var(--tracking-wide); text-transform: uppercase; fill: var(--color-body); }
 
   /* ---- paint. no hex; every value is a token from global.css ---- */
   .dp-panel     { fill: var(--color-white); stroke: var(--color-hair); stroke-width: 1; }
@@ -365,7 +381,7 @@
   .dp-leader     { stroke: var(--color-line); stroke-width: 1; fill: none; }
   .dp-marker     { fill: var(--color-paper); stroke: var(--color-line); stroke-width: 1; }
   .dp-markertext{ font-family: var(--font-mono); font-size: var(--fs-micro); fill: var(--color-koa); text-anchor: middle; }
-  .dp-colabel   { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); text-transform: uppercase; fill: var(--color-body); }
+  .dp-colabel   { font-family: var(--font-mono); font-size: var(--fs-colabel); letter-spacing: var(--tracking-wide); text-transform: uppercase; fill: var(--color-body); }
 
   .dp-grid path { stroke: var(--color-rule); stroke-width: 1; fill: none; }
   /* Three series, darkest on top. All one hue family, so it reads as one chart
