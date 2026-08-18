@@ -1,45 +1,332 @@
 ---
-import { siAirtable, siQuickbooks, siShopify, siSquare, siStripe, siXero } from 'simple-icons';
+import {
+  siAdp, siGusto, siHubspot, siQuickbooks, siSage,
+  siShopify, siSquare, siStripe, siXero,
+} from 'simple-icons';
 
-/** Local brand paths avoid a third-party image request. The marks crossfade in
-    place, while reduced-motion visitors see the first state. */
+/**
+ * Hero graphic — the tools you already run, into one clear system.
+ *
+ * Three cards on the left, each cycling through three real tools. Lines carry
+ * them into the Thread mark at the centre, and one line leaves it into a single
+ * dashboard window on the right.
+ *
+ * Elevated 17 Aug 2026, keeping the three things the owner asked to keep: the
+ * logos cycling, the mark as the centre, and the language plain. What changed:
+ *
+ *   - Six tools became nine, on a 21s rotation offset per card so only one ever
+ *     changes at a time. Six read as a fixed list; nine reads as "whichever
+ *     ones happen to be yours", which is the argument.
+ *   - The mark became the hub rather than a shape near the middle. It sits in a
+ *     wash field with a hairline ring, and the wires now run into it and out.
+ *   - The wires carry a travelling dash, so the drawing says the data moves.
+ *   - The outcome panel, which used to be a rectangle labelled ONE CLEAR VIEW,
+ *     is now a small browser window: the same window §02 shows full size. The
+ *     hero promises it and §02 delivers it.
+ *   - Tool names moved from sans to serif, matching how ProblemFlow labels its
+ *     tools. Categories stay mono.
+ *
+ * The duplicate "ONE CLEAR VIEW" label was dropped; the window shows what it
+ * used to assert, and "One clear system." already said it in words.
+ *
+ * Local brand paths avoid a third-party image request. Motion is CSS only —
+ * no JavaScript, no library, no SMIL — and every rule sits inside
+ * prefers-reduced-motion: no-preference, so the reduced-motion default is the
+ * finished still drawing with the first tool showing in each card.
+ *
+ * Aspect is 620x352, the same 1.76 the previous composition had, so the hero
+ * grid is unaffected.
+ */
+
+/**
+ * Nine platforms, three per card. The bar, set by the owner 17 Aug 2026: a
+ * top-tier platform for small and medium businesses, with an API or equivalent
+ * way to pull data into a custom app, in a category that would actually appear
+ * on that business's dashboard — invoicing, CRM, billing, employees, sales.
+ *
+ * Airtable and Google Calendar were dropped against that bar: one is a database
+ * rather than a business platform, the other is not a platform at all. PayPal
+ * went too, because three payment processors crowded out the other domains.
+ *
+ * Each row is one job with three vendors, which is the argument: whichever one
+ * you happen to use for that job, it connects.
+ */
+const CARDS = [
+  { cy: 57, opts: [
+    { icon: siQuickbooks, name: 'QuickBooks', cat: 'ACCOUNTING' },
+    { icon: siXero,       name: 'Xero',       cat: 'ACCOUNTING' },
+    { icon: siSage,       name: 'Sage',       cat: 'ACCOUNTING' },
+  ]},
+  { cy: 176, opts: [
+    { icon: siSquare,  name: 'Square',  cat: 'POINT OF SALE' },
+    { icon: siStripe,  name: 'Stripe',  cat: 'PAYMENTS' },
+    { icon: siShopify, name: 'Shopify', cat: 'COMMERCE' },
+  ]},
+  { cy: 295, opts: [
+    { icon: siGusto,   name: 'Gusto',   cat: 'PAYROLL' },
+    { icon: siAdp,     name: 'ADP',     cat: 'PAYROLL' },
+    { icon: siHubspot, name: 'HubSpot', cat: 'CRM' },
+  ]},
+];
+
+/** Shared by the drawn wire and the pulse that travels along it. */
+const WIRES = [
+  'M158 57 C205 57 205 176 252 176',
+  'M158 176 H252',
+  'M158 295 C205 295 205 176 252 176',
+];
+
+const MARK = 'M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82';
+
+const MINI_BARS = [14, 22, 12, 28, 18, 34, 24];
 ---
 
 <div class="system-visual">
-  <svg viewBox="0 56 560 318" role="img" aria-labelledby="system-title system-desc" xmlns="http://www.w3.org/2000/svg">
-    <title id="system-title">Thread brings business tools into one clear operating view</title>
-    <desc id="system-desc">Business tools including QuickBooks, Square, and Shopify connect through a Thread mark to one clear outcome.</desc>
-    <g fill="none" stroke="currentColor" stroke-linecap="round">
-      <path class="connector connector-one" pathLength="1" d="M155 110 C205 110 207 207 248 207" />
-      <path class="connector connector-two" pathLength="1" d="M155 215 H248" />
-      <path class="connector connector-three" pathLength="1" d="M155 320 C205 320 207 223 248 223" />
-      <path class="connector accent-line" pathLength="1" d="M315 215 H360" />
+  <svg class="hv" viewBox="0 0 620 352" role="img" aria-labelledby="hv-title hv-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="hv-title">Thread brings the tools you already run into one clear system</title>
+    <desc id="hv-desc">Three cards on the left cycle through the platforms a business runs: accounting, point of sale, payments, commerce, payroll and CRM. Lines carry them into the Thread mark at the centre, and out into a single dashboard window on the right.</desc>
+
+    {/* fill="none" is repeated as a presentation attribute on every stroke-only
+        shape below. The classes already set it, and CSS wins over presentation
+        attributes, so this changes nothing when the stylesheet loads. It exists
+        because when the stylesheet does not load, an unfilled path defaults to
+        solid black and the whole drawing becomes a set of black blobs. */}
+    <g class="hub-field">
+      <circle class="halo" cx="292" cy="176" r="58" />
+      <circle class="halo-ring" cx="292" cy="176" r="58" fill="none" />
     </g>
-    <g class="source-card source-one"><rect x="24" y="76" width="132" height="68" rx="2" /><g class="source-option label-one"><path d={siQuickbooks.path} transform="translate(36 99) scale(.84)" /><text x="67" y="108">QuickBooks</text><text x="67" y="125" class="label-type">ACCOUNTING</text></g><g class="source-option label-two"><path d={siXero.path} transform="translate(36 99) scale(.84)" /><text x="67" y="108">Xero</text><text x="67" y="125" class="label-type">ACCOUNTING</text></g></g>
-    <g class="source-card source-two"><rect x="24" y="181" width="132" height="68" rx="2" /><g class="source-option label-one label-delay"><path d={siSquare.path} transform="translate(36 204) scale(.84)" /><text x="67" y="213">Square</text><text x="67" y="230" class="label-type">PAYMENTS</text></g><g class="source-option label-two label-delay"><path d={siStripe.path} transform="translate(36 204) scale(.84)" /><text x="67" y="213">Stripe</text><text x="67" y="230" class="label-type">PAYMENTS</text></g></g>
-    <g class="source-card source-three"><rect x="24" y="286" width="132" height="68" rx="2" /><g class="source-option label-one label-delay-two"><path d={siShopify.path} transform="translate(36 309) scale(.84)" /><text x="67" y="318">Shopify</text><text x="67" y="335" class="label-type">COMMERCE</text></g><g class="source-option label-two label-delay-two"><path d={siAirtable.path} transform="translate(36 309) scale(.84)" /><text x="67" y="318">Airtable</text><text x="67" y="335" class="label-type">OPERATIONS</text></g></g>
-    <g class="thread-mark" transform="translate(242 183) scale(.5)"><path pathLength="1" d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82" /></g>
-    <g class="outcome"><rect x="360" y="150" width="176" height="130" rx="2" /><path d="M360 202H536" class="outcome-rule" /><circle cx="382" cy="184" r="4" class="node-dot" /><text x="396" y="188" class="outcome-label">ONE CLEAR VIEW</text><text x="386" y="239" class="outcome-copy">One clear system.</text></g>
+
+    <g class="wires">
+      {WIRES.map((d, i) => <path class={`wire w${i + 1}`} pathLength="1" fill="none" d={d} />)}
+    </g>
+    {/* Drawn on top of the wires, not instead of them: a 3% dash that runs the
+        length of the path and fades at each end. */}
+    <g class="pulses" aria-hidden="true">
+      {WIRES.map((d, i) => <path class={`pulse pl${i + 1}`} pathLength="100" fill="none" d={d} />)}
+    </g>
+
+    {CARDS.map((c, i) => (
+      <g class={`card k${i + 1}`}>
+        <rect class="card-box" x="8" y={c.cy - 37} width="150" height="74" rx="2" />
+        {c.opts.map((o, j) => (
+          <g class={`opt o${j + 1} d${i + 1}`}>
+            <path class="opt-icon" d={o.icon.path} transform={`translate(24 ${c.cy - 10}) scale(.833)`} />
+            <text class="opt-name" x="54" y={c.cy - 1}>{o.name}</text>
+            <text class="opt-cat" x="54" y={c.cy + 14}>{o.cat}</text>
+          </g>
+        ))}
+      </g>
+    ))}
+
+    <g class="mark-g" transform="translate(250 134) scale(.55)">
+      <path class="mark-p" pathLength="1" fill="none" d={MARK} />
+    </g>
+    <path class="wire exit" pathLength="1" fill="none" d="M330 176 H372" />
+
+    <g class="out">
+      <rect class="out-box" x="372" y="96" width="240" height="160" rx="2" />
+      <path class="out-rule" fill="none" d="M372 122 H612" />
+      <g class="out-dots"><circle cx="386" cy="109" r="3.5" /><circle cx="398" cy="109" r="3.5" /><circle cx="410" cy="109" r="3.5" /></g>
+      <rect class="mini-card" x="390" y="138" width="100" height="44" rx="2" />
+      <text class="mini-lbl" x="400" y="156">REVENUE</text>
+      <text class="mini-fig" x="400" y="175">$148k</text>
+      <rect class="mini-card" x="498" y="138" width="96" height="44" rx="2" />
+      <text class="mini-lbl" x="508" y="156">JOBS</text>
+      <text class="mini-fig" x="508" y="175">37</text>
+      <rect class="mini-card" x="390" y="196" width="204" height="44" rx="2" />
+      <g class="mini-bars">
+        {MINI_BARS.map((h, i) => <rect class="mini-bar" x={396 + i * 26} y={240 - h} width="16" height={h} />)}
+      </g>
+    </g>
+
+    <text class="out-copy" x="372" y="286">One clear system.</text>
+  </svg>
+
+  <!-- ================= narrow =================
+       The wide drawing is 620 units across. On a phone that renders at roughly
+       350px, which puts the tool names near 8px — present but not readable.
+       So the composition changes rather than the scale: the cards stack full
+       width, the wires gather below them into the mark, and the window sits
+       under it. Same swap point as DashboardPlate. -->
+  <svg class="hv-narrow" viewBox="0 0 380 566" role="img" aria-labelledby="hvn-title hvn-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="hvn-title">Thread brings the tools you already run into one clear system</title>
+    <desc id="hvn-desc">Three stacked cards cycle through the platforms a business runs. Lines gather beneath them into the Thread mark, and open into a single dashboard window below.</desc>
+
+    {CARDS.map((c, i) => {
+      const top = 1 + i * 67, cy = top + 29;
+      return (
+        <g class={`card k${i + 1}`}>
+          <rect class="card-box" x="1" y={top} width="378" height="58" rx="2" />
+          {c.opts.map((o, j) => (
+            <g class={`opt o${j + 1} d${i + 1}`}>
+              <path class="opt-icon" d={o.icon.path} transform={`translate(18 ${cy - 11}) scale(.92)`} />
+              <text class="optn-name" x="52" y={cy + 6}>{o.name}</text>
+              <text class="optn-cat" x="362" y={cy + 5}>{o.cat}</text>
+            </g>
+          ))}
+        </g>
+      );
+    })}
+
+    <g class="wires">
+      <path class="wire" pathLength="1" fill="none" d="M70 193 C70 214, 190 206, 190 226" />
+      <path class="wire" pathLength="1" fill="none" d="M190 193 V226" />
+      <path class="wire" pathLength="1" fill="none" d="M310 193 C310 214, 190 206, 190 226" />
+    </g>
+    <g class="pulses" aria-hidden="true">
+      <path class="pulse pl1" pathLength="100" fill="none" d="M70 193 C70 214, 190 206, 190 226" />
+      <path class="pulse pl2" pathLength="100" fill="none" d="M190 193 V226" />
+      <path class="pulse pl3" pathLength="100" fill="none" d="M310 193 C310 214, 190 206, 190 226" />
+    </g>
+
+    <g class="hub-field">
+      <circle class="halo" cx="190" cy="262" r="36" />
+      <circle class="halo-ring" cx="190" cy="262" r="36" fill="none" />
+    </g>
+    <g class="mark-g" transform="translate(161 233) scale(.38)">
+      <path class="mark-p" pathLength="1" fill="none" d={MARK} />
+    </g>
+    <path class="wire exit" pathLength="1" fill="none" d="M190 298 V314" />
+
+    <g class="out">
+      <rect class="out-box" x="1" y="314" width="378" height="234" rx="2" />
+      <path class="out-rule" fill="none" d="M1 346 H379" />
+      <g class="out-dots"><circle cx="20" cy="330" r="4" /><circle cx="34" cy="330" r="4" /><circle cx="48" cy="330" r="4" /></g>
+      <rect class="dp-urlbar" x="112" y="322" width="200" height="16" rx="8" />
+      <text class="outn-url" x="124" y="334">app.yourbusiness.com</text>
+
+      <rect class="mark-sq" x="18" y="362" width="18" height="18" rx="4" />
+      <rect class="mark-sq" x="44" y="368" width="56" height="8" rx="4" />
+      <g class="out-dots">
+        <rect x="340" y="366" width="22" height="3" rx="1.5" />
+        <rect x="340" y="372" width="22" height="3" rx="1.5" />
+        <rect x="340" y="378" width="22" height="3" rx="1.5" />
+      </g>
+      <path class="out-rule" fill="none" d="M1 396 H379" />
+
+      <rect class="mini-card" x="18" y="412" width="170" height="56" rx="2" />
+      <text class="outn-lbl" x="30" y="434">REVENUE</text>
+      <text class="outn-fig" x="30" y="457">$148k</text>
+      <rect class="mini-card" x="200" y="412" width="162" height="56" rx="2" />
+      <text class="outn-lbl" x="212" y="434">JOBS OPEN</text>
+      <text class="outn-fig" x="212" y="457">37</text>
+
+      <rect class="mini-card" x="18" y="482" width="344" height="52" rx="2" />
+      <g class="mini-bars">
+        {[14, 24, 11, 32, 20, 38, 26].map((h, i) => (
+          <rect class="mini-bar" x={32 + i * 44} y={522 - h} width="28" height={h} />
+        ))}
+      </g>
+    </g>
+
+    <text class="outn-copy" x="1" y="562">One clear system.</text>
   </svg>
 </div>
 
 <style>
-  .system-visual { color: var(--color-ink); width: 100%; } svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .connector { stroke: var(--color-hair); stroke-width: 1; } .accent-line { stroke: var(--color-line); }
-  .source-card rect, .outcome rect { fill: var(--color-white); stroke: var(--color-hair); stroke-width: 1; } .source-option path { fill: var(--color-koa); }
-  .thread-mark path { fill: none; stroke: var(--color-ink); stroke-width: 5.8; stroke-linecap: round; stroke-linejoin: round; } .node-dot { fill: var(--color-line); }
-  text { font-family: var(--font-sans); fill: var(--color-body); font-size: 12px; } .source-option text:not(.label-type) { font-size: 13px; font-weight: 500; } .label-type { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .11em; fill: var(--color-faint); } .outcome-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: .11em; fill: var(--color-faint); } .outcome-rule { stroke: var(--color-rule); stroke-width: 1; } .outcome-copy { font-family: var(--font-serif); font-size: 13px; fill: var(--color-ink); }
-  .label-two { opacity: 0; } @keyframes source-swap { 0%, 42% { opacity: 1 } 50%, 92% { opacity: 0 } 100% { opacity: 1 } } @keyframes source-swap-alt { 0%, 42% { opacity: 0 } 50%, 92% { opacity: 1 } 100% { opacity: 0 } }
-  @keyframes diagram-draw { to { stroke-dashoffset:0; } } @keyframes diagram-reveal { to { opacity:1; } }
+  .system-visual { width: 100%; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .hv-narrow { display: none; }
+
+  /* Same three drawing-space roles as the dashboard plate. */
+  .hv        { --fs-micro: 9px;   --fs-name: 15px; --fs-fig: 18px; }
+  .hv-narrow { --fs-micro: 9.5px; --fs-name: 16px; --fs-fig: 19px; }
+
+  /* Drawing-space type only looks right at the scale the canvas was drawn for.
+     Rendered size = value x (rendered width / viewBox width), so a value that
+     is correct in one column is wrong in another. These two bands keep the
+     labels landing near --text-micro and the names near --text-body:
+
+       821-1000px  two columns, so the drawing gets a 380-460px column and the
+                   values are bumped to compensate.
+       <=820px     stacked, so the drawing gets its full 680px and the base
+                   values are already correct.
+
+     The bump is bounded by the card: "QuickBooks" at 17 units and "POINT OF
+     SALE" at 9.5 both fit the 96 units available. */
+  @media (min-width: 821px) and (max-width: 1000px) {
+    .hv { --fs-micro: 9.5px; --fs-name: 17px; --fs-fig: 18px; }
+  }
+
+  /* Capped at close to its own 380-unit width. Without this the narrow drawing
+     stretches to fill whatever column it is given — at 768px that was a 1.8x
+     scale, which rendered its 16-unit names at 29px next to 16.5px body copy.
+     That is the bug in the tablet screenshot. */
+  .hv-narrow { max-width: 420px; }
+
+  /* Sized against a 380-unit canvas rather than a 620-unit one, so these land
+     at roughly the same rendered size on a phone instead of two thirds of it. */
+  .optn-name { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
+  .optn-cat  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); text-anchor: end; }
+  .outn-url  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
+  .outn-lbl  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
+  .outn-fig  { font-family: var(--font-display); font-size: var(--fs-fig); fill: var(--color-ink); }
+  .outn-copy { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
+  .mark-sq   { fill: var(--color-koa); }
+  .dp-urlbar { fill: var(--color-wash); }
+
+  /* ---- paint. no hex; every value is a token from global.css ---- */
+  .halo { fill: var(--color-wash); }
+  .halo-ring { fill: none; stroke: var(--color-rule); stroke-width: 1; }
+  .wire { fill: none; stroke: var(--color-hair); stroke-width: 1; stroke-linecap: round; }
+  .exit { stroke: var(--color-line); }
+  .pulse { fill: none; stroke: var(--color-line); stroke-width: 1.6; stroke-linecap: round; opacity: 0; }
+  .card-box, .out-box, .mini-card { fill: var(--color-white); stroke: var(--color-hair); stroke-width: 1; }
+  .opt-icon { fill: var(--color-koa); }
+  .opt-name  { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
+  .opt-cat   { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
+  .mark-p { fill: none; stroke: var(--color-ink); stroke-width: 5.8; stroke-linecap: round; stroke-linejoin: round; }
+  .out-rule { fill: none; stroke: var(--color-rule); stroke-width: 1; }
+  .out-dots { fill: var(--color-hair); }
+  .mini-lbl  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
+  .mini-fig  { font-family: var(--font-display); font-size: var(--fs-fig); fill: var(--color-ink); }
+  .mini-bar { fill: var(--color-ochre); }
+  .mini-bar:last-child { fill: var(--color-line); }
+  .out-copy  { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
+
+  /* Base state: the second and third tool in every card are hidden, so a
+     visitor with reduced motion sees one settled set rather than three
+     drawings stacked on top of each other. */
+  .o2, .o3 { opacity: 0; }
+
+  @keyframes hv-draw { to { stroke-dashoffset: 0; } }
+  @keyframes hv-in   { to { opacity: 1; } }
+  @keyframes hv-run  { from { stroke-dashoffset: 100; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 0; } }
+
+  /* 21s cycle per card, offset so a single tool changes roughly every 2.3s and
+     never two at once. Negative delays start each card mid-cycle. */
+  @keyframes rot1 { 0%, 31% { opacity: 1 } 33.3%, 98% { opacity: 0 } 100% { opacity: 1 } }
+  @keyframes rot2 { 0%, 31% { opacity: 0 } 33.3%, 64.6% { opacity: 1 } 66.6%, 100% { opacity: 0 } }
+  @keyframes rot3 { 0%, 64.6% { opacity: 0 } 66.6%, 98% { opacity: 1 } 100% { opacity: 0 } }
+
   @media (prefers-reduced-motion: no-preference) {
-    .source-card, .outcome { opacity:0; }
-    .source-card { animation:diagram-reveal .28s ease-out forwards; }
-    .source-one { animation-delay:.05s; } .source-two { animation-delay:.14s; } .source-three { animation-delay:.23s; }
-    .connector, .thread-mark path { stroke-dasharray:1; stroke-dashoffset:1; animation:diagram-draw .62s cubic-bezier(.5,0,.25,1) forwards; }
-    .connector-one { animation-delay:.28s; } .connector-two { animation-delay:.36s; } .connector-three { animation-delay:.44s; }
-    .thread-mark path { animation-delay:.72s; }
-    .accent-line { animation-delay:1.04s; } .outcome { animation:diagram-reveal .32s ease-out forwards 1.15s; }
-    .label-one { animation:source-swap 12s ease-in-out infinite 1.5s; } .label-two { animation:source-swap-alt 12s ease-in-out infinite 1.5s; }
-    .label-delay { animation-delay:-2.5s; } .label-delay-two { animation-delay:-6.5s; }
+    .card, .out, .out-copy, .hub-field { opacity: 0; animation: hv-in .3s ease-out forwards; }
+    .k1 { animation-delay: .06s; } .k2 { animation-delay: .15s; } .k3 { animation-delay: .24s; }
+
+    .wire, .mark-p { stroke-dasharray: 1; stroke-dashoffset: 1; animation: hv-draw .62s cubic-bezier(.5, 0, .25, 1) forwards; }
+    .w1 { animation-delay: .30s; } .w2 { animation-delay: .38s; } .w3 { animation-delay: .46s; }
+    .hub-field { animation-delay: .62s; }
+    .mark-p { animation-delay: .74s; }
+    .exit { animation-delay: 1.08s; }
+    .out { animation-delay: 1.18s; } .out-copy  { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
+
+    .pulse { stroke-dasharray: 3 97; animation: hv-run 3.4s linear infinite 1.9s; }
+    .pl2 { animation-delay: 2.9s; } .pl3 { animation-delay: 3.9s; }
+
+    .o1 { animation: rot1 21s ease-in-out infinite 1.6s; }
+    .o2 { animation: rot2 21s ease-in-out infinite 1.6s; }
+    .o3 { animation: rot3 21s ease-in-out infinite 1.6s; }
+    .d2 { animation-delay: -5.4s; } .d3 { animation-delay: -12.4s; }
+  }
+
+  /* Composition swap, same breakpoint as DashboardPlate. Both drawings fit the
+     column they are given at every width; neither pans sideways. */
+  /* 640, not 820. Between 640 and 820 the hero is stacked but the column is
+     still 620-680px, which is exactly the width the wide drawing was drawn
+     for — so it stays wide there and only becomes the phone composition when
+     the column can no longer carry it. */
+  @media (max-width: 640px) {
+    .hv { display: none; }
+    .hv-narrow { display: block; }
   }
 </style>

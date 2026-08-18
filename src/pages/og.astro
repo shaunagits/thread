@@ -33,7 +33,7 @@ import '../styles/global.css';
             every already-scraped cache. Kept in sync by hand, deliberately: the
             hero's copy lives in Hero.astro's markup, not in a shared constant,
             and hoisting it would be a bigger change than this file deserves. */}
-        <h1>Software that brings your business together.</h1>
+        <h1>Built around how you already work.</h1>
       </div>
 
       <div class="bottom">
@@ -41,11 +41,11 @@ import '../styles/global.css';
             three engagements it actually sells. */}
         <span class="meta">Connect · Build · Ongoing</span>
         <svg class="motif" viewBox="0 0 120 24" fill="none" aria-hidden="true">
-          <path d="M2 6 C40 6, 44 12, 74 12" stroke="#AE7126" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M2 12 H74" stroke="#AE7126" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M2 18 C40 18, 44 12, 74 12" stroke="#AE7126" stroke-width="1.6" stroke-linecap="round"/>
-          <circle cx="78" cy="12" r="5" fill="#C8873F"/>
-          <path d="M86 12 H118" stroke="#AE7126" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M2 6 C40 6, 44 12, 74 12" stroke="var(--color-line)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M2 12 H74" stroke="var(--color-line)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M2 18 C40 18, 44 12, 74 12" stroke="var(--color-line)" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="78" cy="12" r="5" fill="var(--color-ochre)"/>
+          <path d="M86 12 H118" stroke="var(--color-line)" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
@@ -62,7 +62,7 @@ import '../styles/global.css';
     display: flex; flex-direction: column; justify-content: space-between;
   }
   .mark {
-    font-family: var(--font-serif); font-weight: 600; font-size: 40px;
+    font-family: var(--font-wordmark); font-weight: 600; font-size: 40px;
     letter-spacing: -.025em; color: var(--color-ink);
   }
   .mark .dot { color: var(--color-ochre); }
@@ -70,7 +70,7 @@ import '../styles/global.css';
   .middle { padding-bottom: 8px; }
   .eyebrow { font-size: 15px; letter-spacing: .16em; margin-bottom: 26px; }
   .middle h1 {
-    font-family: var(--font-serif); font-weight: 500; font-size: 74px;
+    font-family: var(--font-display); font-weight: 500; font-size: 74px;
     line-height: 1.1; letter-spacing: -.015em;
     color: var(--color-ink); max-width: 17ch;
   }

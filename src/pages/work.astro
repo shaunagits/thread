@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+/**
+ * Placeholder, built 17 Aug 2026 so the route, the nav entry and the layout
+ * are ready the moment there is work to put here.
+ *
+ * Three things hold until it is real:
+ *
+ *  1. `noindex`. The page exists so the link does not 404 while it is being
+ *     written, but an empty Work page is not something to be found in search.
+ *     Remove the prop and the robots.txt Disallow in the same commit as the
+ *     content.
+ *  2. The nav entry is commented out in src/content/site.ts. A visitor who
+ *     clicks "Work" expects proof; sending them here instead is worse than not
+ *     offering the link. Uncomment it when there is something to show.
+ *  3. Nothing on this page is invented. No placeholder client, no sample
+ *     project, no lorem. See CLAUDE.md, "Content that must never be invented" —
+ *     a plausible-looking case study is exactly how this site went wrong once.
+ */
+---
+
+<Base
+  noindex
+  title="Work · Thread"
+  description="Recent custom software and automation work by Thread, Honolulu."
+>
+  <Header />
+
+  <section class="legal">
+    <div class="wrap">
+      <div class="eyebrow">Work</div>
+      <h1>Being written.</h1>
+      <p>
+        I am putting together a proper account of what I have built and what it
+        changed for the businesses running it. It is not here yet, and I would
+        rather show you nothing than show you something invented.
+      </p>
+      <p>
+        If you want to know whether I have solved a problem like yours, the
+        fastest answer is to ask me. I will tell you straight, including when
+        the answer is no.
+      </p>
+      <div class="btn-row">
+        <a href="/#contact" class="btn">Book a call<span class="ln" aria-hidden="true"></span></a>
+        <a href="/" class="btn-ghost">Back to the homepage<span class="u" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

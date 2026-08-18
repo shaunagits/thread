@@ -41,35 +41,39 @@ const year = new Date().getFullYear();
     background: var(--color-ink); color: var(--color-foot-text);
     padding: 64px 0 40px;
   }
+  /* Was 2fr 1fr 1fr 1fr for three link columns. The Services and Approach
+     columns merged into one on 17 Aug 2026, so the brand block takes the
+     space rather than an empty cell being left behind. */
   .foot-grid {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    display: grid; grid-template-columns: 2.2fr 1fr 1fr; gap: 40px;
     padding-bottom: 44px; border-bottom: 1px solid var(--color-foot-rule);
   }
+  /* Same mark as the header, same exemption from the scale. */
   .mark {
-    font-family: var(--font-serif); font-weight: 600; font-size: 24px;
+    font-family: var(--font-wordmark); font-weight: 600; font-size: 24px;
     letter-spacing: -.025em; color: var(--color-paper);
   }
   .mark .dot { color: var(--color-ochre); }
   footer h2 {
-    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .15em;
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
     text-transform: uppercase; color: var(--color-foot-label);
-    font-weight: 500; margin-bottom: 15px; line-height: 1.6;
+    font-weight: 500; margin-bottom: 15px; line-height: var(--leading-body);
   }
   footer ul { list-style: none; }
-  footer li { margin-bottom: 9px; font-size: 13.5px; }
+  footer li { margin-bottom: 9px; font-size: var(--text-body); }
   footer a { color: var(--color-foot-text); }
   footer a:hover { color: var(--color-foot-link-hover); }
   .foot-bot {
     display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
-    padding-top: 26px; font-size: 12.5px; color: var(--color-foot-label);
+    padding-top: 26px; font-size: var(--text-micro); color: var(--color-foot-label);
   }
   /* Was plain text until Privacy and Terms existed as pages. Kept at the
      bottom bar's muted colour so it doesn't compete with the columns above. */
   .foot-legal a { color: var(--color-foot-label); }
   .foot-legal a:hover { color: var(--color-foot-link-hover); }
   .blurb {
-    font-size: 14px; color: var(--color-foot-blurb);
-    max-width: 34ch; margin-top: 14px; line-height: 1.6;
+    font-size: var(--text-body); color: var(--color-foot-blurb);
+    max-width: 34ch; margin-top: 14px; line-height: var(--leading-body);
   }
 
   @media (max-width: 1000px) { .foot-grid { grid-template-columns: 1fr 1fr; } }

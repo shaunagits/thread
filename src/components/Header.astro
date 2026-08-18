@@ -12,12 +12,17 @@ const CTA = 'Book a call';
       <svg viewBox="0 0 150 150" aria-hidden="true" focusable="false">
         <path class="thread-t" pathLength="1" d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82" />
       </svg>
-      <span>thread</span>
+      {/* The wordmark slides out from behind the mark. The outer span is the
+          clip, the inner one is what moves, so the letters are revealed from
+          the mark's edge rather than fading in beside it. */}
+      <span class="wm"><span class="wm-in">thread<span class="dot">.</span></span></span>
     </a>
 
     <nav class="nav-links" aria-label="Primary">
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      <a href="/#contact" class="nav-cta">{CTA}</a>
+      {/* Was its own near-copy of .btn with different padding, type size and
+          dot. It is the same object, so it now uses the same class. */}
+      <a href="/#contact" class="btn nav-cta">{CTA}<span class="ln" aria-hidden="true"></span></a>
     </nav>
 
     {/* Phone menu. A native <details> disclosure — keyboard-operable and
@@ -29,7 +34,7 @@ const CTA = 'Book a call';
         <nav aria-label="Primary, phone">
           {nav.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
-        <a href="/#contact" class="btn menu-cta">{CTA}</a>
+        <a href="/#contact" class="btn menu-cta">{CTA}<span class="ln" aria-hidden="true"></span></a>
       </div>
     </details>
   </div>
@@ -45,15 +50,14 @@ const CTA = 'Book a call';
     display: flex; align-items: center; justify-content: space-between;
     gap: 24px; height: 68px;
   }
-  .mark {
-    font-family: var(--font-serif); font-weight: 600; font-size: 25px;
-    letter-spacing: -.025em; color: var(--color-ink);
-    position: relative;
-  }
+  /* The logo. Restored 17 Aug 2026 to exactly what it was before the type
+     work: Newsreader 600 at 24px on -.025em. It is deliberately outside the
+     type scale — it is a mark, not text. */
+  .mark { position: relative; }
   .mark:hover { text-decoration: none; }
 
   .nav-links {
-    display: flex; gap: 29px; font-size: 12.5px; letter-spacing: .015em;
+    display: flex; gap: 29px; font-size: var(--text-nav);
     color: var(--color-quiet); align-items: center;
   }
   .nav-links a { color: var(--color-quiet); position:relative; text-decoration:none; }
@@ -66,30 +70,23 @@ const CTA = 'Book a call';
   /* Selector must out-specify `.nav-links a` above, which is class+element and
      would otherwise win and paint the CTA label --color-quiet. The original
      had the same collision; it was just less visible against ochre. */
-  .nav-links a.nav-cta {
-    padding: 11px 18px 11px 30px; font-size: 12px; letter-spacing:.025em; background: var(--color-koa);
-    color: var(--color-paper); border:1px solid var(--color-koa); border-radius:0; font-weight:650; overflow:hidden;
-  }
-  .nav-links a.nav-cta::before {
-    content:''; position:absolute; left:14px; top:50%; width:4px; height:4px;
-    border-radius:99px; background:var(--color-ochre); transform:translateY(-50%);
-  }
-  .nav-links a.nav-cta:hover {
-    text-decoration: none;
-    background: var(--color-white);
-    color: var(--color-ink);
-  }
+  /* Everything about the CTA's appearance now comes from .btn in global.css.
+     This rule exists only to win the specificity fight described above and to
+     restore the colour .nav-links a would otherwise paint on it. It must not
+     reintroduce size, type or hover, or the nav button drifts away from the
+     five other rectangle buttons again. */
+  .nav-links a.nav-cta { color: var(--color-paper); }
+  .nav-links a.nav-cta:hover { color: var(--color-paper); text-decoration: none; }
   @media (hover:hover) and (prefers-reduced-motion: no-preference) {
     .nav-links a:not(.nav-cta)::after { transition:transform .2s cubic-bezier(.5,0,.25,1); }
     .nav-links a:not(.nav-cta):hover::after { transform:scaleX(1); }
-    .nav-links a.nav-cta { transition:background .26s cubic-bezier(.22,1,.36,1), color .26s cubic-bezier(.22,1,.36,1); }
   }
 
   /* ---------- phone menu ---------- */
   .menu { display: none; position: relative; }
   .menu summary {
     list-style: none; cursor: pointer; user-select: none;
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em;
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
     text-transform: uppercase; color: var(--color-koa);
     padding: 10px 2px;
   }
@@ -104,7 +101,7 @@ const CTA = 'Book a call';
   }
   .menu-panel nav { display: flex; flex-direction: column; }
   .menu-panel nav a {
-    color: var(--color-quiet); font-size: 14px; padding: 11px 12px;
+    color: var(--color-quiet); font-size: var(--text-nav); padding: 11px 12px;
     border-bottom: 1px solid var(--color-rule);
   }
   .menu-panel nav a:hover { color: var(--color-ink); text-decoration: none; }
@@ -117,13 +114,39 @@ const CTA = 'Book a call';
 
   /* The mark follows the supplied ribbon construction: one weight, one
      continuous line, looped through the crossbar before it becomes the stem. */
-  .mark { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-serif); font-weight: 600; font-size: 24px; letter-spacing: -.025em; color: var(--color-ink); }
+  .mark { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-wordmark); font-weight: 600; font-size: 24px; letter-spacing: -.025em; color: var(--color-ink); }
   .mark svg { display: block; width:34px; height:34px; overflow:visible; }
   .mark .thread-t { fill:none; stroke:var(--color-ink); stroke-width:5.8; stroke-linecap:round; stroke-linejoin:round; }
+  /* The clip. overflow:hidden on the outer span is what makes the letters
+     appear to come out from under the mark; without it they just translate. */
+  .mark .wm { display:inline-block; overflow:hidden; vertical-align:bottom; }
+  .mark .wm-in { display:inline-block; }
+  /* The full stop the footer mark already carried. It sits inside .wm-in so it
+     slides out with the letters rather than appearing after them.
+     --color-koa, not the footer's --color-ochre: ochre is 2.1:1 on paper and
+     would read as a smudge. On the footer's ink ground ochre is correct, so
+     the two differ on purpose. */
+  .mark .dot { color: var(--color-koa); }
+
   @keyframes mark-stroke { to { stroke-dashoffset:0; } }
-  @keyframes mark-reveal { to { opacity:1; transform:translateX(0); } }
+  @keyframes wm-slide { from { transform:translateX(-102%); } to { transform:translateX(0); } }
+  /* Separate name from mark-stroke so hovering can retrigger it. An animation
+     only replays if it was not already running, and the load animation has
+     finished by then, so this fires cleanly every time the pointer enters. */
+  @keyframes mark-restroke { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
   @media (prefers-reduced-motion: no-preference) {
-    .mark .thread-t { stroke-dasharray:1; stroke-dashoffset:1; animation:mark-stroke 1.08s cubic-bezier(.5,0,.25,1) forwards; }
-    .mark > span { opacity:0; transform:translateX(-3px); animation:mark-reveal .26s cubic-bezier(.22,1,.36,1) forwards 1.22s; }
+    /* Retimed 17 Aug 2026. The draw ran 1.08s and the wordmark waited until
+       1.22s, so the brand name was absent for roughly a second and a half on
+       every page load, Privacy and Terms included. The draw is now shorter and
+       the name overlaps it rather than queueing behind it, so the header is
+       complete at 0.75s. */
+    .mark .thread-t { stroke-dasharray:1; stroke-dashoffset:1; animation:mark-stroke .95s cubic-bezier(.32,0,.18,1) forwards; }
+    /* Slower and longer than the old fade, and it starts while the mark is
+       still drawing so the two read as one gesture rather than a queue. */
+    .mark .wm-in { transform:translateX(-102%); animation:wm-slide .78s cubic-bezier(.22,1,.36,1) forwards .5s; }
+    /* The mark draws itself once and then never moves again. Redrawing it on
+       hover gives the one piece of the header a visitor is most likely to point
+       at something to do. */
+    .mark:hover .thread-t { animation:mark-restroke .7s cubic-bezier(.32,0,.18,1); }
   }
 </style>

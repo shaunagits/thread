@@ -1,0 +1,136 @@
+---
+import { steps } from '../content/site';
+
+/**
+ * The process, as a vertical timeline.
+ *
+ * Replaces StepRow's four-across grid. The reason is contrast: the hero and the
+ * dashboard plate are both horizontal flows built out of hairline rectangles,
+ * and StepRow was a third horizontal row of hairline circles, so the page read
+ * as one diagram repeated three times. This has no boxes at all. It is a line,
+ * four marks on it, and text in a margin, which is the annotated-document
+ * idiom the design already owns and the only place on the page that uses it.
+ *
+ * Going vertical also removes a breakpoint problem rather than creating one:
+ * four columns had to collapse on a phone, a vertical list is already the shape
+ * a phone wants, so the same composition works at every width.
+ *
+ * The spine is drawn twice. The faint one is the whole path, present from the
+ * start. The accent one grows downward as the section scrolls, so the timeline
+ * fills in as you read it. That uses animation-timeline: view(), which Firefox
+ * still has behind a flag, so it sits behind @supports and the unsupported path
+ * lands on the finished composition rather than an empty one — the rule
+ * CLAUDE.md sets for scroll-driven work.
+ */
+---
+
+<ol class="timeline">
+  {steps.map((step) => (
+    <li class="tl-step">
+      <span class="tl-n">{step.n}</span>
+      <span class="tl-node" aria-hidden="true"></span>
+      <div class="tl-body">
+        <span class="tl-label">{step.label}</span>
+        <h3>{step.title}</h3>
+        <p>{step.body}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  /* The spine sits on the section's own left edge and the content is indented
+     a single step from it, so §02 lines up with §01 and §03 instead of sitting
+     96px inboard of them. It used to reserve a 96px margin column for the step
+     numbers, which read as a misalignment rather than as an annotation, because
+     nothing else on the page has that column. The numbers moved above their
+     labels instead — where they were already going on a phone, so this also
+     removes a breakpoint. */
+  .timeline {
+    position: relative; list-style: none;
+    margin-top: 56px; padding-left: 34px;
+  }
+
+  /* The full path, always present. Faded at both ends so it reads as a thread
+     passing through rather than a rule that starts and stops. */
+  .timeline::before,
+  .timeline::after {
+    content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 1px;
+  }
+  .timeline::before {
+    background: linear-gradient(
+      transparent 0,
+      var(--color-rule) 5%,
+      var(--color-rule) 95%,
+      transparent 100%);
+  }
+  /* The accent spine, drawn over the faint one as the section scrolls. */
+  .timeline::after {
+    background: linear-gradient(
+      transparent 0,
+      var(--color-line) 5%,
+      var(--color-line) 95%,
+      transparent 100%);
+    transform-origin: top;
+  }
+
+  .tl-step { position: relative; padding-bottom: 54px; }
+  .tl-step:last-child { padding-bottom: 0; }
+
+  .tl-n {
+    display: block; margin-bottom: 7px;
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
+    color: var(--color-faint);
+  }
+
+  /* Centred on the spine: content starts at 34, spine centre is 0.5, so the
+     11px box sits at 0.5 - 5.5 - 34. */
+  .tl-node {
+    position: absolute; left: -39px; top: 5px; width: 11px; height: 11px;
+    border-radius: 50%; background: var(--color-paper);
+    border: 1px solid var(--color-line);
+  }
+  /* The last one is the arrival, so it is filled rather than open. */
+  .tl-step:last-child .tl-node { background: var(--color-line); }
+
+  .tl-label {
+    display: block; margin-bottom: 10px;
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--color-koa);
+  }
+  .tl-step h3 {
+    margin-bottom: 10px; max-width: 20ch;
+    font-size: var(--text-d3); line-height: var(--leading-tight);
+  }
+  .tl-step p {
+    max-width: 46ch; font-family: var(--font-serif); font-size: var(--text-body);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+
+  @keyframes tl-in   { to { opacity: 1; transform: none; } }
+  @keyframes tl-grow { to { transform: scaleY(1); } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .tl-step {
+        opacity: 0; transform: translateY(10px);
+        animation: tl-in linear both;
+        animation-timeline: view();
+        animation-range: entry 12% cover 34%;
+      }
+      .timeline::after {
+        transform: scaleY(0);
+        animation: tl-grow linear both;
+        animation-timeline: view();
+        animation-range: entry 18% cover 78%;
+      }
+    }
+  }
+
+  /* One composition at every width now — only the rhythm tightens. */
+  @media (max-width: 640px) {
+    .timeline { margin-top: 42px; padding-left: 28px; }
+    .tl-node { left: -33px; }
+    .tl-step { padding-bottom: 42px; }
+  }
+</style>

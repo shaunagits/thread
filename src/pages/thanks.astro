@@ -14,19 +14,19 @@ const status = Astro.url.searchParams.get('status');
 
 const STATES = {
   ok: {
-    eyebrow: '§ · Received',
+    eyebrow: 'Received',
     heading: 'Your request is in.',
     body: 'I’ll read what you sent and reply within one business day, usually the same day. If it isn’t a fit, you’ll hear that plainly rather than not hearing back.',
     back: 'Back to the homepage',
   },
   invalid: {
-    eyebrow: '§ · Incomplete',
+    eyebrow: 'Incomplete',
     heading: 'A couple of things are missing.',
     body: 'A name and a working email address are the two the form can’t do without. Nothing else was lost. Go back and the rest of it is still there.',
     back: 'Back to the form',
   },
   error: {
-    eyebrow: '§ · Not sent',
+    eyebrow: 'Not sent',
     heading: 'That didn’t go through.',
     body: `Something broke on this end, not yours. Email ${contact.email} directly and it reaches the same place.`,
     back: 'Back to the homepage',
@@ -51,7 +51,7 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
       <h1>{state.heading}</h1>
       <p class="lead">{state.body}</p>
       <div class="btn-row">
-        <a href={backHref} class="btn">{state.back}</a>
+        <a href={backHref} class="btn">{state.back}<span class="ln" aria-hidden="true"></span></a>
       </div>
     </div>
   </section>
@@ -62,7 +62,7 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
 <style>
   .result { border-top: 0; padding: 120px 0 140px; }
   .result h1 {
-    font-size: clamp(34px, 4.4vw, 52px);
+    font-size: var(--text-d1);
     margin: 20px 0 22px;
     max-width: 16ch;
   }

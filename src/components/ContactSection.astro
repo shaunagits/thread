@@ -6,10 +6,17 @@ import IntakeForm from './IntakeForm.astro';
 <div class="cta-band" id="contact">
   <div class="wrap cta-in">
     <div>
-      <div class="eyebrow">§ 05 · Start here</div>
-      <h2 style="margin:16px 0 22px;max-width:18ch">Tell us what is taking too much time.</h2>
-      <p class="lead" style="max-width:48ch">
-        If it is a fit, we will book a free 30-minute call. If not, we will tell you.
+      {/* This marker stays above the heading rather than moving to the right
+          margin like §01 to §03. Those sections have an empty right third;
+          this one has the form there. The rule is that the marker sits in the
+          margin only where a margin exists. Same reason the margin-note branch
+          of Section.astro keeps its eyebrow stacked. */}
+      <div class="eyebrow">04 · Start here</div>
+      {/* First person singular, 17 Aug 2026. These were the last "us" and "we"
+          on the page, and Thread is one person. */}
+      <h2 style="margin:16px 0 22px;max-width:16ch">Tell me what is taking too much time.</h2>
+      <p class="lead" style="max-width:38ch">
+        If it is a fit, I will book a free 30-minute call. If not, I will tell you.
       </p>
 
       <p class="contact-meta">
@@ -41,18 +48,22 @@ import IntakeForm from './IntakeForm.astro';
 
      This is the second deliberate deviation from index.html, after the submit
      button's font. Recorded in CLAUDE.md and LAUNCH-CHECKLIST.md. */
+  /* Was minmax(0,1fr) 380px — the copy took roughly two thirds and the form
+     was squeezed into a fixed 380px column. The form is the point of this
+     section, so the proportions are reversed: the copy is capped and the form
+     takes the rest. */
   .cta-in {
-    display: grid; grid-template-columns: minmax(0, 1fr) 380px;
+    display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
     gap: 64px; padding-block: 88px; align-items: start;
   }
   .cta-note {
-    font-family: var(--font-sans); font-size: 14px; line-height: 1.66;
+    font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
     color: var(--color-faint); max-width: 46ch; margin-top: 18px;
   }
   .contact-meta {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
     text-transform: uppercase; color: var(--color-faint);
-    margin-top: 30px; line-height: 2;
+    margin-top: 30px; line-height: var(--leading-body);
   }
   .contact-meta a { color: var(--color-faint); }
   .contact-meta a:hover { color: var(--color-koa); }

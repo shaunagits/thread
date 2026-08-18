@@ -5,8 +5,9 @@ in Honolulu. **Live at https://threadhawaii.com.**
 
 Astro 7 + Tailwind 4, statically prerendered, **zero client JavaScript**.
 
-Pages: `/` · `/systems-map` · `/privacy` · `/terms` · `/thanks` · `/og` (card
-generator, noindex, excluded in robots.txt).
+Pages: `/` · `/privacy` · `/terms` · `/thanks` · `/work` (placeholder, noindex,
+excluded in robots.txt) · `/og` (card generator, noindex, excluded in
+robots.txt). `/systems-map` was deleted and 301s to `/#contact`.
 
 ---
 
@@ -46,8 +47,8 @@ colour and `--color-koa` the one that carries text, but the contrast figures
 recorded there (2.9:1 and 5.56:1) were measured on the old hexes and have **not**
 been re-measured against the new ones. Re-check before relying on them.
 
-`p.txt` also moved from 17.5px serif to 16px sans in the same change, and the
-button and ghost-button treatments were rebuilt. The `.doc` grid, section rhythm
+`p.txt` moved to `--text-body` and the button treatments were rebuilt again on
+17 Aug; see the type system above, which supersedes this line. The `.doc` grid, section rhythm
 and spacing scale are untouched, so the geometry probes described under
 Verification approach still apply — probe geometry, ignore colour and body type.
 
@@ -66,10 +67,16 @@ unchanged.
 **The hero copy was rewritten on the same date, second pass.** It is now
 eyebrow, headline, one 15-word paragraph, two buttons, and nothing else:
 
-> Software that brings your business together.
-> Thread builds software that fits how your business already works. Not the
-> other way around.
+> Built around how you already work.
 > **[ Book a call ]**  [ See how it works ]
+
+Replaced "Software that brings your business together." on 17 Aug 2026. That
+line was outcome-framed and the name earned it, but it was a claim any SaaS
+could make and it said nothing about *custom*, *yours* or *one person*. The
+eyebrow now carries the category and the location, so the headline is free to
+make the promise instead. `--text-d1`'s ceiling dropped 62px to 56px in the
+same change so the new line sets as two even lines in the hero's ~473px
+column rather than three with a widow.
 
 The margin note was **deleted outright** — it restated the lead and pre-explained
 the systems map. `aside.side-note` and its media-query override went with it;
@@ -101,6 +108,104 @@ stale every time a plate moved. `BUILD-HANDOFF.md`, `BUILD-BRIEF.md`,
 refer to plates by number; they're history, not instructions. Component
 filenames still carry the old numbers (`Fig2CurrentState.astro`) — left alone
 deliberately, renaming them is churn for no reader.
+
+## ⚠️ The homepage was rebuilt 17 Aug 2026 — read this before editing `/`
+
+The structure, the type system and both graphics changed in one long session
+with the owner. Most of what the older sections below describe about the
+homepage is now history. The sections are:
+
+| § | id | Heading | Contains |
+|---|---|---|---|
+| 01 | `services` | One screen with the answer on it. | `DashboardPlate`, then the buttons |
+| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline` |
+| 03 | `ownership` | The system is yours. | two paragraphs, then `ShipsWith` |
+| 04 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
+
+**§01 "The problem" is gone**, folded into §01 What I do along with the two
+service cards. The page was saying the same thing three ways: a question about
+screens, two cards naming the halves of the offer, and a drawing showing both.
+What survives is one heading, one line, the drawing and the ask. **The drawing
+now carries the explanation**, which is why its six callouts are content rather
+than decoration. Do not re-add a problem section without removing something.
+
+**Section markers are `01 · What I do`, not `§ 01 · …`.** The section sign was
+removed everywhere on the owner's instruction, including `/thanks`. They were
+briefly moved into the right margin and moved back the same day: opposite a
+heading a marker reads as a stray label.
+
+**The nav is outcome-framed** and matches the section headings exactly: What I
+do / How it works / What you get. Two navigations point at the same three
+anchors, so the header and the footer must always agree. "Outcome" as a label
+was considered and rejected: it promises results the site does not have.
+
+**A `Work` nav entry is staged and commented out** in `site.ts`. The `/work`
+route, page and `noindex` all exist. Uncomment the nav line, drop the `noindex`
+prop and remove the `Disallow: /work` from `robots.txt.ts` in the same commit
+that puts real work on the page. Not before — a visitor clicking Work wants
+proof, and a holding page is worse than no link.
+
+### The type system
+
+Seven values. Nothing may use a size, leading or tracking outside it. Before
+this the live page carried 23 DOM sizes, 11 tracking values and 4 weights,
+which is why it read as unresolved regardless of which faces were in it.
+
+```
+--text-d1/d2/d3   display, clamped
+--text-body       16.5px — EVERYTHING a visitor reads, form fields included
+--text-micro      10px — uppercase labels only, never prose
+--text-nav        14px — header nav and phone menu only
+--leading-tight   1.12 display   --leading-body 1.6 everything else
+--tracking-tight  -.02em display --tracking-wide .14em uppercase labels
+```
+
+`--text-lead` and `--text-small` were **removed deliberately**. A section opener
+at 21px above body at 16.5px is not a hierarchy, it is two sizes close enough to
+look like a mistake; `p.lead` is now body size in `--color-ink`. Interface text
+at 14px was a second reading size that existed only by convention. One
+consequence worth keeping: form fields at 16.5px stop iOS zooming the page on
+focus, which it does to any field under 16px.
+
+**Faces: Newsreader for display and the wordmark, IBM Plex Sans for everything
+else.** `--font-serif`, `--font-sans` and `--font-mono` all resolve to Plex Sans;
+the names are historic and kept for the same reason `--color-ochre` is. A
+Bodoni Moda / Archivo pairing was trialled the same day and removed.
+
+**The wordmark is exempt from the scale** and has its own `--font-wordmark`
+token, at 24px / 600 / -.025em. It is a mark, not text. It got swept up by a
+font change once already; that is what the separate token prevents. **Do not
+repoint it.**
+
+### Buttons
+
+One object, six places: header, phone menu, hero, §01, the form submit, and
+`/thanks`. 48px, mono uppercase at `--text-micro`. On hover the fill **deepens**
+to `--color-koa-hover` and a rule runs the length of the label, landing in a
+full stop past the last letter — that is the `<span class="ln">` inside every
+`.btn`. The hover used to invert the fill to white, which is 1.03:1 against the
+paper ground: the strongest element on the site disappeared when pointed at.
+`.nav-cta`'s scoped rule now only wins the specificity fight in landmine 4 and
+must not reintroduce size, type or hover.
+
+### The graphics
+
+Both `HeroGraphic` and `DashboardPlate` ship **two compositions**, wide and
+narrow, swapped with `display`. Neither pans sideways. Type inside them is
+drawing-space, not pixels — see landmine 17.
+
+`ProcessTimeline` replaced `StepRow`: a vertical spine on the section's left
+edge with content indented 34px, and a second accent spine that grows on scroll
+via `animation-timeline: view()` behind `@supports`. `ShipsWith` replaced
+`Fig4CarePlate`, as real HTML rather than baked SVG text.
+
+**Orphaned by this change, all still on disk:** `StepRow`, `ServiceList`,
+`Fig4CarePlate`, `Fig2CurrentState`, `Fig3ThreadDiagram`, `Fig5SystemsMap`,
+`ConnectsStrip`, `QuestionList`, `ProblemFlow`, `ServicesLine`, and the `plans`
+and `questions` arrays in `site.ts`. Deleting is the owner's call.
+
+`DevGrid.astro` renders layout guides behind `import.meta.env.DEV`, so it is
+absent from production entirely. Toggle bottom left.
 
 ## ⚠️ The site copy is v3, adopted 14 Aug 2026
 
@@ -211,19 +316,31 @@ Each of these cost real debugging time. Don't rediscover them.
 1. **`@theme static`, not `@theme`.** Tailwind v4 tree-shakes theme variables and
    silently drops any not referenced in generated utilities — which kills tokens
    used only from scoped component CSS.
-2. **Neither Newsreader nor JetBrains Mono contains U+02BB (ʻokina)** — not in any
-   subset, not upstream. `scripts/build-fonts.py` patches it in by aliasing the
-   codepoint to each font's existing `quoteleft` outline, and restores U+2192 to
-   JetBrains Mono. **Never replace the woff2 files without re-running that
-   script**, or "Hawaiʻi" silently falls back mid-word. See [FONTS.md](FONTS.md).
+2. **Newsreader does not contain U+02BB (ʻokina)** — not in any subset, not
+   upstream. `scripts/build-fonts.py` patches it in by aliasing the codepoint to
+   the font's existing `quoteleft` outline. **Never replace
+   `newsreader-latin-var.woff2` without re-running that script**, or "Hawaiʻi"
+   silently falls back mid-word. See [FONTS.md](FONTS.md).
+
+   **IBM Plex Sans carries U+02BB natively**, verified 17 Aug 2026 by reading the
+   cmap of the shipped subset. Body copy therefore needs no patch. Checked at the
+   same time, for any future swap: Literata, Spectral, EB Garamond and Public Sans
+   have it; Fraunces, Instrument Serif, DM Serif Display, Archivo, Karla, Figtree,
+   Manrope, DM Sans and JetBrains Mono do not.
+
+   JetBrains Mono is now referenced only by the U+2192 `@font-face` on Newsreader.
+   Public Sans is unreferenced entirely.
 3. **Vercel `has: host` redirects only match with `"source": "/(.*)"` and
    `"$1"`.** The `:path*` named-parameter form parses fine and silently no-ops
    under the Build Output API the Astro adapter emits.
 4. **`.nav-links a` (class+element) outranks `.nav-cta`** (class). The nav button
    needs `.nav-links a.nav-cta` or its label inherits `--color-quiet`.
-5. **`--ochre` (#C8873F) is a fills-only colour** — 2.9:1 against light text.
-   Anything carrying a label uses `--koa` (#8F5A1C) with `--paper` text (5.56:1).
-   Ochre still fills everything with no text on it.
+5. **`--color-ochre` is a fills-only colour.** Re-measured against the ocean
+   palette 17 Aug 2026: ochre `#8DB9C4` is **2.1:1** on paper, so it carries no
+   text anywhere. `--color-koa` `#235F70` is **6.94:1** on paper and is the only
+   token that may sit under light text. This is why the header's wordmark full
+   stop is koa while the footer's is ochre — the footer sits on ink, where ochre
+   reads correctly.
 6. **Tailwind preflight sets `line-height: inherit` on form controls**, which the
    original didn't. `global.css` restores `normal` for `input/textarea/select`;
    without it every field grows 5.9px and the contact band 24px.
@@ -285,6 +402,39 @@ Each of these cost real debugging time. Don't rediscover them.
     label matters as much as the name: nothing on this site asks for a fax
     number, so no visitor will ever fill it in.
 
+17. **SVG type is drawing-space, not pixels.** Rendered size is
+    `value × (rendered width ÷ viewBox width)`, so a value that looks right in one
+    column is wrong in another. Both graphics were rendering labels at 29px next
+    to 16.5px body copy at tablet width, because a 380-unit canvas was being
+    stretched to 688px. Two rules now hold it: **every narrow composition is
+    capped near its own design width**, and each composition declares exactly
+    three roles — `--fs-micro`, `--fs-name`, `--fs-fig` — which are re-valued per
+    breakpoint band rather than added to. Verified across 14 widths from 1440 to
+    390: labels land 8.2-11.6px, names 14.0-18.6px. Re-run that check before
+    changing any canvas.
+
+18. **A selector that touches another component's markup must sit inside
+    `:global()` in full.** `:global(#services) > .wrap` compiles to
+    `#services > .wrap[data-astro-cid-THIS-FILE]`, and `.wrap` is rendered by
+    `Section.astro`, so it silently matches nothing. This disabled §01's accent
+    rule and a z-index fix without any error. Write `:global(#services .wrap)`.
+
+19. **A positioned pseudo-element at `z-index: 0` paints above in-flow content.**
+    §01's blueprint watermark was drawn over the dashboard plate for exactly this
+    reason. It needs `z-index: -1` plus `isolation: isolate` on the section, which
+    keeps it behind the content but above the section's own background.
+
+20. **A stale `.git/index.lock` blocks every git write silently-ish.** One was
+    left behind on 17 Aug and made `git add` and `git commit` fail while
+    `git status` still worked, so it looked like the commands were running.
+    `ls -la .git/*.lock`, and delete it only after confirming no git process is
+    running.
+
+21. **Check which branch you are on before pushing.** The working branch is
+    `thread-homepage-refresh`, not `main`. `git push origin main` from it pushes
+    the local `main` ref, which reports "Everything up-to-date" and ships
+    nothing. There is also a worktree at `.claude/worktrees/`.
+
 ## Verification approach
 
 Parity against `index.html` was established by diffing computed geometry
@@ -304,14 +454,26 @@ Two deliberate deviations from the original, both recorded above:
 
 ## Outstanding
 
-See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) for the full list. Highest value first:
+See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) for the full list, though note it
+predates the 17 Aug rebuild and is stale on section numbering and the offer.
+Highest value first:
 
-1. **Blocked on the owner:** real prior work for §05, price floors and typical
-   durations for §03, a background line and photo for §06. All are absent rather
-   than invented — keep it that way.
-2. Gmail filter so form notifications stop landing in spam, or verify the domain
-   in Resend for a proper fix
-3. `sameAs` links in the `ProfessionalService` schema in `Base.astro`, once the
-   LinkedIn and Google Business Profile URLs exist
-4. Owner decisions still open: the doubled rule under the
-   connects-to strip, dropping the unused Public Sans 500
+1. **`sameAs` in the `ProfessionalService` schema in `Base.astro`.** Empty on
+   purpose until the Google Business Profile and LinkedIn URLs exist. This is
+   the single highest-value SEO item left: it is what makes search resolve the
+   site, the profile and the LinkedIn to one entity instead of three results.
+   `GOOGLE-BUSINESS-PROFILE.md` has the profile copy ready to go.
+2. **Blocked on the owner:** real work for `/work`, and price floors if pricing
+   ever returns. Both absent rather than invented — keep it that way.
+3. **The meta description in `Base.astro` is 190 characters**, so Google
+   truncates it around 155-160. Everything after "build the one nobody sells" is
+   invisible.
+4. **Cloudflare migration**, if the owner proceeds: Email Routing replaces
+   Namecheap forwarding, which means moving nameservers and therefore triggering
+   landmine 9 deliberately. Site records stay DNS-only; Vercel recommends against
+   proxying in front of it, and there is no speed benefit since Vercel already
+   has a CDN.
+5. Gmail filter so form notifications stop landing in spam, or verify the domain
+   in Resend for a proper fix (landmine 10 applies).
+6. Owner decisions still open: whether to delete the orphaned components listed
+   in the rebuild section, and the doubled rule under the connects-to strip.

@@ -53,6 +53,11 @@ const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
       </div>
     ) : (
       <>
+        {/* The marker sits above the heading. It was moved into the right
+            margin on 17 Aug 2026 to give the empty right third a job, and
+            moved back the same day: opposite a heading it read as a stray
+            label rather than an annotation. The whitespace is the better
+            problem to have. */}
         <div class="eyebrow">{eyebrow}</div>
         <h2 style={headStyle}>{heading}</h2>
         <slot />

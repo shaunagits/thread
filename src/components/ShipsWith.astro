@@ -1,0 +1,60 @@
+---
+import { shipsWith } from '../content/site';
+
+/**
+ * What ships with every build.
+ *
+ * Replaces Fig4CarePlate, which was the last un-refreshed graphic on the page:
+ * a boxed table drawn in SVG, with sans-serif body text after the rest of the
+ * site moved to serif, and letter-spacing carried as SVG attributes rather than
+ * CSS. It also baked its copy into the drawing, so none of it could be selected,
+ * searched, or read properly by assistive tech.
+ *
+ * This is the same information as real text, in the row-and-rule idiom the site
+ * already uses. It needs no minimum width, so it fits a phone without the
+ * sideways pan the wide plates need.
+ */
+---
+
+<div class="ships">
+  <div class="ships-head">Ships with every build</div>
+  <ul>
+    {shipsWith.map((row) => (
+      <li>
+        <span class="ships-item">{row.item}</span>
+        <span class="ships-tag">{row.tag}</span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .ships { margin-top: 40px; max-width: 640px; }
+
+  .ships-head {
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--color-koa);
+    padding-bottom: 14px; border-bottom: 1px solid var(--color-hair);
+  }
+
+  ul { list-style: none; margin: 0; padding: 0; }
+  li {
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;
+    padding: 15px 0; border-bottom: 1px solid var(--color-rule);
+  }
+
+  .ships-item {
+    font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
+    color: var(--color-body);
+  }
+  .ships-tag {
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
+    text-transform: uppercase; color: var(--color-faint); white-space: nowrap;
+  }
+
+  /* 640 is --breakpoint-sm; 560 was an invented one. */
+  @media (max-width: 640px) {
+    li { grid-template-columns: 1fr; gap: 5px; }
+    .ships-tag { justify-self: start; }
+  }
+</style>

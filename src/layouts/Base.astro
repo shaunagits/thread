@@ -2,6 +2,7 @@
 import '../styles/global.css';
 
 import { contact } from '../content/site';
+import DevGrid from '../components/DevGrid.astro';
 
 interface Props {
   title?: string;
@@ -11,12 +12,15 @@ interface Props {
    * same entity on every page adds nothing and muddies which URL it belongs to.
    */
   businessSchema?: boolean;
+  /** Keep the page out of the index. For pages that exist but are not ready. */
+  noindex?: boolean;
 }
 
 const {
   title = 'Thread · Custom software and automation, Honolulu, Hawaiʻi',
   description = 'Thread builds custom software that fits how your business already works. I connect the tools you run, or build the one nobody sells. You own the code, the data, and the accounts it lives in.',
   businessSchema = false,
+  noindex = false,
 } = Astro.props;
 
 // Absolute URLs, derived from `site` in astro.config.mjs. Social scrapers
@@ -110,6 +114,7 @@ const businessLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
 
     <!-- icons -->
@@ -172,5 +177,8 @@ const businessLd = {
   </head>
   <body>
     <slot />
+    {/* Layout guides, development only. `import.meta.env.DEV` is resolved at
+        build time, so this is absent from the production output entirely. */}
+    {import.meta.env.DEV && <DevGrid />}
   </body>
 </html>

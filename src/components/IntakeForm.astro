@@ -73,7 +73,7 @@
     placeholder="The thing that made you open this form."
   ></textarea>
 
-  <button type="submit" class="btn">Book a call</button>
+  <button type="submit" class="btn">Book a call<span class="ln" aria-hidden="true"></span></button>
 
   <p class="form-note">One reply from a person, usually same day. No sales sequence.</p>
 </form>
@@ -81,21 +81,22 @@
 <style>
   .form {
     background: var(--color-white); border: 1px solid var(--color-hair);
-    border-radius: 3px; padding: 28px; max-width: 560px;
+    border-radius: 3px; padding: 28px; /* was 560px, which capped the form below its new column width */
+    max-width: 100%;
   }
   .hp {
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
   .form label {
-    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em;
+    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
     text-transform: uppercase; color: var(--color-faint);
     display: block; margin-bottom: 7px;
   }
   .form input, .form textarea, .form select {
     width: 100%; padding: 11px 13px; border: 1px solid var(--color-hair);
     border-radius: 2px; background: var(--color-paper);
-    font-family: var(--font-sans); font-size: 14px;
+    font-family: var(--font-serif); font-size: var(--text-body);
     color: var(--color-ink); margin-bottom: 18px;
   }
   .form input:focus, .form textarea:focus, .form select:focus {
@@ -108,7 +109,7 @@
   /* Sits under the button, so it reads as a promise about what happens next
      rather than as a field hint. Sans at the .cta-note size. */
   .form-note {
-    font-family: var(--font-sans); font-size: 12.5px; line-height: 1.6;
+    font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
     color: var(--color-faint); margin-top: 14px; text-align: center;
   }
 </style>

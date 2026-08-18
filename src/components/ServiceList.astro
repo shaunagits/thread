@@ -1,5 +1,5 @@
 ---
-/** Three capabilities, presented as one connected spread rather than cards. */
+/** The capabilities, presented as one connected spread rather than cards. */
 import { plans } from '../content/site';
 ---
 
@@ -10,23 +10,20 @@ import { plans } from '../content/site';
       <span class="label">{service.label}</span>
       <h3>{service.title}</h3>
       <p>{service.body}</p>
-      <div class="meta">
-        {service.meta.map((line, j) => <span>{j > 0 && <i>·</i>}{line}</span>)}
-      </div>
     </article>
   ))}
 </div>
 
 <style>
   .services-spread {
-    display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:0;
+    display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:0;
     margin-top:52px; position:relative;
   }
   .services-spread::before {
     content:''; position:absolute; left:17px; right:17px; top:17px;
     border-top:1px solid var(--color-hair);
   }
-  .service { position:relative; padding:52px 34px 8px 0; min-height:280px; }
+  .service { position:relative; padding:52px 34px 8px 0; min-height:250px; }
   .service + .service { padding-left:34px; border-left:1px solid var(--color-rule); }
   .num {
     position:absolute; left:0; top:0; z-index:1; width:34px; height:34px;
@@ -36,10 +33,10 @@ import { plans } from '../content/site';
   }
   .service + .service .num { left:33px; }
   .label { display:block; margin-bottom:14px; color:var(--color-koa); font-family:var(--font-mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; }
-  h3 { max-width:12ch; margin-bottom:13px; font-size:clamp(25px, 2.5vw, 33px); line-height:1.08; }
-  p { max-width:27ch; font-family:var(--font-serif); font-size:17px; line-height:1.58; color:var(--color-body); }
-  .meta { margin-top:20px; color:var(--color-faint); font-family:var(--font-mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; }
-  .meta i { padding:0 7px; color:var(--color-line); font-style:normal; }
+  /* Wider measures than the three-column version had: with two columns there
+     is more room, and the bodies are now full sentences rather than fragments. */
+  h3 { max-width:14ch; margin-bottom:13px; font-size:clamp(25px, 2.5vw, 33px); line-height:1.08; }
+  p { max-width:34ch; font-family:var(--font-serif); font-size:17px; line-height:1.58; color:var(--color-body); }
   @media (hover:hover) and (prefers-reduced-motion:no-preference) {
     .num, h3 { transition:color .2s ease, border-color .2s ease, background .2s ease; }
     .service:hover .num { border-color:var(--color-koa); background:var(--color-koa); color:var(--color-paper); }

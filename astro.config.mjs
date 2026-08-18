@@ -29,7 +29,13 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Neither the social-card generator nor the form result page is content.
-      filter: (page) => !page.includes('/og') && !page.includes('/thanks'),
+      // /work is a noindex placeholder and robots.txt disallows it — listing it
+      // here would advertise a URL crawlers are told not to fetch. Drop this
+      // clause in the same commit that removes the noindex and the Disallow.
+      filter: (page) =>
+        !page.includes('/og') &&
+        !page.includes('/thanks') &&
+        !page.includes('/work'),
     }),
   ],
 

@@ -2,10 +2,10 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import ServiceList from '../components/ServiceList.astro';
+import DashboardPlate from '../components/DashboardPlate.astro';
 import Section from '../components/Section.astro';
-import StepRow from '../components/StepRow.astro';
-import Fig4CarePlate from '../components/Fig4CarePlate.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import ShipsWith from '../components/ShipsWith.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -14,58 +14,66 @@ import Footer from '../components/Footer.astro';
   <Header />
   <Hero />
 
-  <Section
-    eyebrow="§ 01 · The problem"
-    heading="Good tools can still create busywork."
-    headingWidth={23}
-  >
-    <p class="lead" style="max-width:52ch;margin-bottom:18px">
-      When information doesn’t move cleanly, your team carries it by hand.
-    </p>
-    <p class="problem-actions">Re-enter. Check. Remember.</p>
-  </Section>
+  {/* §01 "The problem" was folded into this section on 17 Aug 2026 and the two
+      service cards went with it. The page had grown to say the same thing three
+      ways: a question about screens, two cards naming the two halves of the
+      offer, and a drawing showing both. What survives is one heading, one line,
+      the drawing, and the ask. The drawing now carries the explanation, which is
+      why its six callouts do real work rather than decorating.
 
+      The section keeps id="services": the nav, the footer and /thanks all link
+      to /#services, and the anchor is the contract, not the heading. */}
   <Section
     id="services"
-    eyebrow="§ 02 · What I do"
-    heading="Make the work easier to run."
-    headingWidth={23}
+    eyebrow="01 · What I do"
+    heading="One screen with the answer on it."
+    headingWidth={20}
   >
-    <p class="lead" style="max-width:50ch">
-      Thread fixes the gaps that slow your team down, then builds the tools your business has outgrown.
+    <p class="lead" style="max-width:52ch">
+      I close the gaps between the tools you already use, then build the ones you’re missing.
     </p>
-    <ServiceList />
+
+    <DashboardPlate />
+
+    {/* The ask sits after the drawing, not before it: by this point a visitor
+        has seen the thing rather than been told about it. */}
+    <div class="btn-row plate-cta">
+      <a href="/#contact" class="btn">Book a call<span class="ln" aria-hidden="true"></span></a>
+      <a href="/#how" class="btn-ghost">See how it works<span class="u" aria-hidden="true"></span></a>
+    </div>
   </Section>
 
   <Section
     id="how"
-    eyebrow="§ 03 · The process"
-    heading="Start small. Build with confidence."
+    eyebrow="02 · How it works"
+    heading="Start with a conversation, not a commitment."
     headingWidth={22}
   >
     <p class="lead" style="max-width:52ch">
       You do not need to know the answer before the first call.
     </p>
-    <StepRow />
+    <ProcessTimeline />
   </Section>
 
   <Section
     id="ownership"
-    eyebrow="§ 04 · Ownership"
+    eyebrow="03 · What you get"
     heading="The system is yours."
     headingWidth={20}
   >
-    <div class="ownership-layout">
-      <div>
-        <p class="lead" style="max-width:42ch;margin-bottom:18px">
-          It runs in your accounts and works for your team.
-        </p>
-        <p class="txt" style="max-width:48ch">
-          Your data. Your code. Clear handover.
-        </p>
-      </div>
-      <Fig4CarePlate />
-    </div>
+    {/* The two-column layout was dropped 17 Aug 2026. Every other section on
+        the page is copy at full width with its graphic beneath, so the floated
+        plate was the one thing here that looked imported from another site. */}
+    <p class="lead" style="max-width:52ch;margin-bottom:18px">
+      It runs in your accounts, under your billing, and you keep everything it’s
+      built from. If you ever stop working with me, nothing switches off.
+    </p>
+    <p class="txt" style="max-width:56ch">
+      That’s the difference between owning software and renting it. Most of what you
+      pay for monthly stops the day you stop paying. This doesn’t.
+    </p>
+
+    <ShipsWith />
   </Section>
 
   <ContactSection />
@@ -73,19 +81,45 @@ import Footer from '../components/Footer.astro';
 </Base>
 
 <style>
-  .problem-actions {
-    margin-top:42px; font-family:var(--font-serif); font-size:clamp(28px, 3.2vw, 42px);
-    line-height:1.15; letter-spacing:-.025em; color:var(--color-ink);
+  .plate-cta { margin-top:42px; }
+
+  /* The blueprint watermark. Was a single set of 1px verticals every 88px,
+     full bleed, which stopped dead at the section rules and read as graph
+     paper. Two changes: it is a real grid now, a major line every 88px and a
+     minor every 22px at a quarter of the strength; and it is masked so it
+     fades out top and bottom, which is what makes it read as a watermark
+     rather than a background.
+
+     88px is the same module DevGrid draws, so the watermark and the layout
+     guides agree. It lives on a pseudo-element rather than the section so the
+     mask cannot touch the content, and z-index/isolation keep it behind. */
+  :global(#services) { background-color:var(--color-wash); position:relative; isolation:isolate; }
+  /* z-index:-1, not 0. A positioned pseudo-element at 0 paints above ordinary
+     in-flow content, which put the watermark in front of the plate. -1 puts it
+     behind the content, and `isolation:isolate` on the section stops it going
+     behind the section's own background as well.
+
+     The previous fix raised .wrap to z-index:1, which silently did nothing:
+     .wrap is rendered by Section.astro, so Astro scoped the selector to this
+     file's id and it never matched. Anything targeting markup from another
+     component has to sit inside :global() in full. */
+
+  :global(#services)::before {
+    content:''; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(to right,  color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+      linear-gradient(to right,  color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px);
+    background-size: 88px 88px, 88px 88px, 22px 22px, 22px 22px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   }
-  :global(#services) {
-    background-color:var(--color-wash);
-    background-image:linear-gradient(to right, color-mix(in srgb, var(--color-rule) 42%, transparent) 1px, transparent 1px);
-    background-size:88px 100%;
-  }
-  :global(#services) .wrap { position:relative; }
-  :global(#services) .wrap::after { content:''; position:absolute; right:0; top:0; width:74px; border-top:2px solid var(--color-line); }
-  :global(#ownership) { background:var(--color-paper); padding-block:88px; }
-  .ownership-layout { display:grid; grid-template-columns:minmax(0,.82fr) minmax(400px,1.18fr); align-items:center; gap:clamp(36px,7vw,100px); max-width:1100px; }
-  .ownership-layout :global(svg.plate) { max-width:560px; justify-self:end; }
-  @media (max-width:720px) { .ownership-layout { grid-template-columns:1fr; gap:30px; } .ownership-layout :global(svg.plate) { justify-self:start; } }
+  /* Fully inside :global(). .wrap is Section.astro's markup, so a selector that
+     leaves it outside gets this file's scope attribute and never matches — which
+     is why the accent rule below had quietly stopped rendering. */
+  :global(#services .wrap) { position:relative; }
+  :global(#services .wrap::after) { content:''; position:absolute; right:0; top:0; width:74px; border-top:2px solid var(--color-line); }
+  /* §03 sat on 88px while every other section used 104. Same rhythm now. */
+  :global(#ownership) { background:var(--color-paper); }
 </style>

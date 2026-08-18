@@ -4,21 +4,53 @@ import HeroGraphic from './HeroGraphic.astro';
 <section class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <div class="eyebrow">More than a website</div>
-      <h1>Software that brings your business together.</h1>
-      <p class="lead">Thread connects the tools you use and builds what they cannot.</p>
-      <div class="btn-row"><a href="#contact" class="btn">Book a call</a><a href="#how" class="btn-ghost">See how it works</a></div>
+      {/* Was "More than a website" until 17 Aug 2026. It defined Thread by what it
+          is not, against a category the business does not want to be in, and it
+          was the first text on the page. This says the category and the place,
+          which is the job an eyebrow has, and restores the location signal lost
+          when the hero lead was cut. */}
+      <div class="eyebrow eyebrow-pin">
+        <span>Custom software</span>
+        <svg class="pin" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
+        </svg>
+        <span>Honolulu, Hawaiʻi Based</span>
+      </div>
+      <h1>Built around how you already work.</h1>
+      {/* The lead was cut 17 Aug 2026. It read "Thread connects the tools you
+          use and builds what they cannot", which restated the headline and then
+          said the same thing again as §02's lead one scroll further down. Same
+          reasoning that removed the hero margin note on 14 Aug: if §02 already
+          says it, the hero should not say it first. */}
+      <div class="btn-row"><a href="#contact" class="btn">Book a call<span class="ln" aria-hidden="true"></span></a><a href="#how" class="btn-ghost">See how it works<span class="u" aria-hidden="true"></span></a></div>
     </div>
     <div class="hero-figure"><HeroGraphic /></div>
   </div>
 </section>
 <style>
-  .hero-grid { display:grid; grid-template-columns:minmax(0,.92fr) minmax(480px,1.08fr); gap:clamp(36px, 5vw, 72px); align-items:center; }
-  .hero-copy h1 { max-width:13ch; margin:18px 0; font-size:clamp(42px, 4.7vw, 62px); }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); gap:clamp(36px, 5vw, 72px); align-items:center; }
+  /* The separator is a location pin rather than a middle dot. It inherits the
+     eyebrow's colour through currentColor and is sized in em, so it tracks
+     --text-micro instead of needing a size of its own. */
+  .eyebrow-pin { display:flex; align-items:center; gap:7px; }
+  .pin { width:1.15em; height:1.15em; fill:currentColor; flex:none; }
+  /* 18ch, not 13. The headline changed on 17 Aug 2026 and the old measure broke
+     it as "Built around / how you / already work." — three lines with a widow.
+     Paired with --text-d1's lower ceiling this sets as two even lines. */
+  .hero-copy h1 { max-width:18ch; margin:18px 0; }
+  /* .lead rules kept: the hero lead was removed 17 Aug 2026, but these are
+     harmless and mean restoring it is a one-line change. */
   .hero-copy .lead { max-width:42ch; }
   .hero-figure { width:100%; max-width:680px; justify-self:end; }
-  @media (max-width:960px) { .hero-grid { grid-template-columns:1fr; gap:40px; } .hero-figure { max-width:680px; justify-self:center; } }
-  @media (min-width:641px) and (max-width:960px) { .hero-copy { text-align:center; } .hero-copy h1, .hero-copy .lead { margin-inline:auto; } .hero-copy .btn-row { justify-content:center; } }
-  @media (max-width:640px) { section.hero { padding-top:42px; } .hero-copy h1 { font-size:clamp(40px, 12vw, 52px); } }
+  /* Two columns down to 820px, the same breakpoint at which HeroGraphic swaps
+     to its narrow composition. They used to disagree: the grid stacked at
+     1000px while the drawing stayed wide until 820, so between those two
+     widths the page showed a letterboxed wide diagram under the copy. The
+     graphic column now has no minimum, so it shrinks rather than forcing the
+     stack early. */
+  @media (max-width:820px) { .hero-grid { grid-template-columns:1fr; gap:40px; } .hero-figure { max-width:680px; justify-self:start; } }
+  /* The tablet band used to centre the hero copy, which made it the only
+     centred text on the site. Everything is left aligned now, at every width. */
+  @media (max-width:640px) { section.hero { padding-top:42px; } }
   @media (max-width:420px) { .btn-row { flex-direction:column; align-items:stretch; width:100%; } .btn-row a { text-align:center; } }
 </style>
