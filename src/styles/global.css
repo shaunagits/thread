@@ -228,21 +228,25 @@
 *::before,
 *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Smooth scrolling is for in-page anchor jumps, not for the browser restoring
-   your position on reload or on back. `scroll-behavior` on `html` applies to
-   both, so a reload part-way down the page animates the restore, which reads as
-   the page scrolling itself. Scoping it to `:focus-within` is the usual dodge
-   but breaks anchor clicks; scoping it to the anchor targets is not possible in
-   CSS. The honest fix is to keep it and accept the restore animation, or drop
-   it. Kept, because the nav is entirely anchor links and the jump is the more
-   common interaction by far. If the restore ever becomes the complaint, delete
-   this rule — nothing else depends on it. */
-html { scroll-behavior: smooth; }
+/* Smooth scrolling was global on `html` until 18 Aug 2026 and was removed: the
+   owner reported the page "auto scrolling me down to Section 2 or 3" on load.
+   That is the browser restoring scroll after a reload, which is normal, but
+   `scroll-behavior` on `html` applies to restores as well as anchor jumps, so
+   the restore animated and read as the page moving on its own. The rule above
+   this one predicted exactly that and said to delete it if it ever became the
+   complaint. It did.
 
-/* The design specifies no motion. Honour the OS setting as well. */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
+   Restores are now instant, which is what every other site does. Note this
+   removes the animation, not the restore — reloading part-way down still lands
+   part-way down. Forcing the top on every load needs
+   `history.scrollRestoration = 'manual'`, which is JavaScript, and this site
+   ships none.
+
+   Anchor jumps are now instant too. That is the trade. `html:has(:target)`
+   would keep them smooth while leaving restores alone, but it depends on style
+   recalc landing before the browser's scroll, and when that timing does not
+   hold it silently degrades to exactly this. Not worth the cleverness for three
+   nav links. */
 
 body {
   background: var(--color-paper);

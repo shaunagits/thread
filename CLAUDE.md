@@ -3,7 +3,10 @@
 Marketing site for Thread, a custom software / dashboards / automation practice
 in Honolulu. **Live at https://threadhawaii.com.**
 
-Astro 7 + Tailwind 4, statically prerendered, **zero client JavaScript**.
+Astro 7 + Tailwind 4, statically prerendered, and **two lines of client
+JavaScript** — one inline `<script>` in `Base.astro` that sets
+`history.scrollRestoration = 'manual'`. Nothing else. See the constraint below
+before adding a third.
 
 Pages: `/` · `/privacy` · `/terms` · `/thanks` · `/work` (placeholder, noindex,
 excluded in robots.txt) · `/og` (card generator, noindex, excluded in
@@ -290,8 +293,36 @@ changing them.
   see the palette section above.
 - **No hardcoded hex in components.** Every colour is a token in `global.css`.
   Still in force, and it is what made the palette swap a one-file change.
-- **No client JavaScript.** The phone menu is a `<details>`; the contact form is
-  a native POST.
+- ~~**No client JavaScript.**~~ **Amended 18 Aug 2026, by the owner.** The phone
+  menu is still a `<details>` and the contact form is still a native POST — the
+  rule holds for anything a visitor interacts with, and those must stay
+  scriptless. The single exception is an inline two-line `<script>` in
+  `Base.astro` setting `history.scrollRestoration = 'manual'`, so a reload
+  part-way down the page starts at the top instead of where the browser put you.
+
+  It is JavaScript because it has to be: no CSS property reaches scroll
+  restoration. Three things to know before touching it, each of which cost a
+  measurement:
+
+  1. **It must be unconditional.** The value lives on the history entry and is
+     read when the browser decides whether to restore, so setting it during a
+     load is too late for that load. Scoping it to `navigation.type ===
+     'reload'` was tried and measured: the first reload still restored, and only
+     later ones landed at the top.
+  2. **It must be inline and synchronous in `<head>`.** A deferred or external
+     script runs after the restore and does nothing.
+  3. **Back and forward no longer restore either.** Returning from `/privacy`,
+     `/terms` or `/work` lands at the top of the homepage rather than where you
+     left. `scrollRestoration` is one switch covering both; this was accepted
+     knowingly. Keeping back-restore *and* top-on-reload means storing scroll
+     positions by hand, which is far more JavaScript than this site should carry.
+
+  `scroll-behavior: smooth` was removed from `global.css` in the same change.
+  It applied to browser-initiated scrolls as well as anchor jumps, so the
+  restore animated and read as the page scrolling itself. Anchor jumps are now
+  instant. `html:has(:target)` would restore the glide without touching
+  restores, but it depends on style recalc beating the browser's scroll and
+  degrades silently when it does not.
 - ~~**No new colours, fonts, spacing scales, or components** beyond the design.~~
   **Narrowed 17 Aug 2026.** No new *spacing scales* or *fonts*, and no new
   component patterns. Colour is now the owner's call and the tokens have already

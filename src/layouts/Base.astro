@@ -124,6 +124,34 @@ const businessLd = {
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
 
+    {/* The site's only executable JavaScript, added 18 Aug 2026 on the owner's
+        call. It exists because nothing in CSS can reach scroll restoration.
+
+        The browser restores your scroll position on reload, so reloading
+        part-way down the homepage put you back part-way down. The owner wanted
+        every load to start at the top, and `history.scrollRestoration` is the
+        only switch for that.
+
+        ⚠️ It must be set unconditionally, on every load. The value lives on the
+        history entry and is read when the browser decides whether to restore,
+        so setting it during a load is too late for that same load — it only
+        takes effect from the next one. Scoping it to `navigation.type ===
+        'reload'` was tried and measured: the first reload still restored and
+        only later ones landed at the top. Half-fixed is worse than either
+        choice, so the condition is gone.
+
+        The cost, accepted knowingly: back and forward no longer restore either.
+        Returning from /privacy, /terms or /work lands at the top of the
+        homepage rather than where you left. That is the price of the switch;
+        there is no finer-grained control without storing scroll positions by
+        hand, which is far more JavaScript than this site should carry.
+
+        Inline and synchronous on purpose: it has to run before the browser
+        restores, which a deferred or external script would miss. */}
+    <script is:inline>
+      if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    </script>
+
     <!-- icons -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
