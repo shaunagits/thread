@@ -29,7 +29,23 @@ const CTA = 'Book a call';
         announced by screen readers with no client JavaScript. Replaces the
         original's behaviour, which hid the links and the CTA together. */}
     <details class="menu">
-      <summary>Menu</summary>
+      <summary>
+        <span class="mi-row">
+          {/* Two paths, one visible at a time. Both use the mark's own
+              construction: a single continuous stroke, one weight, round caps,
+              drawn with pathLength="1" and stroke-dashoffset. The bars are one
+              path with three subpaths, so the dash draws them in sequence and
+              ends — the same ribbon logic as the mark. Three horizontal runs is still the shape people read as "menu". */}
+          <svg class="mi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path class="mi-bars" pathLength="1" d="M3 6.5H21M3 12H16.5M3 17.5H21" />
+            <path class="mi-x" pathLength="1" d="M5 5C11 10 13 14 19 19M19 5C13 10 11 14 5 19" />
+          </svg>
+          <span class="mi-label">
+            <span class="mi-shut">Menu</span><span class="mi-lit">Close</span>
+            <span class="mi-rule" aria-hidden="true"></span>
+          </span>
+        </span>
+      </summary>
       <div class="menu-panel">
         <nav aria-label="Primary, phone">
           {nav.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -91,6 +107,56 @@ const CTA = 'Book a call';
     padding: 10px 2px;
   }
   .menu summary::-webkit-details-marker { display: none; }
+  /* Flex lives on a span, not on <summary>. Setting display on summary itself
+     drops the disclosure triangle inconsistently across engines and has bitten
+     this pattern before; list-style:none above is the supported way. */
+  .mi-row { display: flex; align-items: center; gap: 9px; min-height: 44px; }
+
+  /* The icon is the mark's construction at menu scale: one continuous stroke,
+     one weight, round caps, --color-koa because it carries a label beside it
+     and koa is the text-bearing fill. Same reason .mark uses ink, not ochre. */
+  .mi { display: block; width: 22px; height: 22px; overflow: visible; }
+  .mi path {
+    fill: none; stroke: var(--color-koa); stroke-width: 2; stroke-linecap: round;
+  }
+  /* Which path shows is decided by [open] alone, never by an animation. If
+     motion never runs — reduced-motion, or a declaration dropped in minified
+     CSS the way landmine 22 describes — the icon is still correct in both
+     states. The dash draw below is decoration on top of a working toggle. */
+  .mi-x { opacity: 0; }
+  .menu[open] .mi-bars { opacity: 0; }
+  .menu[open] .mi-x { opacity: 1; }
+
+  .mi-label { position: relative; display: inline-block; }
+  .mi-lit { display: none; }
+  .menu[open] .mi-shut { display: none; }
+  .menu[open] .mi-lit { display: inline; }
+  /* A thread under the label, drawn from the left on open. Same gesture as
+     .btn-ghost .u and the nav links' underline, so the header has one idea
+     about what an active label looks like rather than three. */
+  .mi-rule {
+    position: absolute; left: 0; right: 0; bottom: -4px; height: 1px;
+    background: var(--color-koa); transform: scaleX(0); transform-origin: left;
+  }
+  .menu[open] .mi-rule { transform: scaleX(1); }
+
+  /* The thread gesture. Bars pull out to the right, the cross threads itself in
+     just behind them, so the two read as one line being rerouted rather than
+     two icons swapping. Easing is the mark's own cubic-bezier(.32,0,.18,1).
+
+     Every dash declaration lives inside this query on purpose. stroke-dashoffset
+     is what hides a path, and a hidden state that survives while the thing
+     meant to undo it goes missing is exactly landmine 22. Outside this query
+     there is no dasharray at all, so both states render fully drawn. */
+  @keyframes mi-pull   { from { stroke-dashoffset: 0; opacity: 1; } to { stroke-dashoffset: 1; opacity: 0; } }
+  @keyframes mi-thread { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .mi path { stroke-dasharray: 1; }
+    .mi-x { stroke-dashoffset: 1; }
+    .menu[open] .mi-bars { animation: mi-pull .3s cubic-bezier(.32,0,.18,1) forwards; }
+    .menu[open] .mi-x { animation: mi-thread .52s cubic-bezier(.32,0,.18,1) .1s forwards; }
+    .mi-rule { transition: transform .32s cubic-bezier(.22,1,.36,1); }
+  }
   /* 280px is the narrowest that keeps "Get your systems mapped" on one line
      at the CTA's 14px/600 with its 28px side padding. */
   .menu-panel {
