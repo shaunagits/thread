@@ -46,19 +46,26 @@ import { steps } from '../content/site';
      nothing else on the page has that column. The numbers moved above their
      labels instead — where they were already going on a phone, so this also
      removes a breakpoint. */
+  /* Horizontal since 18 Aug 2026, on the owner's instruction. Four steps read
+     left to right along a single thread rather than down one, which suits a
+     process better and takes roughly a third of the height. The spine runs
+     above the content and the nodes hang from it; below 820px, where four
+     columns cannot hold a sentence, the whole thing returns to the vertical
+     composition it had — see the media query at the end. */
   .timeline {
-    position: relative; list-style: none;
-    margin-top: 56px; padding-left: 34px;
+    position: relative; list-style: none; margin-top: 56px;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px; padding-top: 32px;
   }
 
   /* The full path, always present. Faded at both ends so it reads as a thread
      passing through rather than a rule that starts and stops. */
   .timeline::before,
   .timeline::after {
-    content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 1px;
+    content: ''; position: absolute; left: 0; right: 0; top: 5px; height: 1px;
   }
   .timeline::before {
-    background: linear-gradient(
+    background: linear-gradient(to right,
       transparent 0,
       var(--color-rule) 5%,
       var(--color-rule) 95%,
@@ -66,16 +73,15 @@ import { steps } from '../content/site';
   }
   /* The accent spine, drawn over the faint one as the section scrolls. */
   .timeline::after {
-    background: linear-gradient(
+    background: linear-gradient(to right,
       transparent 0,
       var(--color-line) 5%,
       var(--color-line) 95%,
       transparent 100%);
-    transform-origin: top;
+    transform-origin: left;
   }
 
-  .tl-step { position: relative; padding-bottom: 54px; }
-  .tl-step:last-child { padding-bottom: 0; }
+  .tl-step { position: relative; }
 
   .tl-n {
     display: block; margin-bottom: 7px;
@@ -83,10 +89,11 @@ import { steps } from '../content/site';
     color: var(--color-faint);
   }
 
-  /* Centred on the spine: content starts at 34, spine centre is 0.5, so the
-     11px box sits at 0.5 - 5.5 - 34. */
+  /* On the spine, at each column's left edge. The list has 32px of top padding
+     and the spine sits at 5px inside it, so the 11px node starts 32px above its
+     own step to land centred on the line. */
   .tl-node {
-    position: absolute; left: -39px; top: 5px; width: 11px; height: 11px;
+    position: absolute; left: 0; top: -32px; width: 11px; height: 11px;
     border-radius: 50%; background: var(--color-paper);
     border: 1px solid var(--color-line);
   }
@@ -116,7 +123,16 @@ import { steps } from '../content/site';
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: none; }
   }
+  /* scaleX, not scaleY — the spine runs across now. Paired with
+     transform-origin: left so it draws in reading order. */
   @keyframes tl-grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  /* The narrow composition puts the spine back on its side, so it needs its own
+     axis. Reusing tl-grow there would scale a 1px-wide vertical rule's width
+     and never draw it — silently, and only on phones. */
+  @keyframes tl-grow-y {
     from { transform: scaleY(0); }
     to   { transform: scaleY(1); }
   }
@@ -143,10 +159,40 @@ import { steps } from '../content/site';
         animation-timeline: view();
         animation-range: entry 18% cover 78%;
       }
+      /* Same breakpoint as the layout below, so the spine's axis and the
+         keyframe driving it can never disagree. */
+      @media (max-width: 820px) {
+        .timeline::after { animation-name: tl-grow-y; }
+      }
     }
   }
 
-  /* One composition at every width now — only the rhythm tightens. */
+  /* Back to vertical below 820px. Four columns cannot hold a sentence on a
+     phone, and 820 is the width the rest of the page already changes at. Every
+     horizontal rule is undone here rather than the other way round, so the
+     narrow composition is the plain one. */
+  @media (max-width: 820px) {
+    .timeline {
+      grid-template-columns: 1fr; gap: 0;
+      padding-top: 0; padding-left: 34px;
+    }
+    .timeline::before,
+    .timeline::after {
+      left: 0; right: auto; top: 4px; bottom: 4px; width: 1px; height: auto;
+    }
+    .timeline::before {
+      background: linear-gradient(transparent 0, var(--color-rule) 5%,
+        var(--color-rule) 95%, transparent 100%);
+    }
+    .timeline::after {
+      background: linear-gradient(transparent 0, var(--color-line) 5%,
+        var(--color-line) 95%, transparent 100%);
+      transform-origin: top;
+    }
+    .tl-step { padding-bottom: 54px; }
+    .tl-step:last-child { padding-bottom: 0; }
+    .tl-node { left: -39px; top: 5px; }
+  }
   @media (max-width: 640px) {
     .timeline { margin-top: 42px; padding-left: 28px; }
     .tl-node { left: -33px; }
