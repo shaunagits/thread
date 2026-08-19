@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import ConnectsStrip from '../components/ConnectsStrip.astro';
 import DashboardPlate from '../components/DashboardPlate.astro';
 import Section from '../components/Section.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
@@ -13,6 +14,10 @@ import Footer from '../components/Footer.astro';
 <Base businessSchema>
   <Header />
   <Hero />
+  {/* Restored below the hero 18 Aug 2026 on the owner's instruction. It is a
+      full-bleed band rather than a section, so it sits outside .wrap and
+      supplies its own rules top and bottom. */}
+  <ConnectsStrip />
 
   {/* §01 "The problem" was folded into this section on 17 Aug 2026 and the two
       service cards went with it. The page had grown to say the same thing three

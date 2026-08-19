@@ -40,6 +40,28 @@ export const nav = [
 ];
 
 /** Real address — Namecheap forwards it. See CLAUDE.md landmine 9. */
+/**
+ * The connects-to strip under the hero, restored 18 Aug 2026 on the owner's
+ * instruction after being deleted with its component earlier the same day.
+ *
+ * This is the union of two lists that were already in the repo, not a new set:
+ * the nine the strip carried before (QuickBooks, Shopify, Square, Jobber,
+ * Airtable, Stripe, Slack, Google Workspace, HubSpot) and the nine cycling in
+ * HeroGraphic, which added Xero, Sage, Gusto and ADP. Ordered by what they do
+ * rather than alphabetically: books, money, commerce, payroll, CRM, then the
+ * tools work actually happens in.
+ *
+ * ⚠️ Every name here is a claim that Thread integrates with it. Adding one is
+ * the owner's call, not a gap to fill because a platform is popular or has an
+ * API. See CLAUDE.md, "Content that must never be invented".
+ */
+export const integrations = [
+  'QuickBooks', 'Xero', 'Sage',
+  'Stripe', 'Square', 'Shopify',
+  'Gusto', 'ADP', 'HubSpot',
+  'Jobber', 'Airtable', 'Slack', 'Google Workspace',
+];
+
 export const contact = {
   email: 'aloha@threadhawaii.com',
   location: 'Honolulu, Hawaiʻi',

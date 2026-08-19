@@ -296,8 +296,15 @@ const MINI_BARS = [14, 22, 12, 28, 18, 34, 24];
   @keyframes hv-in   { to { opacity: 1; } }
   @keyframes hv-run  { from { stroke-dashoffset: 100; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 0; } }
 
-  /* 21s cycle per card, offset so a single tool changes roughly every 2.3s and
-     never two at once. Negative delays start each card mid-cycle. */
+  /* 14s cycle per card, offset so a single tool changes roughly every 1.6s and
+     never two at once. Negative delays start each card mid-cycle.
+
+     Was 21s until 18 Aug 2026; the owner wanted the names moving faster. The
+     offsets scale with the duration rather than being re-picked: they are not
+     even thirds on purpose — the gaps run 3.6 / 4.7 / 5.7 so the sequence does
+     not read as a metronome — and dividing them by the same 1.5 keeps that
+     rhythm intact. Each name still holds for 4.7s, which is long enough to
+     read one. */
   @keyframes rot1 { 0%, 31% { opacity: 1 } 33.3%, 98% { opacity: 0 } 100% { opacity: 1 } }
   @keyframes rot2 { 0%, 31% { opacity: 0 } 33.3%, 64.6% { opacity: 1 } 66.6%, 100% { opacity: 0 } }
   @keyframes rot3 { 0%, 64.6% { opacity: 0 } 66.6%, 98% { opacity: 1 } 100% { opacity: 0 } }
@@ -316,10 +323,10 @@ const MINI_BARS = [14, 22, 12, 28, 18, 34, 24];
     .pulse { stroke-dasharray: 3 97; animation: hv-run 3.4s linear infinite 1.9s; }
     .pl2 { animation-delay: 2.9s; } .pl3 { animation-delay: 3.9s; }
 
-    .o1 { animation: rot1 21s ease-in-out infinite 1.6s; }
-    .o2 { animation: rot2 21s ease-in-out infinite 1.6s; }
-    .o3 { animation: rot3 21s ease-in-out infinite 1.6s; }
-    .d2 { animation-delay: -5.4s; } .d3 { animation-delay: -12.4s; }
+    .o1 { animation: rot1 14s ease-in-out infinite 1.6s; }
+    .o2 { animation: rot2 14s ease-in-out infinite 1.6s; }
+    .o3 { animation: rot3 14s ease-in-out infinite 1.6s; }
+    .d2 { animation-delay: -3.6s; } .d3 { animation-delay: -8.3s; }
   }
 
   /* Composition swap, same breakpoint as DashboardPlate. Both drawings fit the

@@ -1,0 +1,46 @@
+---
+import { integrations } from '../content/site';
+---
+
+<div class="strip">
+  <div class="wrap strip-in">
+    <span class="strip-lbl">Connects to</span>
+    {integrations.map((name) => <span class="strip-item">{name}</span>)}
+  </div>
+</div>
+
+<style>
+  .strip {
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-wash);
+    padding: 26px 0;
+  }
+  /* 20px, not the 28 this carried when it held nine names. Thirteen at 28 need
+     about 1200px against the 1100 .wrap gives, so the last one — "Google
+     Workspace", the widest — orphaned onto a line of its own and read as a
+     mistake. At 20 the row closes at roughly 1096 and sets on one line, and
+     below that it wraps in twos and threes rather than leaving a straggler.
+     20 is already in the design; 28 and 22 both still orphan it. */
+  .strip-in {
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .strip-lbl {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--color-koa);
+  }
+  .strip-item {
+    font-family: var(--font-serif); font-size: 17px; color: var(--color-quiet);
+  }
+
+  /* On a phone the thirteen names wrap to four rows and the band ran 223px —
+     a quarter of the viewport, directly under the hero, before §01 starts.
+     Tighter type, tighter gap and less vertical padding pull that back without
+     dropping a name. 16, 14 and 20 are all values the design already uses. */
+  @media (max-width: 640px) {
+    .strip { padding: 20px 0; }
+    .strip-in { gap: 14px; }
+    .strip-item { font-size: 16px; }
+  }
+</style>
