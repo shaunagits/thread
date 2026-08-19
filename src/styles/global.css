@@ -428,7 +428,13 @@ aside.side strong { color: var(--color-ink); }
 
 /* ---------- section frame ---------- */
 section { padding: 104px 0; border-top: 1px solid var(--color-rule); }
-section.hero { padding: 58px 0 66px; border-top: 0; }
+/* The hero ran 58/66 against every other section's 104, which made the one
+   screen everybody sees the most cramped thing on the page. Opened up 18 Aug
+   2026 on the owner's instruction. Not all the way to 104 at the top: the
+   header is sticky at 68px, and pushing the headline down that far starts
+   crowding the graphic toward the fold on a laptop, which is the problem the
+   hero grid was rearranged to avoid in the first place. */
+section.hero { padding: 80px 0 96px; border-top: 0; }
 
 /* ---------- figures ---------- */
 .figcap {
