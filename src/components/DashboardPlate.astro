@@ -404,9 +404,26 @@
      above it on a tall desktop, so this is time-driven rather than
      scroll-driven for the same reason HeroGraphic is.
      ============================================================ */
-  @keyframes dp-reveal { to { opacity: 1; } }
-  @keyframes dp-draw   { to { stroke-dashoffset: 0; } }
-  @keyframes dp-rise   { to { opacity: 1; transform: translateY(0); } }
+  /* From-states live here, not in the rules. That is landmine 22's whole point:
+     a rule that hides the element survives when the thing meant to reveal it is
+     dropped, and the drawing goes permanently invisible. In a keyframe the
+     hidden state cannot outlive its own animation.
+
+     They were absent until 18 Aug 2026, and every one of these was `to`-only.
+     With animation-fill-mode: both and nothing hiding the elements, each
+     animated from the element's own computed value to that same value — 1 to 1
+     — so the reveal ran, reported as running on a real ViewTimeline, and did
+     nothing. Measured on production before the fix: .dp-side held opacity 1 at
+     every scroll position through the plate.
+
+     dp-draw's from pairs with the stroke-dasharray: 1 already on .dp-s1/2/3.
+     No animation-duration is set anywhere, which is correct for a scroll-driven
+     animation and is also the safe fallback: if the timeline is ever lost the
+     duration defaults to 0s and fill-mode: both lands the element on its `to`
+     state immediately, so the drawing renders finished rather than hidden. */
+  @keyframes dp-reveal { from { opacity: 0; }                              to { opacity: 1; } }
+  @keyframes dp-draw   { from { stroke-dashoffset: 1; }                    to { stroke-dashoffset: 0; } }
+  @keyframes dp-rise   { from { opacity: 0; transform: translateY(8px); }  to { opacity: 1; transform: translateY(0); } }
   
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
