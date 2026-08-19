@@ -39,18 +39,6 @@ export const nav = [
   // { label: 'Work', href: '/work' },
 ];
 
-/**
- * The "Connects to" strip. This is a capability claim, not a client list —
- * every one of these exposes a public API Thread can build against. Confirmed
- * by the owner 13 Aug 2026, and kept under the "existing graphics" exception
- * when the v3 copy landed on 14 Aug. Anything added here must clear the same
- * bar.
- */
-export const integrations = [
-  'QuickBooks', 'Shopify', 'Square', 'Jobber', 'Airtable',
-  'Stripe', 'Slack', 'Google Workspace', 'HubSpot',
-];
-
 /** Real address — Namecheap forwards it. See CLAUDE.md landmine 9. */
 export const contact = {
   email: 'aloha@threadhawaii.com',
@@ -125,10 +113,17 @@ export const steps = [
  * the owner's too, from STRATEGY.md: "Typical 3-6 / 6-10 / 2-6 / 4-8 weeks".
  * The terms are the meta lines the retired entries already carried.
  *
- * ⚠️ No prices. STRATEGY.md also carries "from $12,000", "from $25,000" and so
- * on, and they stay out: CLAUDE.md records the owner's decision that this site
- * ships durations and terms only until the real figures exist. Do not add them
- * here because they exist somewhere in the repo.
+ * ⚠️ PRICES ARE DELIBERATELY ABSENT, and this is the standing rule for the file
+ * rather than a note about one array. STRATEGY.md carries "from $12,000",
+ * "from $25,000" and two more sitting right beside the durations above. The v3
+ * draft carried $14,000, $28,000 and $2,400/month, and its own call-out marked
+ * all three as placeholders. HOMEPAGE-COPY.md still marks them `[CONFIRM]`.
+ *
+ * The owner confirmed on 14 Aug 2026: durations and terms only until the real
+ * numbers exist. Do not fill any of them in, and in particular do not add one
+ * because you found it elsewhere in the repo. Inventing a plausible price is
+ * how this site got into trouble the first time. See CLAUDE.md, "Content that
+ * must never be invented".
  */
 export const services = [
   {
@@ -153,77 +148,6 @@ export const services = [
   },
 ];
 
-export const shipsWith = [
-  { item: 'Written documentation: what it does, and why', tag: 'Included' },
-  { item: 'Running in your accounts, on your data',     tag: 'Included' },
-  { item: 'The source code, in your repository',        tag: 'Included' },
-  { item: 'Monitoring, so you hear about it from me first', tag: 'Optional' },
-  { item: 'A standing hour each month',                 tag: 'Optional' },
-];
-
-/**
- * ⚠️ PRICES ARE DELIBERATELY ABSENT. The v3 draft carried $14,000, $28,000 and
- * $2,400/month and its own call-out marked all three as placeholders. The
- * owner confirmed on 14 Aug 2026: durations and terms only until the real
- * numbers exist. HOMEPAGE-COPY.md still marks them `[CONFIRM]`.
- *
- * Do not fill these in. Inventing a plausible price is how this site got into
- * trouble the first time. See CLAUDE.md, "Content that must never be
- * invented".
- */
-/**
- * Two, not three. The Maintenance card was cut on 17 Aug 2026: the same idea
- * already appears twice more on the page, as step 04 of the process and inside
- * the care plate in §04, where it is better argued. It was taking a third of
- * the most important section to say something said better elsewhere.
- *
- * `meta` is gone with it. Those lines ("Less manual work · Your existing
- * tools") restated the body in fewer words and carried no new information.
- */
-export const plans = [
-  {
-    label: 'Connect your tools',
-    title: 'Stop doing the same work twice.',
-    body: 'Your tools stay where they are. I make them talk to each other, so no one retypes the same number twice.',
-  },
-  {
-    label: 'Custom software',
-    title: 'Give your team one place to work.',
-    body: 'When a spreadsheet and a group chat are holding a process together, I replace them with one thing built for your team.',
-  },
-];
-
-/**
- * The six questions from the v3 draft, in its order. Every answer is a claim
- * the owner controls outright: structure, process and terms. Nothing here
- * cites a number, a client or a result.
- */
-export const questions = [
-  {
-    q: 'Can another developer take this over?',
-    a: 'You have the source code, documentation, and accounts. Any competent developer can take it over.',
-  },
-  {
-    q: 'We tried custom software before and it went badly.',
-    a: 'The scope moved, nobody used it, or the vendor owned it. Fixed scope, working demos, and clear ownership address those risks.',
-  },
-  {
-    q: 'Can we just use Zapier?',
-    a: 'Sometimes. It is often the right answer for a simple task. When the work needs logic, history, or permissions, a stronger system may make more sense.',
-  },
-  {
-    q: 'How much of my team’s time does this take?',
-    a: 'A few hours up front from the people who do the work, then a demo every two weeks.',
-  },
-  {
-    q: 'We’re not in Hawaiʻi.',
-    a: 'That is fine. Thread works remotely with businesses outside Hawaiʻi too.',
-  },
-  {
-    q: 'What does it cost to run after it’s built?',
-    a: 'Your existing subscriptions and hosting, billed directly to you. I will outline the real cost for your setup before you decide.',
-  },
-];
 
 export const footerColumns = [
   /**

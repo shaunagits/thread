@@ -209,10 +209,15 @@ instruction: `StepRow`, `Fig4CarePlate`, `Fig2CurrentState`,
 `Fig3ThreadDiagram`, `Figure`, `ConnectsStrip`, `QuestionList`, `ProblemFlow`,
 `ServicesLine` and `ShipsWith`. `ServiceList` survived: §03 uses it again.
 
-Their data is **still in `site.ts`** — `integrations`, `shipsWith`, `questions`
-and `plans` are now read by nothing. Left because they are copy rather than
-code, and copy is the owner's call. Recover any component from git rather than
-rewriting it.
+Their data went too, on the owner's instruction the same day: `integrations`,
+`shipsWith`, `questions` and `plans` are gone from `site.ts`, which now exports
+only what a page imports — `nav`, `contact`, `steps`, `services` and
+`footerColumns`. Recover a component *and* its array from git rather than
+rewriting either.
+
+The prices rule that used to sit above `plans` was folded into the comment over
+`services` rather than deleted with it. It is the standing rule for the file,
+not a note about one array.
 
 `DevGrid.astro` renders layout guides behind `import.meta.env.DEV`, so it is
 absent from production entirely. Toggle bottom left.
