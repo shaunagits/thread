@@ -35,26 +35,22 @@ const groups = [...new Set(shipsWith.map((r) => r.tag))].map((tag) => ({
 <div class="ships">
   <div class="ships-head">Ships with every build</div>
 
-  <div class="ships-sets">
-    {groups.map((group) => (
-      <div class="ships-group">
+  {groups.map((group) => (
+    <div class="ships-group">
       {/* The full stop is the wordmark's, not a drawn circle: `thread.` ends on
           a koa period and so does each label here. A 4px dot at the far end of
           the leader was tried first and read as a stray speck, because it sat
           an entire column away from the word it was meant to punctuate. */}
-        <h3 class="ships-label"><span class="ships-word">{group.tag}</span><span class="ships-lead" aria-hidden="true"></span></h3>
-        <ul>
-          {group.rows.map((row) => <li>{row.item}</li>)}
-        </ul>
-      </div>
-    ))}
-  </div>
+      <h3 class="ships-label"><span class="ships-word">{group.tag}</span><span class="ships-lead" aria-hidden="true"></span></h3>
+      <ul>
+        {group.rows.map((row) => <li>{row.item}</li>)}
+      </ul>
+    </div>
+  ))}
 </div>
 
 <style>
-  /* No max-width: the two sets sit side by side and want the full column. It
-     was 640px when they stacked. */
-  .ships { margin-top: 40px; }
+  .ships { margin-top: 40px; max-width: 640px; }
 
   .ships-head {
     font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
@@ -62,33 +58,16 @@ const groups = [...new Set(shipsWith.map((r) => r.tag))].map((tag) => ({
     padding-bottom: 14px; border-bottom: 1px solid var(--color-hair);
   }
 
-  /* The two sets side by side, 18 Aug 2026. Stacked, this section ran to five
-     rows plus two labels under copy that was already full width, which made §03
-     both the tallest thing on the page and a single unbroken left rail. Setting
-     Included against Optional halves the height and puts a second axis on the
-     page, without making §03 the one section whose copy does not run full
-     width — which is what got a side-by-side layout rejected twice before.
-
-     56px and the 1000px collapse are .doc's, not new values. */
-  /* auto-fit against a 300px floor rather than a fixed pair of tracks, changed
-     18 Aug 2026. Two fixed columns behind a viewport media query kept dropping
-     to one at widths people actually browse at: the query cannot see zoom, so a
-     1000px window at 125% is an 800px viewport and collapsed, and the owner hit
-     exactly that on production twice. auto-fit answers the only question that
-     matters — does the space hold two 300px tracks — so it survives zoom, and
-     the sets stay paired down to roughly a 714px viewport instead of 820. With
-     two items the third track is always empty and auto-fit collapses it, so
-     this never renders more than two columns. */
-  .ships-sets {
-    margin-top: 22px;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 56px; align-items: start;
-  }
   /* A div, not a <section>. `section { padding: 104px 0; border-top: … }` is a
      global element rule for the page's own sections, and a nested <section>
      silently inherits all of it — 104px of dead space and a stray rule above
      every group. Cost one measurement to find. */
-  .ships-group { margin-top: 0; }
+  .ships-group { margin-top: 30px; }
+  /* Adjacent-sibling, not :first-child — .ships-head is the first child, so
+     :first-child never matched a group and the tighter gap silently did
+     nothing. The head binds to its first set; the sets breathe from each
+     other. */
+  .ships-head + .ships-group { margin-top: 22px; }
 
   /* Same type as .ships-head one level down, so the two read as a hierarchy
      rather than two competing labels: quiet, not koa, and the rule carries the
@@ -110,23 +89,8 @@ const groups = [...new Set(shipsWith.map((r) => r.tag))].map((tag) => ({
     color: var(--color-body);
     padding: 13px 0; border-bottom: 1px solid var(--color-rule);
   }
-  /* Every set closes on the heavier rule the head opened with, so each column
-     reads as an enclosed object rather than a list that stops. Both, not just
-     the last: side by side there is no "last" in reading order. */
-  .ships-group li:last-child { border-bottom-color: var(--color-hair); }
-
-  /* The sets hold two columns down to 820px rather than collapsing at 1000,
-     changed 18 Aug 2026: at 1000 a laptop window that is not maximised drops
-     straight back to the single tall column this layout exists to avoid, and
-     that is the state the owner saw on production and objected to.
-
-     Between 820 and 1000 the gap tightens to .doc's collapsed value to buy the
-     columns width. Measured at 830, the tightest two-column case: 358px
-     columns, and every row still sets on one line. 820 is the page's existing
-     breakpoint (the plate swaps composition there); no new value is
-     introduced. */
-  /* Only the gap is width-driven now; whether the sets pair is decided by
-     available space. 34px is .doc's collapsed gap, 30px the stacked one. */
-  @media (max-width: 1000px) { .ships-sets { gap: 34px; } }
-  @media (max-width: 640px)  { .ships-sets { gap: 30px; } }
+  /* The last row of the last group closes on the heavier rule the head opened
+     with, so the block reads as one enclosed object rather than a list that
+     stops. */
+  .ships-group:last-child li:last-child { border-bottom-color: var(--color-hair); }
 </style>
