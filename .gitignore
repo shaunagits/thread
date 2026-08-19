@@ -10,3 +10,11 @@ dist/
 
 # local machine settings, not shared
 .claude/settings.local.json
+
+# Design exploration kept on disk, deliberately never committed. The owner has
+# asked for this twice; it went in anyway on 18 Aug 2026 via a `git add -A`, so
+# it is a rule here now rather than something to remember.
+preview-*.html
+concepts-*.html
+COPY-V3-REVIEW.md
+public/brand/
