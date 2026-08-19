@@ -5,7 +5,7 @@ import Hero from '../components/Hero.astro';
 import DashboardPlate from '../components/DashboardPlate.astro';
 import Section from '../components/Section.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
-import ShipsWith from '../components/ShipsWith.astro';
+import ServiceList from '../components/ServiceList.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -60,15 +60,15 @@ import Footer from '../components/Footer.astro';
     eyebrow="03 · What you get"
     heading="The system is yours."
     headingWidth={20}
-    split
   >
-    {/* Two columns again, on the owner's instruction, 18 Aug 2026. It was
-        dropped on 17 Aug because the floated *plate* here was the only thing
-        on the page not running copy at full width with its graphic beneath.
-        What sits in the right column now is a text list rather than a drawing,
-        which reads as a second column of the same document instead of an
-        imported panel. Collapses to one column at 1000px, the same width the
-        .doc grid collapses at. */}
+    {/* §03 carries the four services since 18 Aug 2026, on the owner's
+        instruction, replacing the ships-with list. The ownership copy stays as
+        the lead-in rather than going with it: CLAUDE.md calls owning the system
+        the site's differentiator, the thing doing the job testimonials would
+        normally do, and "You own the code" alone in a meta column does not
+        carry it. The list is full width because its rows are a three-column
+        grid — number, copy, terms — so the split arrangement this section used
+        for the ships-with list cannot hold it. */}
     <p class="lead" style="max-width:52ch;margin-bottom:18px">
       It runs in your accounts, under your billing, and you keep everything it’s
       built from. If you ever stop working with me, nothing switches off.
@@ -78,7 +78,7 @@ import Footer from '../components/Footer.astro';
       pay for monthly stops the day you stop paying. This doesn’t.
     </p>
 
-    <ShipsWith slot="aside" />
+    <ServiceList />
   </Section>
 
   <ContactSection />

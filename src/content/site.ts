@@ -116,6 +116,43 @@ export const steps = [
  * 14 Aug 2026, so that label pointed at an offer the page never described.
  * They are OPTIONAL until there is somewhere to explain a care plan.
  */
+/**
+ * The four services, restored 18 Aug 2026 for §03 on the owner's instruction.
+ *
+ * Nothing here is invented, which matters in this repo more than most. The
+ * titles and bodies are the owner's own, retired from this file in c41772f when
+ * v3 landed and taken back out of git rather than rewritten. The durations are
+ * the owner's too, from STRATEGY.md: "Typical 3-6 / 6-10 / 2-6 / 4-8 weeks".
+ * The terms are the meta lines the retired entries already carried.
+ *
+ * ⚠️ No prices. STRATEGY.md also carries "from $12,000", "from $25,000" and so
+ * on, and they stay out: CLAUDE.md records the owner's decision that this site
+ * ships durations and terms only until the real figures exist. Do not add them
+ * here because they exist somewhere in the repo.
+ */
+export const services = [
+  {
+    title: 'Custom internal apps',
+    body: 'The software your business needs and nobody sells: job tracking shaped like your workflow, intake that routes itself, approvals that match how decisions actually get made.',
+    meta: ['Typical: 6\u201310 weeks', 'Fixed price', 'You own the code'],
+  },
+  {
+    title: 'Dashboards & reporting panels',
+    body: 'One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, arranged the way your team already thinks about the work.',
+    meta: ['Typical: 3\u20136 weeks', 'Fixed price', 'Live data, no exports'],
+  },
+  {
+    title: 'AI automation',
+    body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting repetitive correspondence, flagging what needs a person. Review by a human is built in.',
+    meta: ['Typical: 4\u20138 weeks', 'Fixed price', 'Human review built in'],
+  },
+  {
+    title: 'Integration & data plumbing',
+    body: 'Connecting the tools you already pay for so the retyping stops. Getting your systems to agree, so the same number means the same thing everywhere.',
+    meta: ['Typical: 2\u20136 weeks', 'Fixed or retainer', 'Monitored'],
+  },
+];
+
 export const shipsWith = [
   { item: 'Written documentation: what it does, and why', tag: 'Included' },
   { item: 'Running in your accounts, on your data',     tag: 'Included' },
