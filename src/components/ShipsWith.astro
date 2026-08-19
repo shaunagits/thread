@@ -105,7 +105,20 @@ const groups = [...new Set(shipsWith.map((r) => r.tag))].map((tag) => ({
      the last: side by side there is no "last" in reading order. */
   .ships-group li:last-child { border-bottom-color: var(--color-hair); }
 
+  /* The sets hold two columns down to 820px rather than collapsing at 1000,
+     changed 18 Aug 2026: at 1000 a laptop window that is not maximised drops
+     straight back to the single tall column this layout exists to avoid, and
+     that is the state the owner saw on production and objected to.
+
+     Between 820 and 1000 the gap tightens to .doc's collapsed value to buy the
+     columns width. Measured at 830, the tightest two-column case: 358px
+     columns, and every row still sets on one line. 820 is the page's existing
+     breakpoint (the plate swaps composition there); no new value is
+     introduced. */
   @media (max-width: 1000px) {
+    .ships-sets { gap: 34px; }
+  }
+  @media (max-width: 820px) {
     .ships-sets { grid-template-columns: 1fr; gap: 30px; }
   }
 </style>
