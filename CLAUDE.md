@@ -122,7 +122,7 @@ homepage is now history. The sections are:
 |---|---|---|---|
 | 01 | `services` | One screen with the answer on it. | `DashboardPlate`, then the buttons |
 | 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline` |
-| 03 | `ownership` | The system is yours. | two paragraphs, then `ShipsWith` |
+| 03 | `ownership` | The system is yours. | the ownership copy, then `ServiceList` |
 | 04 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
 
 **§01 "The problem" is gone**, folded into §01 What I do along with the two
