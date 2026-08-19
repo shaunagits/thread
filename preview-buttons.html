@@ -1,0 +1,460 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Thread · buttons</title>
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+
+/* ============================================================
+   THREAD — design tokens
+   Ported from index.html, which is the source of truth.
+   Every colour in the design lives here. No hex in components.
+   ============================================================ */
+
+/* `static` is required: by default Tailwind v4 tree-shakes @theme and only
+   emits variables it sees used in generated utilities, which silently drops
+   tokens referenced from scoped component CSS. */
+:root {
+  /* ---- the twelve documented tokens ---- */
+  --color-paper: #FCFCF9;   /* page ground */
+  --color-wash:  #F1F6F5;   /* quiet alternate ground */
+  --color-white: #FFFFFF;   /* cards */
+  --color-ink:   #172A2D;   /* deep blue-green headlines */
+  --color-body:  #314447;   /* body copy */
+  --color-quiet: #5B6A6C;   /* secondary text */
+  --color-faint: #6F7C7D;   /* captions */
+  --color-rule:  #DDE5E3;   /* section rules */
+  --color-hair:  #BBC9C7;   /* card borders, hairlines */
+  --color-ochre: #8DB9C4;   /* light ocean-blue fill */
+  --color-line:  #4D8798;   /* ocean-blue strokes */
+  --color-koa:   #235F70;   /* links and text-bearing fills */
+
+  /* ---- present in index.html, absent from the handoff token table ----
+     These are not new colours; they are already in the design. Naming them
+     here is what keeps hex out of the components. Flagged for review. */
+  --color-plate:           #4F6062; /* label text inside legacy figures */
+  --color-ochre-hover:     #76A6B3; /* the original's .btn:hover — now unused,
+                                       superseded by --color-koa-hover when the
+                                       fills moved to koa. Kept for reference. */
+  --color-foot-text:       #D8E2E0; /* footer body + links */
+  --color-foot-label:      #91A5A5; /* footer column headings, bottom bar */
+  --color-foot-link-hover: #A5D0D7; /* footer link hover */
+  --color-foot-blurb:      #B4C4C3; /* footer blurb paragraph */
+  --color-foot-rule:       #304548; /* footer divider */
+
+  /* ---- type ---- */
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-sans:  "Public Sans", system-ui, -apple-system, sans-serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---- breakpoints, tuned in the original to where the margin column
+     and the plates reflow. Components use verbatim max-width media
+     queries so behaviour matches index.html exactly; these register the
+     same values for the utility layer. ---- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 820px;
+  --breakpoint-lg: 1000px;
+}
+
+/* Layout widths. Not Tailwind-namespaced — referenced directly by the
+   .wrap and .doc grids, same as the original. */
+:root {
+  --col: 1180px;
+  --side: 220px;
+
+  /* Pressed state for the koa fills. Derived from the token rather than
+     hardcoded, so it tracks --color-koa if that ever changes. */
+  --color-koa-hover: color-mix(in srgb, var(--color-koa) 86%, black);
+}
+
+/* ============================================================
+   Fonts — self-hosted, latin subsets only (219 KB total).
+   Built by scripts/build-fonts.py; see FONTS.md for the
+   provenance and modification record.
+
+   Newsreader is the full variable face: opsz 6–72 + wght 200–800, so
+   optical sizing is preserved as the design requires.
+   Italic is not loaded; nothing in the design uses it.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('public/fonts/newsreader-latin-var.woff2') format('woff2-variations');
+}
+
+/* Newsreader draws no arrows at any codepoint, so U+2192 in a serif context
+   would otherwise fall to whatever the visitor's OS supplies. Source that one
+   glyph from JetBrains Mono instead, which is a face already in the design.
+   Nothing uses it since the Specimen ("7 → 1") was removed; kept because the
+   case-study shell comes back when there is real work to put in it. */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('public/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
+  unicode-range: U+2192;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('public/fonts/public-sans-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('public/fonts/public-sans-latin-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('public/fonts/public-sans-latin-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('public/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('public/fonts/jetbrains-mono-latin-500.woff2') format('woff2');
+}
+
+/* ============================================================
+   Base — ported from index.html
+   ============================================================ */
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+/* The design specifies no motion. Honour the OS setting as well. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tailwind's preflight already makes form controls inherit font-family, which
+   corrects the original's submit button — it rendered in Arial while the anchor
+   CTAs rendered in Public Sans. That is the fix we agreed to, and it also
+   brings the button to the same 52.4px height as the anchor CTAs.
+
+   Preflight additionally makes controls inherit line-height, which the original
+   did not: its inputs used the UA's `normal`. Left alone that inflates every
+   field by 5.9px and the whole contact band by 24px, so restore it. */
+input, textarea, select { line-height: normal; }
+
+a { color: var(--color-koa); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Visible focus for keyboard users, on nav, CTAs and controls.
+   Not present in the original — added per the handoff's accessibility item. */
+:focus-visible {
+  outline: 2px solid var(--color-line);
+  outline-offset: 2px;
+}
+
+.wrap {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ============================================================
+   Shared primitives.
+   These live globally rather than in component <style> blocks because
+   Astro scopes styles to the component that declares them, and slotted
+   content carries the parent's scope. Anything crossing a slot boundary
+   has to be here. Component-specific rules stay in their components.
+   ============================================================ */
+
+.eyebrow {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--color-koa);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif); font-weight: 500;
+  letter-spacing: -.015em; line-height: 1.12;
+}
+h1 { font-size: clamp(38px, 5.4vw, 62px); }
+h2 { font-size: clamp(30px, 3.8vw, 44px); }
+h3 { font-size: clamp(20px, 2.1vw, 25px); }
+
+.serif { font-family: var(--font-serif); }
+p.lead {
+  font-family: var(--font-serif); font-size: clamp(18px, 1.9vw, 21px);
+  line-height: 1.55; color: var(--color-body);
+}
+p.txt {
+  font-family: var(--font-sans); font-size: 16px;
+  line-height: 1.7; color: var(--color-body);
+}
+
+/* ---------- buttons ----------
+   Light text on koa rather than dark text on ochre. Ochre is a 2.9:1 ground
+   for light text — the token's own comment in index.html says "fills only"
+   — so the fill darkens to koa, which carries paper text at 5.56:1. Ochre
+   still fills everything that holds no text. */
+.btn {
+  display: inline-flex; align-items:center; justify-content:center; min-height:48px;
+  padding: 12px 24px 12px 35px; border-radius: 0; position:relative; overflow:hidden;
+  font-size: 12.5px; font-weight: 650; letter-spacing: .025em;
+  background: var(--color-koa); color: var(--color-paper);
+  border: 1px solid var(--color-koa); cursor: pointer; text-decoration:none;
+  transition: background .26s cubic-bezier(.22,1,.36,1), border-color .26s cubic-bezier(.22,1,.36,1), color .26s cubic-bezier(.22,1,.36,1);
+}
+.btn::before {
+  content:''; position:absolute; left:17px; top:50%; width:5px; height:5px;
+  border-radius:99px; background:var(--color-ochre); transform:translateY(-50%);
+  transition:width .28s cubic-bezier(.22,1,.36,1), border-radius .28s cubic-bezier(.22,1,.36,1);
+}
+.btn::after {
+  content:''; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:var(--color-line); transform:scaleX(0); transform-origin:left;
+  transition:transform .32s cubic-bezier(.22,1,.36,1);
+}
+.btn:hover {
+  background: var(--color-white);
+  border-color: var(--color-koa);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.btn-ghost {
+  display: inline-flex; align-items:center; min-height:48px; padding: 12px 0 11px; border-radius: 0;
+  font-size: 12.5px; font-weight: 650; letter-spacing:.02em; background: transparent;
+  color: var(--color-ink); border: 0; text-decoration: none; position:relative;
+}
+.btn-ghost::before { content:''; position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-hair); }
+.btn-ghost::after { content: '→'; color: var(--color-line); margin-left:8px; transition:transform .28s cubic-bezier(.22,1,.36,1), color .28s ease; }
+.btn-ghost:hover { color: var(--color-koa); text-decoration:none; }
+@media (hover:hover) and (prefers-reduced-motion: no-preference) {
+  .btn:hover::before { width:15px; border-radius:2px; }
+  .btn:hover::after { transform:scaleX(1); }
+  .btn-ghost:hover::after { transform:translateX(4px); color:var(--color-koa); }
+}
+.btn:focus-visible, .btn-ghost:focus-visible { outline:2px solid var(--color-line); outline-offset:3px; }
+@media (prefers-reduced-motion: reduce) { .btn, .btn::before, .btn::after, .btn-ghost::after { transition:none; } }
+
+.btn-row {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-top: 30px; align-items: center;
+}
+
+/* ---------- annotated document grid ---------- */
+.doc {
+  display: grid; grid-template-columns: minmax(0, 1fr) var(--side);
+  gap: 56px; align-items: start;
+}
+aside.side {
+  font-size: 13px; line-height: 1.55; color: var(--color-quiet);
+  border-left: 1px solid var(--color-rule);
+  padding-left: 22px; padding-top: 7px;
+}
+aside.side .lbl {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--color-koa);
+  display: block; margin-bottom: 9px;
+}
+aside.side strong { color: var(--color-ink); }
+
+/* ---------- section frame ---------- */
+section { padding: 104px 0; border-top: 1px solid var(--color-rule); }
+section.hero { padding: 58px 0 66px; border-top: 0; }
+
+/* ---------- figures ---------- */
+.figcap {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--color-faint);
+  margin: 52px 0 18px; padding-top: 16px;
+  border-top: 1px solid var(--color-rule);
+}
+/* ---------- text pages ----------
+   Privacy and Terms. They aren't in index.html, so there's no original to
+   match; this reuses the existing type and colour and only sets the measure
+   and a subhead size, because the section h2 scale (44px) is far too loud for
+   a document made of short clauses. Shared here rather than duplicated in two
+   page components. */
+.legal { padding: 96px 0 120px; }
+.legal h1 { font-size: clamp(34px, 4.4vw, 52px); margin: 20px 0 22px; max-width: 18ch; }
+.legal h2 {
+  font-family: var(--font-serif); font-weight: 600; font-size: 21px;
+  letter-spacing: -.01em; color: var(--color-ink);
+  margin: 40px 0 12px; max-width: 40ch;
+}
+.legal p, .legal li {
+  font-family: var(--font-serif); font-size: 17px; line-height: 1.66;
+  color: var(--color-body); max-width: 62ch;
+}
+.legal p { margin-bottom: 14px; }
+.legal ul { list-style: none; margin: 0 0 14px; }
+.legal li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+.legal li::before {
+  content: '·'; position: absolute; left: 6px; color: var(--color-koa);
+}
+.legal .updated {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--color-faint);
+  margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--color-rule);
+}
+@media (max-width: 640px) {
+  .legal { padding: 66px 0 88px; }
+}
+
+svg.plate { width: 100%; height: auto; display: block; }
+.plate-scroll { position: relative; }
+.scroll-hint { display: none; }
+
+/* Narrow plates (Fig. 4) are drawn small and stay small — capped at the
+   drawing's own 560 units so they render about 1:1 instead of being blown up
+   to the full 1100px column. */
+.plate-scroll.is-narrow svg.plate { max-width: 560px; }
+
+/* ---------- responsive ----------
+   Breakpoints are the original's, verbatim, including the inclusive
+   max-width form. They are tuned to where the margin column and the
+   plates need to reflow. */
+@media (max-width: 1000px) {
+  .doc { grid-template-columns: 1fr; gap: 34px; }
+  aside.side {
+    border-left: 0; border-top: 1px solid var(--color-rule);
+    padding-left: 0; padding-top: 18px; max-width: 52ch;
+  }
+}
+@media (max-width: 820px) {
+  /* annotated plates can't shrink to phone width — let them pan instead */
+  .plate-scroll {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    margin: 0 -22px; padding: 0 22px 10px;
+  }
+  .plate-scroll svg.plate { min-width: 860px; }
+  /* Fig. 4 is drawn small enough to read on a phone, so it opts out of the
+     min-width rather than being forced into a sideways scroll. */
+  .plate-scroll.is-narrow { overflow-x: visible; margin: 0; padding: 0; }
+  .plate-scroll.is-narrow svg.plate { min-width: 0; }
+  .scroll-hint {
+    display: block; font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--color-faint); margin-top: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 22px; }
+  section { padding: 66px 0; }
+}
+
+body { padding:0 0 90px; }
+.band { padding:44px 0; }
+.wash { background-color:var(--color-wash);
+  background-image:linear-gradient(to right, color-mix(in srgb, var(--color-rule) 42%, transparent) 1px, transparent 1px);
+  background-size:88px 100%; }
+.cap { display:block; margin-bottom:18px; font-family:var(--font-mono); font-size:9.5px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--color-faint); }
+.row { display:flex; gap:18px; align-items:center; flex-wrap:wrap; margin-bottom:26px; }
+.note { font-family:var(--font-serif); font-size:15px; color:var(--color-body); max-width:60ch; margin-bottom:8px; }
+
+/* ---------- shared ---------- */
+.b { display:inline-flex; align-items:center; justify-content:center; min-height:48px;
+  padding:12px 26px 12px 36px; border-radius:0; position:relative; overflow:hidden;
+  font-size:12.5px; font-weight:650; letter-spacing:.025em; text-decoration:none; cursor:pointer;
+  transition:background .26s cubic-bezier(.22,1,.36,1), border-color .26s cubic-bezier(.22,1,.36,1), color .26s cubic-bezier(.22,1,.36,1); }
+.b::before { content:''; position:absolute; left:18px; top:50%; width:5px; height:5px; border-radius:99px;
+  transform:translateY(-50%); transition:width .3s cubic-bezier(.22,1,.36,1), border-radius .3s cubic-bezier(.22,1,.36,1), background .26s ease; }
+.b:hover { text-decoration:none; }
+
+/* A — deepen */
+.b-a { background:var(--color-koa); color:var(--color-paper); border:1px solid var(--color-koa); }
+.b-a::before { background:var(--color-ochre); }
+.b-a:hover { background:var(--color-koa-hover); border-color:var(--color-koa-hover); color:var(--color-paper); }
+.b-a:hover::before { width:16px; border-radius:1px; background:var(--color-paper); }
+
+/* B — deepen, mono label */
+.b-b { background:var(--color-koa); color:var(--color-paper); border:1px solid var(--color-koa);
+  font-family:var(--font-mono); font-size:11px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; }
+.b-b::before { background:var(--color-ochre); }
+.b-b:hover { background:var(--color-koa-hover); border-color:var(--color-koa-hover); color:var(--color-paper); }
+.b-b:hover::before { width:16px; border-radius:1px; background:var(--color-paper); }
+
+/* C — outline fills */
+.b-c { background:transparent; color:var(--color-koa); border:1px solid var(--color-koa); }
+.b-c::before { background:var(--color-line); }
+.b-c:hover { background:var(--color-koa); color:var(--color-paper); border-color:var(--color-koa); }
+.b-c:hover::before { width:16px; border-radius:1px; background:var(--color-paper); }
+
+/* ghost, proposed: the underline wipes in koa instead of just recolouring */
+.g2 { display:inline-flex; align-items:center; min-height:48px; padding:12px 0 11px; position:relative;
+  font-size:12.5px; font-weight:650; letter-spacing:.02em; color:var(--color-ink);
+  background:none; border:0; text-decoration:none; }
+.g2::before { content:''; position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-rule); }
+.g2 .u { position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-koa);
+  transform:scaleX(0); transform-origin:left; transition:transform .34s cubic-bezier(.22,1,.36,1); }
+.g2 .ar { margin-left:9px; color:var(--color-line); transition:transform .28s cubic-bezier(.22,1,.36,1); }
+.g2:hover { color:var(--color-koa); text-decoration:none; }
+.g2:hover .u { transform:scaleX(1); }
+.g2:hover .ar { transform:translateX(4px); }
+
+/* nav sample */
+.navbar { display:flex; align-items:center; gap:28px; height:68px; border-bottom:1px solid var(--color-rule); }
+.navbar span { font-size:12.5px; color:var(--color-quiet); }
+.nav-b { min-height:38px; padding:9px 18px 9px 28px; font-size:11.5px; }
+.nav-b::before { left:13px; width:4px; height:4px; }
+.nav-b:hover::before { width:12px; }
+</style></head><body>
+
+<div class="band"><div class="wrap">
+  <span class="cap">Now · hover them</span>
+  <p class="note">On hover the fill inverts to white. Against this ground that is 1.03 to 1.</p>
+  <div class="row"><a href="#" class="btn">Book a call</a><a href="#" class="btn-ghost">See how it works</a></div>
+</div></div>
+
+<div class="band wash"><div class="wrap">
+  <span class="cap">Now · on the §01 wash ground</span>
+  <div class="row"><a href="#" class="btn">Book a call</a><a href="#" class="btn-ghost">See how it works</a></div>
+</div></div>
+
+<div class="band"><div class="wrap">
+  <span class="cap">A · deepens on hover, dot pulls through in paper</span>
+  <div class="row"><a href="#" class="b b-a">Book a call</a><a href="#" class="g2">See how it works<span class="u"></span><span class="ar">&#8594;</span></a></div>
+  <span class="cap">B · same, label in mono like every other micro-label on the site</span>
+  <div class="row"><a href="#" class="b b-b">Book a call</a><a href="#" class="g2">See how it works<span class="u"></span><span class="ar">&#8594;</span></a></div>
+  <span class="cap">C · outline at rest, fills on hover</span>
+  <div class="row"><a href="#" class="b b-c">Book a call</a><a href="#" class="g2">See how it works<span class="u"></span><span class="ar">&#8594;</span></a></div>
+</div></div>
+
+<div class="band wash"><div class="wrap">
+  <span class="cap">the three again, on wash</span>
+  <div class="row"><a href="#" class="b b-a">Book a call</a><a href="#" class="b b-b">Book a call</a><a href="#" class="b b-c">Book a call</a></div>
+</div></div>
+
+<div class="band"><div class="wrap">
+  <span class="cap">nav, using the same object at a smaller size</span>
+  <div class="navbar"><strong style="font-family:var(--font-serif);font-size:25px">thread</strong>
+    <span>Services</span><span>Process</span><span>Ownership</span>
+    <a href="#" class="b b-a nav-b" style="margin-left:auto">Book a call</a></div>
+</div></div>
+
+</body></html>

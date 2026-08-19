@@ -1,0 +1,620 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Thread · section backgrounds</title>
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+
+/* ============================================================
+   THREAD — design tokens
+   Ported from index.html, which is the source of truth.
+   Every colour in the design lives here. No hex in components.
+   ============================================================ */
+
+/* `static` is required: by default Tailwind v4 tree-shakes @theme and only
+   emits variables it sees used in generated utilities, which silently drops
+   tokens referenced from scoped component CSS. */
+:root {
+  /* ---- the twelve documented tokens ---- */
+  --color-paper: #FCFCF9;   /* page ground */
+  --color-wash:  #F1F6F5;   /* quiet alternate ground */
+  --color-white: #FFFFFF;   /* cards */
+  --color-ink:   #172A2D;   /* deep blue-green headlines */
+  --color-body:  #314447;   /* body copy */
+  --color-quiet: #5B6A6C;   /* secondary text */
+  --color-faint: #6F7C7D;   /* captions */
+  --color-rule:  #DDE5E3;   /* section rules */
+  --color-hair:  #BBC9C7;   /* card borders, hairlines */
+  --color-ochre: #8DB9C4;   /* light ocean-blue fill */
+  --color-line:  #4D8798;   /* ocean-blue strokes */
+  --color-koa:   #235F70;   /* links and text-bearing fills */
+
+  /* ---- present in index.html, absent from the handoff token table ----
+     These are not new colours; they are already in the design. Naming them
+     here is what keeps hex out of the components. Flagged for review. */
+  --color-plate:           #4F6062; /* label text inside legacy figures */
+  --color-ochre-hover:     #76A6B3; /* the original's .btn:hover — now unused,
+                                       superseded by --color-koa-hover when the
+                                       fills moved to koa. Kept for reference. */
+  --color-foot-text:       #D8E2E0; /* footer body + links */
+  --color-foot-label:      #91A5A5; /* footer column headings, bottom bar */
+  --color-foot-link-hover: #A5D0D7; /* footer link hover */
+  --color-foot-blurb:      #B4C4C3; /* footer blurb paragraph */
+  --color-foot-rule:       #304548; /* footer divider */
+
+  /* ---- type ----
+     Newsreader for display and the wordmark, IBM Plex Sans for everything a
+     visitor reads and every label. The Bodoni Moda / Archivo pairing that ran
+     earlier on 17 Aug 2026 was a trial and is gone.
+
+     --font-serif, --font-sans and --font-mono all resolve to Plex Sans. The
+     names are historic: they date from the three-face original and are kept
+     because renaming them touches every component for no reader benefit. Same
+     reasoning CLAUDE.md records for --color-ochre. */
+  /* ---- the type scale, 17 Aug 2026 ----
+     Seven sizes, two weights, three tracking values. Nothing on the site may
+     use a size that is not one of these. Before this the live page carried 23
+     distinct DOM sizes, 11 tracking values and 4 weights, which is why it read
+     as unresolved no matter which faces were in it. */
+  --text-d1:    clamp(42px, 4.7vw, 62px);  /* page heading */
+  --text-d2:    clamp(30px, 3.8vw, 44px);  /* section heading */
+  --text-d3:    clamp(21px, 2vw, 27px);    /* sub-heading */
+  --text-body:  16.5px;                     /* everything a visitor reads */
+  --text-micro: 10px;                       /* uppercase labels only, never prose */
+  --text-nav:   14px;                       /* header nav and phone menu, nothing else */
+
+  /* --text-small was removed 17 Aug 2026: it was a second reading size that
+     existed only because interface text is conventionally smaller. Everything
+     a visitor reads is --text-body now, including form fields, which has the
+     side effect of stopping iOS zooming the page when a field under 16px is
+     tapped.
+
+     --text-nav is the one exception, and it is deliberately narrow in scope.
+     The header nav is chrome, not reading: at 16.5px it competed with the
+     wordmark and crowded the CTA. It applies to the header and the phone menu
+     and nowhere else — if it starts appearing in sections, that is the bug. */
+
+  /* --text-lead was removed 17 Aug 2026. A section opener at 21px above body
+     at 16.5px is not a hierarchy, it is two sizes close enough to look like a
+     mistake. The opener is now the same size and carries --color-ink instead,
+     so the distinction is tone and position rather than four and a half pixels.
+     Restoring one step is a one-line change if the page reads flat. */
+
+  --tracking-tight: -.02em;   /* display only */
+  --tracking-wide:   .14em;   /* uppercase labels only */
+
+  /* Two, and only two. Same-size text set on different leading reads as
+     different sizes, which is most of why the page looked unresolved:
+     --text-body appeared on 1.45, 1.6, 1.65 and 1.66 in four components. */
+  /* 1.12 is the original's display leading. It was tightened to 1.06 and then
+     1.08 during the type work, which squeezed the three-line hero headline
+     into a block — 62px type needs the room. Restored. */
+  --leading-tight: 1.12;   /* display */
+  --leading-body:  1.6;    /* everything else */
+
+  /* Headings went back to Newsreader on 17 Aug 2026. Bodoni Moda was the
+     Option K trial and is no longer referenced; its @font-face is left in
+     place because an unused face is never downloaded. */
+  --font-display: "Newsreader", Georgia, serif;
+
+  /* The wordmark has its own token so it can never be swept up by a change to
+     the body or display face again. It is the logo: it does not follow the
+     type scale and it does not follow the palette trial. Do not repoint this. */
+  --font-wordmark: "Newsreader", Georgia, serif;
+  --font-serif: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-sans:  "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono:  "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+
+  /* ---- breakpoints, tuned in the original to where the margin column
+     and the plates reflow. Components use verbatim max-width media
+     queries so behaviour matches index.html exactly; these register the
+     same values for the utility layer. ---- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 820px;
+  --breakpoint-lg: 1000px;
+}
+
+/* Layout widths. Not Tailwind-namespaced — referenced directly by the
+   .wrap and .doc grids, same as the original. */
+:root {
+  --col: 1180px;
+  --side: 220px;
+
+  /* Pressed state for the koa fills. Derived from the token rather than
+     hardcoded, so it tracks --color-koa if that ever changes. */
+  --color-koa-hover: color-mix(in srgb, var(--color-koa) 86%, black);
+}
+
+/* ============================================================
+   Fonts — self-hosted, latin subsets only (219 KB total).
+   Built by scripts/build-fonts.py; see FONTS.md for the
+   provenance and modification record.
+
+   Newsreader is the full variable face: opsz 6–72 + wght 200–800, so
+   optical sizing is preserved as the design requires.
+   Italic is not loaded; nothing in the design uses it.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('public/fonts/newsreader-latin-var.woff2') format('woff2-variations');
+}
+
+/* Newsreader draws no arrows at any codepoint, so U+2192 in a serif context
+   would otherwise fall to whatever the visitor's OS supplies. Source that one
+   glyph from JetBrains Mono instead, which is a face already in the design.
+   Nothing uses it since the Specimen ("7 → 1") was removed; kept because the
+   case-study shell comes back when there is real work to put in it. */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('public/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
+  unicode-range: U+2192;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('public/fonts/public-sans-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('public/fonts/public-sans-latin-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('public/fonts/public-sans-latin-600.woff2') format('woff2');
+}
+
+/* IBM Plex Sans — the text face, chosen 17 Aug 2026 after Archivo read as
+   functional rather than considered at 16.5px. Humanist rather than grotesk:
+   open shapes, designed for long reading at small sizes, and it sits beside a
+   serif without arguing with it. It also carries U+02BB natively, so "Hawaiʻi"
+   needs no patch in any text that uses it.
+
+   The Bodoni Moda and Archivo trial faces were removed with it; their woff2
+   files in public/fonts are now unreferenced and can be deleted. */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('public/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url('public/fonts/ibm-plex-sans-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('public/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('public/fonts/jetbrains-mono-latin-500.woff2') format('woff2');
+}
+
+/* ============================================================
+   Base — ported from index.html
+   ============================================================ */
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+/* The design specifies no motion. Honour the OS setting as well. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tailwind's preflight already makes form controls inherit font-family, which
+   corrects the original's submit button — it rendered in Arial while the anchor
+   CTAs rendered in Public Sans. That is the fix we agreed to, and it also
+   brings the button to the same 52.4px height as the anchor CTAs.
+
+   Preflight additionally makes controls inherit line-height, which the original
+   did not: its inputs used the UA's `normal`. Left alone that inflates every
+   field by 5.9px and the whole contact band by 24px, so restore it. */
+input, textarea, select { line-height: normal; }
+
+a { color: var(--color-koa); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Visible focus for keyboard users, on nav, CTAs and controls.
+   Not present in the original — added per the handoff's accessibility item. */
+:focus-visible {
+  outline: 2px solid var(--color-line);
+  outline-offset: 2px;
+}
+
+.wrap {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ============================================================
+   Shared primitives.
+   These live globally rather than in component <style> blocks because
+   Astro scopes styles to the component that declares them, and slotted
+   content carries the parent's scope. Anything crossing a slot boundary
+   has to be here. Component-specific rules stay in their components.
+   ============================================================ */
+
+.eyebrow {
+  font-family: var(--font-mono); font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--color-koa);
+}
+
+/* Option K trial: headings take the display face, everything else the text
+   face. Revert to var(--font-serif) when the trial ends. */
+h1, h2, h3, h4 {
+  font-family: var(--font-display); font-weight: 500;
+  letter-spacing: var(--tracking-tight); line-height: var(--leading-tight);
+}
+h1 { font-size: var(--text-d1); }
+h2 { font-size: var(--text-d2); }
+h3, h4 { font-size: var(--text-d3); }
+
+.serif { font-family: var(--font-serif); }
+/* The section opener. Same size as body; darker, and it sits directly under
+   the heading. That is the hierarchy. */
+p.lead {
+  font-family: var(--font-serif); font-size: var(--text-body);
+  line-height: var(--leading-body); color: var(--color-ink);
+}
+p.txt {
+  font-family: var(--font-serif); font-size: var(--text-body);
+  line-height: var(--leading-body); color: var(--color-body);
+}
+
+/* ---------- buttons ----------
+   Light text on koa rather than dark text on ochre. Ochre is a 2.9:1 ground
+   for light text — the token's own comment in index.html says "fills only"
+   — so the fill darkens to koa, which carries paper text at 5.56:1. Ochre
+   still fills everything that holds no text. */
+/* Rebuilt 17 Aug 2026.
+
+   The hover used to invert the fill to white. White on the paper ground is
+   1.03:1 and on the §01 wash ground 1.09:1, so the strongest element on the
+   site dissolved into the page at the moment someone pointed at it. It also
+   took the ochre dot down to 2.13:1, which meant the one good detail played
+   where it could not be seen. The fill now deepens instead, and the dot pulls
+   through in paper so the gesture survives its own hover.
+
+   Three effects used to fire at once — the fill inverting, the dot stretching
+   and an underline sweeping. The underline is gone; the dot carries it.
+
+   The label is mono uppercase, the same treatment as every other micro-label
+   in the design. Sans 650 was the only UI text on the site not drawn from the
+   type system.
+
+   One size for every rectangle button: hero, §01, the nav, the phone menu,
+   the contact form and /thanks all render the same 48px object. */
+.btn {
+  display: inline-flex; align-items:center; justify-content:center; min-height:48px;
+  padding: 12px 32px; border-radius: 0; position:relative; overflow:hidden;
+  font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  background: var(--color-koa); color: var(--color-paper);
+  border: 1px solid var(--color-koa); cursor: pointer; text-decoration:none;
+  transition: background .26s cubic-bezier(.22,1,.36,1), border-color .26s cubic-bezier(.22,1,.36,1), color .26s cubic-bezier(.22,1,.36,1);
+}
+/* The hover gesture: a rule runs the length of the label and lands in a full
+   stop just past the last letter.
+
+   The ochre dot that used to sit at the left was removed 17 Aug 2026. It had
+   been the origin of the gesture, but once the rule existed the dot was just
+   something in the way, and its padding made the label sit off-centre.
+
+   The geometry works because the button is inline-flex with symmetric padding,
+   so its content box is exactly the width of the label: insetting the rule by
+   the padding lands it precisely on the text, and the full stop lands in the
+   padding just past it. If the padding changes, these insets change with it. */
+.btn .ln {
+  position:absolute; left:32px; right:32px; bottom:16px; height:1px;
+  background:var(--color-paper); transform:scaleX(0); transform-origin:left;
+  transition:transform .44s cubic-bezier(.22,1,.36,1);
+}
+.btn .ln::after {
+  content:''; position:absolute; right:-9px; bottom:-1px; width:3px; height:3px;
+  border-radius:50%; background:var(--color-paper);
+  transform:scale(0); transition:transform .22s cubic-bezier(.22,1,.36,1) .3s;
+}
+.btn:hover {
+  background: var(--color-koa-hover);
+  border-color: var(--color-koa-hover);
+  color: var(--color-paper);
+  text-decoration: none;
+}
+/* Matched to .btn in height, type and tracking so the pair sits level. */
+.btn-ghost {
+  display: inline-flex; align-items:center; min-height:48px; padding: 12px 0 11px; border-radius: 0;
+  font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+  letter-spacing: var(--tracking-wide); text-transform: uppercase; background: transparent;
+  color: var(--color-ink); border: 0; text-decoration: none; position:relative;
+}
+/* Was --color-hair at 1.66:1, close to not being there. */
+.btn-ghost::before { content:''; position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-rule); }
+.btn-ghost .u {
+  position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-koa);
+  transform:scaleX(0); transform-origin:left; transition:transform .34s cubic-bezier(.22,1,.36,1);
+}
+.btn-ghost::after { content: '→'; color: var(--color-line); margin-left:9px; transition:transform .28s cubic-bezier(.22,1,.36,1), color .28s ease; }
+.btn-ghost:hover { color: var(--color-koa); text-decoration:none; }
+@media (hover:hover) and (prefers-reduced-motion: no-preference) {
+  .btn:hover .ln { transform:scaleX(1); }
+  .btn:hover .ln::after { transform:scale(1); }
+  .btn-ghost:hover::after { transform:translateX(4px); color:var(--color-koa); }
+  .btn-ghost:hover .u { transform:scaleX(1); }
+}
+.btn:focus-visible, .btn-ghost:focus-visible { outline:2px solid var(--color-line); outline-offset:3px; }
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn .ln, .btn .ln::after, .btn-ghost::after, .btn-ghost .u { transition:none; }
+}
+
+.btn-row {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-top: 30px; align-items: center;
+}
+
+/* ---------- annotated document grid ---------- */
+.doc {
+  display: grid; grid-template-columns: minmax(0, 1fr) var(--side);
+  gap: 56px; align-items: start;
+}
+aside.side {
+  font-size: var(--text-body); line-height: var(--leading-body); color: var(--color-quiet);
+  border-left: 1px solid var(--color-rule);
+  padding-left: 22px; padding-top: 7px;
+}
+aside.side .lbl {
+  font-family: var(--font-mono); font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--color-koa);
+  display: block; margin-bottom: 9px;
+}
+aside.side strong { color: var(--color-ink); }
+
+/* ---------- section frame ---------- */
+section { padding: 104px 0; border-top: 1px solid var(--color-rule); }
+section.hero { padding: 58px 0 66px; border-top: 0; }
+
+/* ---------- figures ---------- */
+.figcap {
+  font-family: var(--font-mono); font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--color-faint);
+  margin: 52px 0 18px; padding-top: 16px;
+  border-top: 1px solid var(--color-rule);
+}
+/* ---------- text pages ----------
+   Privacy and Terms. They aren't in index.html, so there's no original to
+   match; this reuses the existing type and colour and only sets the measure
+   and a subhead size, because the section h2 scale (44px) is far too loud for
+   a document made of short clauses. Shared here rather than duplicated in two
+   page components. */
+.legal { padding: 96px 0 120px; }
+.legal h1 { font-size: var(--text-d1); margin: 20px 0 22px; max-width: 18ch; }
+.legal h2 {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--text-d3);
+  letter-spacing: var(--tracking-tight); color: var(--color-ink);
+  margin: 40px 0 12px; max-width: 40ch;
+}
+.legal p, .legal li {
+  font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
+  color: var(--color-body); max-width: 62ch;
+}
+.legal p { margin-bottom: 14px; }
+.legal ul { list-style: none; margin: 0 0 14px; }
+.legal li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+.legal li::before {
+  content: '·'; position: absolute; left: 6px; color: var(--color-koa);
+}
+.legal .updated {
+  font-family: var(--font-mono); font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--color-faint);
+  margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--color-rule);
+}
+@media (max-width: 640px) {
+  .legal { padding: 66px 0 88px; }
+}
+
+svg.plate { width: 100%; height: auto; display: block; }
+.plate-scroll { position: relative; }
+.scroll-hint { display: none; }
+
+/* Narrow plates (Fig. 4) are drawn small and stay small — capped at the
+   drawing's own 560 units so they render about 1:1 instead of being blown up
+   to the full 1100px column. */
+.plate-scroll.is-narrow svg.plate { max-width: 560px; }
+
+/* ---------- responsive ----------
+   Breakpoints are the original's, verbatim, including the inclusive
+   max-width form. They are tuned to where the margin column and the
+   plates need to reflow. */
+@media (max-width: 1000px) {
+  .doc { grid-template-columns: 1fr; gap: 34px; }
+  aside.side {
+    border-left: 0; border-top: 1px solid var(--color-rule);
+    padding-left: 0; padding-top: 18px; max-width: 52ch;
+  }
+}
+@media (max-width: 820px) {
+  /* annotated plates can't shrink to phone width — let them pan instead */
+  .plate-scroll {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    margin: 0 -22px; padding: 0 22px 10px;
+  }
+  .plate-scroll svg.plate { min-width: 860px; }
+  /* Fig. 4 is drawn small enough to read on a phone, so it opts out of the
+     min-width rather than being forced into a sideways scroll. */
+  .plate-scroll.is-narrow { overflow-x: visible; margin: 0; padding: 0; }
+  .plate-scroll.is-narrow svg.plate { min-width: 0; }
+  .scroll-hint {
+    display: block; font-family: var(--font-mono); font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    color: var(--color-faint); margin-top: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 22px; }
+  section { padding: 66px 0; }
+}
+
+section { padding:64px 0 76px; position:relative; isolation:isolate; }
+section > .wrap { position:relative; z-index:1; }
+.lab { font-family:var(--font-display); font-size:26px; letter-spacing:-.02em; margin-bottom:6px; }
+.labn { font-family:var(--font-serif); font-size:15px; color:var(--color-quiet); max-width:70ch; margin-bottom:40px; }
+h2 { font-family:var(--font-display); font-weight:500; font-size:44px; line-height:1.12; letter-spacing:-.02em; margin:14px 0 20px; max-width:20ch; }
+.lead { font-family:var(--font-serif); font-size:16.5px; line-height:1.6; color:var(--color-ink); max-width:52ch; }
+.plate-stub { margin:40px 0 34px; border:1px solid var(--color-hair); background:var(--color-white); border-radius:2px; padding:18px; max-width:760px; }
+.stub-bar { height:26px; border-bottom:1px solid var(--color-rule); margin:-18px -18px 18px; }
+.stub-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.stub-grid span { height:76px; border:1px solid var(--color-hair); border-radius:2px; display:block; }
+.btn-x { display:inline-flex; align-items:center; min-height:48px; padding:12px 32px; background:var(--color-koa); color:var(--color-paper);
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; }
+
+/* ---------- now ---------- */
+.bg-now { background-color:var(--color-wash);
+  background-image:linear-gradient(to right, color-mix(in srgb, var(--color-rule) 42%, transparent) 1px, transparent 1px);
+  background-size:88px 100%; }
+
+/* ---------- A ---------- */
+.bg-a { background-color:var(--color-wash); }
+.bg-a::before { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px);
+  background-size:88px 88px, 88px 88px, 22px 22px, 22px 22px;
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent); }
+
+/* ---------- B ---------- */
+.bg-b { background-color:var(--color-wash); }
+.bg-b::before { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px);
+  background-size:88px 88px, 88px 88px, 22px 22px, 22px 22px;
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent); }
+.bg-b::after { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-line) 55%, transparent) 7px, transparent 7px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 55%, transparent) 7px, transparent 7px);
+  background-size:88px 88px;
+  background-position:calc(88px - 3px) calc(88px - .5px), calc(88px - .5px) calc(88px - 3px);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent); }
+
+/* ---------- C ---------- */
+.bg-c { background-color:var(--color-wash); }
+.bg-c::before { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E"); background-size:160px 160px; opacity:.075; }
+
+/* ---------- D ---------- */
+.bg-d { background-color:var(--color-wash); }
+.bg-d::before { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px);
+  background-size:88px 88px, 88px 88px, 22px 22px, 22px 22px;
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent); }
+.bg-d::after { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E"); background-size:160px 160px; opacity:.07; }
+</style></head><body>
+<section class="bg-now"><div class="wrap">
+  <div class="lab">Now · vertical rules only</div><p class="labn">What you have: 1px verticals every 88px, full bleed, running edge to edge and stopping dead at the section rules.</p>
+  
+    <div class="eyebrow">§ 01 · What I do</div>
+    <h2>One screen with the answer on it.</h2>
+    <p class="lead">I close the gaps between the tools you already use, then build the ones you’re missing.</p>
+    <div class="plate-stub">
+      <div class="stub-bar"></div>
+      <div class="stub-grid"><span></span><span></span><span></span></div>
+    </div>
+    <a class="btn-x">Book a call</a>
+</div></section><section class="bg-a"><div class="wrap">
+  <div class="lab">A · true blueprint, faded</div><p class="labn">A real grid rather than stripes: a major line every 88px and a minor one every 22px, both from --color-rule at different strengths. The whole thing is masked so it fades out at the top and bottom, which is the single change that makes it read as a watermark instead of graph paper.</p>
+  
+    <div class="eyebrow">§ 01 · What I do</div>
+    <h2>One screen with the answer on it.</h2>
+    <p class="lead">I close the gaps between the tools you already use, then build the ones you’re missing.</p>
+    <div class="plate-stub">
+      <div class="stub-bar"></div>
+      <div class="stub-grid"><span></span><span></span><span></span></div>
+    </div>
+    <a class="btn-x">Book a call</a>
+</div></section><section class="bg-b"><div class="wrap">
+  <div class="lab">B · blueprint plus registration marks</div><p class="labn">As A, with a small cross at each major intersection. That is the detail that makes draughting paper look like draughting paper. Marks are --color-line at low strength, so they read at close range and disappear at a glance.</p>
+  
+    <div class="eyebrow">§ 01 · What I do</div>
+    <h2>One screen with the answer on it.</h2>
+    <p class="lead">I close the gaps between the tools you already use, then build the ones you’re missing.</p>
+    <div class="plate-stub">
+      <div class="stub-bar"></div>
+      <div class="stub-grid"><span></span><span></span><span></span></div>
+    </div>
+    <a class="btn-x">Book a call</a>
+</div></section><section class="bg-c"><div class="wrap">
+  <div class="lab">C · paper grain, no grid</div><p class="labn">No lines at all. A fine monochrome grain generated by an SVG filter and inlined as a data URI, so it costs no request and no JavaScript. Warmer and more tactile, and it does not compete with the hairline drawings.</p>
+  
+    <div class="eyebrow">§ 01 · What I do</div>
+    <h2>One screen with the answer on it.</h2>
+    <p class="lead">I close the gaps between the tools you already use, then build the ones you’re missing.</p>
+    <div class="plate-stub">
+      <div class="stub-bar"></div>
+      <div class="stub-grid"><span></span><span></span><span></span></div>
+    </div>
+    <a class="btn-x">Book a call</a>
+</div></section><section class="bg-d"><div class="wrap">
+  <div class="lab">D · grain plus faded blueprint</div><p class="labn">C under A. The grain gives the surface texture, the grid gives it structure. Heaviest of the four, and the closest to a printed technical document.</p>
+  
+    <div class="eyebrow">§ 01 · What I do</div>
+    <h2>One screen with the answer on it.</h2>
+    <p class="lead">I close the gaps between the tools you already use, then build the ones you’re missing.</p>
+    <div class="plate-stub">
+      <div class="stub-bar"></div>
+      <div class="stub-grid"><span></span><span></span><span></span></div>
+    </div>
+    <a class="btn-x">Book a call</a>
+</div></section>
+</body></html>

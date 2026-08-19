@@ -22,8 +22,10 @@ type scale** — see the palette section below. Copy, section content, figures a
 form fields are specified by [`HOMEPAGE-COPY.md`](HOMEPAGE-COPY.md) and
 [`GRAPHICS.md`](GRAPHICS.md).
 
-New figures reuse existing tokens and the existing `Figure.astro` wrapper. Still
-no new spacing values and no new component patterns.
+New figures reuse existing tokens. Still no new spacing values and no new
+component patterns. (`Figure.astro` was the wrapper until 18 Aug 2026, when the
+owner deleted every unrendered component; recover it from git if a figure needs
+it again rather than writing a new one.)
 
 Decided with the owner, 13 Aug 2026. Do not re-litigate it.
 
@@ -202,10 +204,15 @@ edge with content indented 34px, and a second accent spine that grows on scroll
 via `animation-timeline: view()` behind `@supports`. `ShipsWith` replaced
 `Fig4CarePlate`, as real HTML rather than baked SVG text.
 
-**Orphaned by this change, all still on disk:** `StepRow`, `ServiceList`,
-`Fig4CarePlate`, `Fig2CurrentState`, `Fig3ThreadDiagram`, `Fig5SystemsMap`,
-`ConnectsStrip`, `QuestionList`, `ProblemFlow`, `ServicesLine`, and the `plans`
-and `questions` arrays in `site.ts`. Deleting is the owner's call.
+**Orphaned by this change, and deleted 18 Aug 2026** on the owner's
+instruction: `StepRow`, `Fig4CarePlate`, `Fig2CurrentState`,
+`Fig3ThreadDiagram`, `Figure`, `ConnectsStrip`, `QuestionList`, `ProblemFlow`,
+`ServicesLine` and `ShipsWith`. `ServiceList` survived: §03 uses it again.
+
+Their data is **still in `site.ts`** — `integrations`, `shipsWith`, `questions`
+and `plans` are now read by nothing. Left because they are copy rather than
+code, and copy is the owner's call. Recover any component from git rather than
+rewriting it.
 
 `DevGrid.astro` renders layout guides behind `import.meta.env.DEV`, so it is
 absent from production entirely. Toggle bottom left.
@@ -236,14 +243,18 @@ re-litigated:
    intake form and API, the meta description and the `makesOffer` schema. The
    page was indexed, so `vercel.json` 301s it to `/#contact` rather than
    letting it 404.
-4. **`ConnectsStrip` stays**, under the owner's "existing graphics" exception,
+4. ~~**`ConnectsStrip` stays**~~ — it did, under the owner's "existing graphics"
+   exception, until it was deleted unrendered on 18 Aug 2026. Originally:
    even though v3's body copy replaces it with a prose line.
 
-`Fig5SystemsMap.astro` is now **unreferenced** — its subject no longer exists.
-Left in place rather than deleted, because plates are the owner's call.
+`Fig5SystemsMap.astro` was unreferenced once its subject stopped existing, and
+was deleted before the 18 Aug sweep. Plates are the owner's call, and the owner
+made it: every component that rendered nowhere is gone.
 
-`QuestionList.astro` is the one new component v3 required. It reuses
-ServiceList's row, rules and type exactly and introduces no new tokens.
+`QuestionList.astro` was the one new component v3 required, reusing ServiceList's
+row, rules and type. It never ended up on a page and went in the same sweep. Its
+`questions` array is still in `site.ts`, so the copy survives if the section is
+ever built — recover the component from git rather than rewriting it.
 
 ## Content that must never be invented
 
@@ -365,10 +376,9 @@ Four off-scale values survive in the live files, all on purpose:
 | `120px` | `.legal` bottom | legal pages, which have no following section to breathe against |
 | `2px` | `.menu summary` horizontal | not rhythm, it is optical padding on a tap target |
 
-Dead components were left alone. `ServicesLine`, `ShipsWith`, `QuestionList`,
-`ConnectsStrip`, `StepRow`, `ProblemFlow` and `Fig5SystemsMap` render nowhere;
-`StepRow` and `ProblemFlow` appear in greps only because other components
-mention them in comments. Normalising spacing in files nothing renders is churn.
+Dead components were left alone during that audit and deleted outright later the
+same day, so `src/components` now holds only what renders. If spacing looks
+inconsistent against something in git history, that file is gone on purpose.
 
 Before adding a spacing value, check it exists in `index.html` first.
 
