@@ -340,6 +340,38 @@ changing them.
 - If something in the design looks like a mistake, **raise it — don't silently
   fix it.**
 
+## Spacing
+
+Audited 18 Aug 2026 after the owner asked whether spacing was standardised. It
+largely already was, in a way worth knowing before "fixing" it:
+
+**35 of the 47 px spacing values in `src/` come from `index.html` itself.** They
+are not drift, they are the design's own rhythm, and `index.html` is still the
+source of truth for spacing. Normalising them onto a tidier scale would mean
+overriding the reference and would move the whole page — which is also what the
+geometry parity check under Verification approach measures against.
+
+Only twelve values had been introduced since, and most of those were deliberate.
+The genuinely accidental ones were normalised onto the nearest value the design
+already used: nav gap 29 to 30, hero column gap floor 36 to 34, plate margin 46
+to 44, and three uses of 42 to 40.
+
+Four off-scale values survive in the live files, all on purpose:
+
+| Value | Where | Why |
+|---|---|---|
+| `104px` | `section { padding: 104px 0 }` | the page's section rhythm |
+| `80px` | `section.hero` top | opened up 18 Aug; deliberately short of 104 so the hero graphic clears the fold |
+| `120px` | `.legal` bottom | legal pages, which have no following section to breathe against |
+| `2px` | `.menu summary` horizontal | not rhythm, it is optical padding on a tap target |
+
+Dead components were left alone. `ServicesLine`, `ShipsWith`, `QuestionList`,
+`ConnectsStrip`, `StepRow`, `ProblemFlow` and `Fig5SystemsMap` render nowhere;
+`StepRow` and `ProblemFlow` appear in greps only because other components
+mention them in comments. Normalising spacing in files nothing renders is churn.
+
+Before adding a spacing value, check it exists in `index.html` first.
+
 ## Landmines
 
 Each of these cost real debugging time. Don't rediscover them.
