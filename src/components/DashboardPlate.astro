@@ -387,7 +387,10 @@
   /* Three series, darkest on top. All one hue family, so it reads as one chart
      rather than three competing colours. No fills anywhere in here — see the
      note in the markup. */
-  .dp-s1, .dp-s2, .dp-s3 { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  /* stroke-dasharray sits here rather than in the motion block so the value is
+     always present; the keyframe only moves the offset. A dasharray of 1 on a
+     path normalised to pathLength=1 means one dash covers the whole line. */
+  .dp-s1, .dp-s2, .dp-s3 { fill: none; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; }
   .dp-s1 { stroke: var(--color-koa);   stroke-width: 2; }
   .dp-s2 { stroke: var(--color-line);  stroke-width: 1.5; }
   .dp-s3 { stroke: var(--color-ochre); stroke-width: 1.5; }
@@ -406,30 +409,56 @@
   @keyframes dp-rise   { to { opacity: 1; transform: translateY(0); } }
   
   @media (prefers-reduced-motion: no-preference) {
-    .dp-side, .dp-head, .dp-stat, .dp-chart, .dp-list { opacity: 0; }
-    .dp-stat, .dp-chart, .dp-list { transform: translateY(8px); }
+    @supports (animation-timeline: view()) {
+      /* Scroll-driven, not load-driven. This plate is one to two screens below
+         the fold on a phone and mostly below it on a laptop, so a reveal that
+         started 0.1s after page load finished before anyone saw the drawing.
+         Nobody on mobile had ever seen this animation.
 
-    .dp-side  { animation: dp-reveal .28s ease-out forwards .10s; }
-    .dp-head  { animation: dp-reveal .28s ease-out forwards .20s; }
-    .dp-stat  { animation: dp-rise   .34s ease-out forwards; }
-    .s1 { animation-delay: .30s; } .s2 { animation-delay: .38s; } .s3 { animation-delay: .46s; }
-    .dp-chart { animation: dp-rise   .34s ease-out forwards .56s; }
-    .dp-list  { animation: dp-rise   .34s ease-out forwards .64s; }
+         The timeline is named on the figure rather than each element calling
+         view() for itself: these are SVG children, and one timeline on the
+         container is both more reliable and easier to reason about. Descendants
+         find it by walking up the tree.
 
-    /* The line draws itself, the fill follows, the current point lands last.
-       Same technique as the wires in HeroGraphic: pathLength normalises the
-       path to 1 so one dash length works for both compositions. */
-    .dp-s1, .dp-s2, .dp-s3 { stroke-dasharray: 1; stroke-dashoffset: 1; animation: dp-draw .85s cubic-bezier(.4,0,.2,1) both; }
-    .dp-s3 { animation-delay: .78s; }
-    .dp-s2 { animation-delay: .90s; }
-    .dp-s1 { animation-delay: 1.02s; }
-    .dp-point { opacity: 0; animation: dp-reveal .3s ease-out forwards 1.75s; }
+         Ranges use `cover`, not `entry`. The plate is taller than a phone
+         viewport, and `entry 100%` is unreachable for an element that never
+         fully fits on screen — the animation would stall part-played.
 
-    /* callouts land last, once the thing they point at exists */
-    .co { opacity: 0; animation: dp-reveal .26s ease-out forwards; }
-    .c6 { animation-delay: 1.30s; } .c1 { animation-delay: 1.38s; }
-    .c5 { animation-delay: 1.46s; } .c3 { animation-delay: 1.54s; }
-    .c4 { animation-delay: 1.62s; } .c2 { animation-delay: 1.70s; }
+         Longhands and from-states-in-keyframes throughout: landmine 22. If any
+         of this fails to parse, the drawing renders finished rather than
+         invisible. */
+      .dashboard-plate { view-timeline-name: --plate; }
+
+      .dp-side, .dp-head, .dp-stat, .dp-chart, .dp-list,
+      .dp-s1, .dp-s2, .dp-s3, .dp-point, .co {
+        animation-timing-function: ease-out;
+        animation-fill-mode: both;
+        animation-timeline: --plate;
+      }
+
+      /* the window and its panels */
+      .dp-side  { animation-name: dp-reveal; animation-range: cover 4%  cover 16%; }
+      .dp-head  { animation-name: dp-reveal; animation-range: cover 7%  cover 19%; }
+      .dp-stat  { animation-name: dp-rise;   animation-range: cover 10% cover 24%; }
+      .s2       { animation-range: cover 12% cover 26%; }
+      .s3       { animation-range: cover 14% cover 28%; }
+      .dp-chart { animation-name: dp-rise;   animation-range: cover 16% cover 30%; }
+      .dp-list  { animation-name: dp-rise;   animation-range: cover 18% cover 32%; }
+
+      /* the three series draw back to front, then the current point lands */
+      .dp-s3    { animation-name: dp-draw;   animation-range: cover 22% cover 40%; }
+      .dp-s2    { animation-name: dp-draw;   animation-range: cover 25% cover 43%; }
+      .dp-s1    { animation-name: dp-draw;   animation-range: cover 28% cover 46%; }
+      .dp-point { animation-name: dp-reveal; animation-range: cover 46% cover 50%; }
+
+      /* callouts last, once the thing they point at exists */
+      .co       { animation-name: dp-reveal; animation-range: cover 34% cover 48%; }
+      .c1 { animation-range: cover 36% cover 50%; }
+      .c5 { animation-range: cover 38% cover 52%; }
+      .c3 { animation-range: cover 40% cover 54%; }
+      .c4 { animation-range: cover 42% cover 56%; }
+      .c2 { animation-range: cover 44% cover 58%; }
+    }
   }
 
   /* Composition swap, not a scale-down and not a sideways pan. Both drawings
