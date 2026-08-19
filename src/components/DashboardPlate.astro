@@ -468,13 +468,29 @@
       .dp-s1    { animation-name: dp-draw;   animation-range: cover 28% cover 46%; }
       .dp-point { animation-name: dp-reveal; animation-range: cover 46% cover 50%; }
 
-      /* callouts last, once the thing they point at exists */
-      .co       { animation-name: dp-reveal; animation-range: cover 34% cover 48%; }
-      .c1 { animation-range: cover 36% cover 50%; }
-      .c5 { animation-range: cover 38% cover 52%; }
-      .c3 { animation-range: cover 40% cover 54%; }
-      .c4 { animation-range: cover 42% cover 56%; }
-      .c2 { animation-range: cover 44% cover 58%; }
+      /* Callouts, in the order they reach the viewport rather than the order the
+         drawing is built in.
+
+         c5, c6 and c1 sit at y=-99, above the window, and the viewBox reserves
+         132 units for them — about 140px of the plate's height at full width.
+         They used to reveal last, after the panels, which meant the first thing
+         a reader scrolled to was a 140px band of nothing while the drawing
+         assembled below it. The owner reported it as too much space above the
+         graphic; it was not space, it was the callouts waiting their turn. It
+         only became visible when the keyframes were given a from-state — before
+         that the reveal was inert and everything was always drawn.
+
+         So the top row goes first, ahead of the window it labels, and the
+         bottom row keeps the later slot it was written for. */
+      .co { animation-name: dp-reveal; }
+      /* above the window — on screen before anything else */
+      .c5 { animation-range: cover 2%  cover 12%; }
+      .c6 { animation-range: cover 4%  cover 14%; }
+      .c1 { animation-range: cover 6%  cover 16%; }
+      /* below the window — after the thing they point at exists */
+      .c3 { animation-range: cover 34% cover 48%; }
+      .c4 { animation-range: cover 36% cover 50%; }
+      .c2 { animation-range: cover 38% cover 52%; }
     }
   }
 
