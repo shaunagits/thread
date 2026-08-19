@@ -47,10 +47,23 @@ misleading and that is deliberate rather than an oversight:
 | `--color-ink` | `#172A2D` blue-green | — |
 
 Renaming them touches every component for no reader benefit, so it was not done.
-**Landmine 5 still applies in spirit:** `--color-ochre` remains the fills-only
-colour and `--color-koa` the one that carries text, but the contrast figures
-recorded there (2.9:1 and 5.56:1) were measured on the old hexes and have **not**
-been re-measured against the new ones. Re-check before relying on them.
+**Landmine 5 applies as written:** its figures were re-measured against these
+hexes and are current. The whole palette, measured 18 Aug 2026 against paper
+`#FCFCF9`:
+
+| Token | Hex | On paper | AA text (4.5) | AA large/UI (3.0) |
+|---|---|---|---|---|
+| `--color-ink` | `#172A2D` | 14.54:1 | pass | pass |
+| `--color-body` | `#314447` | 9.97:1 | pass | pass |
+| `--color-koa` | `#235F70` | 6.94:1 | pass | pass |
+| `--color-quiet` | `#5B6A6C` | 5.49:1 | pass | pass |
+| `--color-faint` | `#6F7C7D` | **4.21:1** | **fail** | pass |
+| `--color-line` | `#4D8798` | 3.90:1 | fail | pass |
+| `--color-ochre` | `#8DB9C4` | 2.07:1 | fail | fail |
+
+`--color-line` and `--color-ochre` failing is fine and expected: line draws
+strokes and ochre fills shapes, and neither carries text. `--color-faint` is the
+one real problem — see Outstanding.
 
 `p.txt` moved to `--text-body` and the button treatments were rebuilt again on
 17 Aug; see the type system above, which supersedes this line. The `.doc` grid, section rhythm
@@ -123,7 +136,7 @@ homepage is now history. The sections are:
 | § | id | Heading | Contains |
 |---|---|---|---|
 | 01 | `services` | One screen with the answer on it. | `DashboardPlate`, then the buttons |
-| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline` |
+| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline`, horizontal since 18 Aug, vertical below 820px |
 | 03 | `ownership` | The system is yours. | the ownership copy, then `ServiceList` |
 | 04 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
 
@@ -530,6 +543,25 @@ Each of these cost real debugging time. Don't rediscover them.
     **Always check the built CSS, not the dev server, after touching a
     scroll-driven animation.**
 
+23. **Never nest a `<section>`.** `global.css` styles the element, not a class:
+    `section { padding: 104px 0; border-top: 1px solid var(--color-rule); }`. Any
+    `<section>` inside a page section silently inherits the page's own framing —
+    104px of dead space and a stray rule — and the markup looks perfectly
+    reasonable in review, so it does not get caught by reading. It cost 127px of
+    space in `ShipsWith` on 18 Aug 2026 where the CSS asked for 22. Use a `<div>`
+    for grouping inside a section, and reach for `<section>` only for the page's
+    own top-level sections.
+
+24. **The preview pane cannot verify scroll-driven animation.** In this
+    session's browser tooling `document.visibilityState` is `"hidden"`, which
+    throttles frames, freezes a view timeline at a constant value and returns
+    stale computed styles and blank screenshots. It reads as a bug in the page
+    and is not one — the tell is a timeline reporting the identical percentage
+    at two different scroll positions. Reason about scroll animation from the
+    CSS, verify it on a real screen, and do not trust a runtime reading from a
+    hidden pane. Layout and computed geometry *are* reliable there; only
+    animation and painting are not.
+
 ## Verification approach
 
 Parity against `index.html` was established by diffing computed geometry
@@ -546,6 +578,35 @@ text differences against `index.html` are expected. Probe geometry, ignore words
 Two deliberate deviations from the original, both recorded above:
 1. The submit button's font (6.4px), which the original left in the UA font.
 2. `.cta-in`'s padding collision — landmine 8.
+
+## Where the site stands, 18 Aug 2026
+
+The owner signed off on the site on this date. What changed that day, in case
+something looks deliberate that used to look accidental:
+
+- **§02 runs horizontally.** Four steps along one thread above the columns,
+  returning to the vertical composition below 820px. `tl-grow` is `scaleX` for
+  the horizontal spine and `tl-grow-y` for the vertical one; the override sits
+  at the same breakpoint as the layout so the axis and its keyframe cannot drift.
+- **§03 carries the four services**, replacing the ships-with list. The
+  ownership copy stays as its lead-in because it is the differentiator, not
+  decoration. Full width, since the service rows are a three-column grid.
+- **The hero opened up** to 80/96 from 58/66, deliberately short of the 104 every
+  other section uses so the graphic still clears the fold on a laptop.
+- **Every load starts at the top.** `history.scrollRestoration = 'manual'`, the
+  site's only executable JavaScript, and `scroll-behavior: smooth` is gone.
+- **The phone menu draws itself** in the mark's own language, and swaps to a
+  cross with the label on `[open]`.
+- **§01's plate reveals on scroll and its callouts are sized as labels.** The
+  top row reveals first, ahead of the window it labels, because it reaches the
+  viewport first.
+- **`src/` holds only what renders.** Ten components and four `site.ts` arrays
+  were deleted. Recover from git rather than rewriting.
+
+Two things a fresh reader should not mistake for problems: `ServiceList` renders
+`services` and no longer has a `plans` array behind it, and `--text-micro` text
+inside the drawings is smaller than the token because SVG text scales with its
+viewBox.
 
 ## Outstanding
 
@@ -570,5 +631,13 @@ Highest value first:
    has a CDN.
 5. Gmail filter so form notifications stop landing in spam, or verify the domain
    in Resend for a proper fix (landmine 10 applies).
-6. Owner decisions still open: whether to delete the orphaned components listed
-   in the rebuild section, and the doubled rule under the connects-to strip.
+6. **`--color-faint` `#6F7C7D` is 4.21:1 on paper and fails AA for text.** It
+   carries the contact form's field labels, ServiceList's terms column,
+   ProcessTimeline's step numbers and the figure captions — all at
+   `--text-micro`, so the 4.5 threshold applies rather than 3.0. Darkening it
+   five points per channel to `#6A7778` clears it at 4.52:1 and is barely
+   perceptible; `--color-quiet` `#5B6A6C` at 5.49:1 is the other option. Left
+   alone because colour is the owner's call. Its uses inside the two SVG
+   drawings are arguably incidental, but the form labels are not.
+7. Owner decision still open: the doubled rule under the connects-to strip.
+   (The orphaned components and their arrays were deleted 18 Aug 2026.)

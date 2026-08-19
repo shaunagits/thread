@@ -1,5 +1,17 @@
 # Thread — launch checklist
 
+> ## ⚠️ Stale as of 18 Aug 2026 — read `CLAUDE.md` first
+>
+> This file predates the 17 Aug homepage rebuild and the 18 Aug session. It is
+> **history, not instructions**. Known to be wrong here: section numbering, the
+> systems-map offer and its sitemap entry (the page is deleted and 301s to
+> `/#contact`), the `scroll-behavior` row (the property was removed entirely,
+> and the site now sets `history.scrollRestoration = 'manual'`), and any
+> component list — ten unrendered components and four `site.ts` arrays were
+> deleted on 18 Aug.
+>
+> `CLAUDE.md` is current and carries the live outstanding list.
+
 Replaces the `.buildnote` block from `index.html`, which is not ported.
 `index.html` stays in the repo untouched as the design reference.
 
