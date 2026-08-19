@@ -7,11 +7,6 @@
  * document grid; without it the section runs full width. The `after` slot is
  * for content that sits below the grid at full width — the services list, the
  * product cards, the step row.
- *
- * `split` is a third arrangement, added 18 Aug 2026 for §03: the eyebrow,
- * heading and copy in a left column with the `aside` slot beside them. Unlike
- * the other two it puts the heading inside the grid, which is the whole point —
- * the copy block has to be the left column, not sit above it.
  */
 interface Props {
   id?: string;
@@ -24,8 +19,6 @@ interface Props {
   headingGap?: number;
   /** mono label above the margin note, e.g. "In the margin" */
   noteLabel?: string;
-  /** two equal columns: eyebrow + heading + default slot left, `aside` right */
-  split?: boolean;
   /** gap under the document grid, where the original set one inline */
   docGap?: number;
 }
@@ -37,7 +30,6 @@ const {
   headingWidth,
   headingGap = 22,
   noteLabel,
-  split = false,
   docGap,
 } = Astro.props;
 
@@ -47,16 +39,7 @@ const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
 
 <section id={id}>
   <div class="wrap">
-    {split ? (
-      <div class="split">
-        <div>
-          <div class="eyebrow">{eyebrow}</div>
-          <h2 style={headStyle}>{heading}</h2>
-          <slot />
-        </div>
-        <div class="split-aside"><slot name="aside" /></div>
-      </div>
-    ) : hasNote ? (
+    {hasNote ? (
       <div class="doc" style={docGap ? `margin-bottom:${docGap}px` : undefined}>
         <div>
           <div class="eyebrow">{eyebrow}</div>
@@ -83,27 +66,3 @@ const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
     <slot name="after" />
   </div>
 </section>
-
-<style>
-  /* Mirrors .doc exactly — the same 56px gap and the same 1000px collapse to a
-     single column at 34px — so a split section reflows on the page's existing
-     beat instead of introducing a breakpoint of its own. No new spacing values.
-
-     minmax(0, 1fr) twice rather than 1fr twice: a bare 1fr floors at the
-     content's min-width, and the right column carries a list whose longest row
-     would otherwise refuse to shrink and push the grid wider than .wrap. */
-  .split {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 56px; align-items: start;
-  }
-
-  /* Astro scoped styles do not cross slot boundaries — landmine 7 — so the
-     slotted component's own class is unreachable from here without :global.
-     The list carries a 40px top margin for the stacked arrangement it was
-     built for; beside the copy it should start on the heading's line. */
-  .split-aside :global(.ships) { margin-top: 0; }
-
-  @media (max-width: 1000px) {
-    .split { grid-template-columns: 1fr; gap: 34px; }
-  }
-</style>

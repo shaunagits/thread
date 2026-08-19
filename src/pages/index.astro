@@ -60,15 +60,14 @@ import Footer from '../components/Footer.astro';
     eyebrow="03 · What you get"
     heading="The system is yours."
     headingWidth={20}
-    split
   >
-    {/* Two columns again, on the owner's instruction, 18 Aug 2026. It was
-        dropped on 17 Aug because the floated *plate* here was the only thing
-        on the page not running copy at full width with its graphic beneath.
-        What sits in the right column now is a text list rather than a drawing,
-        which reads as a second column of the same document instead of an
-        imported panel. Collapses to one column at 1000px, the same width the
-        .doc grid collapses at. */}
+    {/* Copy runs full width here, like every other section. A side-by-side
+        arrangement was tried twice and rejected twice — as a floated plate on
+        17 Aug and as an even two-column spread on 18 Aug. The section's real
+        problems were height and a single left rail, and both are solved inside
+        the list instead: ShipsWith sets its two sets side by side, which halves
+        the height and puts a second axis on the page without making §03 the one
+        section that reads as a brochure spread. */}
     <p class="lead" style="max-width:52ch;margin-bottom:18px">
       It runs in your accounts, under your billing, and you keep everything it’s
       built from. If you ever stop working with me, nothing switches off.
@@ -78,7 +77,7 @@ import Footer from '../components/Footer.astro';
       pay for monthly stops the day you stop paying. This doesn’t.
     </p>
 
-    <ShipsWith slot="aside" />
+    <ShipsWith />
   </Section>
 
   <ContactSection />
