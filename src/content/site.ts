@@ -110,7 +110,7 @@ export const steps = [
     n: '01',
     label: 'Fit call',
     title: 'A free 30 minutes',
-    body: 'You describe what is slowing you down. I tell you whether I can help, and whether it is worth doing.',
+    body: 'You describe what’s slowing you down. I tell you whether I can help, and whether it’s worth doing.',
   },
   {
     n: '02',
@@ -122,7 +122,7 @@ export const steps = [
     n: '03',
     label: 'Build',
     title: 'You see it working early',
-    body: 'Working software in front of you as it takes shape, not a demo at the end. Then it goes into daily use with your team, and I stay available as the business changes.',
+    body: 'Working software in front of you as it takes shape, not a demo at the end. Then it goes into daily use, and I stay available as the business changes.',
   },
 ];
 
@@ -176,12 +176,12 @@ export const services = [
   },
   {
     title: 'Dashboards & reporting panels',
-    body: 'One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, arranged the way your team already thinks about the work.',
+    body: 'The questions you currently open four tabs for, on one screen. Live data from every system you run, arranged the way your team thinks about the work.',
     meta: ['Typical: 3\u20136 weeks', 'Live data, no exports'],
   },
   {
     title: 'AI automation',
-    body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting repetitive correspondence, flagging what needs a person. Review by a human is built in.',
+    body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting the emails you send over and over, flagging what needs a person.',
     meta: ['Typical: 4\u20138 weeks', 'Human review built in'],
   },
   {
@@ -202,7 +202,10 @@ export const footerColumns = [
    * them differently, so now they don't.
    */
   {
-    heading: 'Explore',
+    /* Was "Explore", the one stock web word on the site; nobody explores a
+       three-link list. Not dropped entirely because the column sits beside
+       Contact, which keeps its heading, and a headerless column misaligns. */
+    heading: 'Sections',
     links: [
       { label: 'What I do', href: '/#services' },
       { label: 'How it works', href: '/#how' },

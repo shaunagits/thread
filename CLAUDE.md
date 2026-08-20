@@ -259,7 +259,16 @@ not a note about one array.
 `DevGrid.astro` renders layout guides behind `import.meta.env.DEV`, so it is
 absent from production entirely. Toggle bottom left.
 
-## ⚠️ The site copy is v3, adopted 14 Aug 2026
+## ⚠️ The site copy is v3, adopted 14 Aug 2026, polished 19 Aug 2026
+
+A copy review on 19 Aug 2026 (owner approved every change) rewrote the
+contact section ("Tell me where the hours go."), contracted the stiff
+patches, fixed the dashboards card's repetition of §01's heading, swapped
+"repetitive correspondence" for plain English, and renamed the footer's
+"Explore". The v3 rules below still hold in full. Two items the review
+raised and the owner has not ruled on: the submit button says "Book a call"
+but submitting sends a message rather than booking anything, and /thanks
+opens with "Your request is in" when nothing was requested.
 
 The owner supplied a full rewrite ("Thread · Website Copy, v3") and it is now
 live on `/`. It is **first person throughout**, carries **no case studies and no
