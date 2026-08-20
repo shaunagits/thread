@@ -118,6 +118,23 @@ export const steps = [
     title: 'You start using it',
     body: 'It goes into daily use with your team, and I stay available as the business changes.',
   },
+  /**
+   * Step 05 added 19 Aug 2026, on the owner's instruction to make §02 one
+   * composition. It is the ownership copy that had been a separate h3 block
+   * since the §03 merge earlier the same day — the sentences are the owner's,
+   * unchanged. Ownership is where every engagement ends, so it is the arc's
+   * arrival, which the timeline already marks with the one filled node.
+   *
+   * The `id` keeps /#ownership landing somewhere sensible: the block it used
+   * to point at is this step now. ProcessTimeline renders it on the <li>.
+   */
+  {
+    n: '05',
+    label: 'Yours',
+    title: 'The system is yours',
+    body: 'It runs in your accounts, under your billing, and you keep everything it’s built from. If you ever stop working with me, nothing switches off. That’s the difference between owning software and renting it.',
+    id: 'ownership',
+  },
 ];
 
 /**

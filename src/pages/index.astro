@@ -51,12 +51,16 @@ import Footer from '../components/Footer.astro';
   {/* §02 and §03 merged 19 Aug 2026, on the owner's instruction — the two
       sections were saying overlapping things ("a fixed plan and price" above
       four "Fixed price" metas, "I stay available" beside "nothing switches
-      off"). One section now: the process, then what comes out of it.
+      off"). Made one composition the same day, second pass, also the owner's
+      instruction: the ownership copy is step 05 of the timeline now (the
+      engagement's arrival, on the filled node), not a block of its own, and
+      the service list hangs off the arc with a figure-style caption that
+      echoes step 02's "what gets built". One heading, one lead, one drawing,
+      one labelled list — nothing stacked.
 
       The section keeps id="how" because the hero and §01 ghost buttons point
-      at /#how. The ownership block keeps id="ownership" as an inner anchor so
-      any indexed or shared /#ownership links still land; the nav and footer no
-      longer link to it. */}
+      at /#how. id="ownership" lives on step 05's <li> inside ProcessTimeline,
+      so indexed or shared /#ownership links still land on the same copy. */}
   <Section
     id="how"
     eyebrow="02 · How it works"
@@ -68,21 +72,12 @@ import Footer from '../components/Footer.astro';
     </p>
     <ProcessTimeline />
 
-    {/* The ownership copy stays intact under the merge: CLAUDE.md calls owning
-        the system the site's differentiator, the thing doing the job
-        testimonials would normally do, and "You own the code" alone in a meta
-        column does not carry it. Its two former lead paragraphs became one —
-        the second mostly restated the first. The list is full width because
-        its rows are a three-column grid: number, copy, terms. */}
-    <div class="own" id="ownership">
-      <h3>The system is yours.</h3>
-      <p class="lead" style="max-width:52ch">
-        It runs in your accounts, under your billing, and you keep everything it’s
-        built from. If you ever stop working with me, nothing switches off. That’s
-        the difference between owning software and renting it.
-      </p>
-    </div>
-
+    {/* Captioned like the plates — the label alone, no numbering — because
+        that is the design's existing idiom for attaching a structured thing
+        to the prose around it. An h3 here read as a fourth sub-section, which
+        is the stacked feeling this pass removes. The list is full width
+        because its rows are a three-column grid: number, copy, terms. */}
+    <p class="figcap list-cap">What gets built, with typical durations and terms</p>
     <ServiceList />
   </Section>
 
@@ -131,12 +126,16 @@ import Footer from '../components/Footer.astro';
   :global(#services .wrap) { position:relative; }
   :global(#services .wrap::after) { content:''; position:absolute; right:0; top:0; width:74px; border-top:2px solid var(--color-line); }
 
-  /* The ownership block, folded into §02 on 19 Aug 2026 when §03 was merged
-     away. 88px above it — the page's own module — so it reads as a second
-     movement of the section rather than a fifth timeline entry. The
-     scroll-margin covers the /#ownership anchor jump: the block has no section
-     padding of its own to absorb the 68px sticky header, so without it the
-     heading lands underneath. 104px is the section rhythm. */
-  .own { margin-top: 88px; scroll-margin-top: 104px; }
-  .own h3 { margin-bottom: 22px; }
+  /* The list's caption. .figcap brings the idiom — hairline, then the label —
+     and 56px above it is the timeline's own top margin, so the drawing and
+     the list hang from the section at the same rhythm. The .own block that
+     sat here for part of 19 Aug 2026 is gone — its copy is timeline step 05.
+
+     The caption's top rule takes over as the list's opening rule: ServiceList
+     draws its own on the first row, which doubled up under a caption. Both
+     selectors sit fully inside :global() because .items is ServiceList's
+     markup — landmine 18. */
+  .list-cap { margin: 56px 0 18px; }
+  :global(.list-cap + .items) { margin-top: 0; }
+  :global(.list-cap + .items .item:first-child) { border-top: 0; }
 </style>

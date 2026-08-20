@@ -25,8 +25,12 @@ import { steps } from '../content/site';
 ---
 
 <ol class="timeline">
+  {/* A step may carry an `id` — step 05 is the old #ownership block folded
+      into the arc on 19 Aug 2026, and indexed /#ownership links land on it.
+      The scroll-margin below is what keeps that landing clear of the sticky
+      header, since a list item has no section padding to absorb it. */}
   {steps.map((step) => (
-    <li class="tl-step">
+    <li class="tl-step" id={'id' in step ? step.id : undefined}>
       <span class="tl-n">{step.n}</span>
       <span class="tl-node" aria-hidden="true"></span>
       <div class="tl-body">
@@ -46,15 +50,22 @@ import { steps } from '../content/site';
      nothing else on the page has that column. The numbers moved above their
      labels instead — where they were already going on a phone, so this also
      removes a breakpoint. */
-  /* Horizontal since 18 Aug 2026, on the owner's instruction. Four steps read
+  /* Horizontal since 18 Aug 2026, on the owner's instruction. The steps read
      left to right along a single thread rather than down one, which suits a
      process better and takes roughly a third of the height. The spine runs
-     above the content and the nodes hang from it; below 820px, where four
+     above the content and the nodes hang from it; below 1000px, where five
      columns cannot hold a sentence, the whole thing returns to the vertical
-     composition it had — see the media query at the end. */
+     composition it had — see the media query at the end.
+
+     Five columns since 19 Aug 2026, when the ownership copy became step 05:
+     the engagement ends with the system being yours, so the arc ends there
+     too, on the node the design already fills as the arrival. The collapse
+     breakpoint moved 820 → 1000 in the same change — four columns held a
+     sentence at 850px, five do not — reusing the width ServiceList and the
+     contact band already change at. */
   .timeline {
     position: relative; list-style: none; margin-top: 56px;
-    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 34px; padding-top: 32px;
   }
 
@@ -81,7 +92,7 @@ import { steps } from '../content/site';
     transform-origin: left;
   }
 
-  .tl-step { position: relative; }
+  .tl-step { position: relative; scroll-margin-top: 104px; }
 
   .tl-n {
     display: block; margin-bottom: 7px;
@@ -161,17 +172,17 @@ import { steps } from '../content/site';
       }
       /* Same breakpoint as the layout below, so the spine's axis and the
          keyframe driving it can never disagree. */
-      @media (max-width: 820px) {
+      @media (max-width: 1000px) {
         .timeline::after { animation-name: tl-grow-y; }
       }
     }
   }
 
-  /* Back to vertical below 820px. Four columns cannot hold a sentence on a
-     phone, and 820 is the width the rest of the page already changes at. Every
-     horizontal rule is undone here rather than the other way round, so the
-     narrow composition is the plain one. */
-  @media (max-width: 820px) {
+  /* Back to vertical below 1000px — five columns cannot hold a sentence
+     under it, and 1000 is the width ServiceList and the contact band already
+     change at. Every horizontal rule is undone here rather than the other way
+     round, so the narrow composition is the plain one. */
+  @media (max-width: 1000px) {
     .timeline {
       grid-template-columns: 1fr; gap: 0;
       padding-top: 0; padding-left: 34px;

@@ -136,21 +136,29 @@ homepage is now history. The sections are:
 | § | id | Heading | Contains |
 |---|---|---|---|
 | 01 | `services` | One screen with the answer on it. | `DashboardPlate`, then the buttons |
-| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline` (horizontal since 18 Aug, vertical below 820px), then the ownership block, then `ServiceList` |
+| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline`, five steps (horizontal since 18 Aug, vertical below 1000px), then `ServiceList` under a figure-style caption |
 | 03 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
 
 **§03 merged into §02, 19 Aug 2026, on the owner's instruction.** The two
 sections overlapped: step 02's "A fixed plan and price" repeated as "Fixed
 price" in three service metas, step 04's "I stay available" restated the
 ownership lead, and the ownership section's two paragraphs made the
-own-vs-rent point twice. What changed: the ownership copy now sits inside §02
-as a block headed "The system is yours." at `h3`, its two paragraphs became
-one (the sentences kept are the owner's own, verbatim), the duplicated meta
-terms came out of `services` in `site.ts` (comment there records which and
-why), and the nav and footer dropped to two entries. The block keeps
-`id="ownership"` as an inner anchor with a `scroll-margin-top`, so indexed or
-shared `/#ownership` links still land; nothing redirects. The contact band is
-`03 · Start here` now, not 04.
+own-vs-rent point twice. The duplicated meta terms came out of `services` in
+`site.ts` (comment there records which and why), and the nav and footer
+dropped to two entries. The contact band is `03 · Start here` now, not 04.
+
+**Second pass the same day, also the owner's instruction: §02 is one
+composition, not stacked blocks.** The ownership copy briefly lived as an
+`h3` block between the timeline and the list; it is now **step 05 of the
+timeline** ("Yours · The system is yours"), the arc's arrival on the filled
+node, sentences unchanged. The timeline runs five columns and its collapse
+breakpoint moved 820 → 1000 with the extra column — the layout and the
+spine-axis keyframe share that breakpoint and must keep doing so. The service
+list hangs off the arc under a `.figcap` caption ("What gets built, …") whose
+top rule replaces the list's own first-row rule so they don't double up.
+`id="ownership"` sits on step 05's `<li>` with a `scroll-margin-top`, so
+indexed or shared `/#ownership` links still land on the same copy; nothing
+redirects.
 
 **§01 "The problem" is gone**, folded into §01 What I do along with the two
 service cards. The page was saying the same thing three ways: a question about
