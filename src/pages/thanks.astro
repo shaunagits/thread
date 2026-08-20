@@ -39,7 +39,12 @@ const state =
 const backHref = state === STATES.invalid ? '/#contact' : '/#top';
 ---
 
+{/* noindex since 19 Aug 2026: a form-result page is not content, and it was
+    already excluded from the sitemap — indexable-but-unlisted is the worst of
+    both. `noindex, follow` (the prop's behaviour) still lets crawlers follow
+    the header and footer links out. */}
 <Base
+  noindex
   title={`${state.heading} · Thread`}
   description="Thread · custom software for Hawaiʻi businesses. Apps, dashboards, automation and practical AI, Honolulu."
 >

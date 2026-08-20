@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 
-import { contact } from '../content/site';
+import { contact, services } from '../content/site';
 import DevGrid from '../components/DevGrid.astro';
 
 interface Props {
@@ -18,7 +18,13 @@ interface Props {
 
 const {
   title = 'Thread · Custom software and automation, Honolulu, Hawaiʻi',
-  description = 'Thread builds custom software that fits how your business already works. I connect the tools you run, or build the one nobody sells. You own the code, the data, and the accounts it lives in.',
+  /**
+   * 144 characters. The previous default ran 190 and Google truncates around
+   * 155, which cut it mid-claim. Chosen by the owner 19 Aug 2026 from three
+   * drafts; every claim in it already appears on the page. Keep any future
+   * rewrite under ~155 characters, and check the length before shipping it.
+   */
+  description = 'Custom software, dashboards and automation for Hawaiʻi businesses, built in Honolulu around how you already work. You own the code when it ships.',
   businessSchema = false,
   noindex = false,
 } = Astro.props;
@@ -34,9 +40,9 @@ const ogImage = new URL('/og.png', Astro.site).href;
  * assistants resolve it to one thing; this is that description at the source.
  *
  * Deliberately absent: street address, telephone, opening hours, price range,
- * aggregate rating, and `sameAs` profile links. Every one of those would be
- * invented today. Add them here as they become real — `sameAs` first, once the
- * LinkedIn and Google Business Profile URLs exist.
+ * and aggregate rating. Every one of those would be invented today. Add them
+ * here as they become real. `sameAs` landed 19 Aug 2026, once the profiles
+ * existed.
  */
 const businessLd = {
   '@context': 'https://schema.org',
@@ -53,6 +59,20 @@ const businessLd = {
   description:
     'Custom software for Hawaiʻi businesses. Thread connects the tools a business already runs, or builds the one nobody sells, and hands over the source code, the data and the accounts it runs in.',
   url: new URL('/', Astro.site).href,
+  /**
+   * Added 19 Aug 2026, URLs supplied by the owner. This is what lets search
+   * resolve the site, the Google Business Profile and the LinkedIn page to
+   * one entity — which matters here more than usual, because "Thread Hawaii"
+   * is contested by several established embroidery businesses.
+   *
+   * The Google link is the profile's own share URL. It redirects to the Maps
+   * listing, which is fine for entity resolution, but if the canonical
+   * maps.app.goo.gl or g.page URL is ever to hand, prefer it here.
+   */
+  sameAs: [
+    'https://share.google/xPk2Ack8XjU9O5G2t',
+    'https://www.linkedin.com/company/threadhawaii/',
+  ],
   email: contact.email,
   founder: { '@type': 'Person', name: 'Shauna' },
   address: {
@@ -73,44 +93,26 @@ const businessLd = {
     'Applied AI for small business',
   ],
   /**
-   * The three engagements from the v3 copy. The free systems map was here
-   * until 14 Aug 2026, when the owner killed it as an offer — and because this
-   * block is indexed, it outlives the page edit, so it had to come out in the
-   * same change rather than later.
+   * Generated from the `services` array in site.ts since 19 Aug 2026, so the
+   * schema always states the same four services the page shows and cannot
+   * drift when they change. It previously carried the v3 copy's three
+   * engagements (Connect / Build / Ongoing), which no longer appeared
+   * anywhere on the page. The free systems map came out 14 Aug 2026 when the
+   * owner killed the offer — this block is indexed, so it outlives page edits
+   * and has to change in the same commit as the page.
    *
    * No `priceSpecification` on any of these. The prices are still
    * `[CONFIRM]` and a structured-data price is the most quotable kind of
    * invented number there is.
    */
-  makesOffer: [
-    {
-      '@type': 'Offer',
-      itemOffered: {
-        '@type': 'Service',
-        name: 'Connect',
-        description:
-          'One place to see and run everything: live data from the systems you already use, with automation closing the handoffs between them.',
-      },
+  makesOffer: services.map((service) => ({
+    '@type': 'Offer',
+    itemOffered: {
+      '@type': 'Service',
+      name: service.title,
+      description: service.body,
     },
-    {
-      '@type': 'Offer',
-      itemOffered: {
-        '@type': 'Service',
-        name: 'Build',
-        description:
-          'The custom application a business needs and nobody sells, plus the integrations that keep it fed.',
-      },
-    },
-    {
-      '@type': 'Offer',
-      itemOffered: {
-        '@type': 'Service',
-        name: 'Ongoing',
-        description:
-          'Monitoring, fixes and a set amount of new work each month after handover. Month to month, and optional.',
-      },
-    },
-  ],
+  })),
 };
 ---
 
@@ -156,7 +158,12 @@ const businessLd = {
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#FCFBF7" />
+    {/* Matches --color-paper in global.css. Was #FCFBF7, the earth palette's
+        paper, missed in the 17 Aug ocean swap because it is a literal here
+        rather than a token — this file renders before the stylesheet loads,
+        so it cannot read the variable. If the paper colour changes again,
+        change this with it. */}
+    <meta name="theme-color" content="#FCFCF9" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -180,7 +187,12 @@ const businessLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts are self-hosted; these three are used above the fold. -->
+    <!-- Fonts are self-hosted; these four are used above the fold: Newsreader
+         for the h1, Plex 400 for the eyebrow and nav, Plex 500 for the
+         buttons, and the JetBrains subset that supplies the U+2192 arrow in
+         the ghost button. Public Sans was preloaded here until 19 Aug 2026
+         despite being unreferenced since the Option K trial — a preload forces
+         the download an unused @font-face would otherwise never make. -->
     <link
       rel="preload"
       href="/fonts/newsreader-latin-var.woff2"
@@ -190,7 +202,14 @@ const businessLd = {
     />
     <link
       rel="preload"
-      href="/fonts/public-sans-latin-400.woff2"
+      href="/fonts/ibm-plex-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans-latin-500-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin

@@ -136,9 +136,21 @@ homepage is now history. The sections are:
 | § | id | Heading | Contains |
 |---|---|---|---|
 | 01 | `services` | One screen with the answer on it. | `DashboardPlate`, then the buttons |
-| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline`, horizontal since 18 Aug, vertical below 820px |
-| 03 | `ownership` | The system is yours. | the ownership copy, then `ServiceList` |
-| 04 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
+| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline` (horizontal since 18 Aug, vertical below 820px), then the ownership block, then `ServiceList` |
+| 03 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
+
+**§03 merged into §02, 19 Aug 2026, on the owner's instruction.** The two
+sections overlapped: step 02's "A fixed plan and price" repeated as "Fixed
+price" in three service metas, step 04's "I stay available" restated the
+ownership lead, and the ownership section's two paragraphs made the
+own-vs-rent point twice. What changed: the ownership copy now sits inside §02
+as a block headed "The system is yours." at `h3`, its two paragraphs became
+one (the sentences kept are the owner's own, verbatim), the duplicated meta
+terms came out of `services` in `site.ts` (comment there records which and
+why), and the nav and footer dropped to two entries. The block keeps
+`id="ownership"` as an inner anchor with a `scroll-margin-top`, so indexed or
+shared `/#ownership` links still land; nothing redirects. The contact band is
+`03 · Start here` now, not 04.
 
 **§01 "The problem" is gone**, folded into §01 What I do along with the two
 service cards. The page was saying the same thing three ways: a question about
@@ -152,9 +164,10 @@ removed everywhere on the owner's instruction, including `/thanks`. They were
 briefly moved into the right margin and moved back the same day: opposite a
 heading a marker reads as a stray label.
 
-**The nav is outcome-framed** and matches the section headings exactly: What I
-do / How it works / What you get. Two navigations point at the same three
-anchors, so the header and the footer must always agree. "Outcome" as a label
+**The nav is outcome-framed** and matches the section markers exactly: What I
+do / How it works (What you get went with the §03 merge, 19 Aug 2026). Two
+navigations point at the same anchors, so the header and the footer must
+always agree. "Outcome" as a label
 was considered and rejected: it promises results the site does not have.
 
 **A `Work` nav entry is staged and commented out** in `site.ts`. The `/work`
@@ -614,16 +627,23 @@ See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) for the full list, though note it
 predates the 17 Aug rebuild and is stale on section numbering and the offer.
 Highest value first:
 
-1. **`sameAs` in the `ProfessionalService` schema in `Base.astro`.** Empty on
-   purpose until the Google Business Profile and LinkedIn URLs exist. This is
-   the single highest-value SEO item left: it is what makes search resolve the
-   site, the profile and the LinkedIn to one entity instead of three results.
-   `GOOGLE-BUSINESS-PROFILE.md` has the profile copy ready to go.
+1. ~~**`sameAs` in the `ProfessionalService` schema in `Base.astro`.**~~ —
+   filled 19 Aug 2026 with the owner's URLs: the LinkedIn company page and the
+   Google Business Profile's share.google link. One refinement still open: the
+   Google entry is a share URL that redirects to the Maps listing; swap in the
+   canonical maps.app.goo.gl or g.page URL when it is to hand. Next SEO items
+   needing the owner: verify the domain in Google Search Console and submit
+   the sitemap.
 2. **Blocked on the owner:** real work for `/work`, and price floors if pricing
    ever returns. Both absent rather than invented — keep it that way.
-3. **The meta description in `Base.astro` is 190 characters**, so Google
-   truncates it around 155-160. Everything after "build the one nobody sells" is
-   invisible.
+3. ~~**The meta description in `Base.astro` is 190 characters**~~ — fixed
+   19 Aug 2026 in an SEO pass with the owner. The default description is now
+   144 characters, chosen by the owner from three drafts. The same pass fixed
+   the stale earth-palette `theme-color`, swapped the unreferenced Public Sans
+   preload for the two Plex weights actually above the fold, synced
+   `makesOffer` to the four services in `site.ts` (it now maps over the array
+   so it cannot drift), noindexed `/thanks`, and anchored the robots.txt `/og`
+   rule so it stops blocking `/og.png`.
 4. **Cloudflare migration**, if the owner proceeds: Email Routing replaces
    Namecheap forwarding, which means moving nameservers and therefore triggering
    landmine 9 deliberately. Site records stay DNS-only; Vercel recommends against
