@@ -48,6 +48,15 @@ import Footer from '../components/Footer.astro';
     </div>
   </Section>
 
+  {/* §02 and §03 merged 19 Aug 2026, on the owner's instruction — the two
+      sections were saying overlapping things ("a fixed plan and price" above
+      four "Fixed price" metas, "I stay available" beside "nothing switches
+      off"). One section now: the process, then what comes out of it.
+
+      The section keeps id="how" because the hero and §01 ghost buttons point
+      at /#how. The ownership block keeps id="ownership" as an inner anchor so
+      any indexed or shared /#ownership links still land; the nav and footer no
+      longer link to it. */}
   <Section
     id="how"
     eyebrow="02 · How it works"
@@ -58,30 +67,21 @@ import Footer from '../components/Footer.astro';
       You do not need to know the answer before the first call.
     </p>
     <ProcessTimeline />
-  </Section>
 
-  <Section
-    id="ownership"
-    eyebrow="03 · What you get"
-    heading="The system is yours."
-    headingWidth={20}
-  >
-    {/* §03 carries the four services since 18 Aug 2026, on the owner's
-        instruction, replacing the ships-with list. The ownership copy stays as
-        the lead-in rather than going with it: CLAUDE.md calls owning the system
-        the site's differentiator, the thing doing the job testimonials would
-        normally do, and "You own the code" alone in a meta column does not
-        carry it. The list is full width because its rows are a three-column
-        grid — number, copy, terms — so the split arrangement this section used
-        for the ships-with list cannot hold it. */}
-    <p class="lead" style="max-width:52ch;margin-bottom:18px">
-      It runs in your accounts, under your billing, and you keep everything it’s
-      built from. If you ever stop working with me, nothing switches off.
-    </p>
-    <p class="txt" style="max-width:56ch">
-      That’s the difference between owning software and renting it. Most of what you
-      pay for monthly stops the day you stop paying. This doesn’t.
-    </p>
+    {/* The ownership copy stays intact under the merge: CLAUDE.md calls owning
+        the system the site's differentiator, the thing doing the job
+        testimonials would normally do, and "You own the code" alone in a meta
+        column does not carry it. Its two former lead paragraphs became one —
+        the second mostly restated the first. The list is full width because
+        its rows are a three-column grid: number, copy, terms. */}
+    <div class="own" id="ownership">
+      <h3>The system is yours.</h3>
+      <p class="lead" style="max-width:52ch">
+        It runs in your accounts, under your billing, and you keep everything it’s
+        built from. If you ever stop working with me, nothing switches off. That’s
+        the difference between owning software and renting it.
+      </p>
+    </div>
 
     <ServiceList />
   </Section>
@@ -130,6 +130,13 @@ import Footer from '../components/Footer.astro';
      is why the accent rule below had quietly stopped rendering. */
   :global(#services .wrap) { position:relative; }
   :global(#services .wrap::after) { content:''; position:absolute; right:0; top:0; width:74px; border-top:2px solid var(--color-line); }
-  /* §03 sat on 88px while every other section used 104. Same rhythm now. */
-  :global(#ownership) { background:var(--color-paper); }
+
+  /* The ownership block, folded into §02 on 19 Aug 2026 when §03 was merged
+     away. 88px above it — the page's own module — so it reads as a second
+     movement of the section rather than a fifth timeline entry. The
+     scroll-margin covers the /#ownership anchor jump: the block has no section
+     padding of its own to absorb the 68px sticky header, so without it the
+     heading lands underneath. 104px is the section rhythm. */
+  .own { margin-top: 88px; scroll-margin-top: 104px; }
+  .own h3 { margin-bottom: 22px; }
 </style>

@@ -25,10 +25,15 @@
  * site carries no case studies, numbers or client names, so it would set an
  * expectation the page cannot meet.
  */
+/**
+ * "What you get" was removed 19 Aug 2026 when §03 merged into §02 on the
+ * owner's instruction. The ownership block still exists inside §02 and keeps
+ * id="ownership", so /#ownership still lands; it just no longer needs its own
+ * nav entry. The footer below must always mirror this list exactly.
+ */
 export const nav = [
   { label: 'What I do', href: '/#services' },
   { label: 'How it works', href: '/#how' },
-  { label: 'What you get', href: '/#ownership' },
 
   /* Ready to go. The /work route, its layout and its footer entry all exist;
      this line is the switch. It is commented out because a visitor who clicks
@@ -147,21 +152,31 @@ export const steps = [
  * how this site got into trouble the first time. See CLAUDE.md, "Content that
  * must never be invented".
  */
+/**
+ * Meta terms deduplicated 19 Aug 2026 with the \u00a702/\u00a703 merge. The list now
+ * sits in the same section as step 02's "A fixed plan and price", which had
+ * "Fixed price" repeated directly beneath it in three rows; and directly
+ * under the ownership paragraph, which "You own the code" restated. Both were
+ * removed rather than reworded \u2014 the claims still appear once each, in the
+ * copy above. "Fixed or retainer" stays on the fourth row because it says
+ * something the step does not. Recover the old lines from git if the list
+ * ever moves back out of this section.
+ */
 export const services = [
   {
     title: 'Custom internal apps',
     body: 'The software your business needs and nobody sells: job tracking shaped like your workflow, intake that routes itself, approvals that match how decisions actually get made.',
-    meta: ['Typical: 6\u201310 weeks', 'Fixed price', 'You own the code'],
+    meta: ['Typical: 6\u201310 weeks'],
   },
   {
     title: 'Dashboards & reporting panels',
     body: 'One screen that answers the questions you currently open four tabs to answer. Live data from every system you run, arranged the way your team already thinks about the work.',
-    meta: ['Typical: 3\u20136 weeks', 'Fixed price', 'Live data, no exports'],
+    meta: ['Typical: 3\u20136 weeks', 'Live data, no exports'],
   },
   {
     title: 'AI automation',
     body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting repetitive correspondence, flagging what needs a person. Review by a human is built in.',
-    meta: ['Typical: 4\u20138 weeks', 'Fixed price', 'Human review built in'],
+    meta: ['Typical: 4\u20138 weeks', 'Human review built in'],
   },
   {
     title: 'Integration & data plumbing',
@@ -185,7 +200,6 @@ export const footerColumns = [
     links: [
       { label: 'What I do', href: '/#services' },
       { label: 'How it works', href: '/#how' },
-      { label: 'What you get', href: '/#ownership' },
     ],
   },
   /* A WhatsApp "Message me" link was considered and dropped 17 Aug 2026:
