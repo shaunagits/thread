@@ -24,7 +24,14 @@ import { services } from '../content/site';
     <div class="card">
       <h3>{service.title}</h3>
       <p>{service.body}</p>
-      <p class="card-meta">{service.meta.join(' · ')}</p>
+      {/* One term per line, like the old meta column. Joined with " · " these
+          wrapped mid-phrase inside a card's width ("HUMAN REVIEW BUILT / IN"),
+          which the screenshot pass caught. */}
+      <p class="card-meta">
+        {service.meta.map((line, j) => (
+          <>{j > 0 && <br />}{line}</>
+        ))}
+      </p>
     </div>
   ))}
 </div>
@@ -54,7 +61,7 @@ import { services } from '../content/site';
     margin-top: auto; padding-top: 22px;
     font-family: var(--font-mono); font-size: var(--text-micro);
     letter-spacing: var(--tracking-wide); text-transform: uppercase;
-    color: var(--color-faint);
+    color: var(--color-faint); line-height: 1.9;
   }
 
   @media (max-width: 820px) {

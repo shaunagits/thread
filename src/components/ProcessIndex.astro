@@ -25,9 +25,13 @@ import { steps } from '../content/site';
 <ol class="pindex">
   {steps.map((step) => (
     <li class="pi-row">
-      <span class="pi-n" aria-hidden="true">{step.n}</span>
+      {/* The numeral is real content, not decoration — it is the only place
+          the step number appears. It printed twice at first, here and in the
+          micro label ("01 · Fit call"), which the first screenshot pass
+          caught; the label now carries the stage name alone. */}
+      <span class="pi-n">{step.n}</span>
       <div class="pi-body">
-        <span class="pi-label">{step.n} · {step.label}</span>
+        <span class="pi-label">{step.label}</span>
         <h3>{step.title}</h3>
         <p>{step.body}</p>
       </div>
@@ -36,8 +40,6 @@ import { steps } from '../content/site';
 </ol>
 
 <style>
-  /* The visible numeral is aria-hidden and the micro label carries "01 ·
-     Fit call" instead, so a screen reader hears the number once, not twice. */
   .pindex { list-style: none; margin-top: 56px; }
 
   .pi-row {
@@ -93,10 +95,10 @@ import { steps } from '../content/site';
   }
   @media (max-width: 640px) {
     .pindex { margin-top: 40px; }
+    /* One column, numeral above the copy. It stays visible: it is the only
+       place the step number lives, and at --text-d1's 40px floor it is the
+       phone-sized version of the same editorial gesture. */
     .pi-row { grid-template-columns: 1fr; gap: 0; }
-    /* One column: the numeral would double the micro label right above it,
-       so the label alone carries the number and the numeral goes decorative
-       behind nothing — hide it rather than stack two "01"s. */
-    .pi-n { display: none; }
+    .pi-n { margin-bottom: 12px; }
   }
 </style>
