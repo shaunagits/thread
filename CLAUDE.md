@@ -136,29 +136,28 @@ homepage is now history. The sections are:
 | § | id | Heading | Contains |
 |---|---|---|---|
 | 01 | `services` | One screen with the answer on it. | `DashboardPlate`, then the buttons |
-| 02 | `how` | Start with a conversation, not a commitment. | `ProcessTimeline`, five steps (horizontal since 18 Aug, vertical below 1000px), then `ServiceList` under a figure-style caption |
-| 03 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
+| 02 | `how` | Start with a conversation, not a commitment. | `ProcessIndex`, three steps as an editorial index |
+| 03 | `ownership` | The system is yours. | the ownership paragraph, then `ServiceCards`, on the wash |
+| 04 | `contact` | Tell me what is taking too much time. | `IntakeForm` |
 
-**§03 merged into §02, 19 Aug 2026, on the owner's instruction.** The two
-sections overlapped: step 02's "A fixed plan and price" repeated as "Fixed
-price" in three service metas, step 04's "I stay available" restated the
-ownership lead, and the ownership section's two paragraphs made the
-own-vs-rent point twice. The duplicated meta terms came out of `services` in
-`site.ts` (comment there records which and why), and the nav and footer
-dropped to two entries. The contact band is `03 · Start here` now, not 04.
+**§02 and §03 were merged, unified and re-split, all on 19 Aug 2026, all on
+the owner's instruction.** The history matters because each state fixed a real
+problem and the final one keeps all three fixes. The merge deduplicated copy:
+"Fixed price" came out of three service metas (step 02 already says it),
+"You own the code" out of one (the ownership lead says it), and the ownership
+copy's two paragraphs became one — those cuts survive in `site.ts` and are
+not to be undone. The unification (ownership as timeline step 05) proved the
+two ideas cramped in one section. The re-split fixed what the first split had
+wrong: both sections were numbered rows on threads and read as the same
+drawing twice. So they are separate again **in different shapes** — §02 is
+typographic (display numerals, hairlines), §03 is bounded cards on the wash.
+The owner picked this from four mockups; a five-step arc version and an
+h3-block version of §02 both exist in git history from this day.
 
-**Second pass the same day, also the owner's instruction: §02 is one
-composition, not stacked blocks.** The ownership copy briefly lived as an
-`h3` block between the timeline and the list; it is now **step 05 of the
-timeline** ("Yours · The system is yours"), the arc's arrival on the filled
-node, sentences unchanged. The timeline runs five columns and its collapse
-breakpoint moved 820 → 1000 with the extra column — the layout and the
-spine-axis keyframe share that breakpoint and must keep doing so. The service
-list hangs off the arc under a `.figcap` caption ("What gets built, …") whose
-top rule replaces the list's own first-row rule so they don't double up.
-`id="ownership"` sits on step 05's `<li>` with a `scroll-margin-top`, so
-indexed or shared `/#ownership` links still land on the same copy; nothing
-redirects.
+**The steps were cut to three in the same pass** — Build and Live merged,
+"Then" being the only new word, and the ownership copy left the steps for
+§03's lead. See the comment over `steps` in `site.ts`. The contact band is
+`04 · Start here` again.
 
 **§01 "The problem" is gone**, folded into §01 What I do along with the two
 service cards. The page was saying the same thing three ways: a question about
@@ -173,9 +172,9 @@ briefly moved into the right margin and moved back the same day: opposite a
 heading a marker reads as a stray label.
 
 **The nav is outcome-framed** and matches the section markers exactly: What I
-do / How it works (What you get went with the §03 merge, 19 Aug 2026). Two
-navigations point at the same anchors, so the header and the footer must
-always agree. "Outcome" as a label
+do / How it works / What you get (dropped with the 19 Aug merge, restored with
+the re-split the same day). Two navigations point at the same anchors, so the
+header and the footer must always agree. "Outcome" as a label
 was considered and rejected: it promises results the site does not have.
 
 **A `Work` nav entry is staged and commented out** in `site.ts`. The `/work`
@@ -233,10 +232,14 @@ Both `HeroGraphic` and `DashboardPlate` ship **two compositions**, wide and
 narrow, swapped with `display`. Neither pans sideways. Type inside them is
 drawing-space, not pixels — see landmine 17.
 
-`ProcessTimeline` replaced `StepRow`: a vertical spine on the section's left
-edge with content indented 34px, and a second accent spine that grows on scroll
-via `animation-timeline: view()` behind `@supports`. `ShipsWith` replaced
+`ProcessTimeline` replaced `StepRow`, and was itself replaced by
+`ProcessIndex` on 19 Aug 2026 (evening re-split) — the spine-and-nodes
+composition is gone; recover it from git if it returns. `ServiceList` was
+replaced by `ServiceCards` in the same change. `ShipsWith` replaced
 `Fig4CarePlate`, as real HTML rather than baked SVG text.
+
+Both new components carry a scroll reveal (or none) under the same rules as
+before: longhands only, from-state inside the keyframes — landmine 22.
 
 **Orphaned by this change, and deleted 18 Aug 2026** on the owner's
 instruction: `StepRow`, `Fig4CarePlate`, `Fig2CurrentState`,

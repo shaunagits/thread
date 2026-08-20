@@ -26,14 +26,15 @@
  * expectation the page cannot meet.
  */
 /**
- * "What you get" was removed 19 Aug 2026 when §03 merged into §02 on the
- * owner's instruction. The ownership block still exists inside §02 and keeps
- * id="ownership", so /#ownership still lands; it just no longer needs its own
- * nav entry. The footer below must always mirror this list exactly.
+ * "What you get" left this list on 19 Aug 2026 when §03 merged into §02, and
+ * returned later the same day when the owner split the sections back out with
+ * the editorial-index layout. The footer below must always mirror this list
+ * exactly.
  */
 export const nav = [
   { label: 'What I do', href: '/#services' },
   { label: 'How it works', href: '/#how' },
+  { label: 'What you get', href: '/#ownership' },
 
   /* Ready to go. The /work route, its layout and its footer entry all exist;
      this line is the switch. It is commented out because a visitor who clicks
@@ -93,6 +94,17 @@ export const contact = {
  * ("Fixed scope. Fixed price. Agreed before I start."). If the terms ever
  * change, this line changes with them.
  */
+/**
+ * Cut from five (briefly) and four (before that) to three on 19 Aug 2026, on
+ * the owner's instruction, for the editorial-index layout. What moved where:
+ *
+ *  - Build and Live merged into step 03. The first sentence of each survives;
+ *    "Then" is the only new word.
+ *  - The ownership copy ("The system is yours") went back to §03 as its lead,
+ *    where it does the differentiator work testimonials would normally do.
+ *    It spent part of this day as timeline step 05; recover that from git if
+ *    the arc idea ever returns.
+ */
 export const steps = [
   {
     n: '01',
@@ -110,30 +122,7 @@ export const steps = [
     n: '03',
     label: 'Build',
     title: 'You see it working early',
-    body: 'Working software in front of you as it takes shape, not a demo at the end.',
-  },
-  {
-    n: '04',
-    label: 'Live',
-    title: 'You start using it',
-    body: 'It goes into daily use with your team, and I stay available as the business changes.',
-  },
-  /**
-   * Step 05 added 19 Aug 2026, on the owner's instruction to make §02 one
-   * composition. It is the ownership copy that had been a separate h3 block
-   * since the §03 merge earlier the same day — the sentences are the owner's,
-   * unchanged. Ownership is where every engagement ends, so it is the arc's
-   * arrival, which the timeline already marks with the one filled node.
-   *
-   * The `id` keeps /#ownership landing somewhere sensible: the block it used
-   * to point at is this step now. ProcessTimeline renders it on the <li>.
-   */
-  {
-    n: '05',
-    label: 'Yours',
-    title: 'The system is yours',
-    body: 'It runs in your accounts, under your billing, and you keep everything it’s built from. If you ever stop working with me, nothing switches off. That’s the difference between owning software and renting it.',
-    id: 'ownership',
+    body: 'Working software in front of you as it takes shape, not a demo at the end. Then it goes into daily use with your team, and I stay available as the business changes.',
   },
 ];
 
@@ -217,6 +206,7 @@ export const footerColumns = [
     links: [
       { label: 'What I do', href: '/#services' },
       { label: 'How it works', href: '/#how' },
+      { label: 'What you get', href: '/#ownership' },
     ],
   },
   /* A WhatsApp "Message me" link was considered and dropped 17 Aug 2026:
