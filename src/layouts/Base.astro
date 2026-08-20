@@ -65,12 +65,14 @@ const businessLd = {
    * one entity — which matters here more than usual, because "Thread Hawaii"
    * is contested by several established embroidery businesses.
    *
-   * The Google link is the profile's own share URL. It redirects to the Maps
-   * listing, which is fine for entity resolution, but if the canonical
-   * maps.app.goo.gl or g.page URL is ever to hand, prefer it here.
+   * The Google link is the listing's canonical ?cid= form, derived from the
+   * full Maps URL the owner supplied on 19 Aug 2026: the value is the decimal
+   * of the second hex in its `!1s0x…:0x…` pair (0xbf357e16c96894b5). It
+   * replaced a share.google short link the same day — same listing, stable
+   * URL instead of a redirect.
    */
   sameAs: [
-    'https://share.google/xPk2Ack8XjU9O5G2t',
+    'https://maps.google.com/?cid=13778057271343355061',
     'https://www.linkedin.com/company/threadhawaii/',
   ],
   email: contact.email,

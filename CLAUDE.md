@@ -629,11 +629,10 @@ Highest value first:
 
 1. ~~**`sameAs` in the `ProfessionalService` schema in `Base.astro`.**~~ —
    filled 19 Aug 2026 with the owner's URLs: the LinkedIn company page and the
-   Google Business Profile's share.google link. One refinement still open: the
-   Google entry is a share URL that redirects to the Maps listing; swap in the
-   canonical maps.app.goo.gl or g.page URL when it is to hand. Next SEO items
-   needing the owner: verify the domain in Google Search Console and submit
-   the sitemap.
+   Google Business Profile listing in its canonical `?cid=` form (derived from
+   the full Maps URL the owner supplied; see the comment in `Base.astro`).
+   Next SEO items needing the owner: verify the domain in Google Search
+   Console and submit the sitemap.
 2. **Blocked on the owner:** real work for `/work`, and price floors if pricing
    ever returns. Both absent rather than invented — keep it that way.
 3. ~~**The meta description in `Base.astro` is 190 characters**~~ — fixed
