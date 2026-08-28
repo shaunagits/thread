@@ -34,7 +34,12 @@ const {
 } = Astro.props;
 
 const hasNote = Astro.slots.has('note');
-const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
+/* The marker sits below the heading as a sub-title since 25 Aug 2026, on the
+   owner's instruction. The heading keeps 16px to the marker and the marker
+   takes the old heading gap down to the content, so the section's total
+   rhythm is unchanged. */
+const headStyle = `margin:0 0 16px;max-width:${headingWidth}ch`;
+const eyebrowStyle = `margin-bottom:${headingGap}px`;
 ---
 
 <section id={id}>
@@ -42,8 +47,8 @@ const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
     {hasNote ? (
       <div class="doc" style={docGap ? `margin-bottom:${docGap}px` : undefined}>
         <div>
-          <div class="eyebrow">{eyebrow}</div>
           <h2 style={headStyle}>{heading}</h2>
+          <div class="eyebrow" style={eyebrowStyle}>{eyebrow}</div>
           <slot />
         </div>
         <aside class="side">
@@ -53,13 +58,11 @@ const headStyle = `margin:16px 0 ${headingGap}px;max-width:${headingWidth}ch`;
       </div>
     ) : (
       <>
-        {/* The marker sits above the heading. It was moved into the right
-            margin on 17 Aug 2026 to give the empty right third a job, and
-            moved back the same day: opposite a heading it read as a stray
-            label rather than an annotation. The whitespace is the better
-            problem to have. */}
-        <div class="eyebrow">{eyebrow}</div>
+        {/* The marker was above the heading until 25 Aug 2026 (and briefly in
+            the right margin on 17 Aug, moved back the same day). It now sits
+            below the heading as a sub-title, on the owner's instruction. */}
         <h2 style={headStyle}>{heading}</h2>
+        <div class="eyebrow" style={eyebrowStyle}>{eyebrow}</div>
         <slot />
       </>
     )}

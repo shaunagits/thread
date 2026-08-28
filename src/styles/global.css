@@ -451,7 +451,10 @@ section.hero { padding: 80px 0 96px; border-top: 0; }
    a document made of short clauses. Shared here rather than duplicated in two
    page components. */
 .legal { padding: 96px 0 120px; }
-.legal h1 { font-size: var(--text-d1); margin: 20px 0 22px; max-width: 18ch; }
+/* Marker below the heading as a sub-title since 25 Aug 2026: the heading keeps
+   20px to the marker, the marker takes 22px to the lead, total rhythm held. */
+.legal h1 { font-size: var(--text-d1); margin: 0 0 20px; max-width: 18ch; }
+.legal .eyebrow { margin-bottom: 22px; }
 .legal h2 {
   font-family: var(--font-display); font-weight: 500; font-size: var(--text-d3);
   letter-spacing: var(--tracking-tight); color: var(--color-ink);

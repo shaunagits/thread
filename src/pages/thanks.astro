@@ -52,8 +52,8 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
 
   <section class="result">
     <div class="wrap">
-      <div class="eyebrow">{state.eyebrow}</div>
       <h1>{state.heading}</h1>
+      <div class="eyebrow">{state.eyebrow}</div>
       <p class="lead">{state.body}</p>
       <div class="btn-row">
         <a href={backHref} class="btn">{state.back}<span class="ln" aria-hidden="true"></span></a>
@@ -66,11 +66,15 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
 
 <style>
   .result { border-top: 0; padding: 120px 0 140px; }
+  /* Marker below the heading as a sub-title since 25 Aug 2026; the heading
+     keeps 20px to the marker and the marker takes 22px to the body, so the
+     block's total rhythm is unchanged. */
   .result h1 {
     font-size: var(--text-d1);
-    margin: 20px 0 22px;
+    margin: 0 0 20px;
     max-width: 16ch;
   }
+  .result .eyebrow { margin-bottom: 22px; }
   .result p.lead { max-width: 52ch; }
 
   @media (max-width: 640px) {

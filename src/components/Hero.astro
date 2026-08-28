@@ -9,6 +9,9 @@ import HeroGraphic from './HeroGraphic.astro';
           was the first text on the page. This says the category and the place,
           which is the job an eyebrow has, and restores the location signal lost
           when the hero lead was cut. */}
+      <h1>Built around how you already work.</h1>
+      {/* Below the headline since 25 Aug 2026, on the owner's instruction —
+          the marker reads as a sub-title now, matching the section markers. */}
       <div class="eyebrow eyebrow-pin">
         <span>Custom software</span>
         <svg class="pin" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -18,7 +21,6 @@ import HeroGraphic from './HeroGraphic.astro';
             says "here is where", and its capital B broke sentence case. */}
         <span>Honolulu, Hawaiʻi</span>
       </div>
-      <h1>Built around how you already work.</h1>
       {/* The lead was cut 17 Aug 2026. It read "Thread connects the tools you
           use and builds what they cannot", which restated the headline and then
           said the same thing again as §02's lead one scroll further down. Same
@@ -39,7 +41,7 @@ import HeroGraphic from './HeroGraphic.astro';
   /* 18ch, not 13. The headline changed on 17 Aug 2026 and the old measure broke
      it as "Built around / how you / already work." — three lines with a widow.
      Paired with --text-d1's lower ceiling this sets as two even lines. */
-  .hero-copy h1 { max-width:18ch; margin:18px 0; }
+  .hero-copy h1 { max-width:18ch; margin:0 0 18px; }
   /* .lead rules kept: the hero lead was removed 17 Aug 2026, but these are
      harmless and mean restoring it is a one-line change. */
   .hero-copy .lead { max-width:42ch; }
