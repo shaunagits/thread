@@ -3,9 +3,8 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import ConnectsStrip from '../components/ConnectsStrip.astro';
-import DashboardPlate from '../components/DashboardPlate.astro';
 import Section from '../components/Section.astro';
-import SignalList from '../components/SignalList.astro';
+import RepetitiveGraphic from '../components/RepetitiveGraphic.astro';
 import ServiceCards from '../components/ServiceCards.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
@@ -35,35 +34,31 @@ import { cta, ctaHref } from '../content/site';
       No top rule: the connects strip above draws its own on both edges, and
       a third here would double them. --------------------------------- */}
   <Section id="busywork" noRule>
-    {/* ⚠️ These three are siblings of the grid, not two nested blocks, and that
-        is load-bearing. They used to be an intro and a closer wrapped in one
-        left-hand column, which read correctly at desktop and stacked as
-        heading → lead → closing statement → list on a phone: the sentence that
-        closes the list landed above the list. A nested child cannot be
-        reordered against its parent's sibling, so the wrapper had to go.
+    {/* Two siblings of the grid rather than nested blocks, which is
+        load-bearing: flat, the DOM order is already the phone order, and the
+        desktop arrangement is explicit grid placement instead.
 
-        Flat, the DOM order is already the phone order, and the desktop layout
-        is explicit grid placement instead. */}
+        ⚠️ Cut 29 Aug 2026 on the owner's instruction: the lead-in "Maybe your
+        team is:" and the closing block ("These little inefficiencies add up."
+        / "That's the busywork I build out of your business."). The section is
+        now the heading and the drawing. `.bw-close` was the only thing in row
+        two of the grid, so the drawing no longer spans two rows and the
+        `align-self:end` that dropped the closer level with the end of the list
+        went with it. The copy is in git if it comes back — recover it rather
+        than rewriting it. */}
     <div class="bw-grid">
       <div class="bw-intro">
         <h2 class="bw-head">
           If it happens over and over, it should be <span class="hl">automated.</span>
         </h2>
-        <p class="lead">Maybe your team is:</p>
       </div>
 
-      <SignalList />
-
-      {/* Sits at the foot of the left column at desktop, so it lands level
-          with the end of the list rather than floating under the heading. */}
-      <div class="bw-close">
-        <p class="lead">These little inefficiencies add up.</p>
-        <p class="claim">That’s the busywork I build out of your business.</p>
-      </div>
+      <RepetitiveGraphic />
     </div>
 
-    {/* The ask sits after the list: by this point a visitor has read seven
-        specific descriptions of their own week. */}
+    {/* The ask sits after the drawing: by this point a visitor has watched
+        their own week build up, multiply and get ticked off. The seven
+        descriptions are still in the page, in the drawing's hidden list. */}
     <div class="btn-row bw-cta">
       <a href={ctaHref} class="btn">{cta}</a>
     </div>
@@ -72,9 +67,18 @@ import { cta, ctaHref } from '../content/site';
   {/* ---------------------------------------------------------------
       §02 · What I build
 
-      The one section on the quiet ground. Carries the five build types and
-      then the annotated dashboard plate, which is the page's only picture of
-      a finished thing. --------------------------------------------- */}
+      The one section on the quiet ground. Carries the five build types.
+
+      ⚠️ BuildGraphic.astro is finished and NOT rendered, on the owner's
+      instruction 29 Aug 2026 ("remove the graphic completely from the process
+      section for now"). The component, its two compositions and its keyframes
+      are kept rather than deleted because "for now" is explicit — putting it
+      back is this import and this one line.
+
+      That does leave a component in src/ that renders nowhere, which is
+      against the standing rule CLAUDE.md records from the 18 Aug sweep. It is
+      deliberate and it is the owner's call to make it permanent either way.
+      --------------------------------------------- */}
   <Section id="build" wash>
     <h2 class="bd-head">Your process. Just without all the work.</h2>
     <p class="lead bd-lead">
@@ -84,7 +88,6 @@ import { cta, ctaHref } from '../content/site';
     <p class="mono-note bd-note">That might be a:</p>
 
     <ServiceCards />
-    <DashboardPlate />
   </Section>
 
   {/* §03 renders its own marker: it sits inside the left column of the
@@ -99,26 +102,23 @@ import { cta, ctaHref } from '../content/site';
 
 <style>
   /* ---------- §01 ----------
-     35/65. The list is the substance here and the copy is the frame, which is
-     the reverse of every other section on the page. */
+     35/65. The drawing is the substance here and the heading is the frame,
+     which is the reverse of every other section on the page. */
   .bw-grid {
     display:grid; grid-template-columns:minmax(0,35fr) minmax(0,65fr);
     column-gap:64px; row-gap:48px;
   }
   /* Explicit placement, because the DOM order is the phone order and the
-     desktop arrangement is the exception. The list spans both rows so row 2
-     has height to give, and align-self drops the closing block to the foot of
-     the column, level with the end of the list. */
+     desktop arrangement is the exception. One row now that the closing block
+     is gone; the heading sits at the top of the narrow column beside it. */
   .bw-intro { grid-column:1; grid-row:1; }
-  .bw-close { grid-column:1; grid-row:2; align-self:end; }
-  /* ⚠️ Inside :global() in full. `.signals` is SignalList.astro's root
-     element, so a scoped selector compiles to `.signals[data-astro-cid-THIS]`
-     and silently matches nothing — landmine 18, which already cost §01's
-     accent rule once under the ocean design. */
-  :global(.bw-grid > .signals) { grid-column:2; grid-row:1 / span 2; }
-  .bw-head { margin:0 0 18px; }
-  .bw-close { border-top:1px solid var(--color-ink); padding-top:26px; }
-  .bw-close .lead { margin-bottom:10px; }
+  /* ⚠️ Inside :global() in full. `.repetitive-graphic` is
+     RepetitiveGraphic.astro's root element, so a scoped selector compiles to
+     `.repetitive-graphic[data-astro-cid-THIS]` and silently matches nothing —
+     landmine 18, which already cost §01's accent rule once under the ocean
+     design. */
+  :global(.bw-grid > .repetitive-graphic) { grid-column:2; grid-row:1; }
+  .bw-head { margin:0; }
   .bw-cta { margin-top:44px; }
 
   /* The highlight behind "automated." A background gradient rather than a
@@ -144,8 +144,8 @@ import { cta, ctaHref } from '../content/site';
        the whole reason the three blocks are flat siblings — see the note in
        the markup. */
     .bw-grid { grid-template-columns:1fr; row-gap:34px; }
-    .bw-intro, .bw-close { grid-column:auto; grid-row:auto; }
-    :global(.bw-grid > .signals) { grid-column:auto; grid-row:auto; }
+    .bw-intro { grid-column:auto; grid-row:auto; }
+    :global(.bw-grid > .repetitive-graphic) { grid-column:auto; grid-row:auto; }
   }
 
   /* ⚠️ §01's ask is hidden on phones for the same reason the hero's is:

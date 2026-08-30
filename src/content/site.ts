@@ -139,7 +139,16 @@ export const signals = [
   'Following a 12-step process that should take two',
 ];
 
-/** The open row that closes the list. See SignalList.astro for why it exists. */
+/**
+ * The open row that closes the list. SignalList.astro was its consumer until
+ * 29 Aug 2026, when §01 became a drawing; it and `signals` now render in
+ * RepetitiveGraphic.astro's visually-hidden list, which is what keeps all
+ * eight strings indexed and readable once the rows stopped being HTML.
+ *
+ * ⚠️ The drawing does not type all seven signals. Its own PHRASES array omits
+ * signals[6] and ends on this string instead. See the note at the head of
+ * RepetitiveGraphic.astro — the two are deliberately not reconciled in code.
+ */
 export const signalOpen = 'Whatever your team keeps redoing';
 
 /**

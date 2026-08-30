@@ -1,0 +1,485 @@
+---
+/**
+ * §01's drawing: repetitive work builds up, multiplies, gets ticked off, and
+ * then one open row keeps having a different kind of busywork written into it.
+ *
+ * Ported 29 Aug 2026 from `repetitivegraphic.jsx`, supplied by the owner with
+ * "Repetitive Work Graphic.dc.html". It replaces SignalList.astro, which was
+ * eight HTML rows of the same idea.
+ *
+ * THE SOURCE IS REACT DRIVEN BY A CLOCK. This is CSS. Everything the JSX
+ * computed per frame from `T` is re-expressed as @keyframes, and the two
+ * easing helpers it imported from the absent animations-v3.jsx are
+ * cubic-beziers here:
+ *
+ *   easeOutCubic   -> cubic-bezier(.215,.61,.355,1)
+ *   easeInOutCubic -> cubic-bezier(.645,.045,.355,1)
+ *   ob()           -> easeOutCubic. ob is easeOutCubic plus 0.1*sin(t*PI)*(1-t),
+ *                     which peaks at 1.0038 near t=0.81. On the largest thing it
+ *                     drives, the 26-unit row lift, that overshoot is 0.1 units,
+ *                     well under a device pixel at every width, so it is dropped
+ *                     rather than faked with a springy bezier that would miss the
+ *                     rest of the curve by more (measured: the best overshooting
+ *                     fit was 1.5x worse across the whole range).
+ *
+ * ⚠️ PHRASES BELOW IS THE SOURCE'S ARRAY, NOT site.ts's `signals`. The two
+ * disagree, and the disagreement is deliberate on the owner's side or an
+ * oversight on it — either way this file does not silently reconcile them:
+ *
+ *   - The source drops 'Following a 12-step process that should take two',
+ *     which is signals[6].
+ *   - The source's seventh phrase is 'Whatever your team keeps redoing',
+ *     which is site.ts's `signalOpen` — the open row, not a signal.
+ *
+ * So the drawing types six of the seven signals plus the open row's text. All
+ * eight strings still ship, indexed and readable, in the visually-hidden list
+ * below, which is fed from site.ts. Raised with the owner rather than
+ * reconciled here; see CLAUDE.md, "If something in the design looks like a
+ * mistake, raise it — don't silently fix it."
+ */
+import { signals, signalOpen } from '../content/site';
+
+const PHRASES = [
+  'Entering the same information in multiple places',
+  'Managing an important process through spreadsheets',
+  'Copying data between systems',
+  'Chasing approvals, updates, or paperwork',
+  'Building reports by hand',
+  'Working around software that doesn’t quite fit',
+  'Whatever your team keeps redoing',
+];
+
+/**
+ * Two compositions, and each carries its own coordinates. Nothing here is the
+ * desktop drawing scaled down: the row height, the internal padding, the bar
+ * widths, the checkbox, the ghost offsets and the phrase clip widths are all
+ * authored per composition. A 912-unit canvas in a 350px phone column renders
+ * at 0.38, which puts the labels near 5px — the same mistake that broke the
+ * hero graphic on phones, and the reason CLAUDE.md landmine 17 exists.
+ *
+ * `widths` are the seven phrases measured against the shipped Public Sans
+ * subset (public-sans-latin-400.woff2, 2000 upm) at that composition's phrase
+ * size, rounded up to the next whole unit and given 2 units of slack. They are
+ * the clip geometry for the typewriter, so ⚠️ if --font-sans is ever repointed
+ * these must be re-measured or the last glyph or two of the longer phrases
+ * will never be revealed. Measured, not estimated:
+ *
+ *   wide, 19u:  429.16 479.75 276.78 371.18 216.85 409.22 309.33
+ *   narrow,13u: 293.64 328.25 189.38 253.97 148.37 279.99 211.65
+ */
+const W = {
+  cls: 'rw-wide', idp: 'w',
+  viewBox: '-76 -40 912 740',
+  rowW: 760, rowH: 84, rowRx: 13, step: 100,
+  pad: 30, numW: 28, gap: 26, rule: true, ruleH: 30,
+  barX: 111, bar1H: 9, bar2H: 7, barGap: 10,
+  bars: [[300, 168], [244, 132], [330, 150], [268, 176], [212, 140], [318, 158]],
+  box: 22, boxRx: 7, chk: 13,
+  slotY: 600, caretW: 2, caretH: 22, caretGap: 6,
+  widths: [430, 480, 277, 372, 217, 410, 310],
+};
+const N = {
+  cls: 'rw-narrow', idp: 'n',
+  viewBox: '-40 -20 480 572',
+  rowW: 400, rowH: 64, rowRx: 10, step: 76,
+  pad: 16, numW: 20, gap: 12, rule: false, ruleH: 0,
+  barX: 48, bar1H: 8, bar2H: 6, barGap: 8,
+  bars: [[216, 121], [176, 95], [238, 108], [193, 127], [153, 101], [229, 114]],
+  box: 18, boxRx: 6, chk: 11,
+  slotY: 468, caretW: 2, caretH: 18, caretGap: 5,
+  widths: [294, 329, 190, 254, 149, 280, 212],
+};
+
+/* The checkmark is the source's own path on its own 12-unit grid, placed and
+   scaled rather than redrawn, so the two compositions cannot drift. */
+const CHECK = 'M2.5 6.4 L4.9 8.7 L9.5 3.5';
+
+const label =
+  'Six rows of repetitive work build up one after another, each fans out into a stack of ' +
+  'duplicates and settles back, then every row checks itself off. A seventh row is left ' +
+  'open, and a different kind of repetitive work is typed into it in turn.';
+---
+
+<figure class="repetitive-graphic">
+  {/* ⚠️ The drawing replaces eight rows of indexable HTML, so the strings come
+      back here rather than being lost to an <svg>. Same visually-hidden
+      pattern as IntakeForm's honeypot label: in the accessibility tree and in
+      the crawled source, absent from the page. This list is fed from site.ts
+      and carries all eight strings, including the one the drawing omits. */}
+  <ul class="rw-index">
+    {signals.map((t) => <li>{t}</li>)}
+    <li>{signalOpen}</li>
+  </ul>
+
+  {[W, N].map((c) => (
+    <svg class={`rw-plate ${c.cls}`} viewBox={c.viewBox} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        {PHRASES.map((_, k) => (
+          <clipPath id={`rw-clip-${c.idp}-${k}`}>
+            {/* Scaled from 0 to 1 on its left edge, one step per character.
+                The rect is this phrase's own measured width, so scaleX(1) is
+                exactly the end of the text and the reveal cannot run on past
+                the last glyph or stop short of it. */}
+            <rect class="rw-typer" x={c.barX} y={c.slotY} width={c.widths[k]} height={c.rowH} />
+          </clipPath>
+        ))}
+      </defs>
+
+      {/* ---------- the six rows ---------- */}
+      {c.bars.map((bar, i) => {
+        const y = i * c.step;
+        const bx = c.rowW - c.pad - c.box;
+        const by = y + (c.rowH - c.box) / 2;
+        const bt = y + (c.rowH - (c.bar1H + c.barGap + c.bar2H)) / 2;
+        return (
+          <g class={`rw-r${i}`}>
+            <g class="rw-row">
+              {/* Drawn back to front: the deeper duplicate first, so the real
+                  row sits on top of its own stack. */}
+              <rect class="rw-ghost rw-g2" x="0" y={y} width={c.rowW} height={c.rowH} rx={c.rowRx} />
+              <rect class="rw-ghost rw-g1" x="0" y={y} width={c.rowW} height={c.rowH} rx={c.rowRx} />
+              <rect class="rw-shell" x="0" y={y} width={c.rowW} height={c.rowH} rx={c.rowRx} />
+
+              <text class="rw-num" x={c.pad} y={y + c.rowH / 2}>{String(i + 1).padStart(2, '0')}</text>
+              {c.rule && (
+                <rect class="rw-rule" x={c.pad + c.numW + c.gap} y={y + (c.rowH - c.ruleH) / 2} width="1" height={c.ruleH} />
+              )}
+
+              <rect class="rw-bar" x={c.barX} y={bt} width={bar[0]} height={c.bar1H} rx={c.bar1H / 2} />
+              <rect class="rw-bar rw-bar2" x={c.barX} y={bt + c.bar1H + c.barGap} width={bar[1]} height={c.bar2H} rx={c.bar2H / 2} />
+
+              <g class="rw-pop">
+                <rect class="rw-box" x={bx} y={by} width={c.box} height={c.box} rx={c.boxRx} />
+                <rect class="rw-boxfill" x={bx} y={by} width={c.box} height={c.box} rx={c.boxRx} />
+                <g transform={`translate(${bx + (c.box - c.chk) / 2} ${by + (c.box - c.chk) / 2}) scale(${c.chk / 12})`}>
+                  <path class="rw-check" d={CHECK} pathLength="1" />
+                </g>
+              </g>
+            </g>
+          </g>
+        );
+      })}
+
+      {/* ---------- row 07, the open one ----------
+          Not a seventh signal. It is a field, and the whole point of the
+          section: the list is extensible, and the visitor's own answer goes
+          here. Dashed, unnumbered in accent, with a caret. */}
+      <rect class="rw-slot" x="0" y={c.slotY} width={c.rowW} height={c.rowH} rx={c.rowRx} />
+      <text class="rw-slotnum" x={c.pad} y={c.slotY + c.rowH / 2}>07</text>
+      {c.rule && (
+        <rect class="rw-slotrule" x={c.pad + c.numW + c.gap} y={c.slotY + (c.rowH - c.ruleH) / 2} width="1" height={c.ruleH} />
+      )}
+
+      {PHRASES.map((p, k) => (
+        <g class={`rw-phrase rw-p${k}`}>
+          <g clip-path={`url(#rw-clip-${c.idp}-${k})`}>
+            <text class="rw-text" x={c.barX} y={c.slotY + c.rowH / 2}>{p}</text>
+          </g>
+          {/* The caret rides the same steps() as the clip, so it sits against
+              the last glyph typed rather than at a fixed stop. */}
+          <g class="rw-caret-t" style={`--w:${c.widths[k]}px`}>
+            <rect
+              class="rw-caret"
+              x={c.barX + c.caretGap}
+              y={c.slotY + (c.rowH - c.caretH) / 2}
+              width={c.caretW}
+              height={c.caretH}
+            />
+          </g>
+        </g>
+      ))}
+    </svg>
+  ))}
+</figure>
+
+<style>
+  /* ============================================================
+     Drawing-space type. Landmine 17: the unit is the viewBox, not the screen,
+     so a value that reads correctly in one column is wrong in another.
+
+     Rendered size = value x (rendered width / viewBox width). The column is
+     (min(1100, 100vw-40) - 64) x 0.65 above 820px, where §01 is two columns,
+     and the full content width below it, where the grid stacks. .rw-wide is
+     capped at 700px so the single-column band cannot blow the type up.
+
+       vw    svg px   scale    --fs-micro          --fs-name (19u)
+       1440   673.4   0.7384   15 -> 11.08px       14.03px
+       1140   673.4   0.7384   15 -> 11.08px       14.03px
+       1000   582.4   0.6386   17 -> 10.86px       12.13px
+        900   517.4   0.5673   17 ->  9.64px       10.78px
+        821   466.1   0.5110   17 ->  8.69px        9.71px
+        820   700.0   0.7675   15 -> 11.51px       14.58px   (grid stacks)
+        700   660.0   0.7237   15 -> 10.86px       13.75px
+        641   601.0   0.6590   15 ->  9.88px       12.52px
+       ---- narrow, 480u canvas capped at 440px ----
+        640   440.0   0.9167   13 -> 11.92px       11.92px
+        390   350.0   0.7292   13 ->  9.48px        9.48px
+
+     --fs-micro holds 8.69-11.92px across every width, which is the band. It
+     needs the 821-1000 bump because that is where the two-column layout is
+     narrowest — the same band DashboardPlate bumps, for the same reason.
+
+     ⚠️ --fs-name is deliberately NOT re-valued per band. It is the only text
+     here that is prose rather than a label, and more to the point the
+     typewriter's clip rects are measured against it: changing the size per
+     band would desynchronise the reveal from the glyphs it is meant to land
+     on. It rides the drawing's scale instead, 9.71-14.58px, always under the
+     17px body size. DashboardPlate pins --fs-colabel for the same class of
+     geometric reason. --fs-fig has no consumer in this drawing; nothing here
+     is a figure. ============================================================ */
+  .rw-wide   { --fs-micro: 15px; --fs-name: 19px; }
+  @media (min-width: 821px) and (max-width: 1000px) {
+    .rw-wide { --fs-micro: 17px; }
+  }
+  .rw-narrow { --fs-micro: 13px; --fs-name: 13px; max-width: 440px; }
+
+  /* The repeat-stack offsets, per composition. The source's are -34k/-10k and
+     -1.2k degrees on a 760-unit row; the narrow row is 400 units, so they are
+     halved — at full size a 400-unit row would throw its stack 68 units, 17%
+     of its own width, and out of the canvas. Held as custom properties so one
+     pair of keyframes serves both drawings. */
+  .rw-wide   { --gx1: -34px; --gy1: -10px; --gr1: -1.2deg; --gx2: -68px; --gy2: -20px; --gr2: -2.4deg; }
+  .rw-narrow { --gx1: -17px; --gy1:  -5px; --gr1: -0.6deg; --gx2: -34px; --gy2: -10px; --gr2: -1.2deg; }
+
+  /* Both canvases carry the room the stacks need, rather than relying on
+     overflow. Measured worst case is the top row's second ghost: wide it
+     reaches -69.43, -35.88 (canvas starts at -76, -40), narrow -34.63, -14.18
+     (canvas starts at -40, -20). overflow:visible was the alternative and is
+     wrong — at 820px the wide drawing is full width, and 69 units of spill is
+     54px past the .wrap padding, which is a horizontal scrollbar. */
+  .repetitive-graphic { margin: 0; }
+  .rw-plate { display: block; width: 100%; height: auto; }
+  .rw-wide  { max-width: 700px; }
+  .rw-narrow { display: none; }
+  @media (max-width: 640px) {
+    .rw-wide   { display: none; }
+    .rw-narrow { display: block; }
+  }
+
+  /* Visually hidden, same as IntakeForm's .hp. */
+  .rw-index {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+    margin: 0; padding: 0; list-style: none;
+  }
+
+  /* ---- paint. No hex; every value is a token from global.css.
+     The source names its palette in a C object, and it maps onto graphite
+     one for one: C.paper -> --color-white, C.line -> --color-rule,
+     C.soft -> --color-hair, C.ink -> --color-ink, C.mute -> --color-body
+     (see the contrast note below), and its green accent -> --color-accent.
+     C.bg is the section's own ground, so nothing paints it. ---- */
+  .rw-shell { fill: var(--color-white); stroke: var(--color-rule); stroke-width: 1; }
+  .rw-ghost { fill: var(--color-white); stroke: var(--color-hair); stroke-width: 1; opacity: 0;
+              transform-box: fill-box; transform-origin: center; }
+  .rw-num   { font-family: var(--font-mono); font-size: var(--fs-micro);
+              letter-spacing: var(--tracking-mono); fill: var(--color-accent);
+              dominant-baseline: central; }
+  .rw-rule, .rw-slotrule { fill: var(--color-rule); }
+  .rw-bar   { fill: var(--color-rule); }
+  .rw-bar2  { opacity: .55; }
+
+  .rw-box     { fill: none; stroke: var(--color-hair); stroke-width: 1.5; }
+  .rw-boxfill { fill: var(--color-accent); stroke: var(--color-accent); stroke-width: 1.5; }
+  .rw-check   { fill: none; stroke: var(--color-white); stroke-width: 1.9;
+                stroke-linecap: round; stroke-linejoin: round;
+                stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .rw-pop     { transform-box: fill-box; transform-origin: center; }
+
+  .rw-slot    { fill: none; stroke: var(--color-accent); stroke-width: 1.5; stroke-dasharray: 7 6; }
+  .rw-slotnum { font-family: var(--font-mono); font-size: var(--fs-micro);
+                letter-spacing: var(--tracking-mono); fill: var(--color-hair);
+                dominant-baseline: central; }
+
+  /* ⚠️ The source sets the typed phrase in its `mute` grey, which is about
+     2.4:1 on its cream. This is --color-body instead. It is the one piece of
+     real prose in the drawing, and --color-faint already fails AA at 3.66:1
+     on paper (CLAUDE.md, Outstanding item 2) without going lighter still.
+     Raised with the owner as a deviation from the drawn design. */
+  .rw-text  { font-family: var(--font-sans); font-size: var(--fs-name);
+              fill: var(--color-body); dominant-baseline: central; }
+  .rw-caret { fill: var(--color-accent); opacity: .6; }
+
+  /* ---- the resting state IS the finished frame ----
+     No motion, or no view() support, and the drawing sits where the source
+     leaves it at T=17.6: six rows built and ticked, the stacks gone, and the
+     last phrase held in slot 07. Every from-state lives inside a keyframe, so
+     if a declaration is ever dropped the drawing renders finished rather than
+     empty. Landmine 22. */
+  .rw-typer   { transform: scaleX(1); transform-box: fill-box; transform-origin: left center; }
+  .rw-caret-t { transform: translateX(var(--w)); }
+  .rw-phrase  { opacity: 0; }
+  .rw-p6      { opacity: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* The caret blinks on wall-clock time, not on scroll, because a cursor
+       that only moves when the page does reads as a rendering fault. Outside
+       the @supports block deliberately: where view() is missing the drawing is
+       the finished frame, and the finished frame has a live cursor in it. */
+    .rw-caret {
+      animation-name: rw-blink;
+      animation-duration: 1.0526s;
+      animation-iteration-count: infinite;
+      animation-timing-function: steps(1, end);
+    }
+
+    @supports (animation-timeline: view()) {
+      /* ⚠️ Longhands only in this block, and there must never be an
+         `animation` shorthand in it. Lightning CSS folds animation-timeline
+         into the shorthand when both are present and emits
+         `animation: ... view()`, which no browser parses, so the whole
+         declaration is dropped in the production build and nowhere else.
+         Landmine 22, which already cost §02 a production deploy on 17 Aug.
+
+         The timeline is named once on the figure and every descendant walks up
+         to find it. The source plays once for 17.6s on load; here the 17.6s is
+         the scroll range instead, so it starts when the section is reached
+         rather than while it is still below the fold. Proportions are
+         preserved exactly — every animation-range below is that element's own
+         window in seconds mapped onto 5%-65% of the cover range, which is why
+         the last phrase lands at 64.318% and is held, on screen, for the rest
+         of the scroll past. */
+      .repetitive-graphic { view-timeline-name: --rw; }
+
+      .rw-row, .rw-ghost, .rw-boxfill, .rw-check, .rw-pop,
+      .rw-slot, .rw-slotnum, .rw-slotrule,
+      .rw-phrase, .rw-typer, .rw-caret-t {
+        animation-fill-mode: both;
+        animation-timeline: --rw;
+        animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+      }
+      /* The stacks fan out and settle on the source's easeInOutCubic. */
+      .rw-ghost { animation-timing-function: cubic-bezier(.645, .045, .355, 1); }
+
+      /* One step per character, so the reveal lands on glyph boundaries rather
+         than on an arbitrary fraction of the measured width. */
+      .rw-p0 .rw-typer, .rw-p0 .rw-caret-t { animation-timing-function: steps(48); }
+      .rw-p1 .rw-typer, .rw-p1 .rw-caret-t { animation-timing-function: steps(50); }
+      .rw-p2 .rw-typer, .rw-p2 .rw-caret-t { animation-timing-function: steps(28); }
+      .rw-p3 .rw-typer, .rw-p3 .rw-caret-t { animation-timing-function: steps(40); }
+      .rw-p4 .rw-typer, .rw-p4 .rw-caret-t { animation-timing-function: steps(24); }
+      .rw-p5 .rw-typer, .rw-p5 .rw-caret-t { animation-timing-function: steps(46); }
+      .rw-p6 .rw-typer, .rw-p6 .rw-caret-t { animation-timing-function: steps(32); }
+      /* The group's own show/hide must not inherit a steps() from anywhere. */
+      .rw-phrase { animation-timing-function: steps(1, end); }
+
+      /* Row build. Source: ob((T-(0.2+i*0.15))/0.7) on opacity and a 26-unit lift. */
+      .rw-r0 .rw-row      { animation-name: rw-row-in;  animation-range: cover 5.682% cover 8.068%; }
+      .rw-r1 .rw-row      { animation-name: rw-row-in;  animation-range: cover 6.193% cover 8.58%; }
+      .rw-r2 .rw-row      { animation-name: rw-row-in;  animation-range: cover 6.705% cover 9.091%; }
+      .rw-r3 .rw-row      { animation-name: rw-row-in;  animation-range: cover 7.216% cover 9.602%; }
+      .rw-r4 .rw-row      { animation-name: rw-row-in;  animation-range: cover 7.727% cover 10.114%; }
+      .rw-r5 .rw-row      { animation-name: rw-row-in;  animation-range: cover 8.239% cover 10.625%; }
+
+      /* Repeat-stacks. One window per row covering fan-out, hold and settle:
+         g0 rises over 0.5s from 2.2+0.09i, g1 cancels it over 0.6s from 3.55+0.09i,
+         so the window is 1.95s and the internal stops are 0.5/1.95 and 1.35/1.95. */
+      .rw-r0 .rw-g1       { animation-name: rw-ghost-1; animation-range: cover 12.5% cover 19.148%; }
+      .rw-r0 .rw-g2       { animation-name: rw-ghost-2; animation-range: cover 12.5% cover 19.148%; }
+      .rw-r1 .rw-g1       { animation-name: rw-ghost-1; animation-range: cover 12.807% cover 19.455%; }
+      .rw-r1 .rw-g2       { animation-name: rw-ghost-2; animation-range: cover 12.807% cover 19.455%; }
+      .rw-r2 .rw-g1       { animation-name: rw-ghost-1; animation-range: cover 13.114% cover 19.761%; }
+      .rw-r2 .rw-g2       { animation-name: rw-ghost-2; animation-range: cover 13.114% cover 19.761%; }
+      .rw-r3 .rw-g1       { animation-name: rw-ghost-1; animation-range: cover 13.42% cover 20.068%; }
+      .rw-r3 .rw-g2       { animation-name: rw-ghost-2; animation-range: cover 13.42% cover 20.068%; }
+      .rw-r4 .rw-g1       { animation-name: rw-ghost-1; animation-range: cover 13.727% cover 20.375%; }
+      .rw-r4 .rw-g2       { animation-name: rw-ghost-2; animation-range: cover 13.727% cover 20.375%; }
+      .rw-r5 .rw-g1       { animation-name: rw-ghost-1; animation-range: cover 14.034% cover 20.682%; }
+      .rw-r5 .rw-g2       { animation-name: rw-ghost-2; animation-range: cover 14.034% cover 20.682%; }
+
+      /* Tick. eo((T-(4.6+i*0.11))/0.3): box fills, check draws, box pops 16%. */
+      .rw-r0 .rw-boxfill  { animation-name: rw-fill;    animation-range: cover 20.682% cover 21.705%; }
+      .rw-r0 .rw-check    { animation-name: rw-draw;    animation-range: cover 20.682% cover 21.705%; }
+      .rw-r0 .rw-pop      { animation-name: rw-pop;     animation-range: cover 20.682% cover 21.705%; }
+      .rw-r1 .rw-boxfill  { animation-name: rw-fill;    animation-range: cover 21.057% cover 22.08%; }
+      .rw-r1 .rw-check    { animation-name: rw-draw;    animation-range: cover 21.057% cover 22.08%; }
+      .rw-r1 .rw-pop      { animation-name: rw-pop;     animation-range: cover 21.057% cover 22.08%; }
+      .rw-r2 .rw-boxfill  { animation-name: rw-fill;    animation-range: cover 21.432% cover 22.455%; }
+      .rw-r2 .rw-check    { animation-name: rw-draw;    animation-range: cover 21.432% cover 22.455%; }
+      .rw-r2 .rw-pop      { animation-name: rw-pop;     animation-range: cover 21.432% cover 22.455%; }
+      .rw-r3 .rw-boxfill  { animation-name: rw-fill;    animation-range: cover 21.807% cover 22.83%; }
+      .rw-r3 .rw-check    { animation-name: rw-draw;    animation-range: cover 21.807% cover 22.83%; }
+      .rw-r3 .rw-pop      { animation-name: rw-pop;     animation-range: cover 21.807% cover 22.83%; }
+      .rw-r4 .rw-boxfill  { animation-name: rw-fill;    animation-range: cover 22.182% cover 23.205%; }
+      .rw-r4 .rw-check    { animation-name: rw-draw;    animation-range: cover 22.182% cover 23.205%; }
+      .rw-r4 .rw-pop      { animation-name: rw-pop;     animation-range: cover 22.182% cover 23.205%; }
+      .rw-r5 .rw-boxfill  { animation-name: rw-fill;    animation-range: cover 22.557% cover 23.58%; }
+      .rw-r5 .rw-check    { animation-name: rw-draw;    animation-range: cover 22.557% cover 23.58%; }
+      .rw-r5 .rw-pop      { animation-name: rw-pop;     animation-range: cover 22.557% cover 23.58%; }
+
+      /* Slot 07 arrives just ahead of the first phrase: ob((T-5.85)/0.6). */
+      .rw-slot, .rw-slotnum, .rw-slotrule { animation-name: rw-slot-in; animation-range: cover 24.943% cover 26.989%; }
+
+      /* The seven phrases. Write starts at 6.2 and PER = (17.6-6.2-0.2)/7 = 1.6s.
+         Inside each 1.6s window: type over 0.672s (42%), hold to 1.248s (78%),
+         erase over 0.32s (98%), sit empty to the hand-off. The last one never
+         erases, which is what leaves the drawing on a finished frame. */
+      .rw-p0              { animation-name: rw-show; animation-range: cover 26.136% cover 31.591%; }
+      .rw-p0 .rw-typer    { animation-name: rw-type; animation-range: cover 26.136% cover 31.591%; }
+      .rw-p0 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 26.136% cover 31.591%; }
+      .rw-p1              { animation-name: rw-show; animation-range: cover 31.591% cover 37.045%; }
+      .rw-p1 .rw-typer    { animation-name: rw-type; animation-range: cover 31.591% cover 37.045%; }
+      .rw-p1 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 31.591% cover 37.045%; }
+      .rw-p2              { animation-name: rw-show; animation-range: cover 37.045% cover 42.5%; }
+      .rw-p2 .rw-typer    { animation-name: rw-type; animation-range: cover 37.045% cover 42.5%; }
+      .rw-p2 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 37.045% cover 42.5%; }
+      .rw-p3              { animation-name: rw-show; animation-range: cover 42.5% cover 47.955%; }
+      .rw-p3 .rw-typer    { animation-name: rw-type; animation-range: cover 42.5% cover 47.955%; }
+      .rw-p3 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 42.5% cover 47.955%; }
+      .rw-p4              { animation-name: rw-show; animation-range: cover 47.955% cover 53.409%; }
+      .rw-p4 .rw-typer    { animation-name: rw-type; animation-range: cover 47.955% cover 53.409%; }
+      .rw-p4 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 47.955% cover 53.409%; }
+      .rw-p5              { animation-name: rw-show; animation-range: cover 53.409% cover 58.864%; }
+      .rw-p5 .rw-typer    { animation-name: rw-type; animation-range: cover 53.409% cover 58.864%; }
+      .rw-p5 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 53.409% cover 58.864%; }
+      .rw-p6              { animation-name: rw-show-last; animation-range: cover 58.864% cover 64.318%; }
+      .rw-p6 .rw-typer    { animation-name: rw-type-last; animation-range: cover 58.864% cover 64.318%; }
+      .rw-p6 .rw-caret-t  { animation-name: rw-caret-last; animation-range: cover 58.864% cover 64.318%; }
+    }
+  }
+
+  /* ============================================================
+     Keyframes. Every from-state is in here rather than in a rule, so a
+     dropped declaration renders the finished drawing instead of a blank one.
+     ============================================================ */
+
+  /* ob((T-(0.2+i*0.15))/0.7): the row rises 26 units into place. */
+  @keyframes rw-row-in { from { opacity: 0; transform: translateY(26px) } to { opacity: 1; transform: none } }
+
+  /* The repeat-stacks. Internal stops are 0.5/1.95 and 1.35/1.95 of the
+     window: fan out, hold while the wave runs down the list, settle back. */
+  @keyframes rw-ghost-1 {
+    0%                { opacity: 0;   transform: none }
+    25.641%, 69.231%  { opacity: .78; transform: translate(var(--gx1), var(--gy1)) rotate(var(--gr1)) }
+    100%              { opacity: 0;   transform: none }
+  }
+  @keyframes rw-ghost-2 {
+    0%                { opacity: 0;  transform: none }
+    25.641%, 69.231%  { opacity: .5; transform: translate(var(--gx2), var(--gy2)) rotate(var(--gr2)) }
+    100%              { opacity: 0;  transform: none }
+  }
+
+  /* eo((T-(4.6+i*0.11))/0.3). */
+  @keyframes rw-fill { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes rw-draw { from { stroke-dashoffset: 1; opacity: 0 } to { stroke-dashoffset: 0; opacity: 1 } }
+  @keyframes rw-pop  { 0% { transform: scale(1) } 50% { transform: scale(1.16) } 100% { transform: scale(1) } }
+
+  /* ob((T-5.85)/0.6). The slot lifts 22 units, the same gesture as a row. */
+  @keyframes rw-slot-in { from { opacity: 0; transform: translateY(22px) } to { opacity: 1; transform: none } }
+
+  /* Type over 42% of the window, hold to 78%, erase over the next 20%, then
+     sit empty until the next phrase takes over. The last one holds instead,
+     which is what leaves the drawing finished. */
+  @keyframes rw-type      { 0% { transform: scaleX(0) } 42%, 78% { transform: scaleX(1) } 98%, 100% { transform: scaleX(0) } }
+  @keyframes rw-type-last { 0% { transform: scaleX(0) } 42%, 100% { transform: scaleX(1) } }
+  @keyframes rw-caret-mv  { 0% { transform: translateX(0) } 42%, 78% { transform: translateX(var(--w)) } 98%, 100% { transform: translateX(0) } }
+  @keyframes rw-caret-last{ 0% { transform: translateX(0) } 42%, 100% { transform: translateX(var(--w)) } }
+
+  /* Only one phrase is in the slot at a time. The hand-off is exact: each
+     window ends where the next begins, and the outgoing phrase is already
+     erased by 98%, so nothing crossfades. */
+  @keyframes rw-show      { 0% { opacity: 0 } 0.001%, 99.999% { opacity: 1 } 100% { opacity: 0 } }
+  @keyframes rw-show-last { 0% { opacity: 0 } 0.001%, 100% { opacity: 1 } }
+
+  @keyframes rw-blink { 0%, 55% { opacity: .6 } 56%, 99% { opacity: 0 } }
+</style>
