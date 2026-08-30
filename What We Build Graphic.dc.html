@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #EFEBE2; }
+  a { color: #2F4E7A; text-decoration: none; }
+  a:hover { color: #26231E; }
+</style>
+<script>window.OM_SCENES = '[{"name":"Draw","dur":2.2,"desc":"Six steps of the process appear one by one inside a clean window"},{"name":"Connect","dur":2.0,"desc":"Connections draw themselves between the steps until the whole path is joined"},{"name":"Run","dur":2.8,"desc":"The system starts running on its own: the path lights up, work pulses along it, the counter climbs"},{"name":"Settle","dur":2.4,"desc":"Every step checks itself off, the final step completes, and the loop restarts"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+<script>window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#2F4E7A",
+  "grid": true,
+  "pulses": true,
+  "motionEditor": true
+}/*EDITMODE-END*/;</script>
+</helmet>
+<x-import component-from-global-scope="BuildGraphic" from="./animations-v3.jsx ./tweaks-panel.jsx ./buildgraphic.jsx" hint-size="100%,100%"></x-import>
+</x-dc>
+</body>
+</html>
