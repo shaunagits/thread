@@ -482,17 +482,28 @@
      The design's scroll handler divides the whole window into six for the same
      reason any hand-rolled scrubber does — it is the easy arithmetic — but the
      visible result is that callout 1 fires before the plate is legible. */
+  /* ⚠️ The drawing itself is no longer dimmed, on the owner's instruction,
+     29 Aug 2026. The design file's scroll handler drops every element that is
+     not the active callout to 50%, and the effect in a real browser is that
+     the dashboard — the page's only picture of a finished thing — spends most
+     of its time on screen looking greyed out and disabled rather than focused.
+
+     The walk survives; only the punishment does. The spotlight frame still
+     steps through the six regions and the active callout still comes forward.
+     What changed: the window stays at full strength throughout, and inactive
+     callouts sit back at .55 rather than .22, which reads as recessed instead
+     of switched off. `dp-dim` is deliberately kept as an identity animation
+     rather than deleted, so the wiring below stays intact and restoring the
+     original behaviour is a one-value edit here rather than a rebuild. */
   @keyframes dp-dim {
-    0%, 9%     { opacity: 1; }
-    12%, 88%   { opacity: .5; }
-    90%, 100%  { opacity: 1; }
+    0%, 100% { opacity: 1; }
   }
-  @keyframes dp-focus-1 { 0%, 23.33% { opacity: 1 } 25%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
-  @keyframes dp-focus-2 { 0%, 9% { opacity: 1 } 11%, 22% { opacity: .22 } 23.33%, 36.67% { opacity: 1 } 38.3%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
-  @keyframes dp-focus-3 { 0%, 9% { opacity: 1 } 11%, 35.3% { opacity: .22 } 36.67%, 50% { opacity: 1 } 51.7%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
-  @keyframes dp-focus-4 { 0%, 9% { opacity: 1 } 11%, 48.7% { opacity: .22 } 50%, 63.33% { opacity: 1 } 65%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
-  @keyframes dp-focus-5 { 0%, 9% { opacity: 1 } 11%, 62% { opacity: .22 } 63.33%, 76.67% { opacity: 1 } 78.3%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
-  @keyframes dp-focus-6 { 0%, 9% { opacity: 1 } 11%, 75.3% { opacity: .22 } 76.67%, 100% { opacity: 1 } }
+  @keyframes dp-focus-1 { 0%, 23.33% { opacity: 1 } 25%, 89% { opacity: .55 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-2 { 0%, 9% { opacity: 1 } 11%, 22% { opacity: .55 } 23.33%, 36.67% { opacity: 1 } 38.3%, 89% { opacity: .55 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-3 { 0%, 9% { opacity: 1 } 11%, 35.3% { opacity: .55 } 36.67%, 50% { opacity: 1 } 51.7%, 89% { opacity: .55 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-4 { 0%, 9% { opacity: 1 } 11%, 48.7% { opacity: .55 } 50%, 63.33% { opacity: 1 } 65%, 89% { opacity: .55 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-5 { 0%, 9% { opacity: 1 } 11%, 62% { opacity: .55 } 63.33%, 76.67% { opacity: 1 } 78.3%, 89% { opacity: .55 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-6 { 0%, 9% { opacity: 1 } 11%, 75.3% { opacity: .55 } 76.67%, 100% { opacity: 1 } }
 
   @keyframes dp-spot-1 { 0%, 10% { opacity: 0 } 12%, 23.33% { opacity: 1 } 25%, 100% { opacity: 0 } }
   @keyframes dp-spot-2 { 0%, 22% { opacity: 0 } 24.3%, 36.67% { opacity: 1 } 38.3%, 100% { opacity: 0 } }
@@ -538,9 +549,11 @@
         animation-range: cover 0% cover 100%;
       }
 
-      /* Everything the callouts point at dims together, so the spotlight is
-         the only thing at full strength. The whole walk is inside one range,
-         so the keyframe percentages above are scroll percentages directly. */
+      /* The window used to dim here so the spotlight was the only thing at
+         full strength; `dp-dim` is now an identity animation and these
+         elements hold at opacity 1. See the note over the keyframe. The whole
+         walk is inside one range, so the keyframe percentages above are
+         scroll percentages directly. */
       .dp-wide .dp-window, .dp-wide .dp-side, .dp-wide .dp-head,
       .dp-wide .dp-stat, .dp-wide .dp-chart, .dp-wide .dp-list {
         animation-name: dp-dim;

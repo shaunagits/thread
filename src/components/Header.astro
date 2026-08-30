@@ -1,5 +1,5 @@
 ---
-import { nav, cta, ctaHref } from '../content/site';
+import { nav, cta, ctaHref, loginHref, loginLabel } from '../content/site';
 
 /* The label moved into site.ts on 29 Aug 2026. It was a constant here, which
    worked while only this file rendered it twice, but the hero, §01, the footer
@@ -22,6 +22,10 @@ import { nav, cta, ctaHref } from '../content/site';
 
     <nav class="nav-links" aria-label="Primary">
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {/* Quiet text link, never a second button. It sits after the section
+          links and before the CTA, which is where a returning client looks
+          for it and where it is least likely to be mistaken for the ask. */}
+      <a href={loginHref} class="nav-login">{loginLabel}</a>
       {/* Was its own near-copy of .btn with different padding, type size and
           dot. It is the same object, so it now uses the same class. */}
       <a href={ctaHref} class="btn nav-cta">{cta}</a>
@@ -51,6 +55,7 @@ import { nav, cta, ctaHref } from '../content/site';
       <div class="menu-panel">
         <nav aria-label="Primary, phone">
           {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+          <a href={loginHref}>{loginLabel}</a>
         </nav>
         <a href={ctaHref} class="btn menu-cta">{cta}</a>
       </div>
@@ -92,6 +97,10 @@ import { nav, cta, ctaHref } from '../content/site';
     background:var(--color-accent-dark); transform:scaleX(0); transform-origin:left;
   }
   .nav-links a:not(.nav-cta) { padding:8px 0 9px; }
+  /* Set back one step from the section links so the row reads as three
+     navigation items plus a utility, rather than four peers. */
+  .nav-links a.nav-login { color: var(--color-faint); }
+  .nav-links a.nav-login:hover { color: var(--color-ink); }
   .nav-links a:hover { color: var(--color-ink); text-decoration:none; }
   /* 46px in the header against .btn's 48 elsewhere: the bar is 70px tall and a
      48px button inside it leaves 11px of air top and bottom, which reads as the

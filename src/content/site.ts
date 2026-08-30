@@ -35,6 +35,23 @@ export const cta = 'Start the conversation';
 export const ctaHref = '/#contact';
 
 /**
+ * The client login, added 29 Aug 2026. Points at the app subdomain, which is a
+ * separate deployment from this marketing site.
+ *
+ * Absolute and cross-origin, so unlike every other href in this file it is not
+ * root-relative — landmine 13 is about fragments resolving against the wrong
+ * document, and does not apply. Same tab deliberately: a login is a
+ * destination, not a side trip, and `target="_blank"` on an auth flow strands
+ * people in a tab with no way back.
+ *
+ * It renders as a quiet text link, never as a second button. A visitor who
+ * already has an account is not the person the page is written for, and a
+ * login competing with the CTA would sell to the wrong reader.
+ */
+export const loginHref = 'https://app.threadhawaii.com';
+export const loginLabel = 'Log in';
+
+/**
  * Relabelled twice on 29 Aug 2026: What I do / How it works / What you get
  * became The busywork / What I build / Start here with the Style C redesign,
  * and then this, on the owner's pick from four directions.
@@ -367,6 +384,10 @@ export const footerColumns = [
          leaving them would have had the site offering two different things. */
       { label: cta, href: ctaHref },
       { label: 'Email me', href: `mailto:${contact.email}` },
+      /* Second home for the login, for a returning client who scrolled past
+         the header rather than looking up. Same quiet treatment: it is a link
+         in a list here, not a button. */
+      { label: loginLabel, href: loginHref },
     ],
   },
 ];

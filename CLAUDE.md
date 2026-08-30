@@ -98,6 +98,20 @@ section headings instead. **The labels deliberately no longer describe the
 anchors they point at** (`#busywork`, `#build`) — ids are contracts, and renaming
 one to chase a label is how indexed links break.
 
+**The §02 plate's scroll walk does not dim the drawing**, on the owner's
+instruction. The design file's handler drops everything that is not the active
+callout to 50%, which in a browser makes the dashboard look disabled rather
+than focused for most of the time it is on screen. The spotlight frame and the
+callout focus survive; inactive callouts sit at .55 rather than .22. `dp-dim`
+is kept as an identity keyframe so restoring the original is a one-value edit.
+
+**There is a client login** at `https://app.threadhawaii.com`, in `site.ts` as
+`loginHref`/`loginLabel`, rendering in the header, the phone menu and the
+footer's Contact column. It is a quiet text link and never a button: a visitor
+who already has an account is not who the page is written for, and a login
+competing with the CTA sells to the wrong reader. The subdomain resolves and
+one of its A records is Vercel's.
+
 **Section markers are bare numbers on a rule, above the heading.** They carry no
 label, so the old rule that the nav must match the markers no longer has anything
 to match. What still holds: the header and the footer point at the same three
@@ -105,10 +119,11 @@ anchors and must label them identically.
 
 ### Still outstanding from this change
 
-1. **`[Owner name]` and the photo are placeholders and must not ship.** The
-   design file itself flags them. `ContactSection.astro` renders a dashed
-   "Blocked" tag in the layout so it is hard to ship by accident. **Do not
-   invent a name.**
+1. ~~**`[Owner name]` and the photo are placeholders**~~ — the name is
+   **Shauna**, first name only, confirmed by the owner 29 Aug 2026. The dashed
+   "Blocked" tag is gone. **The photo is still outstanding**: `.owner-photo`
+   renders a dashed circle so the gap stays visible in the layout. Replace it
+   with a real square `<img>`, 64px minimum, and drop the dashed border rule.
 2. **`--color-faint` `#767C76` fails AA at 3.66:1 on paper**, worse than the
    ocean palette's 4.21. It carries the hero signature line, the form helper and
    the open row 08 text. Raised with the owner before the build and built as

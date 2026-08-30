@@ -38,23 +38,24 @@ import IntakeForm from './IntakeForm.astro';
         <a href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.location}
       </p>
 
-      {/* ⚠️ PLACEHOLDER, and it must not ship as-is.
+      {/* The name is Shauna, first name only, confirmed by the owner 29 Aug
+          2026. It replaces the design file's "[Owner name]" placeholder and
+          the dashed Blocked tag that stood in the layout beside it.
 
-          The design file carries this card flagged "blocked on owner name +
-          photo", and neither exists yet. A name is not something this repo
-          may invent — see CLAUDE.md, "Content that must never be invented" —
-          so it renders as written rather than being filled in with a guess or
-          silently dropped.
+          First name alone is the right register for this card: it is the one
+          place on the page that says a person is behind the form, the copy
+          around it is first person throughout, and a surname here would make
+          it read as a credential rather than an introduction.
 
-          The card is the only place on the page that says a person is behind
-          the form, which is why it is worth holding open rather than cutting.
-          Replace both, then delete this comment. */}
+          ⚠️ The photo is still outstanding. The slot renders as a dashed
+          circle rather than being dropped, so the card keeps its shape and
+          the gap stays visible. Replace `.owner-photo` with a real <img>,
+          64×64 at minimum and square, and delete the dashed border rule. */}
       <div class="owner">
-        <span class="owner-flag">Blocked · owner name and photo</span>
         <div class="owner-card">
           <div class="owner-photo" aria-hidden="true"><span>Photo</span></div>
           <p>
-            <strong>[Owner name]</strong> · Thread is one person, based in
+            <strong>Shauna</strong> · Thread is one person, based in
             Honolulu. I build every system myself and I answer this form myself.
           </p>
         </div>
@@ -101,15 +102,6 @@ import IntakeForm from './IntakeForm.astro';
   .contact-meta a:hover { color: var(--color-accent); }
 
   .owner { margin-top: 34px; max-width: 430px; }
-  /* The flag is deliberately ugly and deliberately in the layout rather than
-     in a comment: a dashed box saying "blocked" is hard to ship by accident,
-     which a tidy placeholder name is not. It goes when the content arrives. */
-  .owner-flag {
-    display: inline-flex; align-items: center;
-    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
-    letter-spacing: var(--tracking-mono); color: var(--color-ink);
-    border: 1px dashed var(--color-ink); padding: 4px 8px; margin-bottom: 12px;
-  }
   .owner-card {
     display: flex; gap: 18px; align-items: center;
     background: var(--color-white); border: 1px solid var(--color-ink);
