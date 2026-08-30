@@ -167,8 +167,14 @@ the *current* content; do not read it as the copy of record.
    ocean palette's 4.21. It carries the hero signature line, the form helper and
    the open row 08 text. Raised with the owner before the build and built as
    drawn. `#6A7076` clears it at 4.54:1 and is barely perceptible.
-3. **`/og.png` is stale.** Run `npm run assets:build` — the card art is a baked
-   PNG and still carries the ocean palette. Favicons too.
+3. ~~**`/og.png` is stale.**~~ Rebuilt 29 Aug 2026, along with every icon.
+   Both now have renderers that need only Python: `npm run og:build` and
+   `npm run icons:build`. That is the point of them — `assets:build` needs
+   headless Chrome, rsvg-convert and ImageMagick, which is exactly why these
+   sat on the ocean palette after the swap. `/og` is still the design of
+   record; `scripts/build-og.py` is a renderer that has to catch up if the two
+   ever disagree. **A web app manifest was added at the same time**: the site
+   had icons for browser tabs and iOS home screens and nothing for Android.
 4. ~~The narrow (phone) composition of both drawings was derived, not drawn.~~
    The owner supplied `Thread Homepage - Mobile.dc.html` on 29 Aug 2026 and it
    is built. Still nothing between 640 and 1440 is drawn, so the tablet band

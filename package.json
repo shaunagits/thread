@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "fonts:build": "python3 scripts/build-fonts.py",
     "assets:build": "bash scripts/build-assets.sh",
-    "icons:build": "python3 scripts/build-icons.py"
+    "icons:build": "python3 scripts/build-icons.py",
+    "og:build": "python3 scripts/build-og.py"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
