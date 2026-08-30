@@ -22,32 +22,28 @@
  *                     rest of the curve by more (measured: the best overshooting
  *                     fit was 1.5x worse across the whole range).
  *
- * ⚠️ PHRASES BELOW IS THE SOURCE'S ARRAY, NOT site.ts's `signals`. The two
- * disagree, and the disagreement is deliberate on the owner's side or an
- * oversight on it — either way this file does not silently reconcile them:
+ * ⚠️ PHRASES IS DERIVED FROM site.ts, NOT COPIED FROM THE SOURCE. The source's
+ * own array disagreed with `signals` in two ways: it dropped signals[6],
+ * 'Following a 12-step process that should take two', and its seventh entry was
+ * `signalOpen`, which is the open row's text rather than a signal. It was ported
+ * as drawn and raised; the owner's instruction on 29 Aug 2026 was to put the
+ * phrase back so all seven signals show.
  *
- *   - The source drops 'Following a 12-step process that should take two',
- *     which is signals[6].
- *   - The source's seventh phrase is 'Whatever your team keeps redoing',
- *     which is site.ts's `signalOpen` — the open row, not a signal.
+ * So the array is now `[...signals, signalOpen]` — eight phrases, the seven
+ * signals in site.ts order and then the open row's own text, which is the one
+ * the sequence ends held on. Deriving it rather than restating it is the point:
+ * the drawing and the visually-hidden list below are now fed from one array and
+ * cannot drift apart again, which is exactly how the omission arose.
  *
- * So the drawing types six of the seven signals plus the open row's text. All
- * eight strings still ship, indexed and readable, in the visually-hidden list
- * below, which is fed from site.ts. Raised with the owner rather than
- * reconciled here; see CLAUDE.md, "If something in the design looks like a
- * mistake, raise it — don't silently fix it."
+ * ⚠️ Adding or removing a signal in site.ts therefore changes this drawing. Two
+ * things must be re-derived in the same commit, and neither fails loudly:
+ * `widths` below (the typewriter's clip geometry, measured per phrase) and the
+ * per-phrase animation-range and steps() blocks in the stylesheet, which are
+ * computed from the array's length. See the notes over each.
  */
 import { signals, signalOpen } from '../content/site';
 
-const PHRASES = [
-  'Entering the same information in multiple places',
-  'Managing an important process through spreadsheets',
-  'Copying data between systems',
-  'Chasing approvals, updates, or paperwork',
-  'Building reports by hand',
-  'Working around software that doesn’t quite fit',
-  'Whatever your team keeps redoing',
-];
+const PHRASES = [...signals, signalOpen];
 
 /**
  * Two compositions, and each carries its own coordinates. Nothing here is the
@@ -57,15 +53,36 @@ const PHRASES = [
  * at 0.38, which puts the labels near 5px — the same mistake that broke the
  * hero graphic on phones, and the reason CLAUDE.md landmine 17 exists.
  *
- * `widths` are the seven phrases measured against the shipped Public Sans
- * subset (public-sans-latin-400.woff2, 2000 upm) at that composition's phrase
- * size, rounded up to the next whole unit and given 2 units of slack. They are
- * the clip geometry for the typewriter, so ⚠️ if --font-sans is ever repointed
- * these must be re-measured or the last glyph or two of the longer phrases
- * will never be revealed. Measured, not estimated:
+ * TWO width arrays per composition, and they are deliberately different numbers
+ * for the same eight strings.
  *
- *   wide, 19u:  429.16 479.75 276.78 371.18 216.85 409.22 309.33
- *   narrow,13u: 293.64 328.25 189.38 253.97 148.37 279.99 211.65
+ * `clip` is the typewriter's clip geometry: the sum of the glyph advances in the
+ * shipped Public Sans subset (public-sans-latin-400.woff2, 2000 upm) at that
+ * composition's phrase size, rounded up with 2 units of slack. Summing advances
+ * ignores GPOS kerning, so it is an UPPER BOUND on the rendered width — which is
+ * exactly what a clip wants. Too wide only reveals empty space; too narrow cuts
+ * the last glyph off the finished frame, in every browser, permanently.
+ *
+ * `caret` is where the cursor actually lands: the real rendered width, measured
+ * in-browser with the font loaded (getBBox on the live <text>). Kerning tightens
+ * these strings by up to 6%, so the caret would otherwise sit a glyph and a half
+ * past the last letter it just typed.
+ *
+ *   wide, 19u   advances 429.16 479.75 276.78 371.18 216.85 409.22 432.51 309.33
+ *               rendered 404.20 457.27 264.20 355.49 205.71 386.61 411.49 294.43
+ *   narrow, 13u advances 293.64 328.25 189.38 253.97 148.37 279.99 295.93 211.65
+ *               rendered 290.94 327.87 189.10 255.30 147.92 278.42 295.83 211.13
+ *
+ * ⚠️ Measure each composition at ITS OWN phrase size rather than scaling one set
+ * by the size ratio. The same string is 21.27em at 19u and 22.38em at 13u — the
+ * advance rounding differs with size, which is why the narrow numbers sit much
+ * closer to the raw advances than the wide ones do. The rendered figures are
+ * stable across viewport width (verified at 1440, 900 and 390: under 0.1 units
+ * of variation), so they are font metrics and not a measurement of the moment.
+ *
+ * The restored signals[6] is the second-longest of the eight and clears both
+ * canvases: wide it ends at 111+435+8 = 554 of 760, narrow at 48+298+8 = 354
+ * of 400, both inside the row with the caret allowed for.
  */
 const W = {
   cls: 'rw-wide', idp: 'w',
@@ -76,7 +93,8 @@ const W = {
   bars: [[300, 168], [244, 132], [330, 150], [268, 176], [212, 140], [318, 158]],
   box: 22, boxRx: 7, chk: 13,
   slotY: 600, caretW: 2, caretH: 22, caretGap: 6,
-  widths: [430, 480, 277, 372, 217, 410, 310],
+  clip:  [432, 482, 279, 374, 219, 412, 435, 312],
+  caret: [405, 458, 265, 356, 206, 387, 412, 295],
 };
 const N = {
   cls: 'rw-narrow', idp: 'n',
@@ -87,7 +105,8 @@ const N = {
   bars: [[216, 121], [176, 95], [238, 108], [193, 127], [153, 101], [229, 114]],
   box: 18, boxRx: 6, chk: 11,
   slotY: 468, caretW: 2, caretH: 18, caretGap: 5,
-  widths: [294, 329, 190, 254, 149, 280, 212],
+  clip:  [296, 331, 192, 256, 151, 282, 298, 214],
+  caret: [291, 328, 190, 256, 148, 279, 296, 212],
 };
 
 /* The checkmark is the source's own path on its own 12-unit grid, placed and
@@ -120,7 +139,7 @@ const label =
                 The rect is this phrase's own measured width, so scaleX(1) is
                 exactly the end of the text and the reveal cannot run on past
                 the last glyph or stop short of it. */}
-            <rect class="rw-typer" x={c.barX} y={c.slotY} width={c.widths[k]} height={c.rowH} />
+            <rect class="rw-typer" x={c.barX} y={c.slotY} width={c.clip[k]} height={c.rowH} />
           </clipPath>
         ))}
       </defs>
@@ -176,8 +195,11 @@ const label =
             <text class="rw-text" x={c.barX} y={c.slotY + c.rowH / 2}>{p}</text>
           </g>
           {/* The caret rides the same steps() as the clip, so it sits against
-              the last glyph typed rather than at a fixed stop. */}
-          <g class="rw-caret-t" style={`--w:${c.widths[k]}px`}>
+              the last glyph typed rather than at a fixed stop — but it travels
+              the RENDERED width, not the clip's upper bound. See the note over
+              the two arrays: the clip may overshoot the text and nobody sees
+              it; the caret may not, because it is the thing you look at. */}
+          <g class="rw-caret-t" style={`--w:${c.caret[k]}px`}>
             <rect
               class="rw-caret"
               x={c.barX + c.caretGap}
@@ -309,7 +331,7 @@ const label =
   .rw-typer   { transform: scaleX(1); transform-box: fill-box; transform-origin: left center; }
   .rw-caret-t { transform: translateX(var(--w)); }
   .rw-phrase  { opacity: 0; }
-  .rw-p6      { opacity: 1; }
+  .rw-p7      { opacity: 1; }
 
   @media (prefers-reduced-motion: no-preference) {
     /* The caret blinks on wall-clock time, not on scroll, because a cursor
@@ -359,7 +381,8 @@ const label =
       .rw-p3 .rw-typer, .rw-p3 .rw-caret-t { animation-timing-function: steps(40); }
       .rw-p4 .rw-typer, .rw-p4 .rw-caret-t { animation-timing-function: steps(24); }
       .rw-p5 .rw-typer, .rw-p5 .rw-caret-t { animation-timing-function: steps(46); }
-      .rw-p6 .rw-typer, .rw-p6 .rw-caret-t { animation-timing-function: steps(32); }
+      .rw-p6 .rw-typer, .rw-p6 .rw-caret-t { animation-timing-function: steps(48); }
+      .rw-p7 .rw-typer, .rw-p7 .rw-caret-t { animation-timing-function: steps(32); }
       /* The group's own show/hide must not inherit a steps() from anywhere. */
       .rw-phrase { animation-timing-function: steps(1, end); }
 
@@ -410,31 +433,36 @@ const label =
       /* Slot 07 arrives just ahead of the first phrase: ob((T-5.85)/0.6). */
       .rw-slot, .rw-slotnum, .rw-slotrule { animation-name: rw-slot-in; animation-range: cover 24.943% cover 26.989%; }
 
-      /* The seven phrases. Write starts at 6.2 and PER = (17.6-6.2-0.2)/7 = 1.6s.
-         Inside each 1.6s window: type over 0.672s (42%), hold to 1.248s (78%),
-         erase over 0.32s (98%), sit empty to the hand-off. The last one never
-         erases, which is what leaves the drawing on a finished frame. */
-      .rw-p0              { animation-name: rw-show; animation-range: cover 26.136% cover 31.591%; }
-      .rw-p0 .rw-typer    { animation-name: rw-type; animation-range: cover 26.136% cover 31.591%; }
-      .rw-p0 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 26.136% cover 31.591%; }
-      .rw-p1              { animation-name: rw-show; animation-range: cover 31.591% cover 37.045%; }
-      .rw-p1 .rw-typer    { animation-name: rw-type; animation-range: cover 31.591% cover 37.045%; }
-      .rw-p1 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 31.591% cover 37.045%; }
-      .rw-p2              { animation-name: rw-show; animation-range: cover 37.045% cover 42.5%; }
-      .rw-p2 .rw-typer    { animation-name: rw-type; animation-range: cover 37.045% cover 42.5%; }
-      .rw-p2 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 37.045% cover 42.5%; }
-      .rw-p3              { animation-name: rw-show; animation-range: cover 42.5% cover 47.955%; }
-      .rw-p3 .rw-typer    { animation-name: rw-type; animation-range: cover 42.5% cover 47.955%; }
-      .rw-p3 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 42.5% cover 47.955%; }
-      .rw-p4              { animation-name: rw-show; animation-range: cover 47.955% cover 53.409%; }
-      .rw-p4 .rw-typer    { animation-name: rw-type; animation-range: cover 47.955% cover 53.409%; }
-      .rw-p4 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 47.955% cover 53.409%; }
-      .rw-p5              { animation-name: rw-show; animation-range: cover 53.409% cover 58.864%; }
-      .rw-p5 .rw-typer    { animation-name: rw-type; animation-range: cover 53.409% cover 58.864%; }
-      .rw-p5 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 53.409% cover 58.864%; }
-      .rw-p6              { animation-name: rw-show-last; animation-range: cover 58.864% cover 64.318%; }
-      .rw-p6 .rw-typer    { animation-name: rw-type-last; animation-range: cover 58.864% cover 64.318%; }
-      .rw-p6 .rw-caret-t  { animation-name: rw-caret-last; animation-range: cover 58.864% cover 64.318%; }
+      /* The eight phrases. Write starts at 6.2 and the source divides what is
+         left by the array length: PER = (17.6-6.2-0.2)/8 = 1.4s, where seven
+         phrases gave 1.6s. The internal stops are fractions of PER, so the
+         keyframes are unchanged and only these windows move: type over 42%,
+         hold to 78%, erase over the next 20%, sit empty to the hand-off. The
+         last never erases, which is what leaves the drawing finished. */
+      .rw-p0              { animation-name: rw-show; animation-range: cover 26.136% cover 30.909%; }
+      .rw-p0 .rw-typer    { animation-name: rw-type; animation-range: cover 26.136% cover 30.909%; }
+      .rw-p0 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 26.136% cover 30.909%; }
+      .rw-p1              { animation-name: rw-show; animation-range: cover 30.909% cover 35.682%; }
+      .rw-p1 .rw-typer    { animation-name: rw-type; animation-range: cover 30.909% cover 35.682%; }
+      .rw-p1 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 30.909% cover 35.682%; }
+      .rw-p2              { animation-name: rw-show; animation-range: cover 35.682% cover 40.455%; }
+      .rw-p2 .rw-typer    { animation-name: rw-type; animation-range: cover 35.682% cover 40.455%; }
+      .rw-p2 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 35.682% cover 40.455%; }
+      .rw-p3              { animation-name: rw-show; animation-range: cover 40.455% cover 45.227%; }
+      .rw-p3 .rw-typer    { animation-name: rw-type; animation-range: cover 40.455% cover 45.227%; }
+      .rw-p3 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 40.455% cover 45.227%; }
+      .rw-p4              { animation-name: rw-show; animation-range: cover 45.227% cover 50.0%; }
+      .rw-p4 .rw-typer    { animation-name: rw-type; animation-range: cover 45.227% cover 50.0%; }
+      .rw-p4 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 45.227% cover 50.0%; }
+      .rw-p5              { animation-name: rw-show; animation-range: cover 50.0% cover 54.773%; }
+      .rw-p5 .rw-typer    { animation-name: rw-type; animation-range: cover 50.0% cover 54.773%; }
+      .rw-p5 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 50.0% cover 54.773%; }
+      .rw-p6              { animation-name: rw-show; animation-range: cover 54.773% cover 59.545%; }
+      .rw-p6 .rw-typer    { animation-name: rw-type; animation-range: cover 54.773% cover 59.545%; }
+      .rw-p6 .rw-caret-t  { animation-name: rw-caret-mv; animation-range: cover 54.773% cover 59.545%; }
+      .rw-p7              { animation-name: rw-show-last; animation-range: cover 59.545% cover 64.318%; }
+      .rw-p7 .rw-typer    { animation-name: rw-type-last; animation-range: cover 59.545% cover 64.318%; }
+      .rw-p7 .rw-caret-t  { animation-name: rw-caret-last; animation-range: cover 59.545% cover 64.318%; }
     }
   }
 

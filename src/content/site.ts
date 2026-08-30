@@ -145,9 +145,17 @@ export const signals = [
  * RepetitiveGraphic.astro's visually-hidden list, which is what keeps all
  * eight strings indexed and readable once the rows stopped being HTML.
  *
- * ⚠️ The drawing does not type all seven signals. Its own PHRASES array omits
- * signals[6] and ends on this string instead. See the note at the head of
- * RepetitiveGraphic.astro — the two are deliberately not reconciled in code.
+ * ⚠️ THIS ARRAY AND `signals` ABOVE NOW DRIVE A DRAWING, not just a list.
+ * RepetitiveGraphic builds its typed phrases as `[...signals, signalOpen]`, so
+ * adding, removing or rewording an entry changes what §01 animates. Two things
+ * there are derived from this array and neither fails loudly if it goes stale:
+ * the per-phrase clip widths, which are measured font metrics, and the
+ * per-phrase animation windows, which are computed from the array's length.
+ * Re-derive both in the same commit. See the head of RepetitiveGraphic.astro.
+ *
+ * The supplied JSX omitted signals[6] and ended on this string instead; the
+ * owner's instruction on 29 Aug 2026 was to restore it, which is why the
+ * component now derives the array rather than restating it.
  */
 export const signalOpen = 'Whatever your team keeps redoing';
 
