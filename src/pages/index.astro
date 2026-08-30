@@ -147,4 +147,16 @@ import { cta, ctaHref } from '../content/site';
     .bw-intro, .bw-close { grid-column:auto; grid-row:auto; }
     :global(.bw-grid > .signals) { grid-column:auto; grid-row:auto; }
   }
+
+  /* ⚠️ §01's ask is hidden on phones for the same reason the hero's is:
+     StickyCta carries the same label, pinned, from the moment the page loads,
+     so this one sits a few hundred pixels above a permanent copy of itself.
+
+     Both this and Hero's rule are coupled to StickyCta existing and pointing
+     at the same place. If the sticky bar goes or changes, both come back in
+     the same commit — otherwise the page has no in-flow CTA at all between
+     the headline and the form. */
+  @media (max-width:640px) {
+    .bw-cta { display:none; }
+  }
 </style>

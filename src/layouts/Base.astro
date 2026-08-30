@@ -156,10 +156,21 @@ const businessLd = {
       if (history.scrollRestoration) history.scrollRestoration = 'manual';
     </script>
 
-    <!-- icons -->
+    <!-- icons.
+         favicon.svg is what modern browsers actually put in the tab; the .ico
+         is the fallback for older ones. apple-touch-icon is what iOS uses when
+         a visitor adds the site to their home screen.
+
+         The manifest is what Android reads for the same gesture, and without
+         it Chrome falls back to scaling the favicon, badly. Added 29 Aug 2026
+         — the site had icons for tabs and iOS and nothing for Android.
+
+         All of them are built by scripts/build-icons.py from favicon.svg, so
+         a palette change is one hand edit and one command. -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     {/* Matches --color-paper in global.css. It is a literal because this file
         renders before the stylesheet loads and cannot read the variable, which
         is exactly why it has been missed by a palette swap before: it still
