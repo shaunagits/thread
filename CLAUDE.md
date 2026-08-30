@@ -112,10 +112,11 @@ who already has an account is not who the page is written for, and a login
 competing with the CTA sells to the wrong reader. The subdomain resolves and
 one of its A records is Vercel's.
 
-**Section markers are bare numbers on a rule, above the heading.** They carry no
-label, so the old rule that the nav must match the markers no longer has anything
-to match. What still holds: the header and the footer point at the same three
-anchors and must label them identically.
+**Sections open on a bare hairline and carry no marker at all.** Style C made
+the marker a bare number above the heading; the number went too on 29 Aug 2026
+— see the phone section below. So the old rule that the nav must match the
+markers has nothing left to match. What still holds: the header and the footer
+point at the same three anchors and must label them identically.
 
 ### The phone layout, 29 Aug 2026
 
