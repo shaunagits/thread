@@ -94,7 +94,18 @@ import { cta, ctaHref } from '../content/site';
     .hero-promise { max-width:none; }
     .hero-grid { gap:30px; }
     .hero-figure { max-width:none; }
-    .btn-row { margin-top:26px; }
+
+    /* ⚠️ The hero's button is hidden on a phone, not restyled — StickyCta
+       renders the same label, pinned to the bottom of the viewport, and it is
+       on screen from the moment the page loads. Two identical CTAs a thumb's
+       width apart is not twice the invitation, it is a page that looks like it
+       rendered something twice.
+
+       This is safe only while the sticky bar exists and carries the same
+       label. If StickyCta is ever removed or given a different action, this
+       rule comes out in the same commit or the hero loses its ask entirely
+       below 640px. */
+    .btn-row { display:none; }
   }
   @media (max-width:420px) {
     .btn-row { flex-direction:column; align-items:stretch; width:100%; }
