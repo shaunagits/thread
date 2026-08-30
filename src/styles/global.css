@@ -303,18 +303,26 @@ a:hover { text-decoration: underline; }
   text-transform: uppercase; color: var(--color-accent);
 }
 
-/* ---------- section markers ----------
-   The section number sits on a full-width rule at the top of the section, and
-   carries no label. Under the ocean design the marker was "01 · What I do" and
-   the rule was that the nav had to match those labels exactly. Style C drops
-   the labels: the number alone marks the section and the wording now lives
-   only in the nav and the footer, which must still agree with each other. */
-.marker {
-  display: flex; align-items: baseline; gap: 32px;
-  border-top: 1px solid var(--color-ink);
-  padding-top: 12px; margin-bottom: 30px;
-  font-family: var(--font-mono); font-size: var(--text-micro);
-  letter-spacing: var(--tracking-marker); color: var(--color-accent);
+/* ---------- section rule ----------
+   A hairline opening each section, and nothing else.
+
+   The numbering went 29 Aug 2026 on the owner's instruction. The history is
+   worth keeping because this element has now lost two things: under the ocean
+   design it read "01 · What I do" and the standing rule was that the nav had
+   to match those labels exactly; Style C dropped the label and kept the bare
+   number; this drops the number too.
+
+   What survives is the rule itself, which is doing real work — it is the
+   hairline that opens the section above the heading, in a design built out of
+   hard horizontals. It is an <hr> rather than an empty <div> because a
+   thematic break is exactly what it now is, and an empty div with a border is
+   the kind of thing that gets deleted by someone tidying up.
+
+   Nothing references --tracking-marker any more; it is left in the scale
+   because the scale is the contract, not a list of what happens to be used. */
+hr.section-rule {
+  border: 0; border-top: 1px solid var(--color-ink);
+  margin: 0 0 30px; height: 0;
 }
 
 /* ---------- the ruled ground ----------
@@ -535,6 +543,34 @@ section.on-wash { background: var(--color-wash); }
    max-width form. They are tuned to where the margin column and the
    plates need to reflow. */
 @media (max-width: 640px) {
-  .wrap { padding: 0 22px; }
-  section { padding: 66px 0; }
+  /* 20px and 52px, from "Thread Homepage - Mobile". The phone design runs
+     tighter than the 22/66 that was derived from the desktop rhythm: at 390pt
+     every 2px of gutter is a percent of the measure, and 52px between
+     sections is enough separation when the sections are stacked single file
+     rather than side by side. */
+  .wrap { padding: 0 20px; }
+  section { padding: 52px 0; }
+  section.hero { padding: 36px 0 40px; }
+
+  /* The display steps come down a notch on a phone rather than components
+     hardcoding smaller sizes. The scale stays the contract; only its values
+     move, which is the same thing the clamps do at every other width. 38 and
+     32 are the design's own phone figures. */
+  :root {
+    --text-d1: 38px;
+    --text-d2: 32px;
+  }
+
+  /* Full-width buttons. A 48px pill floating in a 350px column reads as an
+     afterthought; edge to edge it reads as the next step. Also a bigger tap
+     target, which is the actual argument. */
+  .btn { width: 100%; min-height: 52px; }
+  .btn-row { margin-top: 26px; }
+
+  /* ⚠️ Room for the pinned CTA bar, which is `position: fixed` and would
+     otherwise sit on top of the last of the footer forever. The number is the
+     bar's own height: 12 + 50 + 10 of padding and button, plus whatever the
+     device reserves for its home indicator. If StickyCta's padding or button
+     height changes, this changes with it. */
+  body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
 }

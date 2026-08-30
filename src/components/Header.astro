@@ -257,4 +257,15 @@ import { nav, cta, ctaHref, loginHref, loginLabel } from '../content/site';
        at something to do. */
     .mark:hover .thread-t { animation:mark-restroke .7s cubic-bezier(.32,0,.18,1); }
   }
+
+  /* Phone metrics, from "Thread Homepage - Mobile". 58px rather than 70: the
+     bar is sticky, so every pixel of it is permanently subtracted from a
+     390pt viewport. The mark comes down with it so the two stay in
+     proportion. This block sits after .mark's own rule on purpose — a media
+     query adds no specificity, so source order is what wins. */
+  @media (max-width: 640px) {
+    .nav-in { height: 58px; }
+    .mark { font-size: 21px; }
+    .mark svg { width: 28px; height: 28px; }
+  }
 </style>

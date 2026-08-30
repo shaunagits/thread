@@ -86,8 +86,14 @@ import { services } from '../content/site';
     .card:last-child:nth-child(odd) { grid-column: span 2; }
   }
   @media (max-width: 640px) {
-    .cards { grid-template-columns: 1fr; gap: 22px; margin-top: 44px; }
-    .card { padding: 26px; }
+    /* 26px between cards, not 22: the number tab overhangs each card's top
+       edge by 14px, so a tighter gap puts the tab of one card almost on the
+       bottom rule of the one above. */
+    .cards { grid-template-columns: 1fr; gap: 26px; margin-top: 38px; }
+    .card { padding: 24px 20px; }
+    .tab { top: -14px; left: 18px; font-size: var(--text-nav); padding: 3px 9px; }
+    .card h3 { margin: 10px 0 8px; }
+    .card p { font-size: var(--text-small); }
     /* Must be reset explicitly. `span 2` in a single-column grid does not
        clamp — it creates an implicit second column and the last card breaks
        the layout it was meant to tidy. */

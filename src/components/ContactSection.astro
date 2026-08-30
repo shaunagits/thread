@@ -3,17 +3,16 @@ import { contact } from '../content/site';
 import IntakeForm from './IntakeForm.astro';
 ---
 
-{/* Renders its own marker rather than taking one from Section.astro: it sits
-    inside the left column of the contact grid, not on a full-width rule above
-    it, and it is back above the heading like every other marker in Style C.
+{/* Renders its own opening rule rather than taking one from Section.astro:
+    it belongs to the left column of the contact grid, not to the full width
+    above it.
 
-    03, not 05. The page ran to five sections under the ocean design and runs
-    to three now; the markers number the page in order, so this moves whenever
-    a section is added above it. */}
+    The section number that sat on this rule went 29 Aug 2026 with the other
+    two, on the owner's instruction. */}
 <div class="cta-band ruled" id="contact">
   <div class="wrap cta-in">
     <div>
-      <div class="marker"><span>03</span></div>
+      <hr class="section-rule" />
 
       {/* Rewritten for the Style C redesign, 29 Aug 2026. It was "Tell me
           where the hours go." with a lead that promised a reply and a
@@ -140,7 +139,11 @@ import IntakeForm from './IntakeForm.astro';
     .owner { max-width: none; }
   }
   @media (max-width: 640px) {
-    .cta-in { padding-block: 66px; }
-    .owner-card { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .cta-in { padding-block: 52px; }
+    /* Stays a row rather than stacking. The card is a face beside a sentence;
+       stacked it becomes a photo above a paragraph, which is a different and
+       worse object. 56px keeps the row under 100px tall. */
+    .owner-card { gap: 16px; padding: 18px; }
+    .owner-photo { width: 56px; height: 56px; }
   }
 </style>

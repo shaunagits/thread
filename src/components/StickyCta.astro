@@ -1,0 +1,63 @@
+---
+import { cta, ctaHref } from '../content/site';
+
+/**
+ * The pinned CTA bar, phone only. New with "Thread Homepage - Mobile",
+ * 29 Aug 2026; there is no desktop equivalent.
+ *
+ * Why it exists: on a phone the page is one long column and the header CTA is
+ * gone the moment you scroll past 58px, so between the hero and §03 there is
+ * no way to act without scrolling back or reaching the bottom. This is the
+ * answer to that, and it is the only element on the site that follows the
+ * viewport.
+ *
+ * It is filled in the accent rather than ink, unlike every other button. That
+ * is deliberate: it sits over the page rather than in it, and ink-on-paper
+ * would read as a block of the page that had come loose.
+ *
+ * ⚠️ It is a real fixed element, so two things have to hold or it breaks the
+ * page rather than helping it:
+ *
+ *   1. `body` carries bottom padding equal to the bar's height (see
+ *      global.css), or the bar covers the last of the footer permanently.
+ *   2. The bar pads for `env(safe-area-inset-bottom)`, or on a notched phone
+ *      it sits under the home indicator and the label is half-covered.
+ *
+ * No JavaScript, so it does not hide itself when §03 is on screen — a CTA
+ * pointing at the form you are already looking at. That is the one thing worth
+ * revisiting, and it needs a scroll timeline rather than a listener.
+ */
+---
+
+<div class="sticky-cta">
+  <a href={ctaHref} class="sticky-cta-btn">{cta}</a>
+</div>
+
+<style>
+  /* Hidden above the phone breakpoint entirely — `display: none` rather than
+     visibility, so it costs nothing on a desktop. */
+  .sticky-cta { display: none; }
+
+  @media (max-width: 640px) {
+    .sticky-cta {
+      display: block;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      background: var(--color-paper);
+      border-top: 1px solid var(--color-ink);
+      padding: 12px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    }
+    .sticky-cta-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; min-height: 50px; box-sizing: border-box;
+      font-family: var(--font-mono); font-size: var(--text-btn); font-weight: 500;
+      letter-spacing: var(--tracking-mono);
+      background: var(--color-accent); color: var(--color-white);
+      border: 1px solid var(--color-accent);
+      text-decoration: none;
+    }
+    .sticky-cta-btn:active {
+      background: var(--color-accent-dark); border-color: var(--color-accent-dark);
+    }
+    .sticky-cta-btn:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+  }
+</style>

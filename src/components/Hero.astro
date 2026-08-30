@@ -75,7 +75,27 @@ import { cta, ctaHref } from '../content/site';
     .hero-grid { grid-template-columns:1fr; gap:40px; }
     .hero-figure { max-width:680px; justify-self:start; }
   }
-  @media (max-width:640px) { section.hero { padding:56px 0 72px; } }
+  /* Phone, from "Thread Homepage - Mobile". The headline sets at 38px there,
+     below --text-d1's clamp floor of 40 — so the token itself comes down at
+     this breakpoint (see global.css) rather than the heading carrying a
+     hardcoded size and going off-scale.
+
+     The measures come off entirely. 17ch and 40ch are there to stop lines
+     over-running in a wide column; in a 350px column the column is the
+     measure, and a ch cap on top of it just makes the ragged edge worse.
+
+     The button already comes before the drawing on a phone, because the grid
+     stacks .hero-copy above .hero-figure and the button is the last thing in
+     the copy. Worth knowing before anyone reorders it: on a phone the graphic
+     is a full-width square, and a CTA below it would sit a screen and a half
+     from the headline that earned it. */
+  @media (max-width:640px) {
+    .hero-copy h1 { max-width:none; margin:0 0 14px; }
+    .hero-promise { max-width:none; }
+    .hero-grid { gap:30px; }
+    .hero-figure { max-width:none; }
+    .btn-row { margin-top:26px; }
+  }
   @media (max-width:420px) {
     .btn-row { flex-direction:column; align-items:stretch; width:100%; }
     .btn-row a { text-align:center; }

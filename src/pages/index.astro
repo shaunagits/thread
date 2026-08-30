@@ -9,6 +9,7 @@ import SignalList from '../components/SignalList.astro';
 import ServiceCards from '../components/ServiceCards.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
+import StickyCta from '../components/StickyCta.astro';
 import { cta, ctaHref } from '../content/site';
 ---
 
@@ -33,7 +34,7 @@ import { cta, ctaHref } from '../content/site';
 
       No top rule: the connects strip above draws its own on both edges, and
       a third here would double them. --------------------------------- */}
-  <Section id="busywork" n="01" noRule>
+  <Section id="busywork" noRule>
     {/* ⚠️ These three are siblings of the grid, not two nested blocks, and that
         is load-bearing. They used to be an intro and a closer wrapped in one
         left-hand column, which read correctly at desktop and stacked as
@@ -74,7 +75,7 @@ import { cta, ctaHref } from '../content/site';
       The one section on the quiet ground. Carries the five build types and
       then the annotated dashboard plate, which is the page's only picture of
       a finished thing. --------------------------------------------- */}
-  <Section id="build" n="02" wash>
+  <Section id="build" wash>
     <h2 class="bd-head">Your process. Just without all the work.</h2>
     <p class="lead bd-lead">
       I look at how the work actually gets done, find the repetitive steps,
@@ -91,6 +92,9 @@ import { cta, ctaHref } from '../content/site';
       Section.astro. */}
   <ContactSection />
   <Footer />
+  {/* Phone only, and the last thing in the document so it is last in the
+      tab order too — it is a shortcut, not the primary path. */}
+  <StickyCta />
 </Base>
 
 <style>

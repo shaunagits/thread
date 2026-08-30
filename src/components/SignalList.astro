@@ -89,9 +89,17 @@ import { signals, signalOpen } from '../content/site';
     56%, 99% { opacity:0; }
   }
 
+  /* The vertical rule between the numeral and the text goes on a phone. It is
+     an alignment cue for a wide row, and in a 350px column it costs 23px of
+     measure to separate two things that are already 14px apart. The numeral
+     takes a 3px nudge down so it sits on the first line's baseline once the
+     text wraps to two or three lines. */
   @media (max-width:640px) {
-    .sig { gap:16px; padding:16px 18px; align-items:flex-start; }
-    .sig-open { padding:18px 18px; }
+    .signals { gap:10px; }
+    .sig { gap:14px; padding:16px 18px; align-items:flex-start; }
+    .sig-open { padding:16px 18px; }
     .bar { display:none; }
+    .n { width:20px; padding-top:3px; font-size:11.5px; }
+    .t { font-size:var(--text-ui); line-height:1.45; }
   }
 </style>

@@ -101,5 +101,18 @@ const year = new Date().getFullYear();
   }
 
   @media (max-width: 1000px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 640px)  { .foot-grid { grid-template-columns: 1fr; } }
+  /* Two columns, not one. Sections and Contact are three short items each;
+     stacked they run the footer to nearly a full screen for no gain. The brand
+     block spans both and the two lists sit under it, which is what the design
+     draws. */
+  @media (max-width: 640px) {
+    footer { padding: 44px 0 26px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 26px; padding-bottom: 24px; }
+    .foot-grid > :first-child { grid-column: 1 / -1; }
+    .mark { font-size: 21px; }
+    .mark svg { width: 27px; height: 27px; }
+    /* Stacked, because the copyright and the legal pair do not both fit on a
+       350px line and wrapping them leaves one hanging mid-row. */
+    .foot-bot { flex-direction: column; gap: 6px; }
+  }
 </style>

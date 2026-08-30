@@ -5,7 +5,12 @@ import { integrations } from '../content/site';
 <div class="strip">
   <div class="wrap strip-in">
     <span class="strip-lbl">Connects to</span>
-    {integrations.map((name) => <span class="strip-item">{name}</span>)}
+    {/* The names are wrapped rather than loose siblings so the phone layout can
+        put the tag on its own line and flush the list left beneath it, without
+        the tag becoming one more item in the same wrap flow. */}
+    <div class="strip-names">
+      {integrations.map((name) => <span class="strip-item">{name}</span>)}
+    </div>
   </div>
 </div>
 
@@ -33,6 +38,10 @@ import { integrations } from '../content/site';
     display: flex; align-items: center; gap: 12px 22px;
     flex-wrap: wrap; justify-content: center;
   }
+  /* `display: contents` so the thirteen names stay direct participants in the
+     strip's own wrap flow at desktop — the wrapper exists for the phone
+     layout and must be invisible to the layout everywhere else. */
+  .strip-names { display: contents; }
   /* A filled tag, not loose uppercase. It is the only accent fill on the ink
      ground and it is what stops the row reading as thirteen equal words with
      no subject. Paper on accent is 6.65:1. */
@@ -50,11 +59,19 @@ import { integrations } from '../content/site';
 
   /* On a phone the thirteen names wrap to four rows and the band ran 223px —
      a quarter of the viewport, directly under the hero, before §01 starts.
-     Tighter type, tighter gap and less vertical padding pull that back without
-     dropping a name. */
+     Tighter type and less vertical padding pull that back without dropping a
+     name.
+
+     The tag takes its own line and the names left-align beneath it. Centred,
+     thirteen names wrap into four ragged rows with a different indent each
+     time and read as a word cloud; flushed left they read as a list. */
   @media (max-width: 640px) {
-    .strip { padding: 18px 0; }
-    .strip-in { gap: 10px 14px; }
-    .strip-item { font-size: var(--text-nav); }
+    .strip { padding: 20px 0; }
+    .strip-in { display: block; }
+    .strip-lbl { display: inline-block; margin-bottom: 12px; }
+    .strip-names {
+      display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: flex-start;
+    }
+    .strip-item { font-size: var(--text-btn); }
   }
 </style>
