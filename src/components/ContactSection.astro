@@ -47,13 +47,28 @@ import IntakeForm from './IntakeForm.astro';
           around it is first person throughout, and a surname here would make
           it read as a credential rather than an introduction.
 
-          ⚠️ The photo is still outstanding. The slot renders as a dashed
-          circle rather than being dropped, so the card keeps its shape and
-          the gap stays visible. Replace `.owner-photo` with a real <img>,
-          64×64 at minimum and square, and delete the dashed border rule. */}
+          The photo landed 29 Aug 2026, cropped from `about-headshot.jpg` in
+          the shauna.digital portfolio — the same picture that site's About
+          section uses. The original is a 1080×1400 three-quarter shot, so it
+          is cropped square to head-and-shoulders and shipped at 256px, four
+          times the 64px it renders at, for retina.
+
+          `alt` is empty and the image is aria-hidden: the name is right
+          beside it in text, so announcing "Shauna" twice would be noise. It
+          is decorative in the accessibility sense even though it is doing
+          real work visually. */}
       <div class="owner">
         <div class="owner-card">
-          <div class="owner-photo" aria-hidden="true"><span>Photo</span></div>
+          <img
+            class="owner-photo"
+            src="/shauna.jpg"
+            alt=""
+            aria-hidden="true"
+            width="64"
+            height="64"
+            loading="lazy"
+            decoding="async"
+          />
           <p>
             <strong>Shauna</strong> · Thread is one person, based in
             Honolulu. I build every system myself and I answer this form myself.
@@ -107,12 +122,12 @@ import IntakeForm from './IntakeForm.astro';
     background: var(--color-white); border: 1px solid var(--color-ink);
     padding: 22px;
   }
+  /* object-fit matters even though the file is already square: it stops a
+     replacement of the wrong aspect ratio from stretching the face. */
   .owner-photo {
     width: 64px; height: 64px; flex: none; border-radius: 50%;
-    border: 1px dashed var(--color-hair);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: var(--text-micro);
-    color: var(--color-faint);
+    object-fit: cover; display: block;
+    background: var(--color-wash);
   }
   .owner-card p {
     margin: 0; font-family: var(--font-serif); font-size: var(--text-small);
