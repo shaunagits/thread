@@ -5,28 +5,34 @@ import { cta, ctaHref } from '../content/site';
 <section class="hero ruled ruled-fade" id="top">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      {/* "Turn busywork into software." since 29 Aug 2026, replacing "Built
-          around how you already work." Duplicated by hand in og.astro; the two
-          must always agree or the share card outlives the page edit in every
-          already-scraped cache. */}
-      <h1>Turn busywork into software.</h1>
+      {/* "Put your busywork on autopilot." since 29 Aug 2026, on the owner's
+          instruction, replacing "Turn busywork into software." from earlier the
+          same day and "Built around how you already work." before that.
+          Duplicated by hand in og.astro; the two must always agree or the share
+          card outlives the page edit in every already-scraped cache. */}
+      <h1>Put your busywork on autopilot.</h1>
 
-      {/* Four parts, and the order is the argument: the problem in the
-          visitor's own words, then the offer, then who and where.
+      {/* Three parts now: headline, subtitle, button. Cut back on the owner's
+          instruction, same day, from four blocks of copy.
 
-          The eyebrow is gone. It carried "Custom software · Honolulu, Hawaiʻi"
-          above the headline and then below it as a pinned sub-title from
-          25 Aug 2026. Style C moves both facts to the foot of the stack, under
-          a rule, as a signature rather than a label — which is also why the
-          location no longer needs a pin icon to say "here is where". */}
-      <p class="hero-problem">
-        Your team shouldn’t spend their week copying data, updating
-        spreadsheets, chasing information, or doing the same task over and over.
-      </p>
+          What went, and where it survives, so neither is rewritten from
+          scratch if it comes back:
+
+          The problem paragraph ("Your team shouldn't spend their week copying
+          data, updating spreadsheets, chasing information...") named four
+          specific symptoms. §01's signal list names seven of them one scroll
+          down, so the hero was doing that section's job in a paragraph.
+
+          ⚠️ The signature line ("Custom software, built in Honolulu, Hawaiʻi.")
+          went with it, and that was the last mention of the location above the
+          fold. The eyebrow that used to carry it was already dropped by the
+          Style C redesign. The place still appears in the contact section, in
+          both footer rows and in the ProfessionalService schema, so it is not
+          gone from the page — but nothing on the first screen now says where
+          this business is. Raised with the owner. */}
       <p class="claim claim-sm hero-promise">
         I build custom software that does that work for you.
       </p>
-      <p class="hero-sig">Custom software, built in Honolulu, Hawaiʻi.</p>
 
       {/* One button, not two. The ghost "See how it works" pointed at /#how,
           and that section no longer exists — the page runs three sections now.
@@ -48,26 +54,16 @@ import { cta, ctaHref } from '../content/site';
     gap:clamp(34px, 5vw, 64px); align-items:center;
   }
 
-  /* 17ch. The headline sets as two even lines at this measure — "Turn busywork
-     / into software." — with no widow. It was 18ch for the previous headline,
-     which needed the extra character to avoid breaking as three lines. */
-  .hero-copy h1 { max-width:17ch; margin:0 0 16px; }
+  /* 17ch. "Put your busywork on autopilot." sets as two even lines at this
+     measure — "Put your busywork / on autopilot." — with no widow, because
+     the first line is exactly 17 characters. Same measure suited the previous
+     headline for the same reason; it is not a coincidence worth relying on,
+     so re-check the break if the headline changes again. */
+  .hero-copy h1 { max-width:17ch; margin:0 0 18px; }
 
-  .hero-problem {
-    font-family:var(--font-serif); font-size:var(--text-body);
-    line-height:var(--leading-body); color:var(--color-body);
-    max-width:46ch; margin:0 0 18px;
-  }
-  .hero-promise { max-width:40ch; margin:0 0 20px; }
-
-  /* The signature line. Under a rule and set back in --color-faint, because
-     it is the only thing in the hero a visitor does not need to read. */
-  .hero-sig {
-    font-family:var(--font-serif); font-size:var(--text-small);
-    line-height:var(--leading-body); color:var(--color-faint);
-    margin:0; padding-top:16px;
-    border-top:1px solid var(--color-rule); max-width:44ch;
-  }
+  /* Margin-free: .btn-row's own 34px top margin is the only gap between the
+     subtitle and the button now that nothing sits between them. */
+  .hero-promise { max-width:40ch; margin:0; }
 
   .hero-figure { width:100%; max-width:680px; justify-self:end; }
 

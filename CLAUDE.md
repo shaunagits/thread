@@ -190,14 +190,27 @@ unchanged.
 **The hero copy was rewritten on the same date, second pass.** It is now
 eyebrow, headline, one 15-word paragraph, two buttons, and nothing else:
 
-> Turn busywork into software.
-> **[ Book a call ]**  [ See how it works ]
+> Put your busywork on autopilot.
+> I build custom software that does that work for you.
+> **[ Tell me what's slowing you down ]**
 
-**The headline is "Turn busywork into software." since 29 Aug 2026**, on the
-owner's instruction, replacing "Built around how you already work." The
-headline text is duplicated by hand in `src/pages/og.astro` (see the comment
-there) — the two must always agree, or the share card outlives the page edit in
-every already-scraped cache.
+**The hero is headline, subtitle and one button, since 29 Aug 2026.** The
+headline is "Put your busywork on autopilot.", replacing "Turn busywork into
+software." from earlier the same day and "Built around how you already work."
+before that. The headline text is duplicated by hand in `src/pages/og.astro`
+(see the comment there) — the two must always agree, or the share card outlives
+the page edit in every already-scraped cache.
+
+Two blocks of copy were cut in the same change, on the owner's instruction:
+
+- The problem paragraph, which named four symptoms. §01's signal list names
+  seven of them one scroll down, so the hero was doing that section's job.
+- ⚠️ The signature line, "Custom software, built in Honolulu, Hawaiʻi." **That
+  was the last mention of the location above the fold**, the Style C eyebrow
+  having already gone. The place still appears in §03, in both footer rows and
+  in the `ProfessionalService` schema, so it is not gone from the page — but
+  nothing on the first screen says where this business is. Raised with the
+  owner and cut as instructed.
 
 "Built around how you already work." replaced "Software that brings your
 business together." on 17 Aug 2026. That
