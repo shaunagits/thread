@@ -10,95 +10,117 @@
    emits variables it sees used in generated utilities, which silently drops
    tokens referenced from scoped component CSS. */
 @theme static {
-  /* ---- the twelve documented tokens ---- */
-  --color-paper: #FCFCF9;   /* page ground */
-  --color-wash:  #F1F6F5;   /* quiet alternate ground */
-  --color-white: #FFFFFF;   /* cards */
-  --color-ink:   #172A2D;   /* deep blue-green headlines */
-  --color-body:  #314447;   /* body copy */
-  --color-quiet: #5B6A6C;   /* secondary text */
-  --color-faint: #6F7C7D;   /* captions */
-  --color-rule:  #DDE5E3;   /* section rules */
-  --color-hair:  #BBC9C7;   /* card borders, hairlines */
-  --color-ochre: #8DB9C4;   /* light ocean-blue fill */
-  --color-line:  #4D8798;   /* ocean-blue strokes */
-  --color-koa:   #235F70;   /* links and text-bearing fills */
+  /* ---- palette: graphite & signal, 29 Aug 2026 ----
+     Third palette this site has worn. Earth (index.html) became ocean on
+     17 Aug, and ocean becomes graphite here, from "Thread Homepage - Style C".
+     Near-black ink on a graphite paper with one cobalt accent.
 
-  /* ---- present in index.html, absent from the handoff token table ----
-     These are not new colours; they are already in the design. Naming them
-     here is what keeps hex out of the components. Flagged for review. */
-  --color-plate:           #4F6062; /* label text inside legacy figures */
-  --color-ochre-hover:     #76A6B3; /* the original's .btn:hover — now unused,
-                                       superseded by --color-koa-hover when the
-                                       fills moved to koa. Kept for reference. */
-  --color-foot-text:       #D8E2E0; /* footer body + links */
-  --color-foot-label:      #91A5A5; /* footer column headings, bottom bar */
-  --color-foot-link-hover: #A5D0D7; /* footer link hover */
-  --color-foot-blurb:      #B4C4C3; /* footer blurb paragraph */
-  --color-foot-rule:       #304548; /* footer divider */
+     Unlike ocean, BOTH accent steps carry text safely on paper: 6.03:1 and
+     8.00:1. That retires the fills-only restriction that governed --color-ochre
+     for two palettes (CLAUDE.md landmine 5) — there is no longer a brand colour
+     on this site that cannot hold a label. The one place it does not hold is
+     light-on-accent-on-ink; see --color-foot-dot below. */
+  --color-paper: #EDEEE9;   /* page ground */
+  --color-wash:  #E2E4DE;   /* quiet alternate ground, §02 */
+  --color-white: #F8F9F6;   /* cards, panels, drawing grounds */
+  --color-ink:   #171A18;   /* near-black headlines, borders, dark bands */
+  --color-body:  #3B423D;   /* body copy */
+  --color-quiet: #5E6350;   /* secondary text */
+  --color-faint: #767C76;   /* captions and helper text */
+  --color-rule:  #D9DBD4;   /* section rules, hairlines inside drawings */
+  --color-hair:  #9AA09A;   /* card borders, drawing strokes, dashed rows */
 
-  /* ---- type ----
-     Newsreader for display and the wordmark, IBM Plex Sans for everything a
-     visitor reads and every label. The Bodoni Moda / Archivo pairing that ran
-     earlier on 17 Aug 2026 was a trial and is gone.
+  /* ---- accent ----
+     Named for what they are this time. The three historic names below are
+     kept as aliases so nothing referencing them breaks, but new work should
+     use these: the whole reason --color-ochre held a blue for two palettes is
+     that renaming was deferred once too often. */
+  --color-accent:      #2E4FBF;  /* markers, tags, highlight, button hover */
+  --color-accent-dark: #253F99;  /* links, callouts, chart series, pressed */
+  --color-accent-soft: rgba(46, 79, 191, .30);  /* the highlight wash */
 
-     --font-serif, --font-sans and --font-mono all resolve to Plex Sans. The
-     names are historic: they date from the three-face original and are kept
-     because renaming them touches every component for no reader benefit. Same
-     reasoning CLAUDE.md records for --color-ochre. */
-  /* ---- the type scale, 17 Aug 2026 ----
-     Seven sizes, two weights, three tracking values. Nothing on the site may
-     use a size that is not one of these. Before this the live page carried 23
-     distinct DOM sizes, 11 tracking values and 4 weights, which is why it read
-     as unresolved no matter which faces were in it. */
+  /* Aliases. --color-ochre was "fills only" under ocean; under graphite it is
+     the accent and carries text, so the restriction is lifted rather than
+     inherited. Kept pointing at the accent so any missed reference still lands
+     on a sane colour rather than a stale ocean hex. */
+  --color-ochre: var(--color-accent);
+  --color-line:  var(--color-accent-dark);
+  --color-koa:   var(--color-accent);
+
+  --color-plate: #3B423D;   /* label text inside the drawings */
+
+  /* Footer and the connects strip, both on the ink ground. */
+  --color-foot-text:       #D7D9D2; /* footer body + links */
+  --color-foot-label:      #8C928B; /* footer column headings, bottom bar */
+  --color-foot-link-hover: #F8F9F6; /* footer link hover */
+  --color-foot-blurb:      #9AA09A; /* footer blurb paragraph */
+  --color-foot-rule:       #3B423D; /* footer divider */
+  /* The wordmark's full stop, on the ink footer only. The accent is 2.49:1
+     there, so the mark's one detail would disappear on the one ground it sits
+     against most. Same problem landmine 5 records for the ocean palette, same
+     fix: a different token in the footer than in the header. */
+  --color-foot-dot:        #7E9AE8;
+
+  /* ---- the type scale, 29 Aug 2026 ----
+     Ten sizes, extended from the seven adopted 17 Aug. The four display steps
+     and the body size are unchanged in role; what is new is the small end,
+     which Style C uses far more than the ocean design did because labels,
+     markers and UI text are now set in a genuine mono face rather than in the
+     body sans.
+
+     Nothing on the site may use a size that is not one of these. The rule that
+     produced the seven still stands — the count went up because the design
+     needs the range, not because sizes may be added ad hoc. */
   --text-d1:    clamp(40px, 4.2vw, 56px);  /* page heading */
   --text-d2:    clamp(30px, 3.8vw, 44px);  /* section heading */
-  --text-d3:    clamp(21px, 2vw, 27px);    /* sub-heading */
-  --text-body:  16.5px;                     /* everything a visitor reads */
-  --text-micro: 10px;                       /* uppercase labels only, never prose */
-  --text-nav:   14px;                       /* header nav and phone menu, nothing else */
+  --text-d3:    clamp(21px, 2vw, 26px);    /* section closing statement */
+  --text-d4:    clamp(20px, 1.7vw, 23px);  /* card headings, hero promise */
+  --text-body:  17px;                      /* everything a visitor reads */
+  --text-ui:    16px;                      /* card body and form fields */
+  --text-small: 15px;                      /* footer body, helper text */
+  --text-btn:   13px;                      /* button labels */
+  --text-nav:   12.5px;                    /* nav, form labels, mono lines */
+  --text-micro: 11px;                      /* markers, tags, footer bottom bar */
 
-  /* --text-small was removed 17 Aug 2026: it was a second reading size that
-     existed only because interface text is conventionally smaller. Everything
-     a visitor reads is --text-body now, including form fields, which has the
-     side effect of stopping iOS zooming the page when a field under 16px is
-     tapped.
+  /* --text-ui exists for one reason worth recording: form fields. 16px is the
+     threshold at which iOS stops zooming the page when a field is focused, so
+     this token may be lowered no further. Card body shares it because the
+     design sets both at 16 and they are the same register of text.
 
-     --text-nav is the one exception, and it is deliberately narrow in scope.
-     The header nav is chrome, not reading: at 16.5px it competed with the
-     wordmark and crowded the CTA. It applies to the header and the phone menu
-     and nowhere else — if it starts appearing in sections, that is the bug. */
+     The checklist rows in §01 are drawn at 16.5 and ship at --text-body (17).
+     Half a pixel is not a hierarchy, and they are prose a visitor reads. */
 
-  /* --text-lead was removed 17 Aug 2026. A section opener at 21px above body
-     at 16.5px is not a hierarchy, it is two sizes close enough to look like a
-     mistake. The opener is now the same size and carries --color-ink instead,
-     so the distinction is tone and position rather than four and a half pixels.
-     Restoring one step is a one-line change if the page reads flat. */
+  --tracking-tight:  -.02em;   /* display */
+  --tracking-mono:    .02em;   /* mono UI text, buttons, nav */
+  --tracking-marker:  .08em;   /* section markers */
+  --tracking-wide:    .14em;   /* uppercase labels inside drawings */
 
-  --tracking-tight: -.02em;   /* display only */
-  --tracking-wide:   .14em;   /* uppercase labels only */
+  /* Three now, not two. --leading-snug is for the short display statements
+     Style C uses to close a section, which set as two or three lines and read
+     as a block at 1.65 and as a squeeze at 1.1. */
+  --leading-tight: 1.1;    /* display */
+  --leading-snug:  1.4;    /* short display statements, list rows */
+  --leading-body:  1.65;   /* everything else */
 
-  /* Two, and only two. Same-size text set on different leading reads as
-     different sizes, which is most of why the page looked unresolved:
-     --text-body appeared on 1.45, 1.6, 1.65 and 1.66 in four components. */
-  /* 1.12 is the original's display leading. It was tightened to 1.06 and then
-     1.08 during the type work, which squeezed the multi-line hero headline into
-     a block. Display type at this size needs the room. Restored. */
-  --leading-tight: 1.12;   /* display */
-  --leading-body:  1.6;    /* everything else */
+  /* Petrona for display, Public Sans for reading, JetBrains Mono for labels.
+     All three are self-hosted subsets built by scripts/build-fonts.py.
 
-  /* Headings went back to Newsreader on 17 Aug 2026. Bodoni Moda was the
-     Option K trial and is no longer referenced; its @font-face is left in
-     place because an unused face is never downloaded. */
-  --font-display: "Newsreader", Georgia, serif;
+     --font-serif and --font-sans both resolve to Public Sans; the serif name
+     is historic and kept because renaming it would touch every component for
+     no reader benefit, the same reasoning CLAUDE.md records for --color-ochre. --font-mono is now a genuine mono face again: it resolved to the
+     body sans under ocean, which is why so much of that design's label work
+     read as small body copy rather than as chrome. */
+  --font-display: "Petrona", Georgia, serif;
 
   /* The wordmark has its own token so it can never be swept up by a change to
-     the body or display face again. It is the logo: it does not follow the
-     type scale and it does not follow the palette trial. Do not repoint this. */
-  --font-wordmark: "Newsreader", Georgia, serif;
-  --font-serif: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-  --font-sans:  "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-  --font-mono:  "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+     the body or display face. Repointed to Petrona 29 Aug 2026 deliberately,
+     on the owner's instruction, as part of the Style C redesign — not as a
+     side effect of the display change. The token stays because the next
+     face change must be this explicit too. */
+  --font-wordmark: "Petrona", Georgia, serif;
+  --font-serif: "Public Sans", system-ui, -apple-system, sans-serif;
+  --font-sans:  "Public Sans", system-ui, -apple-system, sans-serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* ---- breakpoints, tuned in the original to where the margin column
      and the plates reflow. Components use verbatim max-width media
@@ -109,15 +131,27 @@
   --breakpoint-lg: 1000px;
 }
 
-/* Layout widths. Not Tailwind-namespaced — referenced directly by the
-   .wrap and .doc grids, same as the original. */
+/* Layout width. Not Tailwind-namespaced — referenced directly by .wrap.
+   --side (220px) went with the .doc margin-note grid on 29 Aug 2026. */
 :root {
   --col: 1180px;
-  --side: 220px;
 
-  /* Pressed state for the koa fills. Derived from the token rather than
-     hardcoded, so it tracks --color-koa if that ever changes. */
-  --color-koa-hover: color-mix(in srgb, var(--color-koa) 86%, black);
+  /* Pressed state. Under ocean this was a mix off --color-koa because the
+     palette had no second accent step; graphite ships one, so the pressed
+     state is simply the darker accent. */
+  --color-koa-hover: var(--color-accent);
+
+  /* The ruled ground behind the hero and §03. Drawn as a background-image
+     rather than an element so it costs no markup, and kept here because two
+     components draw it and neither owns it. 44px is an existing spacing value
+     (the plate margin), not a new one. */
+  --grid-line: rgba(23, 26, 24, .07);
+  --grid-step: 44px;
+
+  /* The button's resting and lifted shadows. Tokens because the same pair is
+     used by .btn and by the two panel treatments. */
+  --shadow-flat: 0 1px 0 rgba(23, 26, 24, .14);
+  --shadow-lift: 0 8px 18px rgba(23, 26, 24, .20);
 }
 
 /* ============================================================
@@ -130,26 +164,19 @@
    Italic is not loaded; nothing in the design uses it.
    ============================================================ */
 
-@font-face {
-  font-family: 'Newsreader';
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url('/fonts/newsreader-latin-var.woff2') format('woff2-variations');
-}
+/* Petrona — the display face, 29 Aug 2026, replacing Newsreader. Variable
+   wght 400–700; the design sets headings at 650 and sub-headings at 600, both
+   of which need the variable axis rather than a static instance.
 
-/* Newsreader draws no arrows at any codepoint, so U+2192 in a serif context
-   would otherwise fall to whatever the visitor's OS supplies. Source that one
-   glyph from JetBrains Mono instead, which is a face already in the design.
-   Kept for any arrow set in Newsreader; the face that actually carries the
-   arrows today is IBM Plex Sans, aliased the same way further down. */
+   Newsreader's files are no longer referenced and its @font-face is gone. An
+   unreferenced woff2 is never downloaded, so the file may stay in public/fonts
+   until someone prunes it. */
 @font-face {
-  font-family: 'Newsreader';
+  font-family: 'Petrona';
   font-style: normal;
-  font-weight: 200 800;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
-  unicode-range: U+2192;
+  src: url('/fonts/petrona-latin-var.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -169,38 +196,18 @@
 @font-face {
   font-family: 'Public Sans';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   font-display: swap;
   src: url('/fonts/public-sans-latin-600.woff2') format('woff2');
 }
 
-/* IBM Plex Sans — the text face, chosen 17 Aug 2026 after Archivo read as
-   functional rather than considered at 16.5px. Humanist rather than grotesk:
-   open shapes, designed for long reading at small sizes, and it sits beside a
-   serif without arguing with it. It also carries U+02BB natively, so "Hawaiʻi"
-   needs no patch in any text that uses it.
-
-   The Bodoni Moda and Archivo trial faces were removed with it; their woff2
-   files in public/fonts are now unreferenced and can be deleted. */
+/* Public Sans draws no arrow at U+2192. The design's one arrow sits inside a
+   mono button, so it resolves in JetBrains Mono anyway, but alias it here too
+   so an arrow set in body text can never fall to the OS mid-label. Same fix
+   the Newsreader and Plex faces carried before this. */
 @font-face {
-  font-family: 'IBM Plex Sans';
-  font-style: normal; font-weight: 400; font-display: swap;
-  src: url('/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Sans';
-  font-style: normal; font-weight: 500; font-display: swap;
-  src: url('/fonts/ibm-plex-sans-latin-500-normal.woff2') format('woff2');
-}
-
-/* IBM Plex Sans draws no arrow at U+2192, and --font-mono now resolves to it,
-   so `.btn-ghost::after` and Figure's scroll hint would fall to whatever the
-   OS supplies — a different face mid-label. Same fix as the Newsreader alias
-   above: source that one glyph from JetBrains Mono, already in the design.
-   Added 17 Aug 2026, when Plex replaced JetBrains Mono behind --font-mono. */
-@font-face {
-  font-family: 'IBM Plex Sans';
-  font-style: normal; font-weight: 400 500; font-display: swap;
+  font-family: 'Public Sans';
+  font-style: normal; font-weight: 400 600; font-display: swap;
   src: url('/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
   unicode-range: U+2192;
 }
@@ -293,29 +300,74 @@ a:hover { text-decoration: underline; }
 .eyebrow {
   font-family: var(--font-mono); font-size: var(--text-micro);
   letter-spacing: var(--tracking-wide);
-  text-transform: uppercase; color: var(--color-koa);
+  text-transform: uppercase; color: var(--color-accent);
 }
 
-/* Option K trial: headings take the display face, everything else the text
-   face. Revert to var(--font-serif) when the trial ends. */
+/* ---------- section markers ----------
+   The section number sits on a full-width rule at the top of the section, and
+   carries no label. Under the ocean design the marker was "01 · What I do" and
+   the rule was that the nav had to match those labels exactly. Style C drops
+   the labels: the number alone marks the section and the wording now lives
+   only in the nav and the footer, which must still agree with each other. */
+.marker {
+  display: flex; align-items: baseline; gap: 32px;
+  border-top: 1px solid var(--color-ink);
+  padding-top: 12px; margin-bottom: 30px;
+  font-family: var(--font-mono); font-size: var(--text-micro);
+  letter-spacing: var(--tracking-marker); color: var(--color-accent);
+}
+
+/* ---------- the ruled ground ----------
+   Vertical hairlines behind the hero and §03. `.ruled-fade` masks them in from
+   the lower right so the hero copy sits on clean paper and the rules only
+   appear under the drawing. Both need `isolation: isolate` on the section and
+   z-index -1 on the layer, or the layer paints over in-flow content: landmine
+   19, which cost §01's watermark under the ocean design. */
+.ruled { position: relative; isolation: isolate; }
+.ruled::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-step) 100%;
+}
+.ruled-fade::before {
+  -webkit-mask-image: linear-gradient(115deg, transparent 42%, #000 78%);
+          mask-image: linear-gradient(115deg, transparent 42%, #000 78%);
+}
+
 h1, h2, h3, h4 {
-  font-family: var(--font-display); font-weight: 500;
+  font-family: var(--font-display); font-weight: 650;
   letter-spacing: var(--tracking-tight); line-height: var(--leading-tight);
+  color: var(--color-ink);
 }
-h1 { font-size: var(--text-d1); }
+h1 { font-size: var(--text-d1); letter-spacing: -.025em; line-height: 1.08; }
 h2 { font-size: var(--text-d2); }
-h3, h4 { font-size: var(--text-d3); }
+h3, h4 { font-size: var(--text-d4); font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
 
-.serif { font-family: var(--font-serif); }
+/* .serif and p.txt were removed 29 Aug 2026: nothing set either class. The
+   body face is on <body>, so prose needs no class to opt into it, and p.lead
+   below is the one paragraph treatment the page actually uses. */
 /* The section opener. Same size as body; darker, and it sits directly under
    the heading. That is the hierarchy. */
 p.lead {
   font-family: var(--font-serif); font-size: var(--text-body);
-  line-height: var(--leading-body); color: var(--color-ink);
-}
-p.txt {
-  font-family: var(--font-serif); font-size: var(--text-body);
   line-height: var(--leading-body); color: var(--color-body);
+}
+
+/* A short display sentence closing a section or carrying the hero's promise.
+   Set in the display face at d3/d4 rather than in body copy, which is what
+   makes it read as a statement rather than another paragraph. */
+p.claim {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--text-d3); line-height: var(--leading-snug);
+  letter-spacing: -.015em; color: var(--color-ink);
+}
+p.claim-sm { font-size: var(--text-d4); letter-spacing: -.01em; }
+
+/* A mono line introducing a list. Chrome, not prose. */
+p.mono-note {
+  font-family: var(--font-mono); font-size: var(--text-nav);
+  letter-spacing: var(--tracking-mono); color: var(--color-faint);
+  line-height: var(--leading-body);
 }
 
 /* ---------- buttons ----------
@@ -343,107 +395,101 @@ p.txt {
    the contact form and /thanks all render the same 48px object. */
 .btn {
   display: inline-flex; align-items:center; justify-content:center; min-height:48px;
-  padding: 12px 32px; border-radius: 0; position:relative; overflow:hidden;
-  font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
-  letter-spacing: var(--tracking-wide); text-transform: uppercase;
-  background: var(--color-koa); color: var(--color-paper);
-  border: 1px solid var(--color-koa); cursor: pointer; text-decoration:none;
-  transition: background .26s cubic-bezier(.22,1,.36,1), border-color .26s cubic-bezier(.22,1,.36,1), color .26s cubic-bezier(.22,1,.36,1);
+  padding: 12px 28px; border-radius: 0; position:relative;
+  font-family: var(--font-mono); font-size: var(--text-btn); font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  background: var(--color-ink); color: var(--color-paper);
+  border: 1px solid var(--color-ink); cursor: pointer; text-decoration:none;
+  box-shadow: var(--shadow-flat);
+  transition: transform .14s cubic-bezier(.2,.7,.3,1), box-shadow .14s ease,
+              background .14s ease, border-color .14s ease;
 }
-/* The hover gesture: a rule runs the length of the label and lands in a full
-   stop just past the last letter.
+/* The hover gesture is now a lift into the accent: the fill goes cobalt, the
+   button rises 2px and picks up a shadow. Pressed returns it to the surface on
+   the darker accent.
 
-   The ochre dot that used to sit at the left was removed 17 Aug 2026. It had
-   been the origin of the gesture, but once the rule existed the dot was just
-   something in the way, and its padding made the label sit off-centre.
-
-   The geometry works because the button is inline-flex with symmetric padding,
-   so its content box is exactly the width of the label: insetting the rule by
-   the padding lands it precisely on the text, and the full stop lands in the
-   padding just past it. If the padding changes, these insets change with it. */
-.btn .ln {
-  position:absolute; left:32px; right:32px; bottom:16px; height:1px;
-  background:var(--color-paper); transform:scaleX(0); transform-origin:left;
-  transition:transform .44s cubic-bezier(.22,1,.36,1);
-}
-.btn .ln::after {
-  content:''; position:absolute; right:-9px; bottom:-1px; width:3px; height:3px;
-  border-radius:50%; background:var(--color-paper);
-  transform:scale(0); transition:transform .22s cubic-bezier(.22,1,.36,1) .3s;
-}
+   This replaces the rule-and-full-stop gesture the ocean design carried, along
+   with the `<span class="ln">` every .btn had to contain. Nothing in Style C
+   draws that gesture, and a hover that changes hue reads at a glance where a
+   1px rule growing inside a dark button did not. If it ever returns, the
+   geometry notes are in git — the insets had to track the button's padding. */
 .btn:hover {
-  background: var(--color-koa-hover);
-  border-color: var(--color-koa-hover);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-paper);
   text-decoration: none;
 }
-/* Matched to .btn in height, type and tracking so the pair sits level. */
+.btn:active {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+@media (hover:hover) and (prefers-reduced-motion: no-preference) {
+  .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .btn:active { transform: translateY(0); box-shadow: var(--shadow-flat); }
+}
+/* Matched to .btn in height, type and tracking so the pair sits level. Style C
+   uses a single CTA in the hero, so this is currently carried only by /thanks;
+   kept because losing it would mean rebuilding it the next time two buttons
+   sit together. */
 .btn-ghost {
   display: inline-flex; align-items:center; min-height:48px; padding: 12px 0 11px; border-radius: 0;
-  font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
-  letter-spacing: var(--tracking-wide); text-transform: uppercase; background: transparent;
+  font-family: var(--font-mono); font-size: var(--text-btn); font-weight: 500;
+  letter-spacing: var(--tracking-mono); background: transparent;
   color: var(--color-ink); border: 0; text-decoration: none; position:relative;
 }
-/* Was --color-hair at 1.66:1, close to not being there. */
 .btn-ghost::before { content:''; position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-rule); }
 .btn-ghost .u {
-  position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-koa);
+  position:absolute; left:0; right:0; bottom:6px; height:1px; background:var(--color-accent);
   transform:scaleX(0); transform-origin:left; transition:transform .34s cubic-bezier(.22,1,.36,1);
 }
-.btn-ghost::after { content: '→'; color: var(--color-line); margin-left:9px; transition:transform .28s cubic-bezier(.22,1,.36,1), color .28s ease; }
-.btn-ghost:hover { color: var(--color-koa); text-decoration:none; }
+.btn-ghost::after { content: '→'; color: var(--color-accent-dark); margin-left:9px; transition:transform .28s cubic-bezier(.22,1,.36,1), color .28s ease; }
+.btn-ghost:hover { color: var(--color-accent-dark); text-decoration:none; }
 @media (hover:hover) and (prefers-reduced-motion: no-preference) {
-  .btn:hover .ln { transform:scaleX(1); }
-  .btn:hover .ln::after { transform:scale(1); }
-  .btn-ghost:hover::after { transform:translateX(4px); color:var(--color-koa); }
+  .btn-ghost:hover::after { transform:translateX(4px); color:var(--color-accent); }
   .btn-ghost:hover .u { transform:scaleX(1); }
 }
-.btn:focus-visible, .btn-ghost:focus-visible { outline:2px solid var(--color-line); outline-offset:3px; }
+.btn:focus-visible, .btn-ghost:focus-visible { outline:2px solid var(--color-accent-dark); outline-offset:3px; }
 @media (prefers-reduced-motion: reduce) {
-  .btn, .btn .ln, .btn .ln::after, .btn-ghost::after, .btn-ghost .u { transition:none; }
+  .btn, .btn-ghost::after, .btn-ghost .u { transition:none; }
 }
 
 .btn-row {
-  display: flex; gap: 20px; flex-wrap: wrap;
-  margin-top: 30px; align-items: center;
+  display: flex; gap: 22px; flex-wrap: wrap;
+  margin-top: 34px; align-items: center;
 }
 
-/* ---------- annotated document grid ---------- */
-.doc {
-  display: grid; grid-template-columns: minmax(0, 1fr) var(--side);
-  gap: 56px; align-items: start;
-}
-aside.side {
-  font-size: var(--text-body); line-height: var(--leading-body); color: var(--color-quiet);
-  border-left: 1px solid var(--color-rule);
-  padding-left: 22px; padding-top: 7px;
-}
-aside.side .lbl {
-  font-family: var(--font-mono); font-size: var(--text-micro);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase; color: var(--color-koa);
-  display: block; margin-bottom: 9px;
-}
-aside.side strong { color: var(--color-ink); }
+/* The annotated document grid (.doc / aside.side) was removed 29 Aug 2026.
+   It was the margin-note layout Section.astro offered until the Style C
+   redesign, and no section in the new page uses a margin note. Recover it and
+   Section.astro's `note` slot together from git rather than rewriting either. */
 
-/* ---------- section frame ---------- */
-section { padding: 104px 0; border-top: 1px solid var(--color-rule); }
-/* The hero ran 58/66 against every other section's 104, which made the one
-   screen everybody sees the most cramped thing on the page. Opened up 18 Aug
-   2026 on the owner's instruction. Not all the way to 104 at the top: the
-   header is sticky at 68px, and pushing the headline down that far starts
-   crowding the graphic toward the fold on a laptop, which is the problem the
-   hero grid was rearranged to avoid in the first place. */
-section.hero { padding: 80px 0 96px; border-top: 0; }
+/* ---------- section frame ----------
+   100px, down from the ocean design's 104, and the dividing rule is now ink
+   rather than the pale --color-rule: Style C draws hard hairlines between
+   grounds, and a 1.2:1 rule between two different grounds reads as a smudge.
 
-/* ---------- figures ---------- */
-.figcap {
-  font-family: var(--font-mono); font-size: var(--text-micro);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase; color: var(--color-faint);
-  margin: 52px 0 18px; padding-top: 16px;
-  border-top: 1px solid var(--color-rule);
-}
+   Landmine 23 still applies with force here — this styles the element, not a
+   class, so a <section> nested inside a page section silently inherits 100px
+   of dead space and a stray rule. Group with a <div>. */
+section { padding: 100px 0; border-top: 1px solid var(--color-ink); }
+
+/* The hero sits directly under the header, which draws its own bottom rule,
+   so it carries none of its own. 84/92 rather than the full 100: the busywork
+   graphic has to clear the fold on a laptop, which is the same reason the
+   ocean hero ran short at 80/96. */
+section.hero { padding: 84px 0 92px; border-top: 0; }
+
+/* §01 follows the connects strip, which draws hairlines on both its own
+   edges, so a third rule here would double them. */
+section.no-rule { border-top: 0; }
+
+/* §02 is the one section on the quiet ground. */
+section.on-wash { background: var(--color-wash); }
+
+/* .figcap went with the numbered plates; captions have been the label alone
+   since 14 Aug 2026 and the two drawings now caption themselves in their own
+   <title>/<desc>. */
+
 /* ---------- text pages ----------
    Privacy and Terms. They aren't in index.html, so there's no original to
    match; this reuses the existing type and colour and only sets the measure
@@ -480,43 +526,14 @@ section.hero { padding: 80px 0 96px; border-top: 0; }
   .legal { padding: 66px 0 88px; }
 }
 
-svg.plate { width: 100%; height: auto; display: block; }
-.plate-scroll { position: relative; }
-.scroll-hint { display: none; }
-
-/* Narrow plates (Fig. 4) are drawn small and stay small — capped at the
-   drawing's own 560 units so they render about 1:1 instead of being blown up
-   to the full 1100px column. */
-.plate-scroll.is-narrow svg.plate { max-width: 560px; }
+/* The sideways-panning plate wrapper (.plate-scroll / .scroll-hint) was
+   removed with the same sweep. Both drawings now swap composition at 820px
+   rather than panning, so nothing needs to scroll inside its own box. */
 
 /* ---------- responsive ----------
    Breakpoints are the original's, verbatim, including the inclusive
    max-width form. They are tuned to where the margin column and the
    plates need to reflow. */
-@media (max-width: 1000px) {
-  .doc { grid-template-columns: 1fr; gap: 34px; }
-  aside.side {
-    border-left: 0; border-top: 1px solid var(--color-rule);
-    padding-left: 0; padding-top: 18px; max-width: 52ch;
-  }
-}
-@media (max-width: 820px) {
-  /* annotated plates can't shrink to phone width — let them pan instead */
-  .plate-scroll {
-    overflow-x: auto; -webkit-overflow-scrolling: touch;
-    margin: 0 -22px; padding: 0 22px 10px;
-  }
-  .plate-scroll svg.plate { min-width: 860px; }
-  /* Fig. 4 is drawn small enough to read on a phone, so it opts out of the
-     min-width rather than being forced into a sideways scroll. */
-  .plate-scroll.is-narrow { overflow-x: visible; margin: 0; padding: 0; }
-  .plate-scroll.is-narrow svg.plate { min-width: 0; }
-  .scroll-hint {
-    display: block; font-family: var(--font-mono); font-size: var(--text-micro);
-    letter-spacing: var(--tracking-wide); text-transform: uppercase;
-    color: var(--color-faint); margin-top: 8px;
-  }
-}
 @media (max-width: 640px) {
   .wrap { padding: 0 22px; }
   section { padding: 66px 0; }

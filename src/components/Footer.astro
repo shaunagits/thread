@@ -9,7 +9,15 @@ const year = new Date().getFullYear();
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <span class="mark">thread<span class="dot">.</span></span>
+        {/* The mark itself, not just the wordmark. The header has carried the
+            glyph since the redesign and the footer showed only the letters, so
+            the two ends of the page disagreed about what the logo is. */}
+        <span class="mark">
+          <svg viewBox="0 0 150 150" aria-hidden="true" focusable="false">
+            <path d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82" />
+          </svg>
+          <span>thread<span class="dot">.</span></span>
+        </span>
         <p class="blurb">
           Custom software and automation for Hawaiʻi businesses.
         </p>
@@ -49,30 +57,46 @@ const year = new Date().getFullYear();
     padding-bottom: 44px; border-bottom: 1px solid var(--color-foot-rule);
   }
   /* Same mark as the header, same exemption from the scale. */
+  /* Same mark as the header, same exemption from the scale, one step smaller
+     because the footer is not where the logo introduces itself. */
   .mark {
-    font-family: var(--font-wordmark); font-weight: 600; font-size: 24px;
-    letter-spacing: -.025em; color: var(--color-paper);
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-wordmark); font-weight: 600; font-size: 23px;
+    letter-spacing: -.02em; color: var(--color-paper);
   }
-  .mark .dot { color: var(--color-ochre); }
+  .mark svg {
+    width: 30px; height: 30px; overflow: visible; flex: none;
+    fill: none; stroke: var(--color-paper); stroke-width: 5.8;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  /* --color-foot-dot, not --color-accent. The accent is 2.49:1 on the ink
+     ground, so the mark's one detail would vanish on the one ground it sits
+     against most. The header's dot is the accent proper, where it reads at
+     6.03:1 on paper. Same problem and same fix as landmine 5. */
+  .mark .dot { color: var(--color-foot-dot); }
+  /* Sentence case at nav size, matching the header nav and the form labels.
+     Uppercase micro was the ocean design's one treatment for every label on
+     the site; Style C reserves uppercase for text inside the drawings. */
   footer h2 {
-    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
-    text-transform: uppercase; color: var(--color-foot-label);
+    font-family: var(--font-mono); font-size: var(--text-nav);
+    letter-spacing: var(--tracking-mono); color: var(--color-foot-label);
     font-weight: 500; margin-bottom: 15px; line-height: var(--leading-body);
   }
   footer ul { list-style: none; }
-  footer li { margin-bottom: 9px; font-size: var(--text-body); }
+  footer li { margin-bottom: 9px; font-size: var(--text-small); }
   footer a { color: var(--color-foot-text); }
   footer a:hover { color: var(--color-foot-link-hover); }
   .foot-bot {
     display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
-    padding-top: 26px; font-size: var(--text-micro); color: var(--color-foot-label);
+    padding-top: 26px; color: var(--color-foot-label);
+    font-family: var(--font-mono); font-size: var(--text-micro);
   }
   /* Was plain text until Privacy and Terms existed as pages. Kept at the
      bottom bar's muted colour so it doesn't compete with the columns above. */
   .foot-legal a { color: var(--color-foot-label); }
   .foot-legal a:hover { color: var(--color-foot-link-hover); }
   .blurb {
-    font-size: var(--text-body); color: var(--color-foot-blurb);
+    font-size: var(--text-small); color: var(--color-foot-blurb);
     max-width: 34ch; margin-top: 14px; line-height: var(--leading-body);
   }
 

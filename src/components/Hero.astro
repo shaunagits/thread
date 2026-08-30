@@ -1,60 +1,87 @@
 ---
 import HeroGraphic from './HeroGraphic.astro';
+import { cta, ctaHref } from '../content/site';
 ---
-<section class="hero" id="top">
+<section class="hero ruled ruled-fade" id="top">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      {/* Was "More than a website" until 17 Aug 2026. It defined Thread by what it
-          is not, against a category the business does not want to be in, and it
-          was the first text on the page. This says the category and the place,
-          which is the job an eyebrow has, and restores the location signal lost
-          when the hero lead was cut. */}
-      <h1>Built around how you already work.</h1>
-      {/* Below the headline since 25 Aug 2026, on the owner's instruction —
-          the marker reads as a sub-title now, matching the section markers. */}
-      <div class="eyebrow eyebrow-pin">
-        <span>Custom software</span>
-        <svg class="pin" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
-        </svg>
-        {/* Just the place. "Based" was dead weight next to a pin that already
-            says "here is where", and its capital B broke sentence case. */}
-        <span>Honolulu, Hawaiʻi</span>
+      {/* "Turn busywork into software." since 29 Aug 2026, replacing "Built
+          around how you already work." Duplicated by hand in og.astro; the two
+          must always agree or the share card outlives the page edit in every
+          already-scraped cache. */}
+      <h1>Turn busywork into software.</h1>
+
+      {/* Four parts, and the order is the argument: the problem in the
+          visitor's own words, then the offer, then who and where.
+
+          The eyebrow is gone. It carried "Custom software · Honolulu, Hawaiʻi"
+          above the headline and then below it as a pinned sub-title from
+          25 Aug 2026. Style C moves both facts to the foot of the stack, under
+          a rule, as a signature rather than a label — which is also why the
+          location no longer needs a pin icon to say "here is where". */}
+      <p class="hero-problem">
+        Your team shouldn’t spend their week copying data, updating
+        spreadsheets, chasing information, or doing the same task over and over.
+      </p>
+      <p class="claim claim-sm hero-promise">
+        I build custom software that does that work for you.
+      </p>
+      <p class="hero-sig">Custom software, built in Honolulu, Hawaiʻi.</p>
+
+      {/* One button, not two. The ghost "See how it works" pointed at /#how,
+          and that section no longer exists — the page runs three sections now.
+          A single CTA also stops the hero offering a choice before it has
+          made its case. */}
+      <div class="btn-row">
+        <a href={ctaHref} class="btn">{cta}</a>
       </div>
-      {/* The lead was cut 17 Aug 2026. It read "Thread connects the tools you
-          use and builds what they cannot", which restated the headline and then
-          said the same thing again as §02's lead one scroll further down. Same
-          reasoning that removed the hero margin note on 14 Aug: if §02 already
-          says it, the hero should not say it first. */}
-      <div class="btn-row"><a href="#contact" class="btn">Book a call<span class="ln" aria-hidden="true"></span></a><a href="#how" class="btn-ghost">See how it works<span class="u" aria-hidden="true"></span></a></div>
     </div>
     <div class="hero-figure"><HeroGraphic /></div>
   </div>
 </section>
+
 <style>
-  .hero-grid { display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); gap:clamp(34px, 5vw, 72px); align-items:center; }
-  /* The separator is a location pin rather than a middle dot. It inherits the
-     eyebrow's colour through currentColor and is sized in em, so it tracks
-     --text-micro instead of needing a size of its own. */
-  .eyebrow-pin { display:flex; align-items:center; gap:7px; }
-  .pin { width:1.15em; height:1.15em; fill:currentColor; flex:none; }
-  /* 18ch, not 13. The headline changed on 17 Aug 2026 and the old measure broke
-     it as "Built around / how you / already work." — three lines with a widow.
-     Paired with --text-d1's lower ceiling this sets as two even lines. */
-  .hero-copy h1 { max-width:18ch; margin:0 0 18px; }
-  /* .lead rules kept: the hero lead was removed 17 Aug 2026, but these are
-     harmless and mean restoring it is a one-line change. */
-  .hero-copy .lead { max-width:42ch; }
+  /* The graphic column is the wider of the two: the drawing is the thing that
+     explains "busywork into software" faster than the copy can. */
+  .hero-grid {
+    display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+    gap:clamp(34px, 5vw, 64px); align-items:center;
+  }
+
+  /* 17ch. The headline sets as two even lines at this measure — "Turn busywork
+     / into software." — with no widow. It was 18ch for the previous headline,
+     which needed the extra character to avoid breaking as three lines. */
+  .hero-copy h1 { max-width:17ch; margin:0 0 16px; }
+
+  .hero-problem {
+    font-family:var(--font-serif); font-size:var(--text-body);
+    line-height:var(--leading-body); color:var(--color-body);
+    max-width:46ch; margin:0 0 18px;
+  }
+  .hero-promise { max-width:40ch; margin:0 0 20px; }
+
+  /* The signature line. Under a rule and set back in --color-faint, because
+     it is the only thing in the hero a visitor does not need to read. */
+  .hero-sig {
+    font-family:var(--font-serif); font-size:var(--text-small);
+    line-height:var(--leading-body); color:var(--color-faint);
+    margin:0; padding-top:16px;
+    border-top:1px solid var(--color-rule); max-width:44ch;
+  }
+
   .hero-figure { width:100%; max-width:680px; justify-self:end; }
+
   /* Two columns down to 820px, the same breakpoint at which HeroGraphic swaps
      to its narrow composition. They used to disagree: the grid stacked at
      1000px while the drawing stayed wide until 820, so between those two
-     widths the page showed a letterboxed wide diagram under the copy. The
-     graphic column now has no minimum, so it shrinks rather than forcing the
-     stack early. */
-  @media (max-width:820px) { .hero-grid { grid-template-columns:1fr; gap:40px; } .hero-figure { max-width:680px; justify-self:start; } }
-  /* The tablet band used to centre the hero copy, which made it the only
-     centred text on the site. Everything is left aligned now, at every width. */
+     widths the page showed a letterboxed wide diagram under the copy. */
+  @media (max-width:820px) {
+    .hero-grid { grid-template-columns:1fr; gap:40px; }
+    .hero-figure { max-width:680px; justify-self:start; }
+  }
   @media (max-width:640px) { section.hero { padding:56px 0 72px; } }
-  @media (max-width:420px) { .btn-row { flex-direction:column; align-items:stretch; width:100%; } .btn-row a { text-align:center; } }
+  @media (max-width:420px) {
+    .btn-row { flex-direction:column; align-items:stretch; width:100%; }
+    .btn-row a { text-align:center; }
+  }
 </style>

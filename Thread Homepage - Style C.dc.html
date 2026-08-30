@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Petrona:wght@400..700&family=Source+Serif+4:opsz,wght@8..60,400..700&family=Literata:opsz,wght@7..72,400..700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/jetbrains-mono-latin-400.woff2') format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/jetbrains-mono-latin-500.woff2') format('woff2');}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/public-sans-latin-400.woff2') format('woff2');}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/public-sans-latin-500.woff2') format('woff2');}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/public-sans-latin-600.woff2') format('woff2');}
+body{margin:0;background:#DBDDD6;font-family:'Public Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:var(--accent-dark,#253F99);text-decoration:none}a:hover{text-decoration:underline}
+summary{list-style:none;cursor:pointer}summary::-webkit-details-marker{display:none}
+input,textarea{box-sizing:border-box}
+@keyframes bwrow0{0%,27.5%{transform:translate(8px,26px) rotate(-3deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,128px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,100px) rotate(0deg);opacity:1}93%{transform:translate(240px,100px) rotate(0deg);opacity:0}93.6%{transform:translate(8px,26px) rotate(-3deg);opacity:0}100%{transform:translate(8px,26px) rotate(-3deg);opacity:1}}
+@keyframes bwrow1{0%,27.5%{transform:translate(300px,10px) rotate(2.5deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,134px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,126px) rotate(0deg);opacity:1}93%{transform:translate(240px,126px) rotate(0deg);opacity:0}93.6%{transform:translate(300px,10px) rotate(2.5deg);opacity:0}100%{transform:translate(300px,10px) rotate(2.5deg);opacity:1}}
+@keyframes bwrow2{0%,27.5%{transform:translate(150px,88px) rotate(1.5deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,140px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,152px) rotate(0deg);opacity:1}93%{transform:translate(240px,152px) rotate(0deg);opacity:0}93.6%{transform:translate(150px,88px) rotate(1.5deg);opacity:0}100%{transform:translate(150px,88px) rotate(1.5deg);opacity:1}}
+@keyframes bwrow3{0%,27.5%{transform:translate(420px,72px) rotate(-2deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,146px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,178px) rotate(0deg);opacity:1}93%{transform:translate(240px,178px) rotate(0deg);opacity:0}93.6%{transform:translate(420px,72px) rotate(-2deg);opacity:0}100%{transform:translate(420px,72px) rotate(-2deg);opacity:1}}
+@keyframes bwrow4{0%,27.5%{transform:translate(16px,150px) rotate(2deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,152px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,204px) rotate(0deg);opacity:1}93%{transform:translate(240px,204px) rotate(0deg);opacity:0}93.6%{transform:translate(16px,150px) rotate(2deg);opacity:0}100%{transform:translate(16px,150px) rotate(2deg);opacity:1}}
+@keyframes bwrow5{0%,27.5%{transform:translate(296px,146px) rotate(-1.5deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,158px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,230px) rotate(0deg);opacity:1}93%{transform:translate(240px,230px) rotate(0deg);opacity:0}93.6%{transform:translate(296px,146px) rotate(-1.5deg);opacity:0}100%{transform:translate(296px,146px) rotate(-1.5deg);opacity:1}}
+@keyframes bwrow6{0%,27.5%{transform:translate(120px,224px) rotate(2.5deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,164px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,256px) rotate(0deg);opacity:1}93%{transform:translate(240px,256px) rotate(0deg);opacity:0}93.6%{transform:translate(120px,224px) rotate(2.5deg);opacity:0}100%{transform:translate(120px,224px) rotate(2.5deg);opacity:1}}
+@keyframes bwrow7{0%,27.5%{transform:translate(404px,212px) rotate(-2.5deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,170px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,282px) rotate(0deg);opacity:1}93%{transform:translate(240px,282px) rotate(0deg);opacity:0}93.6%{transform:translate(404px,212px) rotate(-2.5deg);opacity:0}100%{transform:translate(404px,212px) rotate(-2.5deg);opacity:1}}
+@keyframes bwrow8{0%,27.5%{transform:translate(24px,298px) rotate(1.5deg);opacity:1;animation-timing-function:cubic-bezier(.5,0,.2,1)}45%{transform:translate(204px,176px) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}65%,88.75%{transform:translate(240px,308px) rotate(0deg);opacity:1}93%{transform:translate(240px,308px) rotate(0deg);opacity:0}93.6%{transform:translate(24px,298px) rotate(1.5deg);opacity:0}100%{transform:translate(24px,298px) rotate(1.5deg);opacity:1}}
+@keyframes bwtick0{0%,8%{opacity:0}9%{opacity:1}72%{opacity:1}73%,100%{opacity:0}}
+@keyframes bwtick2{0%,16%{opacity:0}17%{opacity:1}72%{opacity:1}73%,100%{opacity:0}}
+@keyframes bwtick5{0%,24%{opacity:0}25%{opacity:1}72%{opacity:1}73%,100%{opacity:0}}
+@keyframes bwdone0{0%,74.0%{opacity:0}75.1%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone1{0%,75.6%{opacity:0}76.7%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone2{0%,77.2%{opacity:0}78.3%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone3{0%,78.8%{opacity:0}79.9%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone4{0%,80.4%{opacity:0}81.5%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone5{0%,82.0%{opacity:0}83.1%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone6{0%,83.6%{opacity:0}84.7%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone7{0%,85.2%{opacity:0}86.3%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwdone8{0%,86.8%{opacity:0}87.9%{opacity:1}90%{opacity:1}93%,100%{opacity:0}}
+@keyframes bwcur{0%{transform:translate(300px,352px) scale(1)}5%{transform:translate(23px,39px) scale(1)}7%{transform:translate(23px,39px) scale(.82)}9%{transform:translate(23px,39px) scale(1)}13%{transform:translate(165px,101px) scale(1)}15%{transform:translate(165px,101px) scale(.82)}17%{transform:translate(165px,101px) scale(1)}21%{transform:translate(311px,159px) scale(1)}23%{transform:translate(311px,159px) scale(.82)}25%{transform:translate(311px,159px) scale(1)}31%,62%{transform:translate(180px,360px) scale(1)}70%{transform:translate(470px,80px) scale(1)}72%{transform:translate(470px,80px) scale(.82)}74%{transform:translate(470px,80px) scale(1)}88.75%{transform:translate(470px,80px) scale(1)}100%{transform:translate(300px,352px) scale(1)}}
+@keyframes bwwin{0%,45%{opacity:0;transform:scale(.96)}58%{opacity:1;transform:scale(1)}88.75%{opacity:1;transform:scale(1)}94%,100%{opacity:0;transform:scale(.96)}}
+
+</style>
+<script src="image-slot.js"></script>
+</helmet>
+
+<div style="padding:40px 56px 72px;display:flex;flex-direction:column;gap:24px;align-items:flex-start">
+
+<div style="max-width:740px">
+  <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:500;letter-spacing:.02em;color:var(--accent-dark,#253F99);margin-bottom:8px">Thread · style variation C · graphite &amp; signal</div>
+  <div style="font-size:13px;line-height:1.6;color:#5E6350">Graphite paper, near-black ink, one cobalt accent, hairline rules. Section markers are numbers on the rule, not eyebrow labels. Hero: nine loose tasks drift, three get ticked by hand, all nine gather, compile into a system and finish in one click (8s loop). Section 01 is the signals checklist; section 02 carries the build cards and the annotated dashboard plate. The docking-cards graphic now lives on its own in <a href="Docking Cards Graphic.dc.html">Docking Cards Graphic</a>. Display serif and brand colour switchable in Tweaks.</div>
+</div>
+
+<div data-screen-label="Style C · Desktop 1440">
+<div style="width:1440px;background:#EDEEE9;color:#171A18;border:1px solid #171A18;box-shadow:0 1px 2px rgba(23,26,24,.06);font-size:16.5px;line-height:1.65">
+
+  <!-- header -->
+  <div style="height:70px;border-bottom:1px solid #171A18;background:#EDEEE9">
+    <div style="max-width:1180px;margin:0 auto;padding:0 40px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <span style="display:inline-flex;align-items:center;gap:10px;font-family:var(--display,'Petrona');font-weight:600;font-size:25px;letter-spacing:-.02em;color:#171A18">
+        <svg viewBox="0 0 150 150" style="width:34px;height:34px;overflow:visible" aria-hidden="true"><path fill="none" stroke="#171A18" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82"></path></svg>
+        <span>thread<span style="color:var(--accent,#2E4FBF)">.</span></span>
+      </span>
+      <div style="display:flex;gap:28px;align-items:center;font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.02em;color:#3B423D">
+        <span>The busywork</span>
+        <span>What I build</span>
+        <span>Start here</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 26px;font-family:'JetBrains Mono';font-size:12.5px;font-weight:500;letter-spacing:.02em;background:#171A18;color:#EDEEE9;border:1px solid #171A18;box-shadow:0 1px 0 rgba(23,26,24,.14);cursor:pointer;transition:transform .14s cubic-bezier(.2,.7,.3,1),box-shadow .14s ease,background .14s ease" style-hover="background:var(--accent,#2E4FBF);border-color:var(--accent,#2E4FBF);transform:translateY(-2px);box-shadow:0 8px 18px rgba(23,26,24,.20)" style-active="background:var(--accent-dark,#253F99);border-color:var(--accent-dark,#253F99);transform:translateY(0);box-shadow:0 1px 0 rgba(23,26,24,.22)">{{ cta }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="padding:84px 0 92px;position:relative;isolation:isolate">
+    <div style="position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(to right,rgba(23,26,24,.07) 1px,transparent 1px);background-size:44px 100%;-webkit-mask-image:linear-gradient(115deg,transparent 42%,#000 78%);mask-image:linear-gradient(115deg,transparent 42%,#000 78%)"></div>
+    <div style="max-width:1180px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:64px;align-items:center">
+      <div>
+        <h1 style="font-family:var(--display,'Petrona');font-weight:650;font-size:56px;line-height:1.08;letter-spacing:-.025em;color:#171A18;max-width:17ch;margin:0 0 16px">Turn busywork into software.</h1>
+        
+        <p style="font-size:17px;line-height:1.65;color:#3B423D;max-width:46ch;margin:0 0 18px">Your team shouldn't spend their week copying data, updating spreadsheets, chasing information, or doing the same task over and over.</p>
+        <p style="font-family:var(--display,'Petrona');font-weight:600;font-size:21px;line-height:1.4;letter-spacing:-.01em;color:#171A18;max-width:40ch;margin:0 0 20px">I build custom software that does that work for you.</p>
+        <p style="font-size:15px;line-height:1.6;color:#767C76;margin:0;padding-top:16px;border-top:1px solid #D9DBD4;max-width:44ch">Custom software, built in Honolulu, Hawaiʻi.</p>
+        <div style="display:flex;gap:22px;flex-wrap:wrap;margin-top:34px;align-items:center">
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 28px;font-family:'JetBrains Mono';font-size:13px;font-weight:500;letter-spacing:.02em;background:#171A18;color:#EDEEE9;border:1px solid #171A18;box-shadow:0 1px 0 rgba(23,26,24,.14);cursor:pointer;transition:transform .14s cubic-bezier(.2,.7,.3,1),box-shadow .14s ease,background .14s ease" style-hover="background:var(--accent,#2E4FBF);border-color:var(--accent,#2E4FBF);transform:translateY(-2px);box-shadow:0 8px 18px rgba(23,26,24,.20)" style-active="background:var(--accent-dark,#253F99);border-color:var(--accent-dark,#253F99);transform:translateY(0);box-shadow:0 1px 0 rgba(23,26,24,.22)">{{ cta }}</span>
+        </div>
+      </div>
+      <div style="width:100%;max-width:680px;justify-self:end">
+        <svg viewBox="0 0 640 380" style="display:block;width:100%;height:auto;overflow:visible" role="img" aria-label="Loose repetitive tasks drift, a few get ticked by hand, then they gather and compile into one system that completes the whole list in a single click">
+          <g style="opacity:0;transform-box:fill-box;transform-origin:center;animation:bwwin 8s cubic-bezier(.4,0,.2,1) infinite">
+            <rect x="120" y="32" width="400" height="316" rx="2" fill="#EDEEE9" stroke="#171A18" stroke-width="1"></rect>
+            <path d="M120 66 H520" fill="none" stroke="#D9DBD4" stroke-width="1"></path>
+            <g fill="#9AA09A"><circle cx="134" cy="49" r="3.5"></circle><circle cx="146" cy="49" r="3.5"></circle><circle cx="158" cy="49" r="3.5"></circle></g>
+            <rect x="300" y="41" width="200" height="16" rx="8" fill="#E2E4DE"></rect>
+            <text x="312" y="52.5" style="font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em" fill="#767C76">app.yourbusiness.com</text>
+            <path d="M232 66 V348" fill="none" stroke="#D9DBD4" stroke-width="1"></path>
+            <rect x="146" y="98" width="70" height="9" rx="4.5" style="fill:var(--accent-dark,#253F99)"></rect>
+            <rect x="146" y="126" width="54" height="9" rx="4.5" fill="#D9DBD4"></rect>
+            <rect x="146" y="154" width="62" height="9" rx="4.5" fill="#D9DBD4"></rect>
+            <rect x="146" y="182" width="46" height="9" rx="4.5" fill="#D9DBD4"></rect>
+            <rect x="424" y="100" width="84" height="72" rx="2" fill="#F8F9F6" stroke="#D9DBD4" stroke-width="1"></rect>
+            <rect x="424" y="184" width="84" height="72" rx="2" fill="#F8F9F6" stroke="#D9DBD4" stroke-width="1"></rect>
+            <rect x="424" y="268" width="84" height="72" rx="2" fill="#F8F9F6" stroke="#D9DBD4" stroke-width="1"></rect>
+            <rect x="440" y="70" width="60" height="20" rx="2" style="fill:var(--accent,#2E4FBF)"></rect>
+            <text x="470" y="83.5" text-anchor="middle" style="font-family:'JetBrains Mono';font-size:9px;letter-spacing:.1em" fill="#EDEEE9">RUN</text>
+          </g>
+          <g style="animation:bwrow0 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="104" height="5" rx="2.5" fill="#D9DBD4"></rect><path d="M11.6 13.6 L14.3 16.3 L19.6 10.3" fill="none" stroke="#171A18" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;animation:bwtick0 8s linear infinite"></path><g style="opacity:0;animation:bwdone0 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow1 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="132" height="5" rx="2.5" fill="#D9DBD4"></rect><g style="opacity:0;animation:bwdone1 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow2 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="88" height="5" rx="2.5" fill="#D9DBD4"></rect><path d="M11.6 13.6 L14.3 16.3 L19.6 10.3" fill="none" stroke="#171A18" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;animation:bwtick2 8s linear infinite"></path><g style="opacity:0;animation:bwdone2 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow3 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="120" height="5" rx="2.5" fill="#D9DBD4"></rect><g style="opacity:0;animation:bwdone3 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow4 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="96" height="5" rx="2.5" fill="#D9DBD4"></rect><g style="opacity:0;animation:bwdone4 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow5 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="140" height="5" rx="2.5" fill="#D9DBD4"></rect><path d="M11.6 13.6 L14.3 16.3 L19.6 10.3" fill="none" stroke="#171A18" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;animation:bwtick5 8s linear infinite"></path><g style="opacity:0;animation:bwdone5 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow6 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="112" height="5" rx="2.5" fill="#D9DBD4"></rect><g style="opacity:0;animation:bwdone6 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow7 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="126" height="5" rx="2.5" fill="#D9DBD4"></rect><g style="opacity:0;animation:bwdone7 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwrow8 8s cubic-bezier(.5,0,.2,1) infinite"><rect width="170" height="26" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect><rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="#9AA09A" stroke-width="1"></rect><rect x="30" y="10.5" width="100" height="5" rx="2.5" fill="#D9DBD4"></rect><g style="opacity:0;animation:bwdone8 8s linear infinite"><rect x="9" y="7" width="12" height="12" rx="1" style="fill:var(--accent,#2E4FBF)"></rect><path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="#F8F9F6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g style="animation:bwcur 8s cubic-bezier(.45,0,.25,1) infinite"><path d="M0 0 L0 17 L4.8 12.6 L7.7 18.6 L10.9 17.1 L8 11.2 L13.6 10.7 Z" fill="#171A18" stroke="#EDEEE9" stroke-width="1"></path></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- connects strip -->
+  <div style="border-top:1px solid #171A18;border-bottom:1px solid #171A18;background:#171A18;padding:22px 0">
+    <div style="max-width:1180px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap;justify-content:center">
+      <span style="font-family:'JetBrains Mono';font-size:11px;font-weight:500;letter-spacing:.04em;color:#F8F9F6;background:var(--accent,#2E4FBF);padding:3px 8px">Connects to</span>
+      <sc-for list="{{ integrations }}" as="tool" hint-placeholder-count="13"><span style="font-family:'JetBrains Mono';font-size:14.5px;color:#D7D9D2">{{ tool }}</span></sc-for>
+    </div>
+  </div>
+
+  <!-- §01 -->
+  <div style="padding:100px 0">
+    <div style="max-width:1180px;margin:0 auto;padding:0 40px">
+      <div style="display:flex;align-items:baseline;justify-content:flex-start;gap:32px;border-top:1px solid #171A18;padding-top:12px;margin-bottom:30px"><span style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.08em;color:var(--accent,#2E4FBF)">01</span></div>
+      <div style="display:grid;grid-template-columns:minmax(0,35fr) minmax(0,65fr);gap:64px;align-items:stretch">
+        <div style="display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+          <div>
+            <h2 style="font-family:var(--display,'Petrona');font-weight:650;font-size:44px;line-height:1.1;letter-spacing:-.02em;color:#171A18;margin:0 0 18px">If it happens over and over, it should be <span style="background:linear-gradient(transparent 62%,var(--accent-soft,rgba(46,79,191,.30)) 62%)">automated.</span></h2>
+            <p style="font-size:17px;line-height:1.65;color:#3B423D;margin:0">Maybe your team is:</p>
+          </div>
+          <div style="border-top:1px solid #171A18;padding-top:26px">
+            <p style="font-size:17px;line-height:1.65;color:#3B423D;margin:0 0 10px">These little inefficiencies add up.</p>
+            <p style="font-family:var(--display,'Petrona');font-weight:600;font-size:26px;line-height:1.3;letter-spacing:-.015em;color:#171A18;margin:0">That's the busywork I build out of your business.</p>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">01</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Entering the same information in multiple places</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">02</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Managing an important process through spreadsheets</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">03</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Copying data between systems</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">04</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Chasing approvals, updates, or paperwork</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">05</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Building reports by hand</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">06</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Working around software that doesn't quite fit</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;background:#F8F9F6;border:1px solid #171A18;padding:18px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:var(--accent,#2E4FBF);flex:none;width:22px">07</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#171A18">Following a 12-step process that should take two</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;border:1px dashed #9AA09A;padding:20px 26px">
+            <span style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;color:#9AA09A;flex:none;width:22px">08</span>
+            <span style="width:1px;height:24px;background:#D9DBD4;flex:none"></span>
+            <span style="font-size:16.5px;line-height:1.4;color:#767C76;display:flex;align-items:center;gap:8px">Whatever your team keeps redoing<span style="width:2px;height:20px;background:var(--accent,#2E4FBF);opacity:.6"></span></span>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div style="display:flex;gap:22px;flex-wrap:wrap;margin-top:44px;align-items:center">
+        <span style="display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 28px;font-family:'JetBrains Mono';font-size:13px;font-weight:500;letter-spacing:.02em;background:#171A18;color:#EDEEE9;border:1px solid #171A18;box-shadow:0 1px 0 rgba(23,26,24,.14);cursor:pointer;transition:transform .14s cubic-bezier(.2,.7,.3,1),box-shadow .14s ease,background .14s ease" style-hover="background:var(--accent,#2E4FBF);border-color:var(--accent,#2E4FBF);transform:translateY(-2px);box-shadow:0 8px 18px rgba(23,26,24,.20)" style-active="background:var(--accent-dark,#253F99);border-color:var(--accent-dark,#253F99);transform:translateY(0);box-shadow:0 1px 0 rgba(23,26,24,.22)">{{ cta }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- §02 -->
+  <div style="padding:100px 0;border-top:1px solid #171A18;background:#E2E4DE">
+    <div style="max-width:1180px;margin:0 auto;padding:0 40px">
+      <div style="display:flex;align-items:baseline;justify-content:flex-start;gap:32px;border-top:1px solid #171A18;padding-top:12px;margin-bottom:30px"><span style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.08em;color:var(--accent,#2E4FBF)">02</span></div>
+      <h2 style="font-family:var(--display,'Petrona');font-weight:650;font-size:44px;line-height:1.1;letter-spacing:-.02em;color:#171A18;margin:0 0 18px;max-width:26ch">Your process. Just without all the work.</h2>
+      <p style="font-size:17px;line-height:1.65;color:#3B423D;max-width:58ch;margin:0">I look at how the work actually gets done, find the repetitive steps, bottlenecks, and workarounds, then build a simpler system around them.</p>
+      <p style="font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.02em;color:#767C76;margin:18px 0 0">That might be a:</p>
+
+      <ol style="list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:30px">
+        <li style="grid-column:span 2;background:#EDEEE9;border:1px solid #171A18;padding:30px;position:relative">
+          <span style="position:absolute;top:-16px;left:22px;font-family:'JetBrains Mono';font-weight:500;font-size:13px;background:#171A18;padding:3px 10px;color:#F8F9F6">01</span>
+          <h3 style="font-family:var(--display,'Petrona');font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-.01em;color:#171A18;margin:14px 0 10px">Custom dashboard</h3>
+          <p style="font-size:16px;line-height:1.65;color:#3B423D;margin:0">Everything your team needs in one place.</p>
+        </li>
+        <li style="grid-column:span 2;background:#EDEEE9;border:1px solid #171A18;padding:30px;position:relative">
+          <span style="position:absolute;top:-16px;left:22px;font-family:'JetBrains Mono';font-weight:500;font-size:13px;background:#171A18;padding:3px 10px;color:#F8F9F6">02</span>
+          <h3 style="font-family:var(--display,'Petrona');font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-.01em;color:#171A18;margin:14px 0 10px">Internal tool</h3>
+          <p style="font-size:16px;line-height:1.65;color:#3B423D;margin:0">Software built around the way your business actually works.</p>
+        </li>
+        <li style="grid-column:span 2;background:#EDEEE9;border:1px solid #171A18;padding:30px;position:relative">
+          <span style="position:absolute;top:-16px;left:22px;font-family:'JetBrains Mono';font-weight:500;font-size:13px;background:#171A18;padding:3px 10px;color:#F8F9F6">03</span>
+          <h3 style="font-family:var(--display,'Petrona');font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-.01em;color:#171A18;margin:14px 0 10px">Automated workflow</h3>
+          <p style="font-size:16px;line-height:1.65;color:#3B423D;margin:0">Routine tasks happen automatically instead of becoming someone's to-do list.</p>
+        </li>
+        <li style="grid-column:span 3;background:#EDEEE9;border:1px solid #171A18;padding:30px;position:relative">
+          <span style="position:absolute;top:-16px;left:22px;font-family:'JetBrains Mono';font-weight:500;font-size:13px;background:#171A18;padding:3px 10px;color:#F8F9F6">04</span>
+          <h3 style="font-family:var(--display,'Petrona');font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-.01em;color:#171A18;margin:14px 0 10px">System integration</h3>
+          <p style="font-size:16px;line-height:1.65;color:#3B423D;margin:0">Your existing tools finally talk to each other.</p>
+        </li>
+        <li style="grid-column:span 3;background:#EDEEE9;border:1px solid #171A18;padding:30px;position:relative">
+          <span style="position:absolute;top:-16px;left:22px;font-family:'JetBrains Mono';font-weight:500;font-size:13px;background:#171A18;padding:3px 10px;color:#F8F9F6">05</span>
+          <h3 style="font-family:var(--display,'Petrona');font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-.01em;color:#171A18;margin:14px 0 10px">Customer or employee portal</h3>
+          <p style="font-size:16px;line-height:1.65;color:#3B423D;margin:0">Give people one simple place to get what they need.</p>
+        </li>
+      </ol>
+
+
+
+      <figure id="plate-fig" style="margin:88px 0 0;max-width:100%">
+        <svg data-plate="1" viewBox="0 -132 1040 748" style="display:block;width:100%;height:auto;overflow:visible" role="img" aria-label="One dashboard, built for your business">
+          <rect x="8" y="16" width="1024" height="516" rx="3" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect>
+          <path d="M8 60 H1032" stroke="#D9DBD4" stroke-width="1" fill="none"></path>
+          <g fill="#9AA09A"><circle cx="34" cy="38" r="4.5"></circle><circle cx="52" cy="38" r="4.5"></circle><circle cx="70" cy="38" r="4.5"></circle></g>
+          <rect x="300" y="27" width="440" height="22" rx="11" fill="#E2E4DE"></rect>
+          <text x="322" y="42" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">app.yourbusiness.com</text>
+          <path d="M240 60 V532" stroke="#D9DBD4" stroke-width="1" fill="none"></path>
+          <rect x="32" y="88" width="26" height="26" rx="5" style="fill:var(--accent-dark,#253F99)"></rect>
+          <rect x="70" y="96" width="86" height="11" rx="5.5" style="fill:var(--accent-dark,#253F99)"></rect>
+          <rect x="20" y="150" width="200" height="38" rx="2" fill="#E2E4DE"></rect>
+          <text x="40" y="175" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:16px">Dashboard</text>
+          <text x="40" y="217" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Sales</text>
+          <text x="40" y="259" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Jobs</text>
+          <text x="40" y="301" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Team</text>
+          <text x="40" y="343" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Invoices</text>
+          <path d="M20 384 H220" stroke="#D9DBD4" stroke-width="1" fill="none"></path>
+          <circle cx="38" cy="424" r="13" fill="#E2E4DE" stroke="#9AA09A" stroke-width="1"></circle>
+          <rect x="62" y="419" width="94" height="9" rx="4.5" fill="#9AA09A"></rect>
+          <text x="272" y="106" style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:-.02em" fill="#171A18">Today</text>
+          <text x="272" y="130" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">MONDAY · ALL LOCATIONS</text>
+          <rect x="896" y="84" width="112" height="34" rx="2" style="fill:var(--accent-dark,#253F99)"></rect>
+          <text x="952" y="106" text-anchor="middle" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#EDEEE9">New job</text>
+          <rect x="272" y="150" width="238" height="104" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect>
+          <text x="292" y="184" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">REVENUE · THIS MONTH</text>
+          <text x="292" y="226" style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:-.02em" fill="#171A18">$148,320</text>
+          <rect x="530" y="150" width="238" height="104" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect>
+          <text x="550" y="184" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">JOBS OPEN</text>
+          <text x="550" y="226" style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:-.02em" fill="#171A18">37</text>
+          <rect x="788" y="150" width="220" height="104" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect>
+          <text x="808" y="184" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">ON SHIFT TODAY</text>
+          <text x="808" y="226" style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:-.02em" fill="#171A18">12</text>
+          <rect x="272" y="278" width="496" height="230" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect>
+          <text x="292" y="310" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">SALES · LAST 7 DAYS</text>
+          <path d="M292 410 H748" stroke="#D9DBD4" stroke-width="1" fill="none"></path>
+          <path d="M292 445 H748" stroke="#D9DBD4" stroke-width="1" fill="none"></path>
+          <path d="M292 480 H748" stroke="#D9DBD4" stroke-width="1" fill="none"></path>
+          <path fill="none" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M292.0 458 L368.0 450 L444.0 454 L520.0 440 L596.0 446 L672.0 428 L748.0 434" style="stroke:var(--accent,#2E4FBF)"></path>
+          <path fill="none" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M292.0 440 L368.0 428 L444.0 436 L520.0 410 L596.0 422 L672.0 394 L748.0 406" style="stroke:var(--accent-dark,#253F99)"></path>
+          <path fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" d="M292.0 422 L368.0 394 L444.0 430 L520.0 370 L596.0 404 L672.0 348 L748.0 382" style="stroke:var(--accent-dark,#253F99)"></path>
+          <circle cx="748" cy="382" r="5" fill="#F8F9F6" stroke-width="2" style="stroke:var(--accent-dark,#253F99)"></circle>
+          <rect x="788" y="278" width="220" height="230" rx="2" fill="#F8F9F6" stroke="#9AA09A" stroke-width="1"></rect>
+          <text x="808" y="310" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em" fill="#767C76">CREW · TODAY</text>
+          <circle cx="812" cy="348" r="13" fill="#E2E4DE" stroke="#9AA09A" stroke-width="1"></circle><text x="838" y="353" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Install</text><circle cx="986" cy="348" r="5" style="fill:var(--accent-dark,#253F99)"></circle>
+          <circle cx="812" cy="396" r="13" fill="#E2E4DE" stroke="#9AA09A" stroke-width="1"></circle><text x="838" y="401" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Delivery</text><circle cx="986" cy="396" r="5" style="fill:var(--accent-dark,#253F99)"></circle>
+          <circle cx="812" cy="444" r="13" fill="#E2E4DE" stroke="#9AA09A" stroke-width="1"></circle><text x="838" y="449" style="font-family:'JetBrains Mono';font-size:16px" fill="#314447">Front desk</text><circle cx="986" cy="444" r="5" fill="#9AA09A"></circle>
+          <g>
+            <g data-an="5" style="transition:opacity .35s ease"><path d="M24 -93 V150" stroke-width="1" fill="none" style="stroke:var(--accent-dark,#253F99)"></path><circle cx="24" cy="-104" r="13" fill="#EDEEE9" stroke-width="1" style="stroke:var(--accent-dark,#253F99)"></circle><text x="24" y="-100" text-anchor="middle" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:11px">5</text><text x="44" y="-99" style="font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.04em" fill="#314447">Your process, not a template</text></g>
+            <g data-an="6" style="transition:opacity .35s ease"><path d="M430 -93 V-40 H520 V27" stroke-width="1" fill="none" style="stroke:var(--accent-dark,#253F99)"></path><circle cx="430" cy="-104" r="13" fill="#EDEEE9" stroke-width="1" style="stroke:var(--accent-dark,#253F99)"></circle><text x="430" y="-100" text-anchor="middle" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:11px">6</text><text x="450" y="-99" style="font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.04em" fill="#314447">Your account, you own it</text></g>
+            <g data-an="1" style="transition:opacity .35s ease"><path d="M770 -93 V-40 H650 V150" stroke-width="1" fill="none" style="stroke:var(--accent-dark,#253F99)"></path><circle cx="770" cy="-104" r="13" fill="#EDEEE9" stroke-width="1" style="stroke:var(--accent-dark,#253F99)"></circle><text x="770" y="-100" text-anchor="middle" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:11px">1</text><text x="790" y="-99" style="font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.04em" fill="#314447">Live counts from your tools</text></g>
+            <g data-an="3" style="transition:opacity .35s ease"><path d="M24 573 V343" stroke-width="1" fill="none" style="stroke:var(--accent-dark,#253F99)"></path><circle cx="24" cy="584" r="13" fill="#EDEEE9" stroke-width="1" style="stroke:var(--accent-dark,#253F99)"></circle><text x="24" y="588" text-anchor="middle" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:11px">3</text><text x="44" y="589" style="font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.04em" fill="#314447">Invoices go out on close</text></g>
+            <g data-an="2" style="transition:opacity .35s ease"><path d="M430 573 V550 H520 V508" stroke-width="1" fill="none" style="stroke:var(--accent-dark,#253F99)"></path><circle cx="430" cy="584" r="13" fill="#EDEEE9" stroke-width="1" style="stroke:var(--accent-dark,#253F99)"></circle><text x="430" y="588" text-anchor="middle" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:11px">2</text><text x="450" y="589" style="font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.04em" fill="#314447">Reconciled, not retyped</text></g>
+            <g data-an="4" style="transition:opacity .35s ease"><path d="M770 573 V550 H898 V508" stroke-width="1" fill="none" style="stroke:var(--accent-dark,#253F99)"></path><circle cx="770" cy="584" r="13" fill="#EDEEE9" stroke-width="1" style="stroke:var(--accent-dark,#253F99)"></circle><text x="770" y="588" text-anchor="middle" style="fill:var(--accent-dark,#253F99);font-family:'JetBrains Mono';font-size:11px">4</text><text x="790" y="589" style="font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.04em" fill="#314447">One login, you set access</text></g>
+            <rect data-spot="1" x="526" y="146" width="246" height="112" rx="3" fill="none" stroke-width="2" style="stroke:var(--accent,#2E4FBF);opacity:0;transition:opacity .35s ease"></rect>
+            <rect data-spot="2" x="268" y="274" width="504" height="238" rx="3" fill="none" stroke-width="2" style="stroke:var(--accent,#2E4FBF);opacity:0;transition:opacity .35s ease"></rect>
+            <rect data-spot="3" x="16" y="322" width="208" height="42" rx="3" fill="none" stroke-width="2" style="stroke:var(--accent,#2E4FBF);opacity:0;transition:opacity .35s ease"></rect>
+            <rect data-spot="4" x="784" y="274" width="228" height="238" rx="3" fill="none" stroke-width="2" style="stroke:var(--accent,#2E4FBF);opacity:0;transition:opacity .35s ease"></rect>
+            <rect data-spot="5" x="16" y="140" width="208" height="258" rx="3" fill="none" stroke-width="2" style="stroke:var(--accent,#2E4FBF);opacity:0;transition:opacity .35s ease"></rect>
+            <rect data-spot="6" x="296" y="22" width="448" height="32" rx="3" fill="none" stroke-width="2" style="stroke:var(--accent,#2E4FBF);opacity:0;transition:opacity .35s ease"></rect>
+          </g>
+        </svg>
+      </figure>
+
+    </div>
+  </div>
+
+  <!-- §05 -->
+  <div style="border-top:1px solid #171A18;position:relative;isolation:isolate">
+    <div style="position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(to right,rgba(23,26,24,.07) 1px,transparent 1px);background-size:44px 100%"></div>
+    <div style="max-width:1180px;margin:0 auto;padding:88px 40px;display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:60px;align-items:start">
+      <div>
+        <div style="display:flex;align-items:baseline;justify-content:flex-start;gap:32px;border-top:1px solid #171A18;padding-top:12px;margin-bottom:30px"><span style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.08em;color:var(--accent,#2E4FBF)">03</span></div>
+        <h2 style="font-family:var(--display,'Petrona');font-weight:650;font-size:44px;line-height:1.1;letter-spacing:-.02em;color:#171A18;margin:0 0 18px;max-width:14ch">What could you stop doing manually?</h2>
+        <p style="font-size:17px;line-height:1.65;color:#3B423D;max-width:40ch;margin:0">You don't need to know what to build. Just tell me about the process that's driving you crazy.</p>
+        <p style="font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.02em;color:#3B423D;margin:30px 0 0;line-height:1.9">aloha@threadhawaii.com<br>Honolulu, Hawaiʻi</p>
+        <div style="margin-top:34px;max-width:430px">
+          <sc-if value="{{ showFlags }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;font-family:'JetBrains Mono';font-size:11px;font-weight:500;letter-spacing:.02em;color:#171A18;border:1px dashed #171A18;padding:4px 8px;margin-bottom:12px;transform:none">Change 3 · blocked on owner name + photo</span></sc-if>
+          <div style="display:flex;gap:18px;align-items:center;background:#F8F9F6;border:1px solid #171A18;box-shadow:none;padding:22px">
+            <image-slot id="owner-photo-b" shape="circle" style="width:64px;height:64px;flex:none" placeholder="Photo"></image-slot>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:#3B423D"><strong style="color:#171A18;font-weight:600">[Owner name]</strong> · Thread is one person, based in Honolulu. I build every system myself and I answer this form myself.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="background:#F8F9F6;border:1px solid #171A18;box-shadow:none;padding:30px">
+          <label style="display:block;margin-bottom:7px;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#3B423D">Name</label>
+          <input type="text" style="width:100%;padding:11px 13px;border:1px solid #171A18;background:#EDEEE9;font-family:'Public Sans';font-size:16px;color:#171A18;margin-bottom:18px">
+          <label style="display:block;margin-bottom:7px;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#3B423D">Email</label>
+          <input type="email" style="width:100%;padding:11px 13px;border:1px solid #171A18;background:#EDEEE9;font-family:'Public Sans';font-size:16px;color:#171A18;margin-bottom:18px">
+          <label style="display:block;margin-bottom:7px;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#3B423D">Company website</label>
+          <input type="text" placeholder="threadhawaii.com" style="width:100%;padding:11px 13px;border:1px solid #171A18;background:#EDEEE9;font-family:'Public Sans';font-size:16px;color:#171A18;margin-bottom:18px">
+          <label style="display:block;margin-bottom:7px;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#3B423D">What does your business do?</label>
+          <input type="text" style="width:100%;padding:11px 13px;border:1px solid #171A18;background:#EDEEE9;font-family:'Public Sans';font-size:16px;color:#171A18;margin-bottom:18px">
+          <label style="display:block;margin-bottom:7px;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#3B423D">What software are you running?</label>
+          <textarea placeholder="A rough list is fine." style="width:100%;padding:11px 13px;border:1px solid #171A18;background:#EDEEE9;font-family:'Public Sans';font-size:16px;color:#171A18;margin-bottom:18px;resize:vertical;min-height:82px"></textarea>
+          <label style="display:block;margin-bottom:7px;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#3B423D">What eats the most time right now?</label>
+          <textarea placeholder="The thing that made you open this form." style="width:100%;padding:11px 13px;border:1px solid #171A18;background:#EDEEE9;font-family:'Public Sans';font-size:16px;color:#171A18;margin-bottom:18px;resize:vertical;min-height:82px"></textarea>
+          <span style="display:inline-flex;width:100%;box-sizing:border-box;align-items:center;justify-content:center;min-height:50px;padding:12px 28px;font-family:'JetBrains Mono';font-size:13px;font-weight:500;letter-spacing:.02em;background:#171A18;color:#EDEEE9;border:1px solid #171A18;box-shadow:0 1px 0 rgba(23,26,24,.14);cursor:pointer;transition:transform .14s cubic-bezier(.2,.7,.3,1),box-shadow .14s ease,background .14s ease" style-hover="background:var(--accent,#2E4FBF);border-color:var(--accent,#2E4FBF);transform:translateY(-2px);box-shadow:0 8px 18px rgba(23,26,24,.20)" style-active="background:var(--accent-dark,#253F99);border-color:var(--accent-dark,#253F99);transform:translateY(0);box-shadow:0 1px 0 rgba(23,26,24,.22)">Show me your busywork <span style="margin-left:9px">→</span></span>
+          <p style="font-size:14.5px;line-height:1.6;color:#767C76;margin:16px 0 0;text-align:center">One reply from a person, within one business day, usually sooner. No sales sequence.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="background:#171A18;color:#D7D9D2;padding:64px 0 40px;border-top:1px solid #171A18">
+    <div style="max-width:1180px;margin:0 auto;padding:0 40px">
+      <div style="display:grid;grid-template-columns:2.2fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid #3B423D">
+        <div>
+          <span style="display:inline-flex;align-items:center;gap:10px;font-family:var(--display,'Petrona');font-weight:600;font-size:23px;letter-spacing:-.02em;color:#EDEEE9">
+            <svg viewBox="0 0 150 150" style="width:30px;height:30px;overflow:visible" aria-hidden="true"><path fill="none" stroke="#EDEEE9" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82"></path></svg>
+            <span>thread<span style="color:var(--accent,#2E4FBF)">.</span></span>
+          </span>
+          <p style="font-size:15.5px;color:#9AA09A;max-width:34ch;margin:14px 0 0;line-height:1.6">Custom software and automation for Hawaiʻi businesses.</p>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#8C928B;margin-bottom:15px">Sections</div>
+          <div style="display:flex;flex-direction:column;gap:9px;font-size:15.5px"><span>The busywork</span><span>What I build</span><span>Start here</span></div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.02em;color:#8C928B;margin-bottom:15px">Contact</div>
+          <div style="display:flex;flex-direction:column;gap:9px;font-size:15.5px"><span>{{ cta }}</span><span>Email me</span></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;font-family:'JetBrains Mono';font-size:11px;color:#8C928B">
+        <span>© 2026 Thread · Honolulu, Hawaiʻi</span>
+        <span>Privacy · Terms</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div style="font-size:13px;line-height:1.6;color:#5E6350;max-width:720px">Original direction: <a href="Thread Homepage - Target State.dc.html">Thread Homepage · Target State</a></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1600, &quot;height&quot;: 1200}, &quot;brandColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;options&quot;: [&quot;#2E4FBF&quot;, &quot;#DC5A2A&quot;, &quot;#1F6F5B&quot;, &quot;#8A3A6B&quot;, &quot;#B08324&quot;], &quot;default&quot;: &quot;#2E4FBF&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Brand&quot;}, &quot;displayFont&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Petrona&quot;, &quot;Source Serif 4&quot;, &quot;Literata&quot;, &quot;Instrument Serif&quot;], &quot;default&quot;: &quot;Petrona&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Type&quot;}, &quot;showFlags&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Annotations&quot;}, &quot;schedulerLive&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;CTA end-state&quot;}}">
+class Component extends DCLogic {
+  _applyAccent() {
+    const hex = this.props.brandColor ?? '#2E4FBF';
+    const m = hex.replace('#', '').match(/.{2}/g).map(h => parseInt(h, 16));
+    const dark = '#' + m.map(v => Math.round(v * 0.8).toString(16).padStart(2, '0')).join('');
+    const s = document.body.style;
+    s.setProperty('--accent', hex);
+    s.setProperty('--accent-dark', dark);
+    s.setProperty('--accent-soft', 'rgba(' + m.join(',') + ',.32)');
+  }
+  _applyFont() {
+    const name = this.props.displayFont ?? 'Petrona';
+    const fallback = 'serif';
+    document.body.style.setProperty('--display', "'" + name + "'," + fallback);
+  }
+  componentDidUpdate() { this._applyFont(); this._applyAccent(); }
+  componentDidMount() {
+    this._applyFont();
+    this._applyAccent();
+    setTimeout(() => this._initPlateScrub(), 60);
+  }
+  _initPlateScrub() {
+    let last = 'init';
+    const paint = () => {
+      const fig = document.getElementById('plate-fig');
+      if (!fig || !document.contains(fig)) return;
+      const svg = fig.querySelector('[data-plate]');
+      if (!svg) return;
+      const ans = Array.from(fig.querySelectorAll('[data-an]'));
+      const spots = Array.from(fig.querySelectorAll('[data-spot]'));
+      const body = Array.from(svg.children).filter(el =>
+        !el.hasAttribute('data-spot') && !el.hasAttribute('data-an') && !el.querySelector('[data-an]'));
+      body.forEach(el => { if (!el.style.transition) el.style.transition = 'opacity .35s ease'; });
+
+      const r = fig.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+      // scrub window: figure entering the bottom edge -> figure leaving the top edge
+      const traveled = vh - r.top;
+      const span = vh + r.height;
+      const inView = r.bottom > 0 && r.top < vh;
+      const seq = ['1', '2', '3', '4', '5', '6'];
+      let active = null;
+      if (inView) {
+        const p = Math.max(0, Math.min(0.999999, traveled / span));
+        active = seq[Math.min(seq.length - 1, Math.floor(p * seq.length))];
+      }
+      if (active === last) return;
+      last = active;
+      ans.forEach(g => { g.style.opacity = active == null || g.dataset.an === active ? 1 : 0.22; });
+      spots.forEach(s => { s.style.opacity = s.dataset.spot === active ? 1 : 0; });
+      body.forEach(el => { el.style.opacity = active == null ? 1 : 0.5; });
+    };
+    this._paint = () => { if (this._pending) return; this._pending = true; requestAnimationFrame(() => { this._pending = false; paint(); }); };
+    window.addEventListener('scroll', this._paint, { passive: true, capture: true });
+    window.addEventListener('resize', this._paint, { passive: true });
+    paint();
+  }
+  componentWillUnmount() {
+    if (this._paint) {
+      window.removeEventListener('scroll', this._paint, { capture: true });
+      window.removeEventListener('resize', this._paint);
+    }
+  }
+  renderVals() {
+    const showFlags = this.props.showFlags ?? true;
+    const schedulerLive = this.props.schedulerLive ?? false;
+    return {
+      showFlags,
+      cta: schedulerLive ? 'Book a call' : "Tell me what's slowing you down",
+      integrations: ['QuickBooks', 'Xero', 'Sage', 'Stripe', 'Square', 'Shopify', 'Gusto', 'ADP', 'HubSpot', 'Jobber', 'Airtable', 'Slack', 'Google Workspace'],
+    };
+  }
+}
+</script>
+</body>
+</html>

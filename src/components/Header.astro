@@ -1,9 +1,11 @@
 ---
-import { nav } from '../content/site';
+import { nav, cta, ctaHref } from '../content/site';
 
-/* Was "Get your systems mapped" until the owner killed that offer on 14 Aug
-   2026. The nav button and the hero's primary button must say the same thing. */
-const CTA = 'Book a call';
+/* The label moved into site.ts on 29 Aug 2026. It was a constant here, which
+   worked while only this file rendered it twice, but the hero, §01, the footer
+   and /thanks all render it too, and CLAUDE.md's standing rule is that they may
+   never disagree. One export, six renders. See the note over `cta` in site.ts
+   for why it is not "Book a call". */
 ---
 
 <header class="nav">
@@ -22,7 +24,7 @@ const CTA = 'Book a call';
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
       {/* Was its own near-copy of .btn with different padding, type size and
           dot. It is the same object, so it now uses the same class. */}
-      <a href="/#contact" class="btn nav-cta">{CTA}<span class="ln" aria-hidden="true"></span></a>
+      <a href={ctaHref} class="btn nav-cta">{cta}</a>
     </nav>
 
     {/* Phone menu. A native <details> disclosure — keyboard-operable and
@@ -50,7 +52,7 @@ const CTA = 'Book a call';
         <nav aria-label="Primary, phone">
           {nav.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
-        <a href="/#contact" class="btn menu-cta">{CTA}<span class="ln" aria-hidden="true"></span></a>
+        <a href={ctaHref} class="btn menu-cta">{cta}</a>
       </div>
     </details>
   </div>
@@ -60,29 +62,41 @@ const CTA = 'Book a call';
   header.nav {
     position: sticky; top: 0; z-index: 50;
     background: var(--color-paper);
-    border-bottom: 1px solid var(--color-rule);
+    /* Ink, not --color-rule. Style C draws hard hairlines, and the header's
+       edge is the first one on the page. */
+    border-bottom: 1px solid var(--color-ink);
   }
   .nav-in {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 24px; height: 68px;
+    gap: 24px; height: 70px;
   }
   /* The logo. Restored 17 Aug 2026 to exactly what it was before the type
-     work: Newsreader 600 at 24px on -.025em. It is deliberately outside the
-     type scale — it is a mark, not text. */
+     work: Newsreader 600 at 24px on -.025em. Repointed to Petrona at 25px on
+     -.02em with the Style C redesign, 29 Aug 2026, on the owner's instruction
+     — see the note over --font-wordmark in global.css. It is deliberately
+     outside the type scale: it is a mark, not text. */
   .mark { position: relative; }
   .mark:hover { text-decoration: none; }
 
+  /* Mono since the Style C redesign. --font-mono resolved to the body sans
+     under the ocean palette, so the nav read as small body copy; it is a real
+     mono face again and the nav reads as chrome. 28px gap, from the design. */
   .nav-links {
-    display: flex; gap: 30px; font-size: var(--text-nav);
-    color: var(--color-quiet); align-items: center;
+    display: flex; gap: 28px; align-items: center;
+    font-family: var(--font-mono); font-size: var(--text-nav);
+    letter-spacing: var(--tracking-mono); color: var(--color-body);
   }
-  .nav-links a { color: var(--color-quiet); position:relative; text-decoration:none; }
+  .nav-links a { color: var(--color-body); position:relative; text-decoration:none; }
   .nav-links a:not(.nav-cta)::after {
     content:''; position:absolute; left:0; right:0; bottom:0; height:1px;
-    background:var(--color-line); transform:scaleX(0); transform-origin:left;
+    background:var(--color-accent-dark); transform:scaleX(0); transform-origin:left;
   }
   .nav-links a:not(.nav-cta) { padding:8px 0 9px; }
   .nav-links a:hover { color: var(--color-ink); text-decoration:none; }
+  /* 46px in the header against .btn's 48 elsewhere: the bar is 70px tall and a
+     48px button inside it leaves 11px of air top and bottom, which reads as the
+     button touching the rules. */
+  .nav-links a.nav-cta { min-height: 46px; padding: 10px 26px; }
   /* Selector must out-specify `.nav-links a` above, which is class+element and
      would otherwise win and paint the CTA label --color-quiet. The original
      had the same collision; it was just less visible against ochre. */
@@ -103,7 +117,7 @@ const CTA = 'Book a call';
   .menu summary {
     list-style: none; cursor: pointer; user-select: none;
     font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
-    text-transform: uppercase; color: var(--color-koa);
+    text-transform: uppercase; color: var(--color-accent);
     padding: 10px 2px;
   }
   .menu summary::-webkit-details-marker { display: none; }
@@ -113,11 +127,13 @@ const CTA = 'Book a call';
   .mi-row { display: flex; align-items: center; gap: 9px; min-height: 44px; }
 
   /* The icon is the mark's construction at menu scale: one continuous stroke,
-     one weight, round caps, --color-koa because it carries a label beside it
-     and koa is the text-bearing fill. Same reason .mark uses ink, not ochre. */
+     one weight, round caps, in the accent because it carries a label beside
+     it. Both accent steps carry text on paper under the graphite palette, so
+     the fills-only restriction that governed this choice under ocean is gone;
+     see landmine 5 and the palette note in global.css. */
   .mi { display: block; width: 22px; height: 22px; overflow: visible; }
   .mi path {
-    fill: none; stroke: var(--color-koa); stroke-width: 2; stroke-linecap: round;
+    fill: none; stroke: var(--color-accent); stroke-width: 2; stroke-linecap: round;
   }
   /* Which path shows is decided by [open] alone, never by an animation. If
      motion never runs — reduced-motion, or a declaration dropped in minified
@@ -136,7 +152,7 @@ const CTA = 'Book a call';
      about what an active label looks like rather than three. */
   .mi-rule {
     position: absolute; left: 0; right: 0; bottom: -4px; height: 1px;
-    background: var(--color-koa); transform: scaleX(0); transform-origin: left;
+    background: var(--color-accent); transform: scaleX(0); transform-origin: left;
   }
   .menu[open] .mi-rule { transform: scaleX(1); }
 
@@ -157,17 +173,33 @@ const CTA = 'Book a call';
     .menu[open] .mi-x { animation: mi-thread .52s cubic-bezier(.32,0,.18,1) .1s forwards; }
     .mi-rule { transition: transform .32s cubic-bezier(.22,1,.36,1); }
   }
-  /* 280px is the narrowest that keeps "Get your systems mapped" on one line
-     at the CTA's 14px/600 with its 28px side padding. */
+  /* 280px is the narrowest that keeps the CTA label on one line. The figure
+     was set for "Get your systems mapped" at a 14px/600 CTA with 28px side
+     padding, and both halves of that are long gone: the offer was retired
+     14 Aug 2026 and .btn is --text-micro/500 with 32px padding since the
+     17 Aug rebuild. Re-measured 27 Aug for "Start the conversation", which
+     needs about 229px against the 248px this leaves after the panel's 8px
+     padding and the CTA's 8px side margins. Still correct, now for a reason
+     that exists. A longer label than this one needs the number raised. */
   .menu-panel {
     position: absolute; top: calc(100% + 10px); right: 0;
-    min-width: 280px; background: var(--color-paper);
-    border: 1px solid var(--color-hair); border-radius: 3px;
+    /* Re-measured 29 Aug 2026 for "Tell me what's slowing you down", which is
+       eight characters longer than the label this was last set for. At mono
+       13px the label runs about 234px, plus .btn's 56px of side padding, the
+       panel's 16px and the button's 16px of margins: 322px. 336 leaves a
+       little air. The min() is the floor for a 320px phone, where a fixed
+       336px panel would push off the left edge; the button wraps to two
+       lines there rather than overflowing. */
+    width: min(336px, calc(100vw - 44px));
+    background: var(--color-paper);
+    border: 1px solid var(--color-ink); border-radius: 0;
     padding: 8px; display: flex; flex-direction: column;
   }
   .menu-panel nav { display: flex; flex-direction: column; }
+  .menu-cta { text-align: center; }
   .menu-panel nav a {
-    color: var(--color-quiet); font-size: var(--text-nav); padding: 11px 12px;
+    color: var(--color-body); font-family: var(--font-mono);
+    font-size: var(--text-nav); letter-spacing: var(--tracking-mono); padding: 11px 12px;
     border-bottom: 1px solid var(--color-rule);
   }
   .menu-panel nav a:hover { color: var(--color-ink); text-decoration: none; }
@@ -180,7 +212,7 @@ const CTA = 'Book a call';
 
   /* The mark follows the supplied ribbon construction: one weight, one
      continuous line, looped through the crossbar before it becomes the stem. */
-  .mark { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-wordmark); font-weight: 600; font-size: 24px; letter-spacing: -.025em; color: var(--color-ink); }
+  .mark { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-wordmark); font-weight: 600; font-size: 25px; letter-spacing: -.02em; color: var(--color-ink); }
   .mark svg { display: block; width:34px; height:34px; overflow:visible; }
   .mark .thread-t { fill:none; stroke:var(--color-ink); stroke-width:5.8; stroke-linecap:round; stroke-linejoin:round; }
   /* The clip. overflow:hidden on the outer span is what makes the letters
@@ -192,7 +224,7 @@ const CTA = 'Book a call';
      --color-koa, not the footer's --color-ochre: ochre is 2.1:1 on paper and
      would read as a smudge. On the footer's ink ground ochre is correct, so
      the two differ on purpose. */
-  .mark .dot { color: var(--color-koa); }
+  .mark .dot { color: var(--color-accent); }
 
   @keyframes mark-stroke { to { stroke-dashoffset:0; } }
   @keyframes wm-slide { from { transform:translateX(-102%); } to { transform:translateX(0); } }

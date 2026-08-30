@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #EFEBE2; }
+  a { color: #3F6B5C; text-decoration: none; }
+  a:hover { color: #26231E; }
+</style>
+<script>window.OM_SCENES = '[{"name":"Reveal","dur":2.6,"desc":"Headline and the six signal rows rise into place one after another"},{"name":"Repeat","dur":2.4,"desc":"A wave runs down the list: each row fans out into a stack of duplicates, then settles back"},{"name":"Ticks","dur":1.6,"desc":"Each row checks itself off and the closing note appears at bottom left"},{"name":"Slot","dur":1.6,"desc":"An open dashed row 07 types itself in for whatever the team keeps redoing"},{"name":"Reset","dur":0.8,"desc":"Everything settles out for a clean loop back to the start"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+<script>window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#2F4E7A",
+  "grid": true,
+  "motionEditor": true
+}/*EDITMODE-END*/;</script>
+</helmet>
+<x-import component-from-global-scope="ChecklistPiece" from="./animations-v3.jsx ./tweaks-panel.jsx ./checklist.jsx" hint-size="100%,100%"></x-import>
+</x-dc>
+</body>
+</html>

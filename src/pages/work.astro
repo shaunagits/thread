@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { cta, ctaHref } from '../content/site';
 
 /**
  * Placeholder, built 17 Aug 2026 so the route, the nav entry and the layout
@@ -44,7 +45,7 @@ import Footer from '../components/Footer.astro';
         the answer is no.
       </p>
       <div class="btn-row">
-        <a href="/#contact" class="btn">Book a call<span class="ln" aria-hidden="true"></span></a>
+        <a href={ctaHref} class="btn">{cta}</a>
         <a href="/" class="btn-ghost">Back to the homepage<span class="u" aria-hidden="true"></span></a>
       </div>
     </div>

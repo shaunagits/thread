@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  html, body { margin: 0; padding: 0; background: #EFEBE2; }
+  a { color: #C4623F; text-decoration: none; }
+  a:hover { color: #26231E; }
+</style>
+<script>window.OM_SCENES = '[{"name":"Busywork","dur":2.2,"desc":"Loose task rows drift across the page and a cursor ticks three of them off by hand"},{"name":"Gather","dur":1.4,"desc":"Every row pulls in and squares up into one tight stack at the center"},{"name":"Compile","dur":1.6,"desc":"The stack unfolds into a clean app window: header, sidebar, table, stats, one button"},{"name":"OneClick","dur":1.9,"desc":"The cursor presses the single button and the whole list completes itself"},{"name":"Reset","dur":0.9,"desc":"The window dissolves and the rows scatter back to their opening positions for a seamless loop"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+<script>window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#C4623F",
+  "grid": true,
+  "motionEditor": true
+}/*EDITMODE-END*/;</script>
+</helmet>
+<x-import component-from-global-scope="BusyworkPiece" from="./animations-v3.jsx ./tweaks-panel.jsx ./busywork.jsx" hint-size="100%,100%"></x-import>
+</x-dc>
+</body>
+</html>

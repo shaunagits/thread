@@ -52,24 +52,24 @@
     /* the container edge and the gutter */
     background:
       linear-gradient(to right,
-        color-mix(in srgb, var(--color-line) 30%, transparent) 0 1px,
+        color-mix(in srgb, var(--color-accent-dark) 30%, transparent) 0 1px,
         transparent 1px calc(100% - 1px),
-        color-mix(in srgb, var(--color-line) 30%, transparent) calc(100% - 1px) 100%);
+        color-mix(in srgb, var(--color-accent-dark) 30%, transparent) calc(100% - 1px) 100%);
   }
 
   /* twelve columns across the content width */
   .devgrid-cols {
     height: 100%;
     background: repeating-linear-gradient(to right,
-      color-mix(in srgb, var(--color-line) 11%, transparent) 0 calc((100% - 11 * 24px) / 12),
+      color-mix(in srgb, var(--color-accent-dark) 11%, transparent) 0 calc((100% - 11 * 24px) / 12),
       transparent 0 calc((100% - 11 * 24px) / 12 + 24px));
   }
 
   /* the margin column that section markers and notes live in */
   .devgrid-side {
     position: absolute; top: 0; bottom: 0; right: 40px; width: var(--side);
-    border-left: 1px dashed color-mix(in srgb, var(--color-koa) 45%, transparent);
-    background: color-mix(in srgb, var(--color-koa) 4%, transparent);
+    border-left: 1px dashed color-mix(in srgb, var(--color-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 4%, transparent);
   }
 
   .devgrid-baseline {

@@ -75,43 +75,65 @@
     placeholder="The thing that made you open this form."
   ></textarea>
 
-  <button type="submit" class="btn">Book a call<span class="ln" aria-hidden="true"></span></button>
+  {/* "Show me your busywork" since 29 Aug 2026, from the design. It stays
+      distinct from the site-wide CTA on purpose: everywhere else the label has
+      to describe arriving at this form, and here it describes sending it. The
+      one rule that has always applied to this button is that it must not say
+      "Book a call", because pressing it sends a message and no calendar is
+      involved. The arrow is a real glyph, not a pseudo-element, and resolves
+      in JetBrains Mono — see the U+2192 alias in global.css. */}
+  <button type="submit" class="btn">Show me your busywork <span class="arw" aria-hidden="true">&#8594;</span></button>
 
-  <p class="form-note">One reply from a person, usually same day. No sales sequence.</p>
+  {/* One reply-time string across the whole site since 27 Aug 2026. It existed
+      in three variants: this note said "usually same day", the §04 lead said
+      "within a business day, usually sooner", and /thanks said "within one
+      business day, usually the same day". Three promises for one behaviour. If
+      this changes, change it in ContactSection.astro and thanks.astro too. */}
+  <p class="form-note">One reply from a person, within one business day, usually sooner. No sales sequence.</p>
 </form>
 
 <style>
   .form {
-    background: var(--color-white); border: 1px solid var(--color-hair);
-    border-radius: 3px; padding: 28px; /* was 560px, which capped the form below its new column width */
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    border-radius: 0; padding: 30px;
     max-width: 100%;
   }
   .hp {
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
+  /* Sentence case at nav size, not uppercase micro. These labels are
+     questions ("What does your business do?"), and a question set in 11px
+     uppercase with .14em tracking reads as a system message rather than as
+     something a person is asking. --color-body, not --color-faint: faint is
+     3.66:1 on the card ground and fails AA for text at this size. */
   .form label {
-    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
-    text-transform: uppercase; color: var(--color-faint);
+    font-family: var(--font-mono); font-size: var(--text-nav); font-weight: 500;
+    letter-spacing: var(--tracking-mono); color: var(--color-body);
     display: block; margin-bottom: 7px;
   }
   .form input, .form textarea, .form select {
-    width: 100%; padding: 11px 13px; border: 1px solid var(--color-hair);
-    border-radius: 2px; background: var(--color-paper);
-    font-family: var(--font-serif); font-size: var(--text-body);
+    width: 100%; padding: 11px 13px; border: 1px solid var(--color-ink);
+    border-radius: 0; background: var(--color-paper);
+    font-family: var(--font-serif); font-size: var(--text-ui);
     color: var(--color-ink); margin-bottom: 18px;
   }
   .form input:focus, .form textarea:focus, .form select:focus {
-    outline: 2px solid var(--color-line); outline-offset: -1px;
-    border-color: var(--color-line);
+    outline: 2px solid var(--color-accent-dark); outline-offset: -1px;
+    border-color: var(--color-accent-dark);
   }
   .form textarea { resize: vertical; min-height: 82px; }
-  .form .btn { width: 100%; text-align: center; }
+  /* 16px, not 17. --text-ui exists for this: 16 is the threshold at which iOS
+     stops zooming the page when a field is focused, so this may not go lower.
+     See the type scale in global.css. */
+
+  .form .btn { width: 100%; box-sizing: border-box; min-height: 50px; text-align: center; }
+  .arw { margin-left: 9px; }
 
   /* Sits under the button, so it reads as a promise about what happens next
      rather than as a field hint. Sans at the .cta-note size. */
   .form-note {
-    font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
-    color: var(--color-faint); margin-top: 14px; text-align: center;
+    font-family: var(--font-serif); font-size: var(--text-small); line-height: var(--leading-body);
+    color: var(--color-faint); margin-top: 16px; text-align: center;
   }
 </style>

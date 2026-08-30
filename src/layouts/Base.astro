@@ -160,12 +160,13 @@ const businessLd = {
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    {/* Matches --color-paper in global.css. Was #FCFBF7, the earth palette's
-        paper, missed in the 17 Aug ocean swap because it is a literal here
-        rather than a token — this file renders before the stylesheet loads,
-        so it cannot read the variable. If the paper colour changes again,
-        change this with it. */}
-    <meta name="theme-color" content="#FCFCF9" />
+    {/* Matches --color-paper in global.css. It is a literal because this file
+        renders before the stylesheet loads and cannot read the variable, which
+        is exactly why it has been missed by a palette swap before: it still
+        held the earth palette's #FCFBF7 a month after the ocean swap.
+        #FCFCF9 was ocean; #EDEEE9 is graphite, 29 Aug 2026. If the paper
+        colour changes again, change this with it. */}
+    <meta name="theme-color" content="#EDEEE9" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -189,29 +190,33 @@ const businessLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts are self-hosted; these four are used above the fold: Newsreader
-         for the h1, Plex 400 for the eyebrow and nav, Plex 500 for the
-         buttons, and the JetBrains subset that supplies the U+2192 arrow in
-         the ghost button. Public Sans was preloaded here until 19 Aug 2026
-         despite being unreferenced since the Option K trial — a preload forces
-         the download an unused @font-face would otherwise never make. -->
+    <!-- Fonts are self-hosted. Repointed 29 Aug 2026 with the Style C
+         redesign: these four are what the first screen actually uses. Petrona
+         for the h1 and the hero's promise line, Public Sans 400 for the hero
+         paragraphs, JetBrains Mono 500 for the nav and the CTA, and JetBrains
+         400 for the drawing's labels and the submit arrow.
+
+         Newsreader and IBM Plex Sans are no longer referenced by any
+         @font-face and must not be preloaded: a preload forces the download an
+         unused face would otherwise never make, which is the exact mistake
+         Public Sans sat in until 19 Aug 2026. -->
     <link
       rel="preload"
-      href="/fonts/newsreader-latin-var.woff2"
+      href="/fonts/petrona-latin-var.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/ibm-plex-sans-latin-400-normal.woff2"
+      href="/fonts/public-sans-latin-400.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/ibm-plex-sans-latin-500-normal.woff2"
+      href="/fonts/jetbrains-mono-latin-500.woff2"
       as="font"
       type="font/woff2"
       crossorigin

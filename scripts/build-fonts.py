@@ -48,6 +48,7 @@ GF = "https://github.com/google/fonts/raw/main/ofl"
 SOURCES = {
     "Newsreader": f"{GF}/newsreader/Newsreader%5Bopsz,wght%5D.ttf",
     "JetBrainsMono": f"{GF}/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf",
+    "Petrona": f"{GF}/petrona/Petrona%5Bwght%5D.ttf",
 }
 
 # Google's "latin" subset range, plus U+2192 which the design uses and the
@@ -116,6 +117,7 @@ def write_subset(font: TTFont, dest: Path) -> None:
 def verify() -> bool:
     """Every file we ship must carry the glyphs the design needs."""
     need = {
+        "petrona-latin-var.woff2": [0x02BB, 0x2018, 0x00B7, 0x2014],
         "newsreader-latin-var.woff2": [0x02BB, 0x2018, 0x00B7, 0x2014, 0x00A7],
         "jetbrains-mono-latin-400.woff2": [0x02BB, 0x2192, 0x00B7, 0x00A7],
         "jetbrains-mono-latin-500.woff2": [0x02BB, 0x2192, 0x00B7, 0x00A7],
@@ -139,7 +141,19 @@ def verify() -> bool:
 
 
 def main() -> int:
-    print("Newsreader — variable, opsz 6–72 + wght 200–800")
+    # Petrona replaced Newsreader as the display face on 29 Aug 2026 with the
+    # Style C redesign. It runs through the same okina patch: whether it needs
+    # one is reported by add_okina, and verify() below fails the build if the
+    # shipped file lacks U+02BB either way.
+    print("Petrona — variable, wght 400–700")
+    pt = TTFont(fetch("Petrona", SOURCES["Petrona"]))
+    add_okina(pt, "Petrona")
+    write_subset(pt, OUT / "petrona-latin-var.woff2")
+
+    # Newsreader is no longer referenced by global.css. Still built so the file
+    # stays current if the display face is ever reverted; delete this block and
+    # the file together if that stops being worth the 137 KB in the repo.
+    print("Newsreader — variable, opsz 6–72 + wght 200–800 (unreferenced)")
     nr = TTFont(fetch("Newsreader", SOURCES["Newsreader"]))
     add_okina(nr, "Newsreader")
     write_subset(nr, OUT / "newsreader-latin-var.woff2")

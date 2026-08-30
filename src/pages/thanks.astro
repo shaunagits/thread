@@ -13,10 +13,14 @@ export const prerender = false;
 const status = Astro.url.searchParams.get('status');
 
 const STATES = {
+  // "Got it.", not "Your request is in." (27 Aug 2026). Nothing was requested:
+  // the visitor sent a message. The old heading was the last survivor of the
+  // systems-map offer's language, where there really was a request. The body
+  // carries the site's one reply-time string; see IntakeForm.astro.
   ok: {
     eyebrow: 'Received',
-    heading: 'Your request is in.',
-    body: 'I’ll read what you sent and reply within one business day, usually the same day.',
+    heading: 'Got it.',
+    body: 'I’ll read what you sent and reply within one business day, usually sooner.',
     back: 'Back to the homepage',
   },
   invalid: {
@@ -56,7 +60,7 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
       <div class="eyebrow">{state.eyebrow}</div>
       <p class="lead">{state.body}</p>
       <div class="btn-row">
-        <a href={backHref} class="btn">{state.back}<span class="ln" aria-hidden="true"></span></a>
+        <a href={backHref} class="btn">{state.back}</a>
       </div>
     </div>
   </section>

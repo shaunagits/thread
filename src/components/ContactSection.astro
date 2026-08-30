@@ -3,31 +3,62 @@ import { contact } from '../content/site';
 import IntakeForm from './IntakeForm.astro';
 ---
 
-<div class="cta-band" id="contact">
+{/* Renders its own marker rather than taking one from Section.astro: it sits
+    inside the left column of the contact grid, not on a full-width rule above
+    it, and it is back above the heading like every other marker in Style C.
+
+    03, not 05. The page ran to five sections under the ocean design and runs
+    to three now; the markers number the page in order, so this moves whenever
+    a section is added above it. */}
+<div class="cta-band ruled" id="contact">
   <div class="wrap cta-in">
     <div>
-      {/* Back to 04, 19 Aug 2026 evening: the merged section split out again,
-          so the page has four numbered bands once more. Below the heading as a
-          sub-title since 25 Aug 2026, matching every other marker. */}
-      {/* First person singular, 17 Aug 2026. These were the last "us" and "we"
-          on the page, and Thread is one person. */}
-      {/* Rewritten 19 Aug 2026 after a copy review, owner's pick of five.
-          The old lead ("If it is a fit, I will book...") failed four ways:
-          "I will book" took the visitor's action away, "if it is a fit" made
-          a free call read as an application, the section ended on the
-          possibility of rejection, and it was the stiffest patch on the page
-          at the exact moment of conversion. This one leads with the low bar,
-          states the real promise, and ends pointing at the call. */}
-      <h2 style="margin:0 0 16px;max-width:16ch">Tell me where the hours go.</h2>
-      <div class="eyebrow" style="margin-bottom:22px">04 · Start here</div>
-      <p class="lead" style="max-width:38ch">
-        A few lines below is enough. I read everything myself and reply within a
-        business day, usually sooner. If it’s a fit, we book a free 30-minute call.
+      <div class="marker"><span>03</span></div>
+
+      {/* Rewritten for the Style C redesign, 29 Aug 2026. It was "Tell me
+          where the hours go." with a lead that promised a reply and a
+          30-minute call. Two things changed and both are the design's:
+
+          The heading is now a question the visitor answers rather than an
+          instruction they follow, and it names the outcome — stopping doing
+          something manually — rather than the input.
+
+          The lead lowers the bar first. "You don't need to know what to
+          build" removes the objection that stops a non-technical visitor
+          filling in a form about software. The old lead's promise of a reply
+          moved down to sit under the submit button, where it answers "what
+          happens if I press this" at the moment the question is asked. */}
+      <h2 class="cta-head">What could you stop doing manually?</h2>
+      <p class="lead cta-lead">
+        You don’t need to know what to build. Just tell me about the process
+        that’s driving you crazy.
       </p>
 
       <p class="contact-meta">
         <a href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.location}
       </p>
+
+      {/* ⚠️ PLACEHOLDER, and it must not ship as-is.
+
+          The design file carries this card flagged "blocked on owner name +
+          photo", and neither exists yet. A name is not something this repo
+          may invent — see CLAUDE.md, "Content that must never be invented" —
+          so it renders as written rather than being filled in with a guess or
+          silently dropped.
+
+          The card is the only place on the page that says a person is behind
+          the form, which is why it is worth holding open rather than cutting.
+          Replace both, then delete this comment. */}
+      <div class="owner">
+        <span class="owner-flag">Blocked · owner name and photo</span>
+        <div class="owner-card">
+          <div class="owner-photo" aria-hidden="true"><span>Photo</span></div>
+          <p>
+            <strong>[Owner name]</strong> · Thread is one person, based in
+            Honolulu. I build every system myself and I answer this form myself.
+          </p>
+        </div>
+      </div>
     </div>
 
     <IntakeForm />
@@ -35,49 +66,74 @@ import IntakeForm from './IntakeForm.astro';
 </div>
 
 <style>
-  .cta-band {
-    background-color:var(--color-wash); border-top:1px solid var(--color-rule);
-    background-image:linear-gradient(to right, color-mix(in srgb, var(--color-rule) 50%, transparent) 1px, transparent 1px);
-    background-size:88px 100%;
-  }
+  /* The ruled ground, unmasked here — under the hero it fades in diagonally so
+     the headline sits on clean paper, but this section's copy column is narrow
+     and the rules read as ledger lines behind a form, which is the point.
+     `.ruled` brings the background and the isolation with it (landmine 19). */
+  .cta-band { border-top: 1px solid var(--color-ink); }
 
   /* index.html had `.cta-in{padding:88px 0}` and `.wrap{padding:0 40px}` as two
-     single-class selectors, so source order alone decided the winner. The
-     result was accidental in both directions: §07 sat 40px out of alignment
-     with every other section above 640px, and lost all 176px of its vertical
-     padding below it.
-
-     Both were reproduced faithfully until now. The band is being rebuilt and
-     the phone case is a visible bug, so this is the fix the original's own
-     shorthand was reaching for: padding-block here, horizontal padding left to
-     .wrap at every width. §07 now starts at x=170 like everything else.
-
-     This is the second deliberate deviation from index.html, after the submit
-     button's font. Recorded in CLAUDE.md and LAUNCH-CHECKLIST.md. */
-  /* Was minmax(0,1fr) 380px — the copy took roughly two thirds and the form
-     was squeezed into a fixed 380px column. The form is the point of this
-     section, so the proportions are reversed: the copy is capped and the form
-     takes the rest. */
+     single-class selectors, so source order alone decided the winner, and §07
+     sat 40px out of alignment above 640px and lost all its vertical padding
+     below it. padding-block here, horizontal padding left to .wrap at every
+     width. Landmine 8: do not reintroduce a `padding` shorthand on this
+     element. */
+  /* The form is the point of this section, so it takes the wider column. */
   .cta-in {
     display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
-    gap: 64px; padding-block: 88px; align-items: start;
+    gap: 60px; padding-block: 88px; align-items: start;
   }
-  .cta-note {
-    font-family: var(--font-serif); font-size: var(--text-body); line-height: var(--leading-body);
-    color: var(--color-faint); max-width: 46ch; margin-top: 18px;
-  }
+
+  /* 14ch. Sets as three lines here — "What could you / stop doing / manually?"
+     — which is what the design draws in a column this narrow. */
+  .cta-head { margin: 0 0 18px; max-width: 14ch; }
+  .cta-lead { max-width: 40ch; }
+
+  /* Mono, sentence case, at nav size rather than uppercase micro. These are an
+     address and a place, not a label, and uppercasing an email address makes
+     it harder to read back. */
   .contact-meta {
-    font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--tracking-wide);
-    text-transform: uppercase; color: var(--color-faint);
-    margin-top: 30px; line-height: var(--leading-body);
+    font-family: var(--font-mono); font-size: var(--text-nav);
+    letter-spacing: var(--tracking-mono); color: var(--color-body);
+    margin-top: 30px; line-height: 1.9;
   }
-  .contact-meta a { color: var(--color-faint); }
-  .contact-meta a:hover { color: var(--color-koa); }
+  .contact-meta a { color: var(--color-body); }
+  .contact-meta a:hover { color: var(--color-accent); }
+
+  .owner { margin-top: 34px; max-width: 430px; }
+  /* The flag is deliberately ugly and deliberately in the layout rather than
+     in a comment: a dashed box saying "blocked" is hard to ship by accident,
+     which a tidy placeholder name is not. It goes when the content arrives. */
+  .owner-flag {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: var(--tracking-mono); color: var(--color-ink);
+    border: 1px dashed var(--color-ink); padding: 4px 8px; margin-bottom: 12px;
+  }
+  .owner-card {
+    display: flex; gap: 18px; align-items: center;
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    padding: 22px;
+  }
+  .owner-photo {
+    width: 64px; height: 64px; flex: none; border-radius: 50%;
+    border: 1px dashed var(--color-hair);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    color: var(--color-faint);
+  }
+  .owner-card p {
+    margin: 0; font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+  .owner-card strong { color: var(--color-ink); font-weight: 600; }
 
   @media (max-width: 1000px) {
     .cta-in { grid-template-columns: 1fr; gap: 34px; }
+    .owner { max-width: none; }
   }
   @media (max-width: 640px) {
     .cta-in { padding-block: 66px; }
+    .owner-card { flex-direction: column; align-items: flex-start; gap: 14px; }
   }
 </style>

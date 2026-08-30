@@ -1,71 +1,54 @@
 ---
 /**
- * Shared section wrapper: the "§ NN — Label" eyebrow, the heading, and an
- * optional margin note in the right-hand column.
+ * Shared section wrapper: the `<section>`, the `.wrap`, and the numbered rule
+ * that marks the section.
  *
- * Passing anything into the `note` slot switches the section to the annotated
- * document grid; without it the section runs full width. The `after` slot is
- * for content that sits below the grid at full width — the services list, the
- * product cards, the step row.
+ * Rewritten 29 Aug 2026 for the Style C redesign. The previous version owned
+ * the heading, an eyebrow label and an optional right-margin note on the `.doc`
+ * grid. None of those survive:
+ *
+ *  - The marker is a bare number on a full-width rule, above the heading. It
+ *    carried a label ("01 · What I do") until this change, and the standing
+ *    rule was that the nav had to match those labels exactly. Style C drops
+ *    them, so the section wording now lives only in the nav and the footer,
+ *    which must still agree with each other. See site.ts.
+ *  - The marker is above the heading again, where it sat before 25 Aug 2026.
+ *    It reads as a section number on a rule here rather than as a stray label
+ *    opposite a heading, which is what moved it below in the first place.
+ *  - The heading moved into the sections themselves. Each of the three has a
+ *    different internal grid (35/65, full width, 72/128) and a different
+ *    relationship between heading, lead and content, so a shared heading slot
+ *    was doing nothing but forcing three exceptions.
+ *  - The `.doc` margin-note grid is unused by every section in this design.
+ *    It survives in global.css for the legal pages.
  */
 interface Props {
   id?: string;
-  /** e.g. "§ 01 — The problem" */
-  eyebrow: string;
-  heading: string;
-  /** max-width of the heading, in ch — matches the original's inline styles */
-  headingWidth: number;
-  /** bottom margin under the heading; §01 is the only section using 24 */
-  headingGap?: number;
-  /** mono label above the margin note, e.g. "In the margin" */
-  noteLabel?: string;
-  /** gap under the document grid, where the original set one inline */
-  docGap?: number;
+  /** the section number, e.g. "01" */
+  n: string;
+  /** drop the top rule — for a section that follows one that draws its own */
+  noRule?: boolean;
+  /** put the section on the quiet ground */
+  wash?: boolean;
+  /** draw the ruled background behind the section */
+  ruled?: boolean;
+  /** extra classes */
+  class?: string;
 }
 
-const {
-  id,
-  eyebrow,
-  heading,
-  headingWidth,
-  headingGap = 22,
-  noteLabel,
-  docGap,
-} = Astro.props;
+const { id, n, noRule = false, wash = false, ruled = false, class: klass } = Astro.props;
 
-const hasNote = Astro.slots.has('note');
-/* The marker sits below the heading as a sub-title since 25 Aug 2026, on the
-   owner's instruction. The heading keeps 16px to the marker and the marker
-   takes the old heading gap down to the content, so the section's total
-   rhythm is unchanged. */
-const headStyle = `margin:0 0 16px;max-width:${headingWidth}ch`;
-const eyebrowStyle = `margin-bottom:${headingGap}px`;
+const classes = [
+  noRule && 'no-rule',
+  wash && 'on-wash',
+  ruled && 'ruled',
+  klass,
+].filter(Boolean).join(' ');
 ---
 
-<section id={id}>
+<section id={id} class={classes || undefined}>
   <div class="wrap">
-    {hasNote ? (
-      <div class="doc" style={docGap ? `margin-bottom:${docGap}px` : undefined}>
-        <div>
-          <h2 style={headStyle}>{heading}</h2>
-          <div class="eyebrow" style={eyebrowStyle}>{eyebrow}</div>
-          <slot />
-        </div>
-        <aside class="side">
-          {noteLabel && <span class="lbl">{noteLabel}</span>}
-          <slot name="note" />
-        </aside>
-      </div>
-    ) : (
-      <>
-        {/* The marker was above the heading until 25 Aug 2026 (and briefly in
-            the right margin on 17 Aug, moved back the same day). It now sits
-            below the heading as a sub-title, on the owner's instruction. */}
-        <h2 style={headStyle}>{heading}</h2>
-        <div class="eyebrow" style={eyebrowStyle}>{eyebrow}</div>
-        <slot />
-      </>
-    )}
-    <slot name="after" />
+    <div class="marker"><span>{n}</span></div>
+    <slot />
   </div>
 </section>

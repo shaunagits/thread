@@ -10,37 +10,51 @@ import { integrations } from '../content/site';
 </div>
 
 <style>
+  /* Inverted with the Style C redesign, 29 Aug 2026: the strip was a pale wash
+     band and is now the ink ground. It is the first hard horizontal on the
+     page and it separates the hero's claim from the argument that follows,
+     which a wash band 1.06:1 off the paper never did.
+
+     Rules on both edges are ink against ink, so they are invisible by design
+     and kept only so the band still resolves if the ground is ever lightened
+     again. §01 below carries `noRule` because of them. */
   .strip {
-    border-top: 1px solid var(--color-rule);
-    border-bottom: 1px solid var(--color-rule);
-    background: var(--color-wash);
-    padding: 26px 0;
+    border-top: 1px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
+    background: var(--color-ink);
+    padding: 22px 0;
   }
-  /* 20px, not the 28 this carried when it held nine names. Thirteen at 28 need
-     about 1200px against the 1100 .wrap gives, so the last one — "Google
-     Workspace", the widest — orphaned onto a line of its own and read as a
-     mistake. At 20 the row closes at roughly 1096 and sets on one line, and
-     below that it wraps in twos and threes rather than leaving a straggler.
-     20 is already in the design; 28 and 22 both still orphan it. */
+  /* 22px. Thirteen names at 28 need about 1200px against the 1100 .wrap gives,
+     so "Google Workspace", the widest, orphaned onto a line of its own and read
+     as a mistake. The label is now a filled tag rather than loose uppercase, so
+     it takes more room than it did, and the names dropped to mono at 15 to pay
+     for it. Measured on one line at 1440 and 1180. */
   .strip-in {
-    display: flex; align-items: center; gap: 20px;
+    display: flex; align-items: center; gap: 12px 22px;
     flex-wrap: wrap; justify-content: center;
   }
+  /* A filled tag, not loose uppercase. It is the only accent fill on the ink
+     ground and it is what stops the row reading as thirteen equal words with
+     no subject. Paper on accent is 6.65:1. */
   .strip-lbl {
-    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .15em;
-    text-transform: uppercase; color: var(--color-koa);
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: .04em; color: var(--color-white);
+    background: var(--color-accent); padding: 3px 8px;
   }
+  /* Mono, not the body face. These are product names, which is label work, and
+     the mono sets them as a machine-readable list rather than as prose. */
   .strip-item {
-    font-family: var(--font-serif); font-size: 17px; color: var(--color-quiet);
+    font-family: var(--font-mono); font-size: var(--text-small);
+    color: var(--color-foot-text);
   }
 
   /* On a phone the thirteen names wrap to four rows and the band ran 223px —
      a quarter of the viewport, directly under the hero, before §01 starts.
      Tighter type, tighter gap and less vertical padding pull that back without
-     dropping a name. 16, 14 and 20 are all values the design already uses. */
+     dropping a name. */
   @media (max-width: 640px) {
-    .strip { padding: 20px 0; }
-    .strip-in { gap: 14px; }
-    .strip-item { font-size: 16px; }
+    .strip { padding: 18px 0; }
+    .strip-in { gap: 10px 14px; }
+    .strip-item { font-size: var(--text-nav); }
   }
 </style>

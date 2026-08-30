@@ -1,342 +1,272 @@
 ---
-import {
-  siAdp, siGusto, siHubspot, siQuickbooks, siSage,
-  siShopify, siSquare, siStripe, siXero,
-} from 'simple-icons';
-
 /**
- * Hero graphic — the tools you already run, into one clear system.
+ * Hero graphic — busywork compiling into software.
  *
- * Three cards on the left, each cycling through three real tools. Lines carry
- * them into the Thread mark at the centre, and one line leaves it into a single
- * dashboard window on the right.
+ * Replaced wholesale 29 Aug 2026 for the Style C redesign. The previous drawing
+ * was the connects-to hub: nine tool logos cycling on three cards, wires into
+ * the Thread mark, one window out. It is in git if the hub idea returns, and
+ * `simple-icons` stays a dependency only for as long as nothing else needs it.
  *
- * Elevated 17 Aug 2026, keeping the three things the owner asked to keep: the
- * logos cycling, the mark as the centre, and the language plain. What changed:
+ * What this one says, in one 8-second loop:
  *
- *   - Six tools became nine, on a 21s rotation offset per card so only one ever
- *     changes at a time. Six read as a fixed list; nine reads as "whichever
- *     ones happen to be yours", which is the argument.
- *   - The mark became the hub rather than a shape near the middle. It sits in a
- *     wash field with a hairline ring, and the wires now run into it and out.
- *   - The wires carry a travelling dash, so the drawing says the data moves.
- *   - The outcome panel, which used to be a rectangle labelled ONE CLEAR VIEW,
- *     is now a small browser window: the same window §02 shows full size. The
- *     hero promises it and §02 delivers it.
- *   - Tool names moved from sans to serif, matching how ProblemFlow labels its
- *     tools. Categories stay mono.
+ *   1. Nine loose task rows drift at angles across the canvas.  (0–27.5%)
+ *   2. A cursor ticks three of them off by hand, one at a time. (8–25%)
+ *   3. Every row pulls in and squares up.                       (27.5–45%)
+ *   4. The stack compiles into an app window.                   (45–65%)
+ *   5. The cursor presses RUN once and all nine complete.       (70–88.75%)
+ *   6. Everything dissolves and scatters back for the loop.     (88.75–100%)
  *
- * The duplicate "ONE CLEAR VIEW" label was dropped; the window shows what it
- * used to assert, and "One clear system." already said it in words.
+ * The argument is in the contrast between step 2 and step 5: three ticks by
+ * hand versus nine by one click. That is the whole page in a drawing, which is
+ * why the hero copy no longer has to explain it.
  *
- * Local brand paths avoid a third-party image request. Motion is CSS only —
- * no JavaScript, no library, no SMIL — and every rule sits inside
- * prefers-reduced-motion: no-preference, so the reduced-motion default is the
- * finished still drawing with the first tool showing in each card.
+ * Motion rules, all three of which the site already required:
  *
- * Aspect is 620x352, the same 1.76 the previous composition had, so the hero
- * grid is unaffected.
+ *   - CSS only. No JavaScript, no libraries, no SMIL. The design file drives
+ *     this with a scroll handler; that is canvas scaffolding, not a spec.
+ *   - Everything sits inside `prefers-reduced-motion: no-preference`, and the
+ *     no-motion state is the finished composition — window drawn, all nine
+ *     rows stacked and complete. A visitor who suppresses motion sees the
+ *     outcome, not an empty canvas or nine rows scattered at angles.
+ *   - Time-based, so landmine 22 does not apply: that is about
+ *     `animation-timeline: view()` being folded into the `animation`
+ *     shorthand by Lightning CSS. There is no scroll timeline here. The
+ *     scroll-driven work is in DashboardPlate.
+ *
+ * The nine rows share one keyframe and differ only by custom properties, so
+ * the drift positions live on the elements next to the markup they move rather
+ * than in nine near-identical keyframe blocks. The nine completion marks do
+ * need their own keyframes: they fire 1.6% apart and all clear together, and a
+ * phase shift on an infinite animation would carry the clear along with it.
  */
 
-/**
- * Nine platforms, three per card. The bar, set by the owner 17 Aug 2026: a
- * top-tier platform for small and medium businesses, with an API or equivalent
- * way to pull data into a custom app, in a category that would actually appear
- * on that business's dashboard — invoicing, CRM, billing, employees, sales.
- *
- * Airtable and Google Calendar were dropped against that bar: one is a database
- * rather than a business platform, the other is not a platform at all. PayPal
- * went too, because three payment processors crowded out the other domains.
- *
- * Each row is one job with three vendors, which is the argument: whichever one
- * you happen to use for that job, it connects.
- */
-const CARDS = [
-  { cy: 57, opts: [
-    { icon: siQuickbooks, name: 'QuickBooks', cat: 'ACCOUNTING' },
-    { icon: siXero,       name: 'Xero',       cat: 'ACCOUNTING' },
-    { icon: siSage,       name: 'Sage',       cat: 'ACCOUNTING' },
-  ]},
-  { cy: 176, opts: [
-    { icon: siSquare,  name: 'Square',  cat: 'POINT OF SALE' },
-    { icon: siStripe,  name: 'Stripe',  cat: 'PAYMENTS' },
-    { icon: siShopify, name: 'Shopify', cat: 'COMMERCE' },
-  ]},
-  { cy: 295, opts: [
-    { icon: siGusto,   name: 'Gusto',   cat: 'PAYROLL' },
-    { icon: siAdp,     name: 'ADP',     cat: 'PAYROLL' },
-    { icon: siHubspot, name: 'HubSpot', cat: 'CRM' },
-  ]},
+/* x/y/rotation where each row starts and drifts, the y it squares up to at the
+   gather, and the y it lands on inside the window. The window's content area
+   begins at x=240; rows stack 26 apart from y=100. */
+const rows = [
+  { x:   8, y:  26, r: -3,   ym: 128, y1: 100, w: 104 },
+  { x: 300, y:  10, r:  2.5, ym: 134, y1: 126, w: 132 },
+  { x: 150, y:  88, r:  1.5, ym: 140, y1: 152, w:  88 },
+  { x: 420, y:  72, r: -2,   ym: 146, y1: 178, w: 120 },
+  { x:  16, y: 150, r:  2,   ym: 152, y1: 204, w:  96 },
+  { x: 296, y: 146, r: -1.5, ym: 158, y1: 230, w: 140 },
+  { x: 120, y: 224, r:  2.5, ym: 164, y1: 256, w: 112 },
+  { x: 404, y: 212, r: -2.5, ym: 170, y1: 282, w: 126 },
+  { x:  24, y: 298, r:  1.5, ym: 176, y1: 308, w: 100 },
 ];
 
-/** Shared by the drawn wire and the pulse that travels along it. */
-const WIRES = [
-  'M158 57 C205 57 205 176 252 176',
-  'M158 176 H252',
-  'M158 295 C205 295 205 176 252 176',
-];
-
-const MARK = 'M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82';
-
-const MINI_BARS = [14, 22, 12, 28, 18, 34, 24];
+/* The three the cursor ticks by hand. Their checkbox centres are where the
+   cursor stops, so these indices and the bwcur keyframe move together. */
+const ticked = [0, 2, 5];
 ---
 
-<div class="system-visual">
-  <svg class="hv" viewBox="0 0 620 352" role="img" aria-labelledby="hv-title hv-desc" xmlns="http://www.w3.org/2000/svg">
-    <title id="hv-title">Thread brings the tools you already run into one clear system</title>
-    <desc id="hv-desc">Three cards on the left cycle through the platforms a business runs: accounting, point of sale, payments, commerce, payroll and CRM. Lines carry them into the Thread mark at the centre, and out into a single dashboard window on the right.</desc>
-
-    {/* fill="none" is repeated as a presentation attribute on every stroke-only
-        shape below. The classes already set it, and CSS wins over presentation
-        attributes, so this changes nothing when the stylesheet loads. It exists
-        because when the stylesheet does not load, an unfilled path defaults to
-        solid black and the whole drawing becomes a set of black blobs. */}
-    <g class="hub-field">
-      <circle class="halo" cx="292" cy="176" r="58" />
-      <circle class="halo-ring" cx="292" cy="176" r="58" fill="none" />
+<svg
+  class="bw"
+  viewBox="0 0 640 380"
+  role="img"
+  aria-label="Loose repetitive tasks drift across the screen and a few get ticked off by hand. They gather, compile into one system, and a single click completes the whole list."
+>
+  {/* The app window the stack compiles into. Deliberately the same object
+      §02's plate draws full size: the hero promises the screen and §02
+      delivers it. */}
+  <g class="bw-win">
+    <rect x="120" y="32" width="400" height="316" rx="2" fill="var(--color-white)" stroke="var(--color-ink)" stroke-width="1" />
+    <path d="M120 66 H520" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+    <g fill="var(--color-hair)">
+      <circle cx="134" cy="49" r="3.5" /><circle cx="146" cy="49" r="3.5" /><circle cx="158" cy="49" r="3.5" />
     </g>
+    <rect x="300" y="41" width="200" height="16" rx="8" fill="var(--color-wash)" />
+    <text x="312" y="52.5" class="t-micro" fill="var(--color-faint)">app.yourbusiness.com</text>
+    <path d="M232 66 V348" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="146" y="98"  width="70" height="9" rx="4.5" fill="var(--color-accent-dark)" />
+    <rect x="146" y="126" width="54" height="9" rx="4.5" fill="var(--color-rule)" />
+    <rect x="146" y="154" width="62" height="9" rx="4.5" fill="var(--color-rule)" />
+    <rect x="146" y="182" width="46" height="9" rx="4.5" fill="var(--color-rule)" />
+    <rect x="424" y="100" width="84" height="72" rx="2" fill="var(--color-white)" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="424" y="184" width="84" height="72" rx="2" fill="var(--color-white)" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="424" y="268" width="84" height="72" rx="2" fill="var(--color-white)" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="440" y="70" width="60" height="20" rx="2" fill="var(--color-accent)" />
+    <text x="470" y="83.5" text-anchor="middle" class="t-run" fill="var(--color-white)">RUN</text>
+  </g>
 
-    <g class="wires">
-      {WIRES.map((d, i) => <path class={`wire w${i + 1}`} pathLength="1" fill="none" d={d} />)}
-    </g>
-    {/* Drawn on top of the wires, not instead of them: a 3% dash that runs the
-        length of the path and fades at each end. */}
-    <g class="pulses" aria-hidden="true">
-      {WIRES.map((d, i) => <path class={`pulse pl${i + 1}`} pathLength="100" fill="none" d={d} />)}
-    </g>
+  {rows.map((row, i) => (
+    <g
+      class={`bw-row bw-row-${i}`}
+      style={`--x0:${row.x}px;--y0:${row.y}px;--r0:${row.r}deg;--ym:${row.ym}px;--y1:${row.y1}px`}
+    >
+      <rect width="170" height="26" rx="2" fill="var(--color-white)" stroke="var(--color-hair)" stroke-width="1" />
+      <rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="var(--color-hair)" stroke-width="1" />
+      <rect x="30" y="10.5" width={row.w} height="5" rx="2.5" fill="var(--color-rule)" />
 
-    {CARDS.map((c, i) => (
-      <g class={`card k${i + 1}`}>
-        <rect class="card-box" x="8" y={c.cy - 37} width="150" height="74" rx="2" />
-        {c.opts.map((o, j) => (
-          <g class={`opt o${j + 1} d${i + 1}`}>
-            <path class="opt-icon" d={o.icon.path} transform={`translate(24 ${c.cy - 10}) scale(.833)`} />
-            <text class="opt-name" x="54" y={c.cy - 1}>{o.name}</text>
-            <text class="opt-cat" x="54" y={c.cy + 14}>{o.cat}</text>
-          </g>
-        ))}
-      </g>
-    ))}
+      {/* The by-hand tick: drawn in ink, not accent, and slightly out of the
+          box. A person did this one. */}
+      {ticked.includes(i) && (
+        <path
+          class={`bw-tick bw-tick-${ticked.indexOf(i)}`}
+          d="M11.6 13.6 L14.3 16.3 L19.6 10.3"
+          fill="none" stroke="var(--color-ink)" stroke-width="1.9"
+          stroke-linecap="round" stroke-linejoin="round"
+        />
+      )}
 
-    <g class="mark-g" transform="translate(250 134) scale(.55)">
-      <path class="mark-p" pathLength="1" fill="none" d={MARK} />
-    </g>
-    <path class="wire exit" pathLength="1" fill="none" d="M330 176 H372" />
-
-    <g class="out">
-      <rect class="out-box" x="372" y="96" width="240" height="160" rx="2" />
-      <path class="out-rule" fill="none" d="M372 122 H612" />
-      <g class="out-dots"><circle cx="386" cy="109" r="3.5" /><circle cx="398" cy="109" r="3.5" /><circle cx="410" cy="109" r="3.5" /></g>
-      <rect class="mini-card" x="390" y="138" width="100" height="44" rx="2" />
-      <text class="mini-lbl" x="400" y="156">REVENUE</text>
-      <text class="mini-fig" x="400" y="175">$148k</text>
-      <rect class="mini-card" x="498" y="138" width="96" height="44" rx="2" />
-      <text class="mini-lbl" x="508" y="156">JOBS</text>
-      <text class="mini-fig" x="508" y="175">37</text>
-      <rect class="mini-card" x="390" y="196" width="204" height="44" rx="2" />
-      <g class="mini-bars">
-        {MINI_BARS.map((h, i) => <rect class="mini-bar" x={396 + i * 26} y={240 - h} width="16" height={h} />)}
-      </g>
-    </g>
-
-    <text class="out-copy" x="372" y="286">One clear system.</text>
-  </svg>
-
-  <!-- ================= narrow =================
-       The wide drawing is 620 units across. On a phone that renders at roughly
-       350px, which puts the tool names near 8px — present but not readable.
-       So the composition changes rather than the scale: the cards stack full
-       width, the wires gather below them into the mark, and the window sits
-       under it. Same swap point as DashboardPlate.
-
-       "One clear system." is deliberately absent here. In the wide drawing it
-       sits beside the window with room around it; stacked under a full-width
-       window on a phone it reads as a stray sentence rather than a caption. The
-       wide composition keeps it. -->
-  <svg class="hv-narrow" viewBox="0 0 380 556" role="img" aria-labelledby="hvn-title hvn-desc" xmlns="http://www.w3.org/2000/svg">
-    <title id="hvn-title">Thread brings the tools you already run into one clear system</title>
-    <desc id="hvn-desc">Three stacked cards cycle through the platforms a business runs. Lines gather beneath them into the Thread mark, and open into a single dashboard window below.</desc>
-
-    {CARDS.map((c, i) => {
-      const top = 1 + i * 67, cy = top + 29;
-      return (
-        <g class={`card k${i + 1}`}>
-          <rect class="card-box" x="1" y={top} width="378" height="58" rx="2" />
-          {c.opts.map((o, j) => (
-            <g class={`opt o${j + 1} d${i + 1}`}>
-              <path class="opt-icon" d={o.icon.path} transform={`translate(18 ${cy - 11}) scale(.92)`} />
-              <text class="optn-name" x="52" y={cy + 6}>{o.name}</text>
-              <text class="optn-cat" x="362" y={cy + 5}>{o.cat}</text>
-            </g>
-          ))}
-        </g>
-      );
-    })}
-
-    <g class="wires">
-      <path class="wire" pathLength="1" fill="none" d="M70 193 C70 214, 190 206, 190 226" />
-      <path class="wire" pathLength="1" fill="none" d="M190 193 V226" />
-      <path class="wire" pathLength="1" fill="none" d="M310 193 C310 214, 190 206, 190 226" />
-    </g>
-    <g class="pulses" aria-hidden="true">
-      <path class="pulse pl1" pathLength="100" fill="none" d="M70 193 C70 214, 190 206, 190 226" />
-      <path class="pulse pl2" pathLength="100" fill="none" d="M190 193 V226" />
-      <path class="pulse pl3" pathLength="100" fill="none" d="M310 193 C310 214, 190 206, 190 226" />
-    </g>
-
-    <g class="hub-field">
-      <circle class="halo" cx="190" cy="262" r="36" />
-      <circle class="halo-ring" cx="190" cy="262" r="36" fill="none" />
-    </g>
-    <g class="mark-g" transform="translate(161 233) scale(.38)">
-      <path class="mark-p" pathLength="1" fill="none" d={MARK} />
-    </g>
-    <path class="wire exit" pathLength="1" fill="none" d="M190 298 V314" />
-
-    <g class="out">
-      <rect class="out-box" x="1" y="314" width="378" height="234" rx="2" />
-      <path class="out-rule" fill="none" d="M1 346 H379" />
-      <g class="out-dots"><circle cx="20" cy="330" r="4" /><circle cx="34" cy="330" r="4" /><circle cx="48" cy="330" r="4" /></g>
-      <rect class="dp-urlbar" x="112" y="322" width="200" height="16" rx="8" />
-      <text class="outn-url" x="124" y="334">app.yourbusiness.com</text>
-
-      <rect class="mark-sq" x="18" y="362" width="18" height="18" rx="4" />
-      <rect class="mark-sq" x="44" y="368" width="56" height="8" rx="4" />
-      <g class="out-dots">
-        <rect x="340" y="366" width="22" height="3" rx="1.5" />
-        <rect x="340" y="372" width="22" height="3" rx="1.5" />
-        <rect x="340" y="378" width="22" height="3" rx="1.5" />
-      </g>
-      <path class="out-rule" fill="none" d="M1 396 H379" />
-
-      <rect class="mini-card" x="18" y="412" width="170" height="56" rx="2" />
-      <text class="outn-lbl" x="30" y="434">REVENUE</text>
-      <text class="outn-fig" x="30" y="457">$148k</text>
-      <rect class="mini-card" x="200" y="412" width="162" height="56" rx="2" />
-      <text class="outn-lbl" x="212" y="434">JOBS OPEN</text>
-      <text class="outn-fig" x="212" y="457">37</text>
-
-      <rect class="mini-card" x="18" y="482" width="344" height="52" rx="2" />
-      <g class="mini-bars">
-        {[14, 24, 11, 32, 20, 38, 26].map((h, i) => (
-          <rect class="mini-bar" x={32 + i * 44} y={522 - h} width="28" height={h} />
-        ))}
+      {/* The done-by-software mark: a filled accent box, square in the middle,
+          all nine landing 1.6% apart after one click. */}
+      <g class={`bw-done bw-done-${i}`}>
+        <rect x="9" y="7" width="12" height="12" rx="1" fill="var(--color-accent)" />
+        <path d="M11.9 13.2 L14.4 15.7 L18.4 10.6" fill="none" stroke="var(--color-white)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
       </g>
     </g>
+  ))}
 
-  </svg>
-</div>
+  <g class="bw-cur">
+    <path d="M0 0 L0 17 L4.8 12.6 L7.7 18.6 L10.9 17.1 L8 11.2 L13.6 10.7 Z"
+          fill="var(--color-ink)" stroke="var(--color-paper)" stroke-width="1" />
+  </g>
+</svg>
 
 <style>
-  .system-visual { width: 100%; }
-  svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .hv-narrow { display: none; }
+  /* ---------- type inside the drawing ----------
+     Landmine 17: SVG type is drawing-space, not pixels. Rendered size is
+     `value × (rendered width ÷ 640)`, so the same number is a different size in
+     every column this drawing sits in.
 
-  /* Same three drawing-space roles as the dashboard plate. */
-  .hv        { --fs-micro: 9px;   --fs-name: 15px; --fs-fig: 18px; }
-  .hv-narrow { --fs-micro: 9.5px; --fs-name: 16px; --fs-fig: 19px; }
+     Two roles only, both micro labels, re-valued per breakpoint band rather
+     than added to. Target is 8.5–12px rendered at every width. The bands and
+     the arithmetic behind them:
 
-  /* Drawing-space type only looks right at the scale the canvas was drawn for.
-     Rendered size = value x (rendered width / viewBox width), so a value that
-     is correct in one column is wrong in another. These two bands keep the
-     labels landing near --text-micro and the names near --text-body:
+       ≥1025px  figure ≈ 559px  scale .87   11 → 9.6
+       821–1024 figure ≈ 418-482 scale .65-.75  13 → 8.5–9.8
+       ≤820     stacked, capped 680, scale 1.06–1.02   9 → 9.5–9.2
+       ≤724     scale 1.02–.87   10 → 10.2–8.7
+       ≤600     scale .87–.68    13 → 11.3–8.8
+       ≤480     scale .68–.54    16 → 10.9–8.6
 
-       821-1000px  two columns, so the drawing gets a 380-460px column and the
-                   values are bumped to compensate.
-       <=820px     stacked, so the drawing gets its full 680px and the base
-                   values are already correct.
+     Re-run this arithmetic before changing the canvas or the hero grid. */
+  .bw {
+    display: block; width: 100%; height: auto; overflow: visible;
+    --fs-micro: 11px;
+  }
+  @media (max-width: 1024px) { .bw { --fs-micro: 13px; } }
+  @media (max-width:  820px) { .bw { --fs-micro:  9px; } }
+  @media (max-width:  724px) { .bw { --fs-micro: 10px; } }
+  @media (max-width:  600px) { .bw { --fs-micro: 13px; } }
+  @media (max-width:  480px) { .bw { --fs-micro: 16px; } }
 
-     The bump is bounded by the card: "QuickBooks" at 17 units and "POINT OF
-     SALE" at 9.5 both fit the 96 units available. */
-  @media (min-width: 821px) and (max-width: 1000px) {
-    .hv { --fs-micro: 9.5px; --fs-name: 17px; --fs-fig: 18px; }
+  .t-micro {
+    font-family: var(--font-mono); font-size: var(--fs-micro);
+    letter-spacing: var(--tracking-wide);
+  }
+  .t-run {
+    font-family: var(--font-mono); font-size: var(--fs-micro);
+    letter-spacing: .1em;
   }
 
-  /* Capped at close to its own 380-unit width. Without this the narrow drawing
-     stretches to fill whatever column it is given — at 768px that was a 1.8x
-     scale, which rendered its 16-unit names at 29px next to 16.5px body copy.
-     That is the bug in the tablet screenshot. */
-  .hv-narrow { max-width: 420px; }
+  /* ---------- the resting composition ----------
+     Everything below the media query is what a visitor sees when motion is
+     suppressed, and it is deliberately the END of the loop rather than the
+     start: the window drawn, the nine rows stacked inside it, every one
+     complete. The drawing's claim survives without a single frame of motion.
 
-  /* Sized against a 380-unit canvas rather than a 620-unit one, so these land
-     at roughly the same rendered size on a phone instead of two thirds of it. */
-  .optn-name { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
-  .optn-cat  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); text-anchor: end; }
-  .outn-url  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
-  .outn-lbl  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
-  .outn-fig  { font-family: var(--font-display); font-size: var(--fs-fig); fill: var(--color-ink); }
-  .mark-sq   { fill: var(--color-koa); }
-  .dp-urlbar { fill: var(--color-wash); }
-
-  /* ---- paint. no hex; every value is a token from global.css ---- */
-  .halo { fill: var(--color-wash); }
-  .halo-ring { fill: none; stroke: var(--color-rule); stroke-width: 1; }
-  .wire { fill: none; stroke: var(--color-hair); stroke-width: 1; stroke-linecap: round; }
-  .exit { stroke: var(--color-line); }
-  .pulse { fill: none; stroke: var(--color-line); stroke-width: 1.6; stroke-linecap: round; opacity: 0; }
-  .card-box, .out-box, .mini-card { fill: var(--color-white); stroke: var(--color-hair); stroke-width: 1; }
-  .opt-icon { fill: var(--color-koa); }
-  .opt-name  { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
-  .opt-cat   { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
-  .mark-p { fill: none; stroke: var(--color-ink); stroke-width: 5.8; stroke-linecap: round; stroke-linejoin: round; }
-  .out-rule { fill: none; stroke: var(--color-rule); stroke-width: 1; }
-  .out-dots { fill: var(--color-hair); }
-  .mini-lbl  { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
-  .mini-fig  { font-family: var(--font-display); font-size: var(--fs-fig); fill: var(--color-ink); }
-  .mini-bar { fill: var(--color-ochre); }
-  .mini-bar:last-child { fill: var(--color-line); }
-  .out-copy  { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
-
-  /* Base state: the second and third tool in every card are hidden, so a
-     visitor with reduced motion sees one settled set rather than three
-     drawings stacked on top of each other. */
-  .o2, .o3 { opacity: 0; }
-
-  @keyframes hv-draw { to { stroke-dashoffset: 0; } }
-  @keyframes hv-in   { to { opacity: 1; } }
-  @keyframes hv-run  { from { stroke-dashoffset: 100; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 0; } }
-
-  /* 14s cycle per card, offset so a single tool changes roughly every 1.6s and
-     never two at once. Negative delays start each card mid-cycle.
-
-     Was 21s until 18 Aug 2026; the owner wanted the names moving faster. The
-     offsets scale with the duration rather than being re-picked: they are not
-     even thirds on purpose — the gaps run 3.6 / 4.7 / 5.7 so the sequence does
-     not read as a metronome — and dividing them by the same 1.5 keeps that
-     rhythm intact. Each name still holds for 4.7s, which is long enough to
-     read one. */
-  @keyframes rot1 { 0%, 31% { opacity: 1 } 33.3%, 98% { opacity: 0 } 100% { opacity: 1 } }
-  @keyframes rot2 { 0%, 31% { opacity: 0 } 33.3%, 64.6% { opacity: 1 } 66.6%, 100% { opacity: 0 } }
-  @keyframes rot3 { 0%, 64.6% { opacity: 0 } 66.6%, 98% { opacity: 1 } 100% { opacity: 0 } }
+     The by-hand ticks are hidden at rest and the cursor with them: both are
+     narrative, and a frozen cursor mid-canvas reads as a rendering fault. */
+  .bw-row { transform: translate(240px, var(--y1)); }
+  .bw-tick { opacity: 0; }
+  .bw-cur { opacity: 0; }
 
   @media (prefers-reduced-motion: no-preference) {
-    .card, .out, .out-copy, .hub-field { opacity: 0; animation: hv-in .3s ease-out forwards; }
-    .k1 { animation-delay: .06s; } .k2 { animation-delay: .15s; } .k3 { animation-delay: .24s; }
+    .bw-cur { opacity: 1; }
 
-    .wire, .mark-p { stroke-dasharray: 1; stroke-dashoffset: 1; animation: hv-draw .62s cubic-bezier(.5, 0, .25, 1) forwards; }
-    .w1 { animation-delay: .30s; } .w2 { animation-delay: .38s; } .w3 { animation-delay: .46s; }
-    .hub-field { animation-delay: .62s; }
-    .mark-p { animation-delay: .74s; }
-    .exit { animation-delay: 1.08s; }
-    .out { animation-delay: 1.18s; } .out-copy  { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-ink); }
+    /* One keyframe for all nine rows. The custom properties resolve against
+       each element before the transform interpolates, so the drift positions
+       can live on the markup instead of in nine near-identical blocks.
 
-    .pulse { stroke-dasharray: 3 97; animation: hv-run 3.4s linear infinite 1.9s; }
-    .pl2 { animation-delay: 2.9s; } .pl3 { animation-delay: 3.9s; }
+       27.5% is the hold: the rows sit scattered while the cursor works, and
+       only start gathering once the third tick has landed. */
+    @keyframes bw-row {
+      0%, 27.5% {
+        transform: translate(var(--x0), var(--y0)) rotate(var(--r0));
+        opacity: 1; animation-timing-function: cubic-bezier(.5, 0, .2, 1);
+      }
+      45% {
+        transform: translate(204px, var(--ym));
+        opacity: 1; animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+      }
+      65%, 88.75% { transform: translate(240px, var(--y1)); opacity: 1; }
+      93%   { transform: translate(240px, var(--y1)); opacity: 0; }
+      93.6% { transform: translate(var(--x0), var(--y0)) rotate(var(--r0)); opacity: 0; }
+      100%  { transform: translate(var(--x0), var(--y0)) rotate(var(--r0)); opacity: 1; }
+    }
+    .bw-row {
+      animation-name: bw-row;
+      animation-duration: 8s;
+      animation-timing-function: cubic-bezier(.5, 0, .2, 1);
+      animation-iteration-count: infinite;
+    }
 
-    .o1 { animation: rot1 14s ease-in-out infinite 1.6s; }
-    .o2 { animation: rot2 14s ease-in-out infinite 1.6s; }
-    .o3 { animation: rot3 14s ease-in-out infinite 1.6s; }
-    .d2 { animation-delay: -3.6s; } .d3 { animation-delay: -8.3s; }
-  }
+    /* The window fades up as the stack lands and clears before the reset. */
+    @keyframes bw-win {
+      0%, 45%    { opacity: 0; transform: scale(.96); }
+      58%        { opacity: 1; transform: scale(1); }
+      88.75%     { opacity: 1; transform: scale(1); }
+      94%, 100%  { opacity: 0; transform: scale(.96); }
+    }
+    .bw-win {
+      transform-box: fill-box; transform-origin: center;
+      animation: bw-win 8s cubic-bezier(.4, 0, .2, 1) infinite;
+    }
 
-  /* Composition swap, same breakpoint as DashboardPlate. Both drawings fit the
-     column they are given at every width; neither pans sideways. */
-  /* 640, not 820. Between 640 and 820 the hero is stacked but the column is
-     still 620-680px, which is exactly the width the wide drawing was drawn
-     for — so it stays wide there and only becomes the phone composition when
-     the column can no longer carry it. */
-  @media (max-width: 640px) {
-    .hv { display: none; }
-    .hv-narrow { display: block; }
+    /* Three ticks by hand, 8% apart, all clearing together at 73% as the rows
+       square up and the checkboxes are about to be redrawn. */
+    @keyframes bw-tick-0 { 0%,  8% { opacity: 0 }  9% { opacity: 1 } 72% { opacity: 1 } 73%, 100% { opacity: 0 } }
+    @keyframes bw-tick-1 { 0%, 16% { opacity: 0 } 17% { opacity: 1 } 72% { opacity: 1 } 73%, 100% { opacity: 0 } }
+    @keyframes bw-tick-2 { 0%, 24% { opacity: 0 } 25% { opacity: 1 } 72% { opacity: 1 } 73%, 100% { opacity: 0 } }
+    .bw-tick   { animation-duration: 8s; animation-timing-function: linear; animation-iteration-count: infinite; }
+    .bw-tick-0 { animation-name: bw-tick-0; }
+    .bw-tick-1 { animation-name: bw-tick-1; }
+    .bw-tick-2 { animation-name: bw-tick-2; }
+
+    /* Nine completion marks, 1.6% apart after the click, all clearing at 93%.
+       Written out rather than staggered with animation-delay: a delay on an
+       infinite animation shifts the clear along with the appearance, which
+       would leave marks showing on rows that have already scattered. */
+    .bw-done   { opacity: 0; animation-duration: 8s; animation-timing-function: linear; animation-iteration-count: infinite; }
+    @keyframes bw-done-0 { 0%, 74.0% { opacity: 0 } 75.1% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-1 { 0%, 75.6% { opacity: 0 } 76.7% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-2 { 0%, 77.2% { opacity: 0 } 78.3% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-3 { 0%, 78.8% { opacity: 0 } 79.9% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-4 { 0%, 80.4% { opacity: 0 } 81.5% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-5 { 0%, 82.0% { opacity: 0 } 83.1% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-6 { 0%, 83.6% { opacity: 0 } 84.7% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-7 { 0%, 85.2% { opacity: 0 } 86.3% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-done-8 { 0%, 86.8% { opacity: 0 } 87.9% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    .bw-done-0 { animation-name: bw-done-0 } .bw-done-1 { animation-name: bw-done-1 }
+    .bw-done-2 { animation-name: bw-done-2 } .bw-done-3 { animation-name: bw-done-3 }
+    .bw-done-4 { animation-name: bw-done-4 } .bw-done-5 { animation-name: bw-done-5 }
+    .bw-done-6 { animation-name: bw-done-6 } .bw-done-7 { animation-name: bw-done-7 }
+    .bw-done-8 { animation-name: bw-done-8 }
+
+    /* The cursor. Its three stops are the checkbox centres of rows 0, 2 and 5
+       at their drift positions, so if a row's --x0/--y0 changes this keyframe
+       changes with it. The scale dip is the press. It parks off-canvas from
+       31% to 62% so it is not hovering over the compile, then travels to RUN. */
+    @keyframes bw-cur {
+      0%   { transform: translate(300px, 352px) scale(1); }
+      5%   { transform: translate(23px, 39px) scale(1); }
+      7%   { transform: translate(23px, 39px) scale(.82); }
+      9%   { transform: translate(23px, 39px) scale(1); }
+      13%  { transform: translate(165px, 101px) scale(1); }
+      15%  { transform: translate(165px, 101px) scale(.82); }
+      17%  { transform: translate(165px, 101px) scale(1); }
+      21%  { transform: translate(311px, 159px) scale(1); }
+      23%  { transform: translate(311px, 159px) scale(.82); }
+      25%  { transform: translate(311px, 159px) scale(1); }
+      31%, 62% { transform: translate(180px, 360px) scale(1); }
+      70%  { transform: translate(470px, 80px) scale(1); }
+      72%  { transform: translate(470px, 80px) scale(.82); }
+      74%  { transform: translate(470px, 80px) scale(1); }
+      88.75% { transform: translate(470px, 80px) scale(1); }
+      100% { transform: translate(300px, 352px) scale(1); }
+    }
+    .bw-cur { animation: bw-cur 8s cubic-bezier(.45, 0, .25, 1) infinite; }
   }
 </style>

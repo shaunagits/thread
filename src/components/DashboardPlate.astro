@@ -142,7 +142,7 @@
           <path class="dp-leader" d="M430 -93 V-40 H520 V27"/>
           <circle class="dp-marker" cx="430" cy="-104" r="13"/>
           <text class="dp-markertext" x="430" y="-100">6</text>
-          <text class="dp-colabel" x="450" y="-99">Your account · you own it</text>
+          <text class="dp-colabel" x="450" y="-99">Your account, you own it</text>
         </g>
         <g class="co c1">
           <path class="dp-leader" d="M770 -93 V-40 H650 V150"/>
@@ -167,8 +167,24 @@
           <path class="dp-leader" d="M770 573 V550 H898 V508"/>
           <circle class="dp-marker" cx="770" cy="584" r="13"/>
           <text class="dp-markertext" x="770" y="588">4</text>
-          <text class="dp-colabel" x="790" y="589">One login · you set access</text>
+          <text class="dp-colabel" x="790" y="589">One login, you set access</text>
         </g>
+      </g>
+
+      <!-- ============ spotlights ============
+           One rect per callout, framing the region of the window that callout
+           names. They are drawn last so they sit above the window, and they
+           are invisible until the scroll walk brings their callout up.
+
+           Each is inset 4 units around the panel it frames so the 2px stroke
+           sits outside the panel's own hairline rather than on top of it. -->
+      <g class="dp-spots">
+        <rect class="dp-spot s-1" x="526" y="146" width="246" height="112" rx="3"/>
+        <rect class="dp-spot s-2" x="268" y="274" width="504" height="238" rx="3"/>
+        <rect class="dp-spot s-3" x="16"  y="322" width="208" height="42"  rx="3"/>
+        <rect class="dp-spot s-4" x="784" y="274" width="228" height="238" rx="3"/>
+        <rect class="dp-spot s-5" x="16"  y="140" width="208" height="258" rx="3"/>
+        <rect class="dp-spot s-6" x="296" y="22"  width="448" height="32"  rx="3"/>
       </g>
     </svg>
 
@@ -361,26 +377,26 @@
   .dp-avatar    { fill: var(--color-wash); stroke: var(--color-hair); stroke-width: 1; }
 
   /* the client's own mark and colour */
-  .dp-mark      { fill: var(--color-koa); }
-  .dp-wordmark  { fill: var(--color-koa); }
+  .dp-mark      { fill: var(--color-accent); }
+  .dp-wordmark  { fill: var(--color-accent); }
   .dp-navactive { fill: var(--color-wash); }
 
   .dp-url       { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
   .dp-lbl       { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-faint); }
   .dp-h         { font-family: var(--font-display); font-size: var(--fs-fig); letter-spacing: var(--tracking-tight); fill: var(--color-ink); }
   .dp-fig       { font-family: var(--font-display); font-size: var(--fs-fig); letter-spacing: var(--tracking-tight); fill: var(--color-ink); }
-  .dp-navon     { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-koa); }
+  .dp-navon     { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-accent); }
   .dp-navoff    { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-body); }
   .dp-rowtext   { font-family: var(--font-serif); font-size: var(--fs-name); fill: var(--color-body); }
 
-  .dp-btn       { fill: var(--color-koa); }
+  .dp-btn       { fill: var(--color-accent); }
   .dp-btntext   { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); fill: var(--color-paper); text-anchor: middle; }
 
   /* callouts. The marker reuses ServiceList's numbered-circle treatment
      exactly, at 26px instead of 34px, so no new pattern enters the design. */
-  .dp-leader     { stroke: var(--color-line); stroke-width: 1; fill: none; }
-  .dp-marker     { fill: var(--color-paper); stroke: var(--color-line); stroke-width: 1; }
-  .dp-markertext{ font-family: var(--font-mono); font-size: var(--fs-micro); fill: var(--color-koa); text-anchor: middle; }
+  .dp-leader     { stroke: var(--color-accent-dark); stroke-width: 1; fill: none; }
+  .dp-marker     { fill: var(--color-paper); stroke: var(--color-accent-dark); stroke-width: 1; }
+  .dp-markertext{ font-family: var(--font-mono); font-size: var(--fs-micro); fill: var(--color-accent); text-anchor: middle; }
   .dp-colabel   { font-family: var(--font-mono); font-size: var(--fs-colabel); letter-spacing: var(--tracking-wide); text-transform: uppercase; fill: var(--color-body); }
 
   .dp-grid path { stroke: var(--color-rule); stroke-width: 1; fill: none; }
@@ -391,11 +407,18 @@
      always present; the keyframe only moves the offset. A dasharray of 1 on a
      path normalised to pathLength=1 means one dash covers the whole line. */
   .dp-s1, .dp-s2, .dp-s3 { fill: none; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; }
-  .dp-s1 { stroke: var(--color-koa);   stroke-width: 2; }
-  .dp-s2 { stroke: var(--color-line);  stroke-width: 1.5; }
-  .dp-s3 { stroke: var(--color-ochre); stroke-width: 1.5; }
-  .dp-point { fill: var(--color-white); stroke: var(--color-koa); stroke-width: 2; }
-  .dp-status    { fill: var(--color-line); }
+  /* Under the ocean palette these were koa / line / ochre — three distinct
+     hues. Graphite has two accent steps, not three, and aliasing koa and ochre
+     both onto --color-accent would have drawn the leading and trailing series
+     in exactly the same colour. Separation is now weight and depth rather than
+     hue, which is what the design draws: the leading series is the dark accent
+     at 2px, the middle the same colour at 1.5, the trailing one the lighter
+     accent. */
+  .dp-s1 { stroke: var(--color-accent-dark); stroke-width: 2; }
+  .dp-s2 { stroke: var(--color-accent-dark); stroke-width: 1.5; }
+  .dp-s3 { stroke: var(--color-accent);      stroke-width: 1.5; }
+  .dp-point { fill: var(--color-white); stroke: var(--color-accent-dark); stroke-width: 2; }
+  .dp-status    { fill: var(--color-accent-dark); }
   .dp-status-off{ fill: var(--color-hair); }
 
   /* ============================================================
@@ -421,76 +444,124 @@
      animation and is also the safe fallback: if the timeline is ever lost the
      duration defaults to 0s and fill-mode: both lands the element on its `to`
      state immediately, so the drawing renders finished rather than hidden. */
-  @keyframes dp-reveal { from { opacity: 0; }                              to { opacity: 1; } }
-  @keyframes dp-draw   { from { stroke-dashoffset: 1; }                    to { stroke-dashoffset: 0; } }
-  @keyframes dp-rise   { from { opacity: 0; transform: translateY(8px); }  to { opacity: 1; transform: translateY(0); } }
-  
+  /* The spotlight frames. Invisible by default, which is also the no-support
+     and reduced-motion state: without the scroll walk the drawing reads as a
+     finished annotated diagram with all six callouts at full strength, which
+     is exactly what it was before the walk existed. */
+  .dp-spot {
+    fill: none; stroke: var(--color-accent); stroke-width: 2; opacity: 0;
+  }
+
+  /* ============================================================
+     Motion — CSS only. No JavaScript, no library, no SMIL.
+
+     Rebuilt 29 Aug 2026 for the Style C redesign. This used to be a staggered
+     build-up: panels revealing, chart series drawing, callouts arriving in the
+     order they reached the viewport. It is now a focus walk — the drawing is
+     complete from the start, and scrolling steps a spotlight through the six
+     callouts one at a time, dimming everything else.
+
+     The design file drives this with a scroll listener that measures the
+     figure's rect on every frame. That is design-canvas scaffolding, not a
+     spec: this site ships two lines of JavaScript in total and none of them
+     are for motion. The same behaviour is a view timeline plus keyframes, and
+     the pattern was already proven in this file.
+     ============================================================ */
+  /* From-states live in the keyframes, not the rules. That is landmine 22's
+     whole point: a rule that hides the element survives when the thing meant
+     to reveal it is dropped, and the drawing goes permanently invisible in
+     production only, because the dev server does not minify.
+
+     Every keyframe below therefore starts and ends at full opacity. If any of
+     this fails to parse, or the timeline is lost, the plate renders as the
+     finished annotated drawing rather than as a dimmed or empty one. */
+
+  /* The walk occupies cover 10%–90%, six bands of 13.333% each. Not the full
+     0–100%: at cover 0% the figure has one pixel over the bottom edge of the
+     viewport, so a band starting there would spend most of itself off screen.
+     The design's scroll handler divides the whole window into six for the same
+     reason any hand-rolled scrubber does — it is the easy arithmetic — but the
+     visible result is that callout 1 fires before the plate is legible. */
+  @keyframes dp-dim {
+    0%, 9%     { opacity: 1; }
+    12%, 88%   { opacity: .5; }
+    90%, 100%  { opacity: 1; }
+  }
+  @keyframes dp-focus-1 { 0%, 23.33% { opacity: 1 } 25%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-2 { 0%, 9% { opacity: 1 } 11%, 22% { opacity: .22 } 23.33%, 36.67% { opacity: 1 } 38.3%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-3 { 0%, 9% { opacity: 1 } 11%, 35.3% { opacity: .22 } 36.67%, 50% { opacity: 1 } 51.7%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-4 { 0%, 9% { opacity: 1 } 11%, 48.7% { opacity: .22 } 50%, 63.33% { opacity: 1 } 65%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-5 { 0%, 9% { opacity: 1 } 11%, 62% { opacity: .22 } 63.33%, 76.67% { opacity: 1 } 78.3%, 89% { opacity: .22 } 90%, 100% { opacity: 1 } }
+  @keyframes dp-focus-6 { 0%, 9% { opacity: 1 } 11%, 75.3% { opacity: .22 } 76.67%, 100% { opacity: 1 } }
+
+  @keyframes dp-spot-1 { 0%, 10% { opacity: 0 } 12%, 23.33% { opacity: 1 } 25%, 100% { opacity: 0 } }
+  @keyframes dp-spot-2 { 0%, 22% { opacity: 0 } 24.3%, 36.67% { opacity: 1 } 38.3%, 100% { opacity: 0 } }
+  @keyframes dp-spot-3 { 0%, 35.3% { opacity: 0 } 37.7%, 50% { opacity: 1 } 51.7%, 100% { opacity: 0 } }
+  @keyframes dp-spot-4 { 0%, 48.7% { opacity: 0 } 51%, 63.33% { opacity: 1 } 65%, 100% { opacity: 0 } }
+  @keyframes dp-spot-5 { 0%, 62% { opacity: 0 } 64.3%, 76.67% { opacity: 1 } 78.3%, 100% { opacity: 0 } }
+  @keyframes dp-spot-6 { 0%, 75.3% { opacity: 0 } 77.7%, 88% { opacity: 1 } 90%, 100% { opacity: 0 } }
+
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
-      /* Scroll-driven, not load-driven. This plate is one to two screens below
-         the fold on a phone and mostly below it on a laptop, so a reveal that
-         started 0.1s after page load finished before anyone saw the drawing.
-         Nobody on mobile had ever seen this animation.
-
-         The timeline is named on the figure rather than each element calling
+      /* The timeline is named on the figure rather than each element calling
          view() for itself: these are SVG children, and one timeline on the
-         container is both more reliable and easier to reason about. Descendants
-         find it by walking up the tree.
+         container is both more reliable and easier to reason about.
+         Descendants find it by walking up the tree.
 
          Ranges use `cover`, not `entry`. The plate is taller than a phone
          viewport, and `entry 100%` is unreachable for an element that never
          fully fits on screen — the animation would stall part-played.
 
-         Longhands and from-states-in-keyframes throughout: landmine 22. If any
-         of this fails to parse, the drawing renders finished rather than
-         invisible. */
+         Every rule below uses the longhands. There is no `animation`
+         shorthand anywhere in this block, and there must never be: Lightning
+         CSS folds animation-timeline into the shorthand when both are
+         present, emitting `animation: … view()`, which no browser parses, so
+         the whole declaration is dropped in the production build and nowhere
+         else. Landmine 22. */
       .dashboard-plate { view-timeline-name: --plate; }
 
-      .dp-side, .dp-head, .dp-stat, .dp-chart, .dp-list,
-      .dp-s1, .dp-s2, .dp-s3, .dp-point, .co {
+      /* ⚠️ Every selector below is scoped to .dp-wide. The narrow composition
+         reuses the same class names, so an unscoped rule would dim a phone's
+         drawing on scroll while spotlighting nothing — the spotlight rects
+         exist only in the wide SVG, because the narrow layout stacks its six
+         labels under the window rather than framing regions inside it.
+
+         A drawing that dims as you scroll past it, with nothing to explain
+         why, is worse than no motion at all on the screen where the drawing
+         is already hardest to read. The narrow composition stays static. */
+      .dp-wide .dp-window, .dp-wide .dp-side, .dp-wide .dp-head,
+      .dp-wide .dp-stat, .dp-wide .dp-chart, .dp-wide .dp-list,
+      .dp-wide .co, .dp-wide .dp-spot {
         animation-timing-function: ease-out;
         animation-fill-mode: both;
         animation-timeline: --plate;
+        animation-range: cover 0% cover 100%;
       }
 
-      /* the window and its panels */
-      .dp-side  { animation-name: dp-reveal; animation-range: cover 4%  cover 16%; }
-      .dp-head  { animation-name: dp-reveal; animation-range: cover 7%  cover 19%; }
-      .dp-stat  { animation-name: dp-rise;   animation-range: cover 10% cover 24%; }
-      .s2       { animation-range: cover 12% cover 26%; }
-      .s3       { animation-range: cover 14% cover 28%; }
-      .dp-chart { animation-name: dp-rise;   animation-range: cover 16% cover 30%; }
-      .dp-list  { animation-name: dp-rise;   animation-range: cover 18% cover 32%; }
+      /* Everything the callouts point at dims together, so the spotlight is
+         the only thing at full strength. The whole walk is inside one range,
+         so the keyframe percentages above are scroll percentages directly. */
+      .dp-wide .dp-window, .dp-wide .dp-side, .dp-wide .dp-head,
+      .dp-wide .dp-stat, .dp-wide .dp-chart, .dp-wide .dp-list {
+        animation-name: dp-dim;
+      }
 
-      /* the three series draw back to front, then the current point lands */
-      .dp-s3    { animation-name: dp-draw;   animation-range: cover 22% cover 40%; }
-      .dp-s2    { animation-name: dp-draw;   animation-range: cover 25% cover 43%; }
-      .dp-s1    { animation-name: dp-draw;   animation-range: cover 28% cover 46%; }
-      .dp-point { animation-name: dp-reveal; animation-range: cover 46% cover 50%; }
+      /* Callout order is the drawing's reading order, 1 through 6, not the
+         order they sit in the markup — the markup groups them by band, above
+         the window and below it. */
+      .dp-wide .c1 { animation-name: dp-focus-1; }
+      .dp-wide .c2 { animation-name: dp-focus-2; }
+      .dp-wide .c3 { animation-name: dp-focus-3; }
+      .dp-wide .c4 { animation-name: dp-focus-4; }
+      .dp-wide .c5 { animation-name: dp-focus-5; }
+      .dp-wide .c6 { animation-name: dp-focus-6; }
 
-      /* Callouts, in the order they reach the viewport rather than the order the
-         drawing is built in.
-
-         c5, c6 and c1 sit at y=-99, above the window, and the viewBox reserves
-         132 units for them — about 140px of the plate's height at full width.
-         They used to reveal last, after the panels, which meant the first thing
-         a reader scrolled to was a 140px band of nothing while the drawing
-         assembled below it. The owner reported it as too much space above the
-         graphic; it was not space, it was the callouts waiting their turn. It
-         only became visible when the keyframes were given a from-state — before
-         that the reveal was inert and everything was always drawn.
-
-         So the top row goes first, ahead of the window it labels, and the
-         bottom row keeps the later slot it was written for. */
-      .co { animation-name: dp-reveal; }
-      /* above the window — on screen before anything else */
-      .c5 { animation-range: cover 2%  cover 12%; }
-      .c6 { animation-range: cover 4%  cover 14%; }
-      .c1 { animation-range: cover 6%  cover 16%; }
-      /* below the window — after the thing they point at exists */
-      .c3 { animation-range: cover 34% cover 48%; }
-      .c4 { animation-range: cover 36% cover 50%; }
-      .c2 { animation-range: cover 38% cover 52%; }
+      .dp-wide .s-1 { animation-name: dp-spot-1; }
+      .dp-wide .s-2 { animation-name: dp-spot-2; }
+      .dp-wide .s-3 { animation-name: dp-spot-3; }
+      .dp-wide .s-4 { animation-name: dp-spot-4; }
+      .dp-wide .s-5 { animation-name: dp-spot-5; }
+      .dp-wide .s-6 { animation-name: dp-spot-6; }
     }
   }
 

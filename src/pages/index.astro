@@ -5,7 +5,7 @@ import Hero from '../components/Hero.astro';
 import ConnectsStrip from '../components/ConnectsStrip.astro';
 import DashboardPlate from '../components/DashboardPlate.astro';
 import Section from '../components/Section.astro';
-import ProcessIndex from '../components/ProcessIndex.astro';
+import SignalList from '../components/SignalList.astro';
 import ServiceCards from '../components/ServiceCards.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
@@ -14,130 +14,109 @@ import Footer from '../components/Footer.astro';
 <Base businessSchema>
   <Header />
   <Hero />
-  {/* Restored below the hero 18 Aug 2026 on the owner's instruction. It is a
-      full-bleed band rather than a section, so it sits outside .wrap and
-      supplies its own rules top and bottom. */}
+  {/* Full-bleed band rather than a section, so it sits outside .wrap and
+      supplies its own rules top and bottom. On the ink ground since the
+      Style C redesign, which makes it the page's first hard horizontal and
+      separates the hero from the argument that follows. */}
   <ConnectsStrip />
 
-  {/* §01 "The problem" was folded into this section on 17 Aug 2026 and the two
-      service cards went with it. The page had grown to say the same thing three
-      ways: a question about screens, two cards naming the two halves of the
-      offer, and a drawing showing both. What survives is one heading, one line,
-      the drawing, and the ask. The drawing now carries the explanation, which is
-      why its six callouts do real work rather than decorating.
+  {/* ---------------------------------------------------------------
+      §01 · The busywork
 
-      The section keeps id="services": the nav, the footer and /thanks all link
-      to /#services, and the anchor is the contract, not the heading. */}
-  <Section
-    id="services"
-    eyebrow="01 · What I do"
-    heading="One screen with the answer on it."
-    headingWidth={20}
-  >
-    <p class="lead" style="max-width:52ch">
-      I close the gaps between the tools you already use, then build the ones you’re missing.
-    </p>
+      Anchors changed with the redesign, 29 Aug 2026. The page used to run
+      #services / #how / #ownership over four sections; it now runs
+      #busywork / #build / #contact over three. #contact is unchanged and
+      must stay so: the hero CTA, the footer and vercel.json's /systems-map
+      301 all target it. The three retired fragments now land at the top of
+      the page, which is the harmless failure mode for a fragment.
 
-    <DashboardPlate />
+      No top rule: the connects strip above draws its own on both edges, and
+      a third here would double them. --------------------------------- */}
+  <Section id="busywork" n="01" noRule>
+    <div class="bw-grid">
+      <div class="bw-copy">
+        <div>
+          <h2 class="bw-head">
+            If it happens over and over, it should be <span class="hl">automated.</span>
+          </h2>
+          <p class="lead">Maybe your team is:</p>
+        </div>
+        {/* Pushed to the foot of the column by the grid, so it lands level
+            with the end of the list rather than floating under the heading.
+            The rule above it is what ties the two columns together. */}
+        <div class="bw-close">
+          <p class="lead">These little inefficiencies add up.</p>
+          <p class="claim">That’s the busywork I build out of your business.</p>
+        </div>
+      </div>
+      <SignalList />
+    </div>
 
-    {/* The ask sits after the drawing, not before it: by this point a visitor
-        has seen the thing rather than been told about it. */}
-    <div class="btn-row plate-cta">
-      <a href="/#contact" class="btn">Book a call<span class="ln" aria-hidden="true"></span></a>
-      <a href="/#how" class="btn-ghost">See how it works<span class="u" aria-hidden="true"></span></a>
+    {/* The ask sits after the list: by this point a visitor has read seven
+        specific descriptions of their own week. */}
+    <div class="btn-row bw-cta">
+      <a href="/#contact" class="btn">Tell me what’s slowing you down</a>
     </div>
   </Section>
 
-  {/* §02 and §03 merged on 19 Aug 2026, became one composition later that
-      day, and split back out that evening — all on the owner's instruction,
-      with the owner picking this layout from four options. The lesson of the
-      day, recorded so it is not relearned: merged, the two ideas made one
-      overlong section; split as twin row-lists, they read as the same drawing
-      twice. So they are separate again but in different shapes — §02 is an
-      editorial index of display numerals (ProcessIndex), §03 is a card grid
-      (ServiceCards). The steps were cut five-to-three in the same pass; see
-      the comment over `steps` in site.ts for what merged where.
+  {/* ---------------------------------------------------------------
+      §02 · What I build
 
-      Anchors are contracts: id="how" because the hero and §01 ghost buttons
-      point at /#how, id="ownership" back on §03 where indexed links expect
-      the ownership copy. */}
-  <Section
-    id="how"
-    eyebrow="02 · How it works"
-    heading="Start with a conversation, not a commitment."
-    headingWidth={22}
-  >
-    <p class="lead" style="max-width:52ch">
-      You don’t need to know the answer before the first call.
+      The one section on the quiet ground. Carries the five build types and
+      then the annotated dashboard plate, which is the page's only picture of
+      a finished thing. --------------------------------------------- */}
+  <Section id="build" n="02" wash>
+    <h2 class="bd-head">Your process. Just without all the work.</h2>
+    <p class="lead bd-lead">
+      I look at how the work actually gets done, find the repetitive steps,
+      bottlenecks, and workarounds, then build a simpler system around them.
     </p>
-    <ProcessIndex />
-  </Section>
-
-  <Section
-    id="ownership"
-    eyebrow="03 · What you get"
-    heading="The system is yours."
-    headingWidth={20}
-  >
-    {/* The differentiator, doing the job testimonials would normally do. One
-        paragraph since the 19 Aug merge folded its former two into one; the
-        sentences are the owner's, unchanged. */}
-    <p class="lead" style="max-width:52ch">
-      It runs in your accounts, under your billing, and you keep everything it’s
-      built from. If you ever stop working with me, nothing switches off. That’s
-      the difference between owning software and renting it.
-    </p>
+    <p class="mono-note bd-note">That might be a:</p>
 
     <ServiceCards />
+    <DashboardPlate />
   </Section>
 
+  {/* §03 renders its own marker: it sits inside the left column of the
+      contact grid rather than running the full width, so it cannot come from
+      Section.astro. */}
   <ContactSection />
   <Footer />
 </Base>
 
 <style>
-  .plate-cta { margin-top:40px; }
-
-  /* The blueprint watermark. Was a single set of 1px verticals every 88px,
-     full bleed, which stopped dead at the section rules and read as graph
-     paper. Two changes: it is a real grid now, a major line every 88px and a
-     minor every 22px at a quarter of the strength; and it is masked so it
-     fades out top and bottom, which is what makes it read as a watermark
-     rather than a background.
-
-     88px is the same module DevGrid draws, so the watermark and the layout
-     guides agree. It lives on a pseudo-element rather than the section so the
-     mask cannot touch the content, and z-index/isolation keep it behind. */
-  :global(#services) { background-color:var(--color-wash); position:relative; isolation:isolate; }
-  /* z-index:-1, not 0. A positioned pseudo-element at 0 paints above ordinary
-     in-flow content, which put the watermark in front of the plate. -1 puts it
-     behind the content, and `isolation:isolate` on the section stops it going
-     behind the section's own background as well.
-
-     The previous fix raised .wrap to z-index:1, which silently did nothing:
-     .wrap is rendered by Section.astro, so Astro scoped the selector to this
-     file's id and it never matched. Anything targeting markup from another
-     component has to sit inside :global() in full. */
-
-  :global(#services)::before {
-    content:''; position:absolute; inset:0; z-index:-1; pointer-events:none;
-    background-image:
-      linear-gradient(to right,  color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 62%, transparent) 1px, transparent 1px),
-      linear-gradient(to right,  color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-rule) 26%, transparent) 1px, transparent 1px);
-    background-size: 88px 88px, 88px 88px, 22px 22px, 22px 22px;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  /* ---------- §01 ----------
+     35/65. The list is the substance here and the copy is the frame, which is
+     the reverse of every other section on the page. */
+  .bw-grid {
+    display:grid; grid-template-columns:minmax(0,35fr) minmax(0,65fr);
+    gap:64px; align-items:stretch;
   }
-  /* Fully inside :global(). .wrap is Section.astro's markup, so a selector that
-     leaves it outside gets this file's scope attribute and never matches — which
-     is why the accent rule below had quietly stopped rendering. */
-  :global(#services .wrap) { position:relative; }
-  :global(#services .wrap::after) { content:''; position:absolute; right:0; top:0; width:74px; border-top:2px solid var(--color-line); }
+  .bw-copy { display:flex; flex-direction:column; justify-content:space-between; gap:48px; }
+  .bw-head { margin:0 0 18px; }
+  .bw-close { border-top:1px solid var(--color-ink); padding-top:26px; }
+  .bw-close .lead { margin-bottom:10px; }
+  .bw-cta { margin-top:44px; }
 
-  /* §03 alternates back onto the wash like §01, so the two full-width
-     sections that flank §02's paper ground read as different rooms rather
-     than one long corridor. Inside :global() in full — landmine 18. */
-  :global(#ownership) { background: var(--color-wash); }
+  /* The highlight behind "automated." A background gradient rather than a
+     border or a pseudo-element, so it wraps with the text if the line ever
+     breaks mid-phrase. 62% is the baseline: below that the wash cuts the
+     descenders, above it the phrase looks underlined rather than marked. */
+  .hl {
+    background:linear-gradient(transparent 62%, var(--color-accent-soft) 62%);
+  }
+
+  /* ---------- §02 ---------- */
+  .bd-head { margin:0 0 18px; max-width:26ch; }
+  .bd-lead { max-width:58ch; }
+  .bd-note { margin-top:18px; }
+
+  /* ---------- responsive ----------
+     820px is where the hero grid stacks and both drawings swap to their narrow
+     compositions, so §01 stacks at the same width and the whole page changes
+     shape once rather than three times. */
+  @media (max-width:820px) {
+    .bw-grid { grid-template-columns:1fr; gap:40px; }
+    .bw-copy { gap:34px; }
+  }
 </style>

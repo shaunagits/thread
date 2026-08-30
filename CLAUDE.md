@@ -14,6 +14,111 @@ robots.txt). `/systems-map` was deleted and 301s to `/#contact`.
 
 ---
 
+## ⚠️⚠️ READ FIRST — the site was redesigned 29 Aug 2026 (Style C)
+
+The owner supplied a complete redesign, `Thread Homepage - Style C.dc.html`, and
+instructed that it be built as drawn. **Most of what the sections below describe
+about the homepage is now history.** The design file is the reference; where it
+and this document disagree, the design file wins.
+
+**Palette: graphite & signal.** Third palette this site has worn. Near-black ink
+`#171A18` on graphite paper `#EDEEE9`, one cobalt accent `#2E4FBF` with a darker
+step `#253F99`. The ocean palette table further down is **history, not the
+target**, and so is the earth palette in `index.html`.
+
+Two things changed structurally rather than just in value:
+
+- **The accent is named `--color-accent` / `--color-accent-dark` /
+  `--color-accent-soft`.** `--color-ochre`, `--color-line` and `--color-koa`
+  survive as aliases pointing at them so nothing breaks, but new work uses the
+  real names. The two-palette joke where `--color-ochre` held a blue is over.
+- **Landmine 5 is retired.** Both accent steps carry text on paper (6.03:1 and
+  8.00:1), so there is no longer a brand colour that may not hold a label. The
+  one place the accent fails is on the ink footer (2.49:1), where the wordmark's
+  full stop uses `--color-foot-dot` instead. Same problem, same fix, new token.
+
+**Faces: Petrona display, Public Sans body, JetBrains Mono labels.** Newsreader
+and IBM Plex Sans are unreferenced; their files are still in `public/fonts` and
+are never downloaded. **Petrona does not contain U+02BB** — checked, it does not
+— so `scripts/build-fonts.py` patches it with the same alias trick Newsreader
+needed, and `verify()` fails the build if the shipped file lacks it. The
+wordmark was repointed to Petrona **deliberately, on the owner's instruction**;
+`--font-wordmark` still exists so the next face change has to be that explicit
+too.
+
+**The type scale is ten values, up from seven.** The four display steps and the
+body size are unchanged in role. What is new is the small end, because labels
+and UI text are set in a real mono face now rather than in the body sans. See
+the block in `global.css`; the rule that nothing may use an off-scale size still
+stands.
+
+**The page is three sections, not five:**
+
+| § | id | Heading | Contains |
+|---|---|---|---|
+| 01 | `busywork` | If it happens over and over, it should be automated. | `SignalList`, eight rows |
+| 02 | `build` | Your process. Just without all the work. | `ServiceCards` (five), then `DashboardPlate` |
+| 03 | `contact` | What could you stop doing manually? | `IntakeForm` and the owner card |
+
+**Anchors changed.** `#services`, `#how`, `#ownership` and `#questions` are gone;
+the page runs `#busywork`, `#build`, `#contact`. `#contact` is unchanged and must
+stay so — the hero CTA, the footer and `vercel.json`'s `/systems-map` 301 all
+target it. The three retired fragments now land at the top of the page, which is
+the harmless failure mode.
+
+**Deleted, with their data:** `ProcessIndex` and the `steps` array (the three-step
+arc has no section), `QuestionList` (the `questions` array survives in `site.ts`).
+Recover a component *and* its array from git rather than rewriting either. Two
+claims died with `steps` and appear nowhere else on the site: "A fixed plan and
+price" and the free 30-minute fit call.
+
+**`services` was replaced wholesale.** Four entries became five, every title and
+body is new, "AI automation" is gone, "Customer or employee portal" is new, and
+**the owner-confirmed durations were dropped** because the design draws no meta
+line. Prices remain absent and that rule is unchanged.
+
+**The CTA label lives in `site.ts` as `cta`/`ctaHref`**, because six places render
+it. It is "Tell me what's slowing you down". It is not "Book a call" because
+there is still no scheduling link, and the button opens the form. The submit
+button is deliberately different — "Show me your busywork" — because it describes
+sending rather than arriving.
+
+**Section markers are bare numbers on a rule, above the heading.** They carry no
+label, so the old rule that the nav must match the markers no longer has anything
+to match. What still holds: the header and the footer point at the same three
+anchors and must label them identically.
+
+### Still outstanding from this change
+
+1. **`[Owner name]` and the photo are placeholders and must not ship.** The
+   design file itself flags them. `ContactSection.astro` renders a dashed
+   "Blocked" tag in the layout so it is hard to ship by accident. **Do not
+   invent a name.**
+2. **`--color-faint` `#767C76` fails AA at 3.66:1 on paper**, worse than the
+   ocean palette's 4.21. It carries the hero signature line, the form helper and
+   the open row 08 text. Raised with the owner before the build and built as
+   drawn. `#6A7076` clears it at 4.54:1 and is barely perceptible.
+3. **`/og.png` is stale.** Run `npm run assets:build` — the card art is a baked
+   PNG and still carries the ocean palette. Favicons too.
+4. The narrow (phone) composition of both drawings was derived, not drawn. The
+   design file only covers Desktop 1440.
+
+### Verified at build time, 29 Aug 2026
+
+Production build clean. **Landmine 22 checked against the built, minified CSS**:
+no `animation-timeline` folded into an `animation` shorthand, `view-timeline-name`
+and all nineteen keyframes survive. Every `var()` in `src/` resolves to a defined
+token. No hardcoded hex in any component. No nested `<section>`. No bare fragment
+hrefs. Contrast audited across twenty-one text roles; the three failures are all
+item 2 above.
+
+**Not verified: anything visual.** There is no browser in the build environment,
+and landmine 24 says the preview pane cannot verify scroll-driven animation
+anyway. The hero loop, the plate's focus walk and every breakpoint need a real
+screen.
+
+---
+
 ## ⚠️ What `index.html` is still binding for
 
 `index.html` remains the source of truth for **layout and spacing**. It is **no
@@ -85,10 +190,17 @@ unchanged.
 **The hero copy was rewritten on the same date, second pass.** It is now
 eyebrow, headline, one 15-word paragraph, two buttons, and nothing else:
 
-> Built around how you already work.
+> Turn busywork into software.
 > **[ Book a call ]**  [ See how it works ]
 
-Replaced "Software that brings your business together." on 17 Aug 2026. That
+**The headline is "Turn busywork into software." since 29 Aug 2026**, on the
+owner's instruction, replacing "Built around how you already work." The
+headline text is duplicated by hand in `src/pages/og.astro` (see the comment
+there) — the two must always agree, or the share card outlives the page edit in
+every already-scraped cache.
+
+"Built around how you already work." replaced "Software that brings your
+business together." on 17 Aug 2026. That
 line was outcome-framed and the name earned it, but it was a claim any SaaS
 could make and it said nothing about *custom*, *yours* or *one person*. The
 eyebrow now carries the category and the location, so the headline is free to

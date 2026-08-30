@@ -31,10 +31,35 @@
  * the editorial-index layout. The footer below must always mirror this list
  * exactly.
  */
+/**
+ * The CTA label, in one place because six elements render it and CLAUDE.md's
+ * standing rule is that they may never disagree: the header button, the phone
+ * menu, the hero, §01, the footer's Contact column, and /thanks.
+ *
+ * "Book a call" is the label the owner wants once there is a scheduling link
+ * to point it at. There is not, so the button opens the form instead, and a
+ * button that says "Book a call" while sending a message is the exact
+ * mismatch the 19 Aug copy review raised. This label describes what actually
+ * happens. Change both this and `ctaHref` in the same commit when the
+ * scheduler exists.
+ */
+export const cta = 'Tell me what’s slowing you down';
+export const ctaHref = '/#contact';
+
+/**
+ * Relabelled with the Style C redesign, 29 Aug 2026, and cut from four
+ * sections to three. Was What I do / How it works / What you get.
+ *
+ * The section markers no longer carry labels — they are bare numbers on a rule
+ * — so the old rule that the nav had to match the markers exactly no longer
+ * has anything to match against. What still holds, and matters more: the
+ * header and the footer point at the same three anchors and must label them
+ * identically. See footerColumns at the foot of this file.
+ */
 export const nav = [
-  { label: 'What I do', href: '/#services' },
-  { label: 'How it works', href: '/#how' },
-  { label: 'What you get', href: '/#ownership' },
+  { label: 'The busywork', href: '/#busywork' },
+  { label: 'What I build', href: '/#build' },
+  { label: 'Start here', href: '/#contact' },
 
   /* Ready to go. The /work route, its layout and its footer entry all exist;
      this line is the switch. It is commented out because a visitor who clicks
@@ -74,6 +99,32 @@ export const contact = {
 };
 
 /**
+ * §01's signals list, from "Thread Homepage - Style C", 29 Aug 2026.
+ *
+ * Every one of these is a description of a symptom, not a claim about Thread,
+ * so none of them needs the confirmation a service or a price does. They are
+ * deliberately generic enough that a visitor supplies their own specifics —
+ * "entering the same information in multiple places" is recognised, where
+ * "entering job numbers into QuickBooks and Jobber" would only be recognised
+ * by the two businesses that do exactly that.
+ *
+ * Order runs from the most common to the most particular. Keep it that way:
+ * a visitor who does not recognise row 01 is unlikely to read to row 07.
+ */
+export const signals = [
+  'Entering the same information in multiple places',
+  'Managing an important process through spreadsheets',
+  'Copying data between systems',
+  'Chasing approvals, updates, or paperwork',
+  'Building reports by hand',
+  'Working around software that doesn’t quite fit',
+  'Following a 12-step process that should take two',
+];
+
+/** The open row that closes the list. See SignalList.astro for why it exists. */
+export const signalOpen = 'Whatever your team keeps redoing';
+
+/**
  * Step 01 was `MAP` and sold the free systems map. The owner killed that offer
  * on 14 Aug 2026; the first step is now learning how the business works, and
  * the fixed scope and price land at the end of it.
@@ -105,26 +156,19 @@ export const contact = {
  *    It spent part of this day as timeline step 05; recover that from git if
  *    the arc idea ever returns.
  */
-export const steps = [
-  {
-    n: '01',
-    label: 'Fit call',
-    title: 'A free 30 minutes',
-    body: 'You describe what’s slowing you down. I tell you whether I can help, and whether it’s worth doing.',
-  },
-  {
-    n: '02',
-    label: 'Scope',
-    title: 'A fixed plan and price',
-    body: 'What gets built, in what order, and what it costs. Agreed before any work starts.',
-  },
-  {
-    n: '03',
-    label: 'Build',
-    title: 'You see it working early',
-    body: 'Working software in front of you as it takes shape, not a demo at the end. Then it goes into daily use, and I stay available as the business changes.',
-  },
-];
+/**
+ * ⚠️ `steps` was deleted 29 Aug 2026 with the Style C redesign, along with
+ * ProcessIndex.astro, which was its only consumer. The three-step arc (Fit
+ * call / Scope / Build) has no section in the new page: it ran four sections
+ * and now runs three, and "How it works" is not one of them.
+ *
+ * The copy was the owner's own and is not lost — recover the array and the
+ * component together from git rather than rewriting either, as with every
+ * other component this repo has retired. Two claims died with it that
+ * appeared nowhere else on the site: "A fixed plan and price" and the free
+ * 30-minute fit call. If either needs to be back on the page, it needs a
+ * home, not a reinstated array.
+ */
 
 /**
  * What ships with every build. Was baked into Fig4CarePlate as SVG text, which
@@ -168,29 +212,125 @@ export const steps = [
  * something the step does not. Recover the old lines from git if the list
  * ever moves back out of this section.
  */
+/**
+ * Replaced wholesale 29 Aug 2026 by the five build types drawn in "Thread
+ * Homepage - Style C". What changed, so none of it reads as drift:
+ *
+ *  - Four entries became five. "Customer or employee portal" is new.
+ *  - "AI automation" is gone. It was the one service naming a technology
+ *    rather than an outcome, and the new set is outcome-named throughout.
+ *    The capability is not disclaimed anywhere, it simply has no card.
+ *  - Every title and body is new copy, from the design file.
+ *  - \u26a0\ufe0f The durations are gone. The previous entries carried owner-confirmed
+ *    typical ranges ("Typical: 6-10 weeks") from STRATEGY.md; the design draws
+ *    no meta line on any card, so `meta` is dropped rather than kept and
+ *    hidden. The ranges are recoverable from git.
+ *
+ * \u26a0\ufe0f PRICES REMAIN DELIBERATELY ABSENT, and this is still the standing rule
+ * for this file rather than a note about one array. STRATEGY.md carries "from
+ * $12,000" and "from $25,000"; HOMEPAGE-COPY.md marks them [CONFIRM]. The
+ * owner confirmed on 14 Aug 2026 that nothing ships until the real numbers
+ * exist. Do not add one because you found it elsewhere in the repo. Inventing
+ * a plausible price is how this site got into trouble the first time. See
+ * CLAUDE.md, "Content that must never be invented".
+ *
+ * `span` is the card's width in the six-column grid: three twos on the first
+ * row, two threes on the second. It is layout, not content, and it lives here
+ * only because the array is what ServiceCards maps over.
+ */
 export const services = [
   {
-    title: 'Custom internal apps',
-    body: 'The software your business needs and nobody sells: job tracking shaped like your workflow, intake that routes itself, approvals that match how decisions actually get made.',
-    meta: ['Typical: 6\u201310 weeks'],
+    title: 'Custom dashboard',
+    body: 'Everything your team needs in one place.',
+    span: 2,
   },
   {
-    title: 'Dashboards & reporting panels',
-    body: 'The questions you currently open four tabs for, on one screen. Live data from every system you run, arranged the way your team thinks about the work.',
-    meta: ['Typical: 3\u20136 weeks', 'Live data, no exports'],
+    title: 'Internal tool',
+    body: 'Software built around the way your business actually works.',
+    span: 2,
   },
   {
-    title: 'AI automation',
-    body: 'AI applied where it holds up and nowhere else: pulling information out of documents and forms, routing inbound work, drafting the emails you send over and over, flagging what needs a person.',
-    meta: ['Typical: 4\u20138 weeks', 'Human review built in'],
+    title: 'Automated workflow',
+    body: 'Routine tasks happen automatically instead of becoming someone\u2019s to-do list.',
+    span: 2,
   },
   {
-    title: 'Integration & data plumbing',
-    body: 'Connecting the tools you already pay for so the retyping stops. Getting your systems to agree, so the same number means the same thing everywhere.',
-    meta: ['Typical: 2\u20136 weeks', 'Fixed or retainer', 'Monitored'],
+    title: 'System integration',
+    body: 'Your existing tools finally talk to each other.',
+    span: 3,
+  },
+  {
+    title: 'Customer or employee portal',
+    body: 'Give people one simple place to get what they need.',
+    span: 3,
   },
 ];
 
+/**
+ * The six questions from the v3 draft, in its order. Every answer is a claim
+ * the owner controls outright: structure, process and terms. Nothing here
+ * cites a number, a client or a result.
+ *
+ * Deleted with QuestionList in 589ae02 when the component rendered nowhere,
+ * and recovered verbatim from 589ae02^ on 27 Aug 2026 rather than rewritten,
+ * because this copy was written and approved once already. Two edits on the
+ * way back in, both marked below.
+ */
+export const questions = [
+  {
+    q: 'Can another developer take this over?',
+    a: 'You have the source code, documentation, and accounts. Any competent developer can take it over.',
+  },
+  {
+    /* The guarantee sentence was to be folded into this answer per the
+       revision brief. It is not here yet: the wording is still waiting on the
+       owner, and this file may not carry an unapproved claim. */
+    q: 'We tried custom software before and it went badly.',
+    a: 'The scope moved, nobody used it, or the vendor owned it. Fixed scope, working demos, and clear ownership address those risks.',
+  },
+  {
+    q: 'Can we just use Zapier?',
+    a: 'Sometimes. It is often the right answer for a simple task. When the work needs logic, history, or permissions, a stronger system may make more sense.',
+  },
+  {
+    q: 'How much of my team’s time does this take?',
+    a: 'A few hours up front from the people who do the work, then a demo every two weeks.',
+  },
+  {
+    q: 'We’re not in Hawaiʻi.',
+    /* Was "Thread works remotely with businesses outside Hawaii too". First
+       person everywhere else on the site, and this was the last sentence that
+       referred to the business in the third person. */
+    a: 'That is fine. I work remotely with businesses outside Hawaiʻi too.',
+  },
+  {
+    q: 'What does it cost to run after it’s built?',
+    a: 'Your existing subscriptions and hosting, billed directly to you. I will outline the real cost for your setup before you decide.',
+  },
+];
+
+/**
+ * ⚠️ NOT APPROVED COPY, and gated so it cannot ship by accident.
+ *
+ * CLAUDE.md records the owner's decision that the guarantee ships as written:
+ * working software in two weeks, either side can stop, nothing owed beyond
+ * that point. The 26 Aug 2026 audit found it renders nowhere a visitor can
+ * read, lost in the 17-19 Aug rebuilds. It is the strongest thing this site is
+ * permitted to say, because it is proof by risk transfer on a page that
+ * rightly refuses to invent case studies.
+ *
+ * Both strings below are the revision brief's rendering of that decision, not
+ * the owner's own words. `approved` stays false until the owner confirms the
+ * wording, and both call sites (§02 in index.astro, the echo in
+ * ContactSection.astro) test it, so nothing renders meanwhile. This is the one
+ * place to edit the wording; flip the flag in the same commit.
+ */
+export const guarantee = {
+  approved: false,
+  panel:
+    'The first two weeks come with a simple guarantee. You see working software inside them, and either of us can stop there, with nothing owed beyond that point.',
+  echo: 'First two weeks guaranteed · either of us can stop.',
+};
 
 export const footerColumns = [
   /**
@@ -206,10 +346,13 @@ export const footerColumns = [
        three-link list. Not dropped entirely because the column sits beside
        Contact, which keeps its heading, and a headerless column misaligns. */
     heading: 'Sections',
+    /* Mirrors `nav` above exactly. Two navigations aimed at the same three
+       anchors must not label them differently — relabelled and re-anchored
+       together, 29 Aug 2026. */
     links: [
-      { label: 'What I do', href: '/#services' },
-      { label: 'How it works', href: '/#how' },
-      { label: 'What you get', href: '/#ownership' },
+      { label: 'The busywork', href: '/#busywork' },
+      { label: 'What I build', href: '/#build' },
+      { label: 'Start here', href: '/#contact' },
     ],
   },
   /* A WhatsApp "Message me" link was considered and dropped 17 Aug 2026:
@@ -218,7 +361,10 @@ export const footerColumns = [
   {
     heading: 'Contact',
     links: [
-      { label: 'Book a call', href: '/#contact' },
+      /* Renamed with the other six on 27 Aug 2026; see Header.astro. This one
+         and /work's button were the two the design brief's list missed, and
+         leaving them would have had the site offering two different things. */
+      { label: cta, href: ctaHref },
       { label: 'Email me', href: `mailto:${contact.email}` },
     ],
   },
