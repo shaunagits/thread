@@ -55,13 +55,30 @@ const rows = [
   { x:  24, y: 298, r:  1.5, ym: 176, y1: 308, w: 100 },
 ];
 
+/* The phone composition, from "Thread Homepage - Mobile". Six rows, not nine,
+   in a 300x250 canvas rather than 640x380.
+
+   Six because of legibility, not fit: nine 88px rows stacked at phone scale
+   put the drawing's own type under 6px, and the rows themselves become hairs.
+   The argument survives the cut — three ticked by hand against six by one
+   click still reads as the same contrast, and nobody counts them. */
+const rowsNarrow = [
+  { x:   6, y:  14, r: -3,   ym:  96, y1:  78, w: 52 },
+  { x: 140, y:   8, r:  2.5, ym: 100, y1:  98, w: 60 },
+  { x:  60, y:  66, r:  1.5, ym: 104, y1: 118, w: 44 },
+  { x: 196, y:  58, r: -2,   ym: 108, y1: 138, w: 56 },
+  { x:  12, y: 112, r:  2,   ym: 112, y1: 158, w: 48 },
+  { x: 150, y: 150, r: -1.5, ym: 116, y1: 178, w: 64 },
+];
+
 /* The three the cursor ticks by hand. Their checkbox centres are where the
-   cursor stops, so these indices and the bwcur keyframe move together. */
+   cursor stops, so these indices and the cursor keyframes move together. Same
+   three positions in the row order of both compositions. */
 const ticked = [0, 2, 5];
 ---
 
 <svg
-  class="bw"
+  class="bw bw-wide"
   viewBox="0 0 640 380"
   role="img"
   aria-label="Loose repetitive tasks drift across the screen and a few get ticked off by hand. They gather, compile into one system, and a single click completes the whole list."
@@ -124,6 +141,64 @@ const ticked = [0, 2, 5];
   </g>
 </svg>
 
+{/* The phone composition. A separate drawing rather than the wide one scaled:
+    landmine 17 — SVG type is drawing-space, so shrinking the 640-unit canvas
+    to 350px would take its 11px labels to 6px. Same swap at the same
+    breakpoint as everything else on the page. */}
+<svg
+  class="bw bw-narrow"
+  viewBox="0 0 300 250"
+  role="img"
+  aria-label="Loose repetitive tasks drift across the screen and a few get ticked off by hand. They gather, compile into one system, and a single click completes the whole list."
+>
+  <g class="bw-win">
+    <rect x="56" y="24" width="196" height="204" rx="2" fill="var(--color-white)" stroke="var(--color-ink)" stroke-width="1" />
+    <path d="M56 50 H252" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+    <g fill="var(--color-hair)">
+      <circle cx="66" cy="37" r="2.6" /><circle cx="75" cy="37" r="2.6" /><circle cx="84" cy="37" r="2.6" />
+    </g>
+    <rect x="150" y="30" width="94" height="13" rx="6.5" fill="var(--color-wash)" />
+    <text x="158" y="39.5" class="t-micro" fill="var(--color-faint)">app.yourbusiness.com</text>
+    <path d="M108 50 V228" fill="none" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="68" y="74"  width="32" height="7" rx="3.5" fill="var(--color-accent-dark)" />
+    <rect x="68" y="94"  width="24" height="7" rx="3.5" fill="var(--color-rule)" />
+    <rect x="68" y="114" width="28" height="7" rx="3.5" fill="var(--color-rule)" />
+    <rect x="208" y="78"  width="40" height="46" rx="2" fill="var(--color-white)" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="208" y="132" width="40" height="46" rx="2" fill="var(--color-white)" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="208" y="186" width="40" height="38" rx="2" fill="var(--color-white)" stroke="var(--color-rule)" stroke-width="1" />
+    <rect x="212" y="54" width="36" height="16" rx="2" fill="var(--color-accent)" />
+    <text x="230" y="65" text-anchor="middle" class="t-run" fill="var(--color-white)">RUN</text>
+  </g>
+
+  {rowsNarrow.map((row, i) => (
+    <g
+      class={`bw-row bw-nrow-${i}`}
+      style={`--x0:${row.x}px;--y0:${row.y}px;--r0:${row.r}deg;--ym:${row.ym}px;--y1:${row.y1}px`}
+    >
+      <rect width="88" height="20" rx="2" fill="var(--color-white)" stroke="var(--color-hair)" stroke-width="1" />
+      <rect x="7" y="5" width="10" height="10" rx="1" fill="none" stroke="var(--color-hair)" stroke-width="1" />
+      <rect x="24" y="8" width={row.w} height="4" rx="2" fill="var(--color-rule)" />
+      {ticked.includes(i) && (
+        <path
+          class={`bw-tick bw-tick-${ticked.indexOf(i)}`}
+          d="M9.2 10.6 L11.5 12.9 L15.9 8"
+          fill="none" stroke="var(--color-ink)" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round"
+        />
+      )}
+      <g class={`bw-done bw-ndone-${i}`}>
+        <rect x="7" y="5" width="10" height="10" rx="1" fill="var(--color-accent)" />
+        <path d="M9.4 10.2 L11.6 12.4 L15 8.2" fill="none" stroke="var(--color-white)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    </g>
+  ))}
+
+  <g class="bw-cur bw-ncur">
+    <path d="M0 0 L0 14 L4 10.4 L6.4 15.4 L9 14.1 L6.6 9.2 L11.2 8.8 Z"
+          fill="var(--color-ink)" stroke="var(--color-paper)" stroke-width="1" />
+  </g>
+</svg>
+
 <style>
   /* ---------- type inside the drawing ----------
      Landmine 17: SVG type is drawing-space, not pixels. Rendered size is
@@ -146,11 +221,27 @@ const ticked = [0, 2, 5];
     display: block; width: 100%; height: auto; overflow: visible;
     --fs-micro: 11px;
   }
-  @media (max-width: 1024px) { .bw { --fs-micro: 13px; } }
-  @media (max-width:  820px) { .bw { --fs-micro:  9px; } }
-  @media (max-width:  724px) { .bw { --fs-micro: 10px; } }
-  @media (max-width:  600px) { .bw { --fs-micro: 13px; } }
-  @media (max-width:  480px) { .bw { --fs-micro: 16px; } }
+  .bw-narrow { display: none; }
+
+  @media (max-width: 1024px) { .bw-wide { --fs-micro: 13px; } }
+  @media (max-width:  820px) { .bw-wide { --fs-micro:  9px; } }
+  @media (max-width:  724px) { .bw-wide { --fs-micro: 10px; } }
+
+  /* Composition swap at 640, the same breakpoint as everything else on the
+     page. Below it the wide drawing's arithmetic stops working: at 480px the
+     640-unit canvas renders about 0.68:1, and no --fs-micro value keeps a
+     label legible without it dwarfing the row it sits in.
+
+     The narrow canvas is 300 units against roughly 350px of column, so it
+     renders about 1.17:1 — the only composition on the site that renders
+     larger than it is drawn. 6.5 and 7 land at 7.6 and 8.2px, at the bottom of
+     the 8-12px band but on a drawing whose labels are texture rather than
+     information. */
+  @media (max-width: 640px) {
+    .bw-wide   { display: none; }
+    .bw-narrow { display: block; --fs-micro: 6.5px; }
+    .bw-narrow .t-run { font-size: 7px; }
+  }
 
   .t-micro {
     font-family: var(--font-mono); font-size: var(--fs-micro);
@@ -245,6 +336,20 @@ const ticked = [0, 2, 5];
     .bw-done-6 { animation-name: bw-done-6 } .bw-done-7 { animation-name: bw-done-7 }
     .bw-done-8 { animation-name: bw-done-8 }
 
+    /* Six completion marks rather than nine, so they are spaced 2.4% apart
+       instead of 1.6% and still finish before the clear at 90%. Written out
+       for the same reason the nine are: a delay on an infinite animation
+       shifts the clear along with the appearance. */
+    @keyframes bw-ndone-0 { 0%, 74.0% { opacity: 0 } 75.2% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-ndone-1 { 0%, 76.4% { opacity: 0 } 77.6% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-ndone-2 { 0%, 78.8% { opacity: 0 } 80.0% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-ndone-3 { 0%, 81.2% { opacity: 0 } 82.4% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-ndone-4 { 0%, 83.6% { opacity: 0 } 84.8% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    @keyframes bw-ndone-5 { 0%, 86.0% { opacity: 0 } 87.2% { opacity: 1 } 90% { opacity: 1 } 93%, 100% { opacity: 0 } }
+    .bw-ndone-0 { animation-name: bw-ndone-0 } .bw-ndone-1 { animation-name: bw-ndone-1 }
+    .bw-ndone-2 { animation-name: bw-ndone-2 } .bw-ndone-3 { animation-name: bw-ndone-3 }
+    .bw-ndone-4 { animation-name: bw-ndone-4 } .bw-ndone-5 { animation-name: bw-ndone-5 }
+
     /* The cursor. Its three stops are the checkbox centres of rows 0, 2 and 5
        at their drift positions, so if a row's --x0/--y0 changes this keyframe
        changes with it. The scale dip is the press. It parks off-canvas from
@@ -268,5 +373,28 @@ const ticked = [0, 2, 5];
       100% { transform: translate(300px, 352px) scale(1); }
     }
     .bw-cur { animation: bw-cur 8s cubic-bezier(.45, 0, .25, 1) infinite; }
+
+    /* The phone cursor. Same beats, different canvas — its three stops are the
+       checkbox centres of narrow rows 0, 2 and 5 at their drift positions, and
+       its RUN stop is that composition's button. */
+    @keyframes bw-ncur {
+      0%   { transform: translate(150px, 230px) scale(1); }
+      5%   { transform: translate(19px, 27px) scale(1); }
+      7%   { transform: translate(19px, 27px) scale(.82); }
+      9%   { transform: translate(19px, 27px) scale(1); }
+      13%  { transform: translate(73px, 79px) scale(1); }
+      15%  { transform: translate(73px, 79px) scale(.82); }
+      17%  { transform: translate(73px, 79px) scale(1); }
+      21%  { transform: translate(163px, 163px) scale(1); }
+      23%  { transform: translate(163px, 163px) scale(.82); }
+      25%  { transform: translate(163px, 163px) scale(1); }
+      31%, 62% { transform: translate(90px, 236px) scale(1); }
+      70%  { transform: translate(222px, 62px) scale(1); }
+      72%  { transform: translate(222px, 62px) scale(.82); }
+      74%  { transform: translate(222px, 62px) scale(1); }
+      88.75% { transform: translate(222px, 62px) scale(1); }
+      100% { transform: translate(150px, 230px) scale(1); }
+    }
+    .bw-ncur { animation-name: bw-ncur; }
   }
 </style>
