@@ -34,23 +34,31 @@ import { cta, ctaHref } from '../content/site';
       No top rule: the connects strip above draws its own on both edges, and
       a third here would double them. --------------------------------- */}
   <Section id="busywork" n="01" noRule>
+    {/* ⚠️ These three are siblings of the grid, not two nested blocks, and that
+        is load-bearing. They used to be an intro and a closer wrapped in one
+        left-hand column, which read correctly at desktop and stacked as
+        heading → lead → closing statement → list on a phone: the sentence that
+        closes the list landed above the list. A nested child cannot be
+        reordered against its parent's sibling, so the wrapper had to go.
+
+        Flat, the DOM order is already the phone order, and the desktop layout
+        is explicit grid placement instead. */}
     <div class="bw-grid">
-      <div class="bw-copy">
-        <div>
-          <h2 class="bw-head">
-            If it happens over and over, it should be <span class="hl">automated.</span>
-          </h2>
-          <p class="lead">Maybe your team is:</p>
-        </div>
-        {/* Pushed to the foot of the column by the grid, so it lands level
-            with the end of the list rather than floating under the heading.
-            The rule above it is what ties the two columns together. */}
-        <div class="bw-close">
-          <p class="lead">These little inefficiencies add up.</p>
-          <p class="claim">That’s the busywork I build out of your business.</p>
-        </div>
+      <div class="bw-intro">
+        <h2 class="bw-head">
+          If it happens over and over, it should be <span class="hl">automated.</span>
+        </h2>
+        <p class="lead">Maybe your team is:</p>
       </div>
+
       <SignalList />
+
+      {/* Sits at the foot of the left column at desktop, so it lands level
+          with the end of the list rather than floating under the heading. */}
+      <div class="bw-close">
+        <p class="lead">These little inefficiencies add up.</p>
+        <p class="claim">That’s the busywork I build out of your business.</p>
+      </div>
     </div>
 
     {/* The ask sits after the list: by this point a visitor has read seven
@@ -91,9 +99,19 @@ import { cta, ctaHref } from '../content/site';
      the reverse of every other section on the page. */
   .bw-grid {
     display:grid; grid-template-columns:minmax(0,35fr) minmax(0,65fr);
-    gap:64px; align-items:stretch;
+    column-gap:64px; row-gap:48px;
   }
-  .bw-copy { display:flex; flex-direction:column; justify-content:space-between; gap:48px; }
+  /* Explicit placement, because the DOM order is the phone order and the
+     desktop arrangement is the exception. The list spans both rows so row 2
+     has height to give, and align-self drops the closing block to the foot of
+     the column, level with the end of the list. */
+  .bw-intro { grid-column:1; grid-row:1; }
+  .bw-close { grid-column:1; grid-row:2; align-self:end; }
+  /* ⚠️ Inside :global() in full. `.signals` is SignalList.astro's root
+     element, so a scoped selector compiles to `.signals[data-astro-cid-THIS]`
+     and silently matches nothing — landmine 18, which already cost §01's
+     accent rule once under the ocean design. */
+  :global(.bw-grid > .signals) { grid-column:2; grid-row:1 / span 2; }
   .bw-head { margin:0 0 18px; }
   .bw-close { border-top:1px solid var(--color-ink); padding-top:26px; }
   .bw-close .lead { margin-bottom:10px; }
@@ -117,7 +135,12 @@ import { cta, ctaHref } from '../content/site';
      compositions, so §01 stacks at the same width and the whole page changes
      shape once rather than three times. */
   @media (max-width:820px) {
-    .bw-grid { grid-template-columns:1fr; gap:40px; }
-    .bw-copy { gap:34px; }
+    /* One column, and the placements reset to auto so the DOM order takes
+       over: heading, lead, list, then the closing statement. That order is
+       the whole reason the three blocks are flat siblings — see the note in
+       the markup. */
+    .bw-grid { grid-template-columns:1fr; row-gap:34px; }
+    .bw-intro, .bw-close { grid-column:auto; grid-row:auto; }
+    :global(.bw-grid > .signals) { grid-column:auto; grid-row:auto; }
   }
 </style>
