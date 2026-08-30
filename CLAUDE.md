@@ -117,6 +117,44 @@ label, so the old rule that the nav must match the markers no longer has anythin
 to match. What still holds: the header and the footer point at the same three
 anchors and must label them identically.
 
+### The phone layout, 29 Aug 2026
+
+Built from `Thread Homepage - Mobile.dc.html`. ⚠️ **That file was drawn from
+Style C desktop and predates the same day's copy changes** — it still shows the
+old headline, the problem paragraph, the Honolulu signature line, the old nav
+labels, "Show me your busywork" and `[Owner name]`. Its *layout* was applied to
+the *current* content; do not read it as the copy of record.
+
+- **Section numbering is gone**, on the owner's instruction. `.marker` is now
+  `hr.section-rule`: the hairline survives, the number does not. The list
+  numerals in §01 and the card tabs in §02 are content, not section markers,
+  and stayed.
+- **`StickyCta.astro`** is a pinned accent-filled CTA bar, phone only, and the
+  only element on the site that follows the viewport. It carries
+  `env(safe-area-inset-bottom)` and `body` carries matching bottom padding —
+  without that it covers the last of the footer forever. If its height changes,
+  change the body padding in `global.css` with it.
+- **`--text-d1` and `--text-d2` are re-valued at 640px** (38/32) rather than
+  components hardcoding smaller sizes, so nothing goes off-scale.
+- **§01's three blocks are flat siblings of the grid**, not an intro and a
+  closer in a wrapper. That is load-bearing: nested, the closing statement
+  stacked *above* the list it closes on a phone, and a nested child cannot be
+  reordered against its parent's sibling.
+- **`HeroGraphic` ships a six-row phone composition** in a 300×250 canvas. Six,
+  not nine, for legibility; the three-by-hand against six-by-one-click contrast
+  is what matters and nobody counts them.
+- **`DashboardWindow.astro`** holds the window drawing so the wide plate and the
+  phone zoom frame the same coordinates. Because that crosses a component
+  boundary, **`DashboardPlate`'s stylesheet is `is:global`** — a scoped rule
+  compiles against its own cid and would match nothing the child renders. Every
+  selector in that file must stay `dp-` prefixed; `.co`/`.cN`/`.s-N` were
+  renamed `dp-co`/`dp-cN`/`dp-spN` for exactly this reason.
+- **The phone plate has three compositions, and `.dp-narrow` is load-bearing.**
+  The zoom renders only inside `@supports (animation-timeline: view())`.
+  Unzoomed it is 1040 units wide in a 350px frame and its labels land near
+  3.7px, so without the scroll walk it is illegible; the narrow redraw needs no
+  motion at all. Do not delete it as dead code.
+
 ### Still outstanding from this change
 
 1. ~~**`[Owner name]` and the photo are placeholders**~~ — the name is
@@ -130,8 +168,14 @@ anchors and must label them identically.
    drawn. `#6A7076` clears it at 4.54:1 and is barely perceptible.
 3. **`/og.png` is stale.** Run `npm run assets:build` — the card art is a baked
    PNG and still carries the ocean palette. Favicons too.
-4. The narrow (phone) composition of both drawings was derived, not drawn. The
-   design file only covers Desktop 1440.
+4. ~~The narrow (phone) composition of both drawings was derived, not drawn.~~
+   The owner supplied `Thread Homepage - Mobile.dc.html` on 29 Aug 2026 and it
+   is built. Still nothing between 640 and 1440 is drawn, so the tablet band
+   remains derived.
+5. **Nothing about the phone layout has been seen on a phone.** No browser in
+   the build environment, and landmine 24 says the preview pane cannot judge
+   scroll-driven animation anyway. The zoom walk especially needs a real
+   device.
 
 ### Verified at build time, 29 Aug 2026
 
