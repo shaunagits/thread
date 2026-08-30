@@ -16,39 +16,40 @@
  * reload.
  */
 /**
- * Outcome-framed, 17 Aug 2026. Was Services / Process / Ownership: three
- * category nouns that named the shape of the page rather than what a visitor
- * gets from it. These also now match the section headings, which "Services"
- * did not — that section is titled "What I do".
- *
- * "Outcome" itself was considered and rejected: it promises results, and the
- * site carries no case studies, numbers or client names, so it would set an
- * expectation the page cannot meet.
- */
-/**
- * "What you get" left this list on 19 Aug 2026 when §03 merged into §02, and
- * returned later the same day when the owner split the sections back out with
- * the editorial-index layout. The footer below must always mirror this list
- * exactly.
- */
-/**
  * The CTA label, in one place because six elements render it and CLAUDE.md's
  * standing rule is that they may never disagree: the header button, the phone
  * menu, the hero, §01, the footer's Contact column, and /thanks.
  *
+ * "Start the conversation" since 29 Aug 2026, on the owner's instruction,
+ * restoring the label the 27 Aug copy audit chose. Worth knowing: that audit's
+ * change was never committed — it lived only as a working-tree edit, so the
+ * deployed site went on saying "Book a call" the whole time.
+ *
  * "Book a call" is the label the owner wants once there is a scheduling link
  * to point it at. There is not, so the button opens the form instead, and a
  * button that says "Book a call" while sending a message is the exact
- * mismatch the 19 Aug copy review raised. This label describes what actually
- * happens. Change both this and `ctaHref` in the same commit when the
- * scheduler exists.
+ * mismatch the 19 Aug copy review raised. Change both this and `ctaHref` in
+ * the same commit when the scheduler exists.
  */
-export const cta = 'Tell me what’s slowing you down';
+export const cta = 'Start the conversation';
 export const ctaHref = '/#contact';
 
 /**
- * Relabelled with the Style C redesign, 29 Aug 2026, and cut from four
- * sections to three. Was What I do / How it works / What you get.
+ * Relabelled twice on 29 Aug 2026: What I do / How it works / What you get
+ * became The busywork / What I build / Start here with the Style C redesign,
+ * and then this, on the owner's pick from four directions.
+ *
+ * These are deliberately the plain, expected words. The previous set used the
+ * site's own vocabulary, which read well but made a visitor decode three
+ * labels before knowing where anything was; a nav is the one place on a page
+ * where being unsurprising is worth more than being distinctive. The voice
+ * still lives in the section headings, which are anything but generic.
+ *
+ * ⚠️ The labels no longer describe the anchors they point at (#busywork,
+ * #build). That is deliberate and not drift: the ids are contracts — the
+ * footer, the hero CTA and vercel.json's /systems-map 301 target them — and
+ * renaming ids to chase a label is how indexed links break. The same
+ * mismatch existed before, where "What I do" pointed at #services.
  *
  * The section markers no longer carry labels — they are bare numbers on a rule
  * — so the old rule that the nav had to match the markers exactly no longer
@@ -57,9 +58,9 @@ export const ctaHref = '/#contact';
  * identically. See footerColumns at the foot of this file.
  */
 export const nav = [
-  { label: 'The busywork', href: '/#busywork' },
-  { label: 'What I build', href: '/#build' },
-  { label: 'Start here', href: '/#contact' },
+  { label: 'The problem', href: '/#busywork' },
+  { label: 'The solution', href: '/#build' },
+  { label: 'Contact', href: '/#contact' },
 
   /* Ready to go. The /work route, its layout and its footer entry all exist;
      this line is the switch. It is commented out because a visitor who clicks
@@ -350,9 +351,9 @@ export const footerColumns = [
        anchors must not label them differently — relabelled and re-anchored
        together, 29 Aug 2026. */
     links: [
-      { label: 'The busywork', href: '/#busywork' },
-      { label: 'What I build', href: '/#build' },
-      { label: 'Start here', href: '/#contact' },
+      { label: 'The problem', href: '/#busywork' },
+      { label: 'The solution', href: '/#build' },
+      { label: 'Contact', href: '/#contact' },
     ],
   },
   /* A WhatsApp "Message me" link was considered and dropped 17 Aug 2026:

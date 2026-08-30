@@ -78,10 +78,25 @@ body is new, "AI automation" is gone, "Customer or employee portal" is new, and
 line. Prices remain absent and that rule is unchanged.
 
 **The CTA label lives in `site.ts` as `cta`/`ctaHref`**, because six places render
-it. It is "Tell me what's slowing you down". It is not "Book a call" because
+it. It is **"Start the conversation"**, restored on the owner's instruction after
+briefly being "Tell me what's slowing you down". It is not "Book a call" because
 there is still no scheduling link, and the button opens the form. The submit
-button is deliberately different — "Show me your busywork" — because it describes
-sending rather than arriving.
+button is deliberately different — just **"Send"** — because it describes sending
+rather than arriving.
+
+⚠️ Worth knowing when reading git history: **the 27 Aug 2026 copy audit was never
+committed.** "Start the conversation" and the rest of that pass existed only as
+working-tree edits, so the deployed site went on saying "Book a call" throughout,
+and `git log -S"Start the conversation"` finds it in exactly one commit — the
+Style C rebuild, as a deletion.
+
+**Nav labels are plain and expected: The problem / The solution / Contact.** The
+owner picked these from four directions after rejecting the redesign's own
+The busywork / What I build / Start here. The reasoning is that a nav is the one
+place where being unsurprising beats being distinctive; the voice lives in the
+section headings instead. **The labels deliberately no longer describe the
+anchors they point at** (`#busywork`, `#build`) — ids are contracts, and renaming
+one to chase a label is how indexed links break.
 
 **Section markers are bare numbers on a rule, above the heading.** They carry no
 label, so the old rule that the nav must match the markers no longer has anything

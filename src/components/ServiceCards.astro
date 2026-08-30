@@ -74,9 +74,23 @@ import { services } from '../content/site';
   @media (max-width: 1000px) {
     .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
     .span-2, .span-3 { grid-column: span 1; }
+
+    /* The last row always fills the width, whether it holds one card or two.
+       With an odd number of cards the final one would otherwise sit at half
+       width against empty space, which reads as a missing sixth card rather
+       than as the end of the set.
+
+       Written as :last-child:nth-child(odd) rather than against the fifth
+       card specifically, so it keeps working if the number of build types
+       changes — which it already has once, from four to five. */
+    .card:last-child:nth-child(odd) { grid-column: span 2; }
   }
   @media (max-width: 640px) {
     .cards { grid-template-columns: 1fr; gap: 22px; margin-top: 44px; }
     .card { padding: 26px; }
+    /* Must be reset explicitly. `span 2` in a single-column grid does not
+       clamp — it creates an implicit second column and the last card breaks
+       the layout it was meant to tidy. */
+    .card:last-child:nth-child(odd) { grid-column: auto; }
   }
 </style>

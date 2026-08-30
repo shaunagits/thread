@@ -75,14 +75,19 @@
     placeholder="The thing that made you open this form."
   ></textarea>
 
-  {/* "Show me your busywork" since 29 Aug 2026, from the design. It stays
-      distinct from the site-wide CTA on purpose: everywhere else the label has
-      to describe arriving at this form, and here it describes sending it. The
-      one rule that has always applied to this button is that it must not say
-      "Book a call", because pressing it sends a message and no calendar is
-      involved. The arrow is a real glyph, not a pseudo-element, and resolves
-      in JetBrains Mono — see the U+2192 alias in global.css. */}
-  <button type="submit" class="btn">Show me your busywork <span class="arw" aria-hidden="true">&#8594;</span></button>
+  {/* Just "Send", on the owner's instruction, 29 Aug 2026. It was "Show me
+      your busywork" from the design, and "Send it over" and "Book a call"
+      before that.
+
+      It stays deliberately different from the site-wide CTA: everywhere else
+      the label describes arriving at this form, and this one describes
+      sending it. The rule that has always applied here is that it must not
+      say "Book a call", because pressing it sends a message and no calendar
+      is involved — that mismatch is what the 19 Aug copy review raised.
+
+      The arrow is a real glyph, not a pseudo-element, and resolves in
+      JetBrains Mono — see the U+2192 alias in global.css. */}
+  <button type="submit" class="btn">Send <span class="arw" aria-hidden="true">&#8594;</span></button>
 
   {/* One reply-time string across the whole site since 27 Aug 2026. It existed
       in three variants: this note said "usually same day", the §04 lead said

@@ -183,13 +183,14 @@ import { nav, cta, ctaHref } from '../content/site';
      that exists. A longer label than this one needs the number raised. */
   .menu-panel {
     position: absolute; top: calc(100% + 10px); right: 0;
-    /* Re-measured 29 Aug 2026 for "Tell me what's slowing you down", which is
-       eight characters longer than the label this was last set for. At mono
-       13px the label runs about 234px, plus .btn's 56px of side padding, the
-       panel's 16px and the button's 16px of margins: 322px. 336 leaves a
-       little air. The min() is the floor for a 320px phone, where a fixed
-       336px panel would push off the left edge; the button wraps to two
-       lines there rather than overflowing. */
+    /* Measured against the longest label this has carried, "Tell me what's
+       slowing you down" (29 Aug 2026): about 234px of mono at 13px, plus
+       .btn's 56px of side padding, the panel's 16px and the button's 16px of
+       margins, so 322px. The label is "Start the conversation" again now and
+       needs about 229px, so 336 is generous rather than tight — kept, because
+       the label has changed four times and re-measuring down buys nothing.
+       The min() is the floor for a 320px phone, where a fixed 336px panel
+       would push off the left edge; the button wraps rather than overflowing. */
     width: min(336px, calc(100vw - 44px));
     background: var(--color-paper);
     border: 1px solid var(--color-ink); border-radius: 0;

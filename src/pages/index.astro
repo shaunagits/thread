@@ -9,6 +9,7 @@ import SignalList from '../components/SignalList.astro';
 import ServiceCards from '../components/ServiceCards.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
+import { cta, ctaHref } from '../content/site';
 ---
 
 <Base businessSchema>
@@ -55,7 +56,7 @@ import Footer from '../components/Footer.astro';
     {/* The ask sits after the list: by this point a visitor has read seven
         specific descriptions of their own week. */}
     <div class="btn-row bw-cta">
-      <a href="/#contact" class="btn">Tell me what’s slowing you down</a>
+      <a href={ctaHref} class="btn">{cta}</a>
     </div>
   </Section>
 
