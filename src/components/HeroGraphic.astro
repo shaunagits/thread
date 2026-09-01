@@ -75,6 +75,41 @@ const rowsNarrow = [
    cursor stops, so these indices and the cursor keyframes move together. Same
    three positions in the row order of both compositions. */
 const ticked = [0, 2, 5];
+
+/* ⚠️ The row keyframes are generated as LITERAL values, not one shared
+   keyframe parameterised with custom properties.
+
+   The shared version was tidier and is in git, but `transform: translate(var(--x),
+   var(--y))` inside @keyframes is a pattern Safari has never handled reliably —
+   it either steps between keyframes instead of interpolating, or drops the
+   transform altogether, which piles every row at the origin. It worked in every
+   environment available here and failed on a real iPhone, which is the whole
+   reason the design file wrote nine separate blocks in the first place.
+
+   Generating them means the values still live in one place; only the emitted
+   CSS is repetitive. */
+const kf = (prefix, set, xg, x1) => set.map((r, i) => `
+@keyframes ${prefix}${i} {
+  0%, 27.5% { transform: translate(${r.x}px, ${r.y}px) rotate(${r.r}deg); opacity: 1; animation-timing-function: cubic-bezier(.5,0,.2,1); }
+  45%       { transform: translate(${xg}px, ${r.ym}px) rotate(0deg); opacity: 1; animation-timing-function: cubic-bezier(.4,0,.2,1); }
+  65%, 88.75% { transform: translate(${x1}px, ${r.y1}px) rotate(0deg); opacity: 1; }
+  93%       { transform: translate(${x1}px, ${r.y1}px) rotate(0deg); opacity: 0; }
+  93.6%     { transform: translate(${r.x}px, ${r.y}px) rotate(${r.r}deg); opacity: 0; }
+  100%      { transform: translate(${r.x}px, ${r.y}px) rotate(${r.r}deg); opacity: 1; }
+}
+.bw-row-${i} { animation-name: ${prefix}${i}; }`).join('');
+
+const restKf = (set, x1) => set.map((r, i) =>
+  `.bw-rest-${i} { transform: translate(${x1}px, ${r.y1}px); }`).join('\n');
+
+const rowCss = `
+@media (prefers-reduced-motion: no-preference) {
+${kf('bw-k', rows, 204, 240)}
+${kf('bw-nk', rowsNarrow, 96, 112)}
+}
+${restKf(rows, 240)}
+${restKf(rowsNarrow, 112)}
+`;
 ---
 
 <svg
@@ -108,8 +143,7 @@ const ticked = [0, 2, 5];
 
   {rows.map((row, i) => (
     <g
-      class={`bw-row bw-row-${i}`}
-      style={`--x0:${row.x}px;--y0:${row.y}px;--r0:${row.r}deg;--xg:204px;--ym:${row.ym}px;--x1:240px;--y1:${row.y1}px`}
+      class={`bw-row bw-row-${i} bw-rest-${i}`}
     >
       <rect width="170" height="26" rx="2" fill="var(--color-white)" stroke="var(--color-hair)" stroke-width="1" />
       <rect x="9" y="7" width="12" height="12" rx="1" fill="none" stroke="var(--color-hair)" stroke-width="1" />
@@ -172,8 +206,7 @@ const ticked = [0, 2, 5];
 
   {rowsNarrow.map((row, i) => (
     <g
-      class={`bw-row bw-nrow-${i}`}
-      style={`--x0:${row.x}px;--y0:${row.y}px;--r0:${row.r}deg;--xg:96px;--ym:${row.ym}px;--x1:112px;--y1:${row.y1}px`}
+      class={`bw-row bw-row-${i} bw-rest-${i}`}
     >
       <rect width="88" height="20" rx="2" fill="var(--color-white)" stroke="var(--color-hair)" stroke-width="1" />
       <rect x="7" y="5" width="10" height="10" rx="1" fill="none" stroke="var(--color-hair)" stroke-width="1" />
@@ -198,6 +231,8 @@ const ticked = [0, 2, 5];
           fill="var(--color-ink)" stroke="var(--color-paper)" stroke-width="1" />
   </g>
 </svg>
+
+<style is:inline set:html={rowCss}></style>
 
 <style>
   /* ---------- type inside the drawing ----------
@@ -260,46 +295,15 @@ const ticked = [0, 2, 5];
 
      The by-hand ticks are hidden at rest and the cursor with them: both are
      narrative, and a frozen cursor mid-canvas reads as a rendering fault. */
-  /* ⚠️ --x1 and --xg, not literals. This rule and the keyframe below are
-     shared by both compositions, and the two canvases have different
-     coordinates: the wide drawing gathers at x=204 and stacks at x=240 in a
-     640-unit canvas, the phone one at 96 and 112 in a 300-unit canvas.
-
-     These were hardcoded to the wide values until 29 Aug 2026, which put the
-     phone's six rows at x=240 in a 300-wide canvas — 88-wide rows starting 240
-     units in, so they sat almost entirely outside the drawing. With
-     `overflow: visible` on the svg they did not even clip; they flew off the
-     right-hand side and the window appeared to fill with nothing. That is why
-     the hero animation looked broken on a phone. */
-  .bw-row { transform: translate(var(--x1), var(--y1)); }
   .bw-tick { opacity: 0; }
   .bw-cur { opacity: 0; }
 
   @media (prefers-reduced-motion: no-preference) {
     .bw-cur { opacity: 1; }
 
-    /* One keyframe for all nine rows. The custom properties resolve against
-       each element before the transform interpolates, so the drift positions
-       can live on the markup instead of in nine near-identical blocks.
-
-       27.5% is the hold: the rows sit scattered while the cursor works, and
-       only start gathering once the third tick has landed. */
-    @keyframes bw-row {
-      0%, 27.5% {
-        transform: translate(var(--x0), var(--y0)) rotate(var(--r0));
-        opacity: 1; animation-timing-function: cubic-bezier(.5, 0, .2, 1);
-      }
-      45% {
-        transform: translate(var(--xg), var(--ym));
-        opacity: 1; animation-timing-function: cubic-bezier(.4, 0, .2, 1);
-      }
-      65%, 88.75% { transform: translate(var(--x1), var(--y1)); opacity: 1; }
-      93%   { transform: translate(var(--x1), var(--y1)); opacity: 0; }
-      93.6% { transform: translate(var(--x0), var(--y0)) rotate(var(--r0)); opacity: 0; }
-      100%  { transform: translate(var(--x0), var(--y0)) rotate(var(--r0)); opacity: 1; }
-    }
+    /* Duration and iteration only. The names and the movement come from the
+       generated literal keyframes above — see the note in the frontmatter. */
     .bw-row {
-      animation-name: bw-row;
       animation-duration: 8s;
       animation-timing-function: cubic-bezier(.5, 0, .2, 1);
       animation-iteration-count: infinite;
