@@ -18,3 +18,19 @@ preview-*.html
 concepts-*.html
 COPY-V3-REVIEW.md
 public/brand/
+
+# Local reference folder. Design exploration, mockups, wireframes, graphic
+# sources and old copy reviews live here and are deliberately never committed.
+# It absorbed the preview-*.html and concepts-*.html files that used to sit at
+# the repo root, plus nineteen design files that WERE tracked until 1 Sep 2026
+# — the .dc.html canvases, the thread-*.html mockups and the three .jsx graphic
+# sources. Those are still in git history; recover them from there rather than
+# assuming they were never in the repo.
+_docs/
+
+# Python venv for the asset renderers (scripts/build-og.py, build-fonts.py,
+# build-icons.py). Created 1 Sep 2026:
+#   python3 -m venv .venv && .venv/bin/pip install fonttools brotli pillow
+# The npm scripts call bare `python3`, so from a venv run the scripts directly:
+#   .venv/bin/python3 scripts/build-og.py
+.venv/
