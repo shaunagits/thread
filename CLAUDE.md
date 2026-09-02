@@ -436,6 +436,48 @@ itself. That is fine for an illustration in place. It is not fine for anything
 derived from it — a screenshot, a social card, a case study — to present it as
 a real customer.
 
+### `v2/CustomAppGraphic.astro`, the offers card drawing (2 Sep 2026)
+
+The "Custom business app" card's thumbnail slot, which was a Placeholder. The
+owner supplied `_docs/design_handoff_custom_app_graphic/` (a `wa-app.js` web
+component, its README and a demo page): a 1080-unit square with a monitor
+bezel, a sidebar and a ten-second scripted sync loop, sized for a 620px
+column. **It was not ported. It was taken down**, on the owner's decision the
+same day: the card column is ~313px at 1440, and the square scaled into it
+renders its table at 4px.
+
+What shipped is a **static inline SVG, no script**, drawn for the slot at 3:2
+on a 560×380 stage: the settled post-sync frame (t=6.2s, the frame the
+supplied file itself renders under reduced motion), bezel, sidebar, search
+field and status-bar dots cut, phone overlapping the screen. Every surviving
+string, value and colour role is the supplied file's own. `OffersV2` switches
+on `graphic: 'customApp'` in `site-v2.ts` rather than importing a component
+per offer. Stylesheet `is:global`, every selector `cag-` prefixed, same
+pattern as `WindwardAir`.
+
+- **Type is stage-space — landmine 17.** 16-unit table text renders at 9.0px
+  in the card column and 11.4px at the 400px cap the single-column layout
+  gets. Thumbnail sizes, measured with the shipped font's advances and
+  accepted. Every string was checked against its column: the widest,
+  "Contactor 2-pole 30A", ends at 266 of the 286 available.
+- **Two colour roles have no token and were mapped, not added.** The file's
+  green "In stock" tag is the neutral rule/quiet pair; its orange "Below min"
+  KPI is `--color-accent-dark`; the toast dot is `--color-foot-dot`. Raised:
+  adding `--color-ok` and `--color-warn` to `global.css` is the alternative.
+- **Radii kept as drawn**, same standing exception as the hero.
+- **"Cedar Ridge Mechanical" is invented**, same rule as Windward Air. The
+  handoff README calls it "one of the case-study businesses" and names a
+  "Northline Service" site; both are the design tool's boilerplate, not a
+  plan. It also mentions companion files `wa-minis.js` and `cs-graphics.js`
+  that were not supplied. Do not build against their descriptions.
+- **Motion is available if wanted**: the 3 → 2 flip and the toast are a
+  two-keyframe CSS loop. Not built; the owner asked for static.
+- Verified by rendering the SVG with resvg against the shipped Public Sans
+  subsets at 313, 400 and 626px, not in a browser. A tell for anyone reading
+  those subsets: their internal family names say "Public Sans Thin" — an
+  artefact of instancing the variable font — but `usWeightClass` and the
+  advances are 400/500/600 and correct.
+
 ### Still outstanding on the homepage
 
 1. **The lead magnet is deliberately inert.** No checklist PDF exists, and
@@ -449,7 +491,8 @@ a real customer.
    `<iframe>` there pointing at a guessed URL. This is the same blocker that
    keeps the site-wide CTA off "Book a call".
 3. **Assets that do not exist**, all rendering as dashed placeholders: three
-   app screenshots, the offer thumbnail, the checklist mockup, and the owner's
+   app screenshots, ~~the offer thumbnail~~ (built 2 Sep 2026, see
+   `CustomAppGraphic` above), the checklist mockup, and the owner's
    background lines. The About photo uses the real `/shauna.jpg`; the wireframe
    asks for a different kind of shot ("at a desk or on site, not a grey-backdrop
    headshot"), so swap the file and keep the markup.

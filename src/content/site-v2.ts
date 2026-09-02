@@ -103,9 +103,11 @@ export const offers = [
     featured: false,
     title: 'Custom business app',
     body: 'Software built around your business, not the other way around. Fixed price, weekly demos, no surprises.',
-    /* The wireframe draws a mini mockup thumbnail here. There is no asset, so
-       the card renders a labelled placeholder rather than a stock image. */
-    thumb: 'Mini mockup thumbnail (portal / scheduling)',
+    /* The wireframe draws a mini mockup thumbnail here. Since 2 Sep 2026 it
+       is CustomAppGraphic.astro, a static take-down of the owner's supplied
+       drawing; OffersV2 switches on this key rather than importing a
+       component per offer. */
+    graphic: 'customApp',
     price: 'from $6,000',
     action: { label: 'See examples', href: `${P}#proof` },
   },

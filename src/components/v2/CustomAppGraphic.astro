@@ -1,0 +1,238 @@
+---
+/**
+ * The "Custom business app" card's graphic: one app on two devices. A parts
+ * table on a desktop screen and a barcode-scan screen on a phone, shown at the
+ * moment after the two have synced. The tech has logged an igniter on the
+ * phone, and the desktop row reads 2 and Reorder.
+ *
+ * A TAKE-DOWN of _docs/design_handoff_custom_app_graphic/wa-app.js, supplied
+ * by the owner 2 Sep 2026, not a port of it. The supplied drawing is a
+ * 1080-unit square with a monitor bezel, a sidebar and a ten-second scripted
+ * loop, sized for a 620px column. This card's column is ~313px at 1440, so
+ * scaling that drawing into it renders its table at 4px. The owner chose a
+ * static composition drawn for the slot instead, 2 Sep 2026: the settled
+ * post-sync frame (t=6.2s, the same frame the supplied file renders under
+ * prefers-reduced-motion), at 3:2, with the bezel, sidebar, search field and
+ * status-bar dots cut and the phone overlapping the screen so both read at
+ * this size. Every value, colour role and string that survives is the
+ * supplied file's own.
+ *
+ * Inline SVG, no script. The stage is 560x380 and scales with the card, so
+ * type inside is stage-space, not pixels (landmine 17): 16-unit table text
+ * renders at 9.0px in the 313px card column and 11.4px at the 400px cap the
+ * single-column layout gets. Those are thumbnail sizes, measured and
+ * accepted; the card's own copy says what the thing is.
+ *
+ * Colour is tokens throughout. Two roles in the supplied file have no token
+ * in this palette and were mapped rather than added: its green "In stock"
+ * tag is the neutral rule/quiet pair, and its orange "Below min" KPI is
+ * --color-accent-dark. Raised with the owner; adding a success and a warning
+ * token to global.css is the one-line alternative if the drawing wants them.
+ * The toast's dot uses --color-foot-dot, the palette's accent-on-ink step.
+ *
+ * ⚠️ The stylesheet is `is:global` and every selector is `cag-` prefixed,
+ * following WindwardAir.astro. Scoped styles would work here (nothing is
+ * built with innerHTML) but the two drawings on this page should fail the
+ * same way, and a prefixed global rule is the pattern landmine 18 records.
+ *
+ * ⚠️ RAISED, NOT FIXED: corner radii, as in the hero. Kept as drawn.
+ *
+ * ⚠️ "Cedar Ridge Mechanical", its parts and its truck are invented, the same
+ * way Windward Air is. Fine as an illustration on the card; never present it
+ * as a client, a case study or a screenshot.
+ */
+---
+
+<figure class="cag-fig" aria-hidden="true">
+  <svg class="cag" viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false">
+    <!-- desktop screen, cropped at the bottom of the frame -->
+    <g class="cag-desk">
+      <rect class="cag-screen" x="16" y="24" width="420" height="400" rx="10" />
+      <rect class="cag-logo" x="36" y="44" width="16" height="16" rx="4" />
+      <text class="cag-brand" x="60" y="57">Cedar Ridge</text>
+      <text class="cag-title" x="36" y="96">Parts &amp; stock</text>
+
+      <!-- KPI row -->
+      <g class="cag-kpi">
+        <rect x="36" y="112" width="126" height="58" rx="8" />
+        <text class="cag-kpi-l" x="48" y="132">SKUs tracked</text>
+        <text class="cag-kpi-v" x="48" y="158">128</text>
+      </g>
+      <g class="cag-kpi">
+        <rect x="173" y="112" width="126" height="58" rx="8" />
+        <text class="cag-kpi-l" x="185" y="132">Below min</text>
+        <text class="cag-kpi-v cag-kpi-low" x="185" y="158">2</text>
+      </g>
+      <g class="cag-kpi">
+        <rect x="310" y="112" width="126" height="58" rx="8" />
+        <text class="cag-kpi-l" x="322" y="132">On order</text>
+        <text class="cag-kpi-v" x="322" y="158">6</text>
+      </g>
+
+      <!-- table -->
+      <text class="cag-th" x="36" y="196">SKU</text>
+      <text class="cag-th" x="104" y="196">PART</text>
+      <text class="cag-th cag-end" x="296" y="196">QTY</text>
+      <text class="cag-th" x="308" y="196">STATUS</text>
+      <line class="cag-rule" x1="17" y1="204" x2="435" y2="204" />
+
+      <g class="cag-row">
+        <text class="cag-sku" x="36" y="227">CR-1042</text>
+        <text class="cag-part" x="104" y="227">Capacitor 45/5 µF</text>
+        <text class="cag-qty cag-end" x="296" y="227">14</text>
+        <rect class="cag-tag" x="308" y="213" width="58" height="18" rx="5" />
+        <text class="cag-tag-t cag-mid" x="337" y="225.5">In stock</text>
+      </g>
+      <line class="cag-rule" x1="17" y1="240" x2="435" y2="240" />
+
+      <g class="cag-row">
+        <text class="cag-sku" x="36" y="263">CR-2210</text>
+        <text class="cag-part" x="104" y="263">Contactor 2-pole 30A</text>
+        <text class="cag-qty cag-end" x="296" y="263">9</text>
+        <rect class="cag-tag" x="308" y="249" width="58" height="18" rx="5" />
+        <text class="cag-tag-t cag-mid" x="337" y="261.5">In stock</text>
+      </g>
+      <line class="cag-rule" x1="17" y1="276" x2="435" y2="276" />
+
+      <!-- the synced row -->
+      <g class="cag-row cag-on">
+        <rect class="cag-hl" x="17" y="276" width="418" height="36" />
+        <text class="cag-sku" x="36" y="299">CR-3308</text>
+        <text class="cag-part" x="104" y="299">Igniter, hot surface</text>
+        <text class="cag-qty cag-qty-on cag-end" x="296" y="299">2</text>
+        <rect class="cag-tag cag-tag-on" x="308" y="285" width="58" height="18" rx="5" />
+        <text class="cag-tag-t cag-tag-on-t cag-mid" x="337" y="297.5">Reorder</text>
+      </g>
+      <line class="cag-rule" x1="17" y1="312" x2="435" y2="312" />
+
+      <g class="cag-row">
+        <text class="cag-sku" x="36" y="335">CR-4115</text>
+        <text class="cag-part" x="104" y="335">Filter 20×25×1</text>
+        <text class="cag-qty cag-end" x="296" y="335">42</text>
+        <rect class="cag-tag" x="308" y="321" width="58" height="18" rx="5" />
+        <text class="cag-tag-t cag-mid" x="337" y="333.5">In stock</text>
+      </g>
+      <line class="cag-rule" x1="17" y1="348" x2="435" y2="348" />
+    </g>
+
+    <!-- phone, in front, cropped at the bottom of the frame -->
+    <g class="cag-phone">
+      <rect class="cag-body" x="372" y="44" width="172" height="380" rx="24" />
+      <rect class="cag-scr" x="380" y="52" width="156" height="364" rx="18" />
+      <rect class="cag-notch" x="434" y="58" width="48" height="12" rx="6" />
+      <text class="cag-clock" x="392" y="84">9:41</text>
+
+      <text class="cag-ph-h" x="392" y="110">Scan part</text>
+      <text class="cag-truck cag-end" x="524" y="110">Truck 2</text>
+
+      <!-- scanner -->
+      <rect class="cag-scan" x="390" y="120" width="136" height="76" rx="12" />
+      <rect class="cag-reticle" x="404" y="132" width="108" height="52" rx="7" />
+      <g class="cag-bars">
+        <rect x="412" y="145" width="2" height="26" />
+        <rect x="416.5" y="145" width="4" height="26" />
+        <rect x="423" y="145" width="2" height="26" />
+        <rect x="427.5" y="145" width="6" height="26" />
+        <rect x="436" y="145" width="2" height="26" />
+        <rect x="440.5" y="145" width="2" height="26" />
+        <rect x="445" y="145" width="4" height="26" />
+        <rect x="451.5" y="145" width="2" height="26" />
+        <rect x="456" y="145" width="8" height="26" />
+        <rect x="466.5" y="145" width="2" height="26" />
+        <rect x="471" y="145" width="4" height="26" />
+        <rect x="477.5" y="145" width="2" height="26" />
+        <rect x="482" y="145" width="2" height="26" />
+        <rect x="486.5" y="145" width="6" height="26" />
+        <rect x="495" y="145" width="2" height="26" />
+        <rect x="499.5" y="145" width="4" height="26" />
+        <rect x="506" y="145" width="2" height="26" />
+      </g>
+
+      <!-- result -->
+      <rect class="cag-card" x="390" y="204" width="136" height="56" rx="9" />
+      <text class="cag-found" x="400" y="220">FOUND</text>
+      <text class="cag-res" x="400" y="236">Igniter, hot surface</text>
+      <text class="cag-meta" x="400" y="251">CR-3308 · Furnace</text>
+
+      <!-- quantity -->
+      <rect class="cag-qrow" x="390" y="268" width="136" height="32" rx="9" />
+      <text class="cag-meta" x="400" y="289">Used on job</text>
+      <text class="cag-qv cag-end" x="516" y="290">1</text>
+
+      <!-- button, in its pressed state -->
+      <rect class="cag-btn" x="390" y="308" width="136" height="32" rx="9" />
+      <text class="cag-btn-t cag-mid" x="458" y="328.5">Logged</text>
+
+      <!-- toast -->
+      <rect class="cag-toast" x="390" y="346" width="136" height="26" rx="7" />
+      <circle class="cag-dot" cx="402" cy="359" r="3" />
+      <text class="cag-toast-t" x="410" y="362.5">Synced to inventory</text>
+    </g>
+  </svg>
+</figure>
+
+<style is:global>
+  .cag-fig {
+    margin: 16px 0 0;
+    max-width: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--color-paper);
+    border: 1px solid var(--color-rule);
+  }
+  .cag {
+    display: block; width: 100%; height: auto;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    fill: var(--color-ink);
+  }
+  .cag-end { text-anchor: end; }
+  .cag-mid { text-anchor: middle; }
+
+  /* desktop */
+  .cag-screen { fill: var(--color-white); stroke: var(--color-rule); }
+  .cag-logo { fill: var(--color-accent); }
+  .cag-brand { font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+  .cag-title { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+  .cag-kpi rect { fill: var(--color-white); stroke: var(--color-rule); }
+  .cag-kpi-l { font-size: 13px; fill: var(--color-quiet); }
+  .cag-kpi-v { font-size: 24px; font-weight: 600; letter-spacing: -.02em; }
+  .cag-kpi-low { fill: var(--color-accent-dark); }
+  .cag-th {
+    font-size: 12px; font-weight: 600; letter-spacing: .08em;
+    fill: var(--color-hair);
+  }
+  .cag-rule { stroke: var(--color-rule); stroke-width: 1; }
+  .cag-hl { fill: color-mix(in srgb, var(--color-accent) 7%, var(--color-white)); }
+  .cag-sku { font-size: 15px; fill: var(--color-quiet); }
+  .cag-part { font-size: 16px; }
+  .cag-qty { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .cag-qty-on { fill: var(--color-accent); font-weight: 600; }
+  .cag-tag { fill: var(--color-rule); }
+  .cag-tag-t { font-size: 11px; font-weight: 500; fill: var(--color-quiet); }
+  .cag-tag-on { fill: var(--color-accent); }
+  .cag-tag-on-t { fill: var(--color-white); }
+
+  /* phone */
+  .cag-phone { filter: drop-shadow(0 14px 28px color-mix(in srgb, var(--color-ink) 22%, transparent)); }
+  .cag-body { fill: var(--color-ink); }
+  .cag-scr { fill: var(--color-white); }
+  .cag-notch { fill: var(--color-ink); }
+  .cag-clock { font-size: 10px; font-weight: 600; }
+  .cag-ph-h { font-size: 15px; font-weight: 600; letter-spacing: -.02em; }
+  .cag-truck { font-size: 11px; font-weight: 500; fill: var(--color-accent); }
+  .cag-scan { fill: var(--color-ink); }
+  .cag-reticle { fill: none; stroke: var(--color-white); stroke-opacity: .28; stroke-width: 1.5; }
+  .cag-bars rect { fill: var(--color-white); fill-opacity: .9; }
+  .cag-card { fill: var(--color-white); stroke: var(--color-rule); }
+  .cag-found { font-size: 9px; font-weight: 600; letter-spacing: .06em; fill: var(--color-quiet); }
+  .cag-res { font-size: 13px; font-weight: 600; letter-spacing: -.01em; }
+  .cag-meta { font-size: 10px; fill: var(--color-quiet); }
+  .cag-qrow { fill: var(--color-paper); }
+  .cag-qv { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cag-btn { fill: var(--color-accent-dark); }
+  .cag-btn-t { font-size: 12px; font-weight: 500; fill: var(--color-white); }
+  .cag-toast { fill: var(--color-ink); }
+  .cag-dot { fill: var(--color-foot-dot); }
+  .cag-toast-t { font-size: 10px; fill: var(--color-white); }
+</style>

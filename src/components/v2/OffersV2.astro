@@ -1,6 +1,6 @@
 ---
 import { offers } from '../../content/site-v2';
-import Placeholder from './Placeholder.astro';
+import CustomAppGraphic from './CustomAppGraphic.astro';
 
 /**
  * Three offer cards, one featured.
@@ -28,7 +28,7 @@ import Placeholder from './Placeholder.astro';
         </ul>
       )}
 
-      {offer.thumb && <Placeholder label={offer.thumb} minHeight="86px" class="v2ph-offer-thumb" />}
+      {offer.graphic === 'customApp' && <CustomAppGraphic />}
 
       <p class="price">{offer.price}</p>
       <a href={offer.action.href} class="btn offer-cta">{offer.action.label}</a>
@@ -75,14 +75,11 @@ import Placeholder from './Placeholder.astro';
   }
   .pts li::before { content: '·'; position: absolute; left: 5px; color: var(--color-accent); }
 
-  /* ⚠️ :global(), and the class is prefixed so the global name cannot collide.
-     This targets Placeholder.astro's root element, which is rendered by that
-     component and therefore carries ITS scope id, not this file's. A scoped
-     `.v2ph-…` rule compiles to `.v2ph-…[data-astro-cid-THIS]` and silently
-     matches nothing — landmine 18, which has already cost this repo an accent
-     rule and a z-index fix. The tell here was a 240px-capped placeholder
-     rendering 470px wide. */
-  :global(.v2ph-offer-thumb) { margin: 16px 0 0; }
+  /* The Custom business app card's drawing. Its margin lives in its own
+     file (CustomAppGraphic.astro, is:global, `cag-` prefixed), because a
+     scoped rule here cannot reach markup another component renders —
+     landmine 18, which cost this file a 240px-capped placeholder rendering
+     470px wide when the slot was a Placeholder. */
 
   /* margin-top:auto is what levels the price and the button across three
      cards of unequal content length; without it a short card's CTA floats
