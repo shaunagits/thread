@@ -1,0 +1,67 @@
+---
+import { proof } from '../../content/site-v2';
+import Placeholder from './Placeholder.astro';
+
+/**
+ * ⚠️ ONE REAL RESULT, TWO VISIBLE GAPS.
+ *
+ * proof[0] is a real client outcome, confirmed by the owner 1 Sep 2026.
+ * proof[1] and proof[2] are the wireframe's own bracketed placeholders and
+ * render as such — dashed, labelled, obviously unfinished.
+ *
+ * Do not write copy into the placeholders to "balance the row". This site
+ * carried a fabricated case study with fabricated metrics once, and deleting
+ * it is the reason src/content/placeholders.ts does not exist any more. A
+ * visibly empty third card costs nothing; an invented one costs the claim in
+ * the first card too.
+ */
+---
+
+<ol class="proof">
+  {proof.map((item) => (
+    <li class={item.placeholder ? 'pf is-ph' : 'pf'}>
+      <Placeholder label={item.shot} minHeight="132px" />
+      {item.placeholder ? (
+        <>
+          <p class="result ph-result">{item.result}</p>
+          <p class="body">To be written: {item.body}</p>
+        </>
+      ) : (
+        <>
+          <p class="result">{item.result}</p>
+          <p class="body">{item.body}</p>
+        </>
+      )}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .proof {
+    list-style: none; margin: 44px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px;
+  }
+  .pf {
+    background: var(--color-white); border: 1px solid var(--color-ink); padding: 22px;
+  }
+  /* The two unwritten cards are dashed and set back, so the row reads as one
+     result and two gaps rather than three results of varying confidence. */
+  .is-ph { border-style: dashed; border-color: var(--color-hair); background: transparent; }
+
+  .result {
+    margin: 18px 0 6px;
+    font-family: var(--font-display); font-weight: 650; font-size: var(--text-d3);
+    letter-spacing: var(--tracking-tight); line-height: var(--leading-snug);
+    color: var(--color-ink);
+  }
+  .ph-result { color: var(--color-faint); }
+  .body {
+    font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+  .is-ph .body { color: var(--color-faint); }
+
+  @media (max-width: 1000px) {
+    .proof { grid-template-columns: 1fr; gap: 26px; }
+  }
+</style>

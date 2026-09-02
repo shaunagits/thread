@@ -3,18 +3,33 @@
 Marketing site for Thread, a custom software / dashboards / automation practice
 in Honolulu. **Live at https://threadhawaii.com.**
 
-Astro 7 + Tailwind 4, statically prerendered, and **two lines of client
-JavaScript** — one inline `<script>` in `Base.astro` that sets
-`history.scrollRestoration = 'manual'`. Nothing else. See the constraint below
-before adding a third.
+Astro 7 + Tailwind 4, statically prerendered. **Every page carries two lines of
+client JavaScript** — one inline `<script>` in `Base.astro` that sets
+`history.scrollRestoration = 'manual'`.
+
+⚠️ **`/` additionally carries a ~90-line hero animation** since the homepage
+swap on 1 Sep 2026, on the owner's explicit instruction. It is the only script
+on the site that is not those two lines, it is non-interactive, and it is an
+exception granted to one drawing — see the homepage section below before citing
+it as precedent. Everything a visitor *interacts with* is still scriptless: the
+phone menu is a `<details>`, so is the FAQ, and the contact form is a native
+POST.
 
 Pages: `/` · `/privacy` · `/terms` · `/thanks` · `/work` (placeholder, noindex,
 excluded in robots.txt) · `/og` (card generator, noindex, excluded in
-robots.txt). `/systems-map` was deleted and 301s to `/#contact`.
+robots.txt) · `/v1` (**previous homepage**, noindex, excluded in robots.txt).
+`/systems-map` was deleted and 301s to `/#contact`.
 
 ---
 
 ## ⚠️⚠️ READ FIRST — the site was redesigned 29 Aug 2026 (Style C)
+
+> **⚠️ 1 Sep 2026: THIS SECTION NOW DESCRIBES `/v1`, NOT THE HOMEPAGE.** The
+> owner swapped the homepage that day. The palette, type scale, faces, spacing
+> and landmines below are all still current and site-wide. The *page* this
+> section describes — its three sections, its nav labels, its CTA, its phone
+> layout — is at `/v1`, noindex. See "THE HOMEPAGE WAS SWAPPED" further down
+> before treating any of it as a description of `/`.
 
 The owner supplied a complete redesign, `Thread Homepage - Style C.dc.html`, and
 instructed that it be built as drawn. **Most of what the sections below describe
@@ -56,9 +71,62 @@ stands.
 
 | § | id | Heading | Contains |
 |---|---|---|---|
-| 01 | `busywork` | If it happens over and over, it should be automated. | `SignalList`, eight rows |
-| 02 | `build` | Your process. Just without all the work. | `ServiceCards` (five), then `DashboardPlate` |
+| 01 | `busywork` | If it happens over and over, it should be automated. | `RepetitiveGraphic` |
+| 02 | `build` | Your process. Just without all the work. | `ServiceCards` (five) |
 | 03 | `contact` | What could you stop doing manually? | `IntakeForm` and the owner card |
+
+### What is actually in `src/components`, verified 1 Sep 2026
+
+⚠️ **This table is the current state. The dated sections further down are a
+record of decisions, not an inventory, and several of them name components that
+no longer exist** — `SignalList`, `DashboardPlate`, `DashboardWindow`,
+`ServiceList`, `ProcessIndex`, `QuestionList` and the `Fig*` plates are all
+gone. Read those sections for *why* something was done; read this table for
+*what is there*. Recover a deleted component **and** its `site.ts` array
+together from git rather than rewriting either — that rule has not changed.
+
+⚠️ Re-verified after the homepage swap, 1 Sep 2026. **`index.astro` is now the
+wireframe page and `v1.astro` is the old one**, so most of the components below
+render on `/v1` only.
+
+| Component | Imported by | Page |
+|---|---|---|
+| `Header` · `Footer` | every page | all |
+| `Section` | `index.astro`, `v1.astro` | both |
+| `IntakeForm` | `ContactSection.astro`, `v2/ContactV2.astro` | both |
+| `DevGrid` | `Base.astro`, dev only | all |
+| `v2/*` (nine) | `index.astro`, `og.astro` | `/` |
+| `Hero` | `v1.astro` | `/v1` |
+| `HeroGraphic` | `Hero.astro` | `/v1` |
+| `ConnectsStrip` | `v1.astro` | `/v1` |
+| `RepetitiveGraphic` | `v1.astro` — §01 | `/v1` |
+| `ServiceCards` | `v1.astro` — §02 | `/v1` |
+| `ContactSection` | `v1.astro` | `/v1` |
+| `StickyCta` | `v1.astro` | `/v1` |
+| **`BuildGraphic`** | **nothing — see below** | — |
+
+**`BuildGraphic.astro` renders nowhere, deliberately.** The owner's instruction
+on 29 Aug 2026 was to "remove the graphic completely from the process section
+for now", and "for now" is explicit, so the component and its keyframes were
+kept rather than deleted: putting it back is one import and one line in
+`index.astro`. This is the one standing exception to the 18 Aug rule that `src/`
+holds only what renders, and making it permanent either way is the owner's call.
+
+**`ConnectsStrip` is alive and renders in `index.astro`.** Two passages below
+list it as deleted on 18 Aug 2026. It was, and it was restored the same day
+under the owner's "existing graphics" exception; the deletion lines were never
+corrected. It is a full-bleed band on the ink ground between the hero and §01.
+
+`site.ts` currently exports `cta`, `ctaHref`, `loginHref`, `loginLabel`, `nav`,
+`integrations`, `contact`, `signals`, `signalOpen`, `services`, `questions`,
+`guarantee` and `footerColumns`. ⚠️ After the swap, `nav` / `cta` / `ctaHref` /
+`footerColumns` are the **new** homepage's — the old ones live in `site-v1.ts`.
+`integrations`, `signals`, `signalOpen` and `services` are now read only by /v1
+components; `services` no longer feeds the schema either (see the swap section).
+`questions` is copy waiting on a section and `guarantee` is gated behind
+`approved: false` so unapproved wording cannot ship by accident. **`steps` is
+gone from `site.ts`** — a passage below still lists it as a current export, and
+the `steps` that exists now is the new homepage's, in `site-v2.ts`.
 
 **Anchors changed.** `#services`, `#how`, `#ownership` and `#questions` are gone;
 the page runs `#busywork`, `#build`, `#contact`. `#contact` is unchanged and must
@@ -98,12 +166,13 @@ section headings instead. **The labels deliberately no longer describe the
 anchors they point at** (`#busywork`, `#build`) — ids are contracts, and renaming
 one to chase a label is how indexed links break.
 
-**The §02 plate's scroll walk does not dim the drawing**, on the owner's
-instruction. The design file's handler drops everything that is not the active
-callout to 50%, which in a browser makes the dashboard look disabled rather
-than focused for most of the time it is on screen. The spotlight frame and the
-callout focus survive; inactive callouts sit at .55 rather than .22. `dp-dim`
-is kept as an identity keyframe so restoring the original is a one-value edit.
+~~**The §02 plate's scroll walk does not dim the drawing.**~~ **History.**
+`DashboardPlate` and its `dp-` keyframes no longer exist; §02 is the five
+service cards and nothing else. The decision it records still matters as
+precedent if a scroll-walked drawing ever returns: the design file's handler
+dropped everything but the active callout to 50%, which in a browser makes a
+dashboard look disabled rather than focused for most of the time it is on
+screen. Recover the component from git rather than rebuilding it.
 
 **There is a client login** at `https://app.threadhawaii.com`, in `site.ts` as
 `loginHref`/`loginLabel`, rendering in the header, the phone menu and the
@@ -144,25 +213,23 @@ the *current* content; do not read it as the copy of record.
 - **`HeroGraphic` ships a six-row phone composition** in a 300×250 canvas. Six,
   not nine, for legibility; the three-by-hand against six-by-one-click contrast
   is what matters and nobody counts them.
-- **`DashboardWindow.astro`** holds the window drawing so the wide plate and the
-  phone zoom frame the same coordinates. Because that crosses a component
-  boundary, **`DashboardPlate`'s stylesheet is `is:global`** — a scoped rule
-  compiles against its own cid and would match nothing the child renders. Every
-  selector in that file must stay `dp-` prefixed; `.co`/`.cN`/`.s-N` were
-  renamed `dp-co`/`dp-cN`/`dp-spN` for exactly this reason.
-- **The phone plate has three compositions, and `.dp-narrow` is load-bearing.**
-  The zoom renders only inside `@supports (animation-timeline: view())`.
-  Unzoomed it is 1040 units wide in a 350px frame and its labels land near
-  3.7px, so without the scroll walk it is illegible; the narrow redraw needs no
-  motion at all. Do not delete it as dead code.
+- ⚠️ **Two bullets here described `DashboardWindow.astro` and `DashboardPlate`,
+  and both components are gone.** What survives them is the general rule, which
+  is still live and still bites: **a stylesheet whose selectors have to match
+  markup rendered by a child component must be `is:global`, with every selector
+  in it uniquely prefixed.** A scoped rule compiles against its own cid and
+  silently matches nothing. `v2/WindwardAir.astro` is the current instance —
+  its job list is built with `innerHTML`, so those nodes carry no scope
+  attribute at all, and every selector in that file is `wa-` prefixed for
+  exactly this reason. See landmine 18.
 
 ### Still outstanding from this change
 
-1. ~~**`[Owner name]` and the photo are placeholders**~~ — the name is
-   **Shauna**, first name only, confirmed by the owner 29 Aug 2026. The dashed
-   "Blocked" tag is gone. **The photo is still outstanding**: `.owner-photo`
-   renders a dashed circle so the gap stays visible in the layout. Replace it
-   with a real square `<img>`, 64px minimum, and drop the dashed border rule.
+1. ~~**`[Owner name]` and the photo are placeholders**~~ — **both resolved.**
+   The name is **Shauna**, first name only, confirmed by the owner 29 Aug 2026.
+   The photo landed the same day: `.owner-photo` is a real `<img>` at
+   `/shauna.jpg`, shipped at 256px for a 64px slot, cropped square from the
+   shauna.digital About shot. The dashed circle and the "Blocked" tag are gone.
 2. **`--color-faint` `#767C76` fails AA at 3.66:1 on paper**, worse than the
    ocean palette's 4.21. It carries the hero signature line, the form helper and
    the open row 08 text. Raised with the owner before the build and built as
@@ -197,6 +264,228 @@ item 2 above.
 and landmine 24 says the preview pane cannot verify scroll-driven animation
 anyway. The hero loop, the plate's focus walk and every breakpoint need a real
 screen.
+
+---
+
+## ⚠️⚠️⚠️ THE HOMEPAGE WAS SWAPPED 1 Sep 2026 — READ THIS BEFORE THE STYLE C SECTION ABOVE
+
+The owner supplied `_docs/homepage-wireframe.html` and a hero animation, asked
+for the page to be built beside the live one, then promoted it the same day.
+
+**⚠️ EVERYTHING ABOVE THIS SECTION DESCRIBES `/v1`, NOT `/`.** The Style C
+section, its phone layout, its three-section structure, its nav labels and its
+CTA are all a description of the page that is now at `/v1`. It is still
+accurate about *that* page. It is no longer a description of the homepage. Read
+it as history, the same way the ocean and earth palette sections below it are
+read.
+
+What did **not** change with the swap, and is still current everywhere:
+the graphite & signal palette, the ten-value type scale, the three faces, the
+spacing scale, `index.html` as the layout reference, the button treatments, and
+every landmine.
+
+**`/v1` is the previous homepage, kept live because the owner asked for it to
+stay available for reference.** Nothing links to it. It is gated three ways,
+and all three go together if it is ever deleted outright:
+
+1. `noindex` — the prop on `<Base>` in `src/pages/v1.astro`
+2. `Disallow: /v1` in `src/pages/robots.txt.ts`
+3. the sitemap `filter` in `astro.config.mjs`
+
+Two near-identical homepages competing in the index is the duplicate-content
+problem those exist to avoid. Same three-part gate `/work` uses.
+
+⚠️ **Do not "fix" `/v1`.** It is a record. If something on it looks stale
+against `/`, that is the point of it.
+
+### Where the content lives now
+
+| File | Holds | Read by |
+|---|---|---|
+| `site.ts` | `nav`, `cta`, `ctaHref`, `footerColumns` — **the new homepage's**, because `Header`, `Footer` and /work render them on every page with no props. Plus `contact`, `loginHref`/`loginLabel`, and the arrays only /v1 uses. | everything |
+| `site-v2.ts` | the homepage's own copy: `hero`, `problem`, `steps`, `offers`, `proof`, `about`, `leadMagnet`, `faq`, `contactV2`, `title`, `description` | `/`, `og.astro` |
+| `site-v1.ts` | the retired page's `nav`, `cta`, `ctaHref`, `footerColumns` | `/v1`, `Hero.astro`, `StickyCta.astro` |
+
+⚠️ **`Hero.astro` and `StickyCta.astro` import from `site-v1.ts`.** Both are used
+by `/v1` and nothing else, and pointing them at `site.ts` would put the new
+label on the old page and aim its button at a section that is not on it. If
+either is ever reused elsewhere it needs a prop, not a different import.
+
+⚠️ **The names `site-v2.ts`, `components/v2/` and the `*V2` suffix were kept
+deliberately.** They now read as "homepage version 2", against `/v1`, which is
+coherent. Renaming them would touch a dozen files for no reader benefit — the
+same reasoning this document records for `--color-ochre` and for
+`Fig2CurrentState.astro`.
+
+### What the swap touched outside the two pages
+
+- **`Header` and `Footer` props are now used in the other direction.** They were
+  added so `/v2` could differ from `/`; now `/` uses the bare defaults and
+  `/v1` passes props. Every default is still the `site.ts` value.
+- **`makesOffer` in `Base.astro` maps over `offers`**, not `services`. The five
+  build types were §02 of the old homepage and now appear on no indexed page,
+  so the schema would have been describing `/v1`. ⚠️ Still no
+  `priceSpecification`, and that is now a *choice*: the three prices became
+  real and render on the page, so they could be stated. Deciding that deserves
+  its own commit.
+- **`og.astro` reads `hero.h1` from `site-v2.ts`** instead of duplicating the
+  headline by hand. That closes a gap this document used to warn about. ⚠️
+  `scripts/build-og.py` still carries the string separately — it is a Python
+  renderer and cannot import a `.ts` module — so its `HEADLINE` constant
+  changes in the same commit. The card's headline also came down from 74px/17ch
+  to 56px/21ch, because the new headline is 63 characters against the old 31 and
+  overran the 630px card; measured at 3 lines, bottom at 435 of 630.
+- **The sticky bar's `body` padding moved from `global.css` into
+  `StickyCta.astro`** as an `is:global` block. It was a global rule for a bar
+  rendered by one page, so `/privacy`, `/terms`, `/thanks` and `/work` had been
+  carrying 72px of dead space under the footer on a phone since it was added,
+  and the swap would have added `/` to that list. Astro only emits a
+  component's CSS on pages that import it, so the padding now cannot exist
+  without the bar. Verified in the build: present in `v1.css` only.
+- **`#contact` is unchanged**, which is what makes the swap safe for
+  `vercel.json`'s `/systems-map` 301 and every indexed link into the old page's
+  contact anchor. The retired `#busywork` and `#build` now land at the top of
+  the new page, which is the harmless failure mode for a fragment.
+
+### What the homepage is
+
+Nine sections, in the wireframe's own build order: hero · problem · how it
+works · offers · proof · about · checklist · FAQ · contact. Against `/`'s three.
+
+It **reuses the shared shell** rather than reimplementing it — `Base`, `Header`,
+`Footer`, `Section` and `IntakeForm` are the same components, so the palette,
+the type scale, the section rhythm and the working contact endpoint come for
+free and cannot drift from the rest of the site. Its own content is in
+`src/content/site-v2.ts` and its own components in `src/components/v2/`.
+
+**`Header` and `Footer` gained optional props** (`navItems` / `cta` / `ctaHref`
+/ `home`, and `columns`) so a second page can run a different nav. **Every default is
+the `site.ts` value**, so `<Header />` and `<Footer />` with no props render
+exactly what they rendered before. Do not change a default to suit one page —
+pass a prop from that page. The standing rule still holds on both pages: the
+header and the footer point at the same anchors and label them identically.
+
+### ⚠️ Three of this repo's standing rules are relaxed on the homepage
+
+Each was raised with the owner before building and each was confirmed on
+1 Sep 2026. None of them is a general licence — they are three specific,
+owner-confirmed exceptions, and each is narrower than it looks.
+
+1. **Prices ship.** `from $1,500`, `from $6,000`, `from $800/mo`, the two
+   retainer tiers and the `$10 to $50` hosting range are the owner's own
+   figures from the wireframe, confirmed real. **The no-invented-prices rule is
+   otherwise untouched**: a price that is not in the wireframe does not go in
+   `site-v2.ts`, and STRATEGY.md's older "from $12,000" / "from $25,000" are
+   stale, not a source.
+2. **One case-study result ships.** "6 hrs/week — HVAC company, Oahu" is real.
+   Case studies two and three are the wireframe's own bracketed placeholders
+   and render as visible dashed gaps. **Do not write copy into them to balance
+   the row.** An invented third card costs the credibility of the first one,
+   which is exactly how `src/content/placeholders.ts` came to be deleted.
+3. **Client JavaScript.** ~90 lines, in `v2/WindwardAir.astro`. Granted because
+   the animation cannot be expressed in CSS — the cursor path is multi-stop
+   eased interpolation between seven waypoints and the list reflows against it
+   mid-loop. It stays non-interactive: nothing a visitor clicks depends on it,
+   and the page is complete without it. **The scriptless rule still governs
+   everything a visitor interacts with**, on this page too — the FAQ is a
+   native `<details>` and the contact form is still a native POST.
+
+### `v2/WindwardAir.astro`, the hero animation
+
+Ported from `_docs/windward-air-animation.html`. **The motion, the timing
+constants and the easing are the supplied file's own and were not re-derived.**
+What changed on the way in:
+
+- Fourteen hardcoded hexes became tokens (the file's only remaining `#2E4FBF`
+  is inside a comment). Its accent was `#2E4FBF`, which is `--color-accent`
+  exactly, so it was already drawn in this palette.
+- Instrument Sans, loaded from Google Fonts, became `var(--font-sans)`. The
+  site self-hosts its faces, and a third-party font request in the hero would
+  block the first paint of the largest element on the page.
+- **The stylesheet is `is:global` and every selector is `wa-` prefixed.** The
+  job list is built with `innerHTML`, so those nodes never receive a scope
+  attribute — landmine 18, and the same fix the retired `DashboardPlate` used.
+- `prefers-reduced-motion` renders one settled frame at t=0.5 and stops. The
+  loop pauses on `visibilitychange`, so a background tab costs nothing.
+
+**Type inside it is stage-space, not pixels — landmine 17.** The stage is a
+fixed 1080px square scaled to its container, so a 27px label renders at 14.0px
+in the hero's 560px cap and 8.4px in a 335px phone column. Those sizes are the
+design's own and are
+exempt from the type scale for the same reason the SVG drawings are.
+
+⚠️ **The confirmation toast was rebuilt 1 Sep 2026** because the owner reported
+it was easy to miss. It is the payoff of the whole loop and it was 20px in
+stage space — under 10px rendered — in ink, at the very bottom edge, arriving
+after the eye had moved up to the card. It is now card-title size, accent
+filled, ringed, and it pops on entry. **Its `bottom` is constrained**: with the
+new job in place the list runs to y≈914 of the 1080 stage, so raising it much
+further, or growing its padding, puts it on top of the last job row. There is
+~50 units of clearance at the current size.
+
+⚠️ **Raised, not fixed:** the frame and cards carry 16–18px corner radii, and
+every other bounded object on this site is square — `.btn`, `.card`, the form
+fields and the panels all set `border-radius: 0` explicitly. Built as supplied,
+per the standing rule about design that looks like a mistake. One line to
+change if the owner wants it to match.
+
+⚠️ **"Windward Air", its five customers and its three technicians are
+invented.** The drawing carried a caption saying so; **the caption was removed
+on the owner's instruction 1 Sep 2026**, so the drawing no longer discloses it
+itself. That is fine for an illustration in place. It is not fine for anything
+derived from it — a screenshot, a social card, a case study — to present it as
+a real customer.
+
+### Still outstanding on the homepage
+
+1. **The lead magnet is deliberately inert.** No checklist PDF exists, and
+   `api/contact.ts` is a six-field message form, not a list endpoint — posting
+   one address at it would produce a malformed notification. The field and
+   button render disabled with a note saying why. Wiring it means deciding
+   where addresses go, then editing the form and the endpoint together
+   (landmine 14).
+2. **No scheduling link, still.** The wireframe draws a Calendly/Cal.com embed
+   in the contact section; it renders as a labelled gap. Do not put an
+   `<iframe>` there pointing at a guessed URL. This is the same blocker that
+   keeps the site-wide CTA off "Book a call".
+3. **Assets that do not exist**, all rendering as dashed placeholders: three
+   app screenshots, the offer thumbnail, the checklist mockup, and the owner's
+   background lines. The About photo uses the real `/shauna.jpg`; the wireframe
+   asks for a different kind of shot ("at a desk or on site, not a grey-backdrop
+   headshot"), so swap the file and keep the markup.
+4. **Nothing on this page has been seen on a phone**, and the browser pane in
+   the build environment could not paint it reliably — landmine 24. Geometry
+   was verified numerically at 1440, 1280 and 375: nine sections present, no
+   horizontal overflow at any width, `body` padding correctly 0 now the sticky
+   bar is gone, and the animation confirmed running at 60fps on its real
+   timeline.
+5. ~~**`/og.png` is stale.**~~ **Rebuilt 1 Sep 2026** with the new headline,
+   3 lines at 56px. A `.venv` now exists for the asset renderers (gitignored):
+
+   ```
+   python3 -m venv .venv && .venv/bin/pip install fonttools brotli pillow
+   .venv/bin/python3 scripts/build-og.py
+   ```
+
+   ⚠️ Call the script directly, not `npm run og:build` — the npm script calls
+   bare `python3` and the packages are in the venv, not on the system
+   interpreter.
+
+   Two things were corrected in the renderer while doing it, both because /og
+   is the design of record and this file is the renderer that catches up:
+   **the headline weight was 650 and the page has always said 500**, so every
+   card this script has ever produced was heavier than the design; and the
+   wrap is now measured at 21ch off the display face's "0" advance rather than
+   at the full column, so the script and the page break lines identically at
+   any size.
+
+6. ⚠️ **The card's meta line still reads `CONNECT · BUILD · ONGOING`.** Those
+   are the v3 copy's three engagements, retired 19 Aug 2026, and they now
+   appear on no page at all. The homepage sells Automation quick win / Custom
+   business app / Fractional tech partner. Raised, not changed: it is a copy
+   decision and the three real names are long for the slot. It lives in two
+   places that must change together — `META` in `scripts/build-og.py` and the
+   `.meta` span in `src/pages/og.astro` — and needs `og:build` re-run after.
 
 ---
 

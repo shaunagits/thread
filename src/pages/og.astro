@@ -11,6 +11,7 @@
  * self-hosted Newsreader and JetBrains Mono, including the ʻokina.
  */
 import '../styles/global.css';
+import { hero } from '../content/site-v2';
 ---
 
 <!doctype html>
@@ -28,12 +29,20 @@ import '../styles/global.css';
 
       <div class="middle">
         <div class="eyebrow">Custom software and automation · Honolulu, Hawaiʻi</div>
-        {/* Mirrors the hero headline. This card is the link preview everywhere
-            the site gets shared, so a stale line here outlives the page edit in
-            every already-scraped cache. Kept in sync by hand, deliberately: the
-            hero's copy lives in Hero.astro's markup, not in a shared constant,
-            and hoisting it would be a bigger change than this file deserves. */}
-        <h1>Put your busywork on autopilot.</h1>
+        {/* ⚠️ Mirrors the hero headline, and no longer by hand. It is read
+            from site-v2.ts, which is where the homepage's hero copy lives
+            since the swap on 1 Sep 2026. That closes the gap this comment used
+            to describe: the card is the link preview everywhere the site gets
+            shared, so a stale line here outlives the page edit in every
+            already-scraped cache, and the old arrangement relied on somebody
+            remembering. The previous homepage kept its copy in Hero.astro's
+            markup, which is why it could not be imported.
+
+            ⚠️ scripts/build-og.py still carries the string separately — it is
+            a Python renderer and cannot import a .ts module. Change its
+            HEADLINE constant in the same commit, and re-run `npm run og:build`
+            or /og.png stays on the old headline. */}
+        <h1>{hero.h1}</h1>
       </div>
 
       <div class="bottom">
@@ -69,10 +78,14 @@ import '../styles/global.css';
 
   .middle { padding-bottom: 8px; }
   .eyebrow { font-size: 15px; letter-spacing: .16em; margin-bottom: 26px; }
+  /* 56px, down from 74, and 21ch rather than 17. The headline went from 31
+     characters to 63 with the homepage swap on 1 Sep 2026; at the old size it
+     set as four lines and overran the 630px card. Measured in a browser at
+     these values rather than guessed. */
   .middle h1 {
-    font-family: var(--font-display); font-weight: 500; font-size: 74px;
-    line-height: 1.1; letter-spacing: -.015em;
-    color: var(--color-ink); max-width: 17ch;
+    font-family: var(--font-display); font-weight: 500; font-size: 56px;
+    line-height: 1.12; letter-spacing: -.015em;
+    color: var(--color-ink); max-width: 21ch;
   }
 
   .bottom {

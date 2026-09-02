@@ -31,7 +31,22 @@
  * mismatch the 19 Aug copy review raised. Change both this and `ctaHref` in
  * the same commit when the scheduler exists.
  */
-export const cta = 'Start the conversation';
+/**
+ * ⚠️ REPLACED 1 Sep 2026, when the owner swapped the homepage. It was
+ * 'Start the conversation' → '/#contact' for the Style C page, and that pair
+ * still ships, on /v1, out of site-v1.ts. Everything above this comment is the
+ * history of THAT label; it is kept because the reasoning still applies.
+ *
+ * The label is the wireframe's own. The href is unchanged in shape: the new
+ * homepage's contact section is still `#contact`, which is what makes this
+ * swap safe for vercel.json's /systems-map 301 and for every already-indexed
+ * link into the old page's contact anchor.
+ *
+ * It is still not "Book a call": there is still no scheduling link, and the
+ * button still opens a form. Change both this and `ctaHref` in the same commit
+ * when a scheduler exists.
+ */
+export const cta = "Tell me what's slowing you down";
 export const ctaHref = '/#contact';
 
 /**
@@ -74,9 +89,25 @@ export const loginLabel = 'Log in';
  * header and the footer point at the same three anchors and must label them
  * identically. See footerColumns at the foot of this file.
  */
+/**
+ * ⚠️ REPLACED 1 Sep 2026 with the homepage swap. The three labels this comment
+ * block describes (The problem / The solution / Contact → #busywork / #build /
+ * #contact) now live in site-v1.ts and render on /v1. The reasoning above is
+ * still the reasoning: a nav is the one place where being unsurprising beats
+ * being distinctive.
+ *
+ * These four are the wireframe's own and, unlike the set they replace, they DO
+ * describe the anchors they point at. That is a happy accident of the new
+ * page's structure, not a new rule — the ids are still the contract.
+ *
+ * "Work" points at the new homepage's proof section, not at /work. The
+ * wireframe puts the proof inline, so the nav should reach it rather than send
+ * a visitor to the holding page. /work still exists, still noindex.
+ */
 export const nav = [
-  { label: 'The problem', href: '/#busywork' },
-  { label: 'The solution', href: '/#build' },
+  { label: 'Offers', href: '/#offers' },
+  { label: 'Work', href: '/#proof' },
+  { label: 'About', href: '/#about' },
   { label: 'Contact', href: '/#contact' },
 
   /* Ready to go. The /work route, its layout and its footer entry all exist;
@@ -384,11 +415,11 @@ export const footerColumns = [
     /* Mirrors `nav` above exactly. Two navigations aimed at the same three
        anchors must not label them differently — relabelled and re-anchored
        together, 29 Aug 2026. */
-    links: [
-      { label: 'The problem', href: '/#busywork' },
-      { label: 'The solution', href: '/#build' },
-      { label: 'Contact', href: '/#contact' },
-    ],
+    /* ⚠️ Mirrors `nav` above exactly, and must keep doing so — relabelled and
+       re-anchored together with the homepage swap, 1 Sep 2026. Written as a
+       reference rather than a copy so the two cannot drift again; they were
+       two hand-maintained lists until this change. */
+    links: nav,
   },
   /* A WhatsApp "Message me" link was considered and dropped 17 Aug 2026:
      publishing a personal mobile in a footer gets it scraped within days, and

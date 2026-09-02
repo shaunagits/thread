@@ -567,10 +567,17 @@ section.on-wash { background: var(--color-wash); }
   .btn { width: 100%; min-height: 52px; }
   .btn-row { margin-top: 26px; }
 
-  /* ⚠️ Room for the pinned CTA bar, which is `position: fixed` and would
-     otherwise sit on top of the last of the footer forever. The number is the
-     bar's own height: 12 + 50 + 10 of padding and button, plus whatever the
-     device reserves for its home indicator. If StickyCta's padding or button
-     height changes, this changes with it. */
-  body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+  /* ⚠️ The pinned CTA bar's body padding USED TO LIVE HERE and moved into
+     StickyCta.astro on 1 Sep 2026, as an `is:global` block in the component
+     that draws the bar.
+
+     Why it moved: the rule was global, but the bar is rendered by exactly one
+     page. That was already wrong — /privacy, /terms, /thanks and /work have
+     never drawn the bar and have carried 72px of dead space under the footer
+     on a phone ever since it was added. The homepage swap would have added `/`
+     to that list, since the new homepage draws no sticky bar either.
+
+     Keeping the two facts in one file is the actual fix: the padding now
+     cannot exist without the bar, or the bar without the padding. Do not
+     reintroduce a body rule here for it. */
 }

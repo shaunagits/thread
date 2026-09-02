@@ -1,0 +1,51 @@
+---
+/**
+ * A visible gap. Renders where the wireframe draws media that does not exist
+ * yet — the hero video poster, the app screenshots, the owner photo, the
+ * checklist mockup, the calendar embed.
+ *
+ * The point is that it looks unfinished. This repo's history is a fabricated
+ * case study and a set of plausible placeholder prices that shipped, and the
+ * fix both times was to leave an obvious hole rather than something that
+ * passes at a glance. ContactSection.astro used exactly this treatment — a
+ * dashed circle — to keep the owner photo visible as a gap in the layout.
+ *
+ * `label` says what belongs here. `note` says anything a person needs in order
+ * to supply it.
+ */
+interface Props {
+  label: string;
+  note?: string;
+  ratio?: string;
+  minHeight?: string;
+  class?: string;
+}
+const { label, note, ratio, minHeight, class: klass } = Astro.props;
+const style = [
+  ratio && `aspect-ratio:${ratio}`,
+  minHeight && `min-height:${minHeight}`,
+].filter(Boolean).join(';') || undefined;
+---
+
+<div class={['ph', klass].filter(Boolean).join(' ')} style={style}>
+  <span class="ph-label">{label}</span>
+  {note && <span class="ph-note">{note}</span>}
+</div>
+
+<style>
+  .ph {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; text-align: center; padding: 18px;
+    border: 1px dashed var(--color-hair);
+    background: color-mix(in srgb, var(--color-hair) 8%, transparent);
+    color: var(--color-quiet);
+  }
+  .ph-label {
+    font-family: var(--font-mono); font-size: var(--text-nav);
+    letter-spacing: var(--tracking-mono); color: var(--color-body);
+  }
+  .ph-note {
+    font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-faint); max-width: 34ch;
+  }
+</style>

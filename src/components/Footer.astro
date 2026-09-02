@@ -1,5 +1,18 @@
 ---
-import { footerColumns } from '../content/site';
+import { footerColumns as siteFooterColumns } from '../content/site';
+
+/* `columns` added 1 Sep 2026 for the alternate homepage at /v2, which points
+   at different anchors. The default is the site.ts value, so `<Footer />` with
+   no props is byte-for-byte what it was before.
+
+   The standing rule this prop must not be used to break: on any given page the
+   header and the footer point at the same anchors and label them identically.
+   A page that passes `navItems` to Header passes the matching `columns` here. */
+interface Props {
+  columns?: { heading: string; links: { label: string; href: string }[] }[];
+}
+
+const { columns = siteFooterColumns } = Astro.props;
 
 // Built at compile time so the year never goes stale.
 const year = new Date().getFullYear();
@@ -22,7 +35,7 @@ const year = new Date().getFullYear();
           Custom software and automation for Hawaiʻi businesses.
         </p>
       </div>
-      {footerColumns.map((column) => (
+      {columns.map((column) => (
         <div>
           {/* h2, not the original's h5: h5 skipped three levels below the
               page's h2 sections. Renders identically. */}

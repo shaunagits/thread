@@ -1,16 +1,45 @@
 ---
-import { nav, cta, ctaHref, loginHref, loginLabel } from '../content/site';
+import {
+  nav as siteNav,
+  cta as siteCta,
+  ctaHref as siteCtaHref,
+  loginHref,
+  loginLabel,
+} from '../content/site';
 
 /* The label moved into site.ts on 29 Aug 2026. It was a constant here, which
    worked while only this file rendered it twice, but the hero, §01, the footer
    and /thanks all render it too, and CLAUDE.md's standing rule is that they may
    never disagree. One export, six renders. See the note over `cta` in site.ts
-   for why it is not "Book a call". */
+   for why it is not "Book a call".
+
+   ⚠️ The three props below were added 1 Sep 2026 for the alternate homepage at
+   /v2, which runs a different nav (Offers / Work / About / Contact) and a
+   different CTA. EVERY DEFAULT IS THE site.ts VALUE, so `<Header />` with no
+   props renders exactly what it rendered before — that is the point, and it is
+   what keeps the live homepage untouched by a second page's needs. Do not
+   change a default here to suit one page; pass a prop from that page instead.
+
+   `home` exists because the mark links to the top of the page it is on. On /
+   that is `/#top`; on /v2 a link to `/#top` would leave the page. */
+interface Props {
+  navItems?: { label: string; href: string }[];
+  cta?: string;
+  ctaHref?: string;
+  home?: string;
+}
+
+const {
+  navItems = siteNav,
+  cta = siteCta,
+  ctaHref = siteCtaHref,
+  home = '/#top',
+} = Astro.props;
 ---
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a href="/#top" class="mark" aria-label="Thread home">
+    <a href={home} class="mark" aria-label="Thread home">
       <svg viewBox="0 0 150 150" aria-hidden="true" focusable="false">
         <path class="thread-t" pathLength="1" d="M78 19H121C136 19 145 30 145 42.5C145 55 136 66 121 66H115C98 66 87 58 76 49C65 40 53 19 41 19H29C18 19 9 30 9 42.5C9 55 18 66 29 66H48C79 66 96 79 96 95V114C96 127 86 135 75 135C64 135 55 127 55 114V82" />
       </svg>
@@ -21,7 +50,7 @@ import { nav, cta, ctaHref, loginHref, loginLabel } from '../content/site';
     </a>
 
     <nav class="nav-links" aria-label="Primary">
-      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
       {/* Quiet text link, never a second button. It sits after the section
           links and before the CTA, which is where a returning client looks
           for it and where it is least likely to be mistaken for the ask. */}
@@ -54,7 +83,7 @@ import { nav, cta, ctaHref, loginHref, loginLabel } from '../content/site';
       </summary>
       <div class="menu-panel">
         <nav aria-label="Primary, phone">
-          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+          {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
           <a href={loginHref}>{loginLabel}</a>
         </nav>
         <a href={ctaHref} class="btn menu-cta">{cta}</a>

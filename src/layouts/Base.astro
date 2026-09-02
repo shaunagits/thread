@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
 
-import { contact, services } from '../content/site';
+import { contact } from '../content/site';
+import { offers } from '../content/site-v2';
 import DevGrid from '../components/DevGrid.astro';
 
 interface Props {
@@ -95,24 +96,34 @@ const businessLd = {
     'Applied AI for small business',
   ],
   /**
-   * Generated from the `services` array in site.ts since 19 Aug 2026, so the
-   * schema always states the same four services the page shows and cannot
-   * drift when they change. It previously carried the v3 copy's three
-   * engagements (Connect / Build / Ongoing), which no longer appeared
-   * anywhere on the page. The free systems map came out 14 Aug 2026 when the
-   * owner killed the offer — this block is indexed, so it outlives page edits
-   * and has to change in the same commit as the page.
+   * Generated from the array the homepage actually renders, so the schema
+   * cannot state something no page shows. That invariant is the point of
+   * generating it, and it is why this changed twice:
    *
-   * No `priceSpecification` on any of these. The prices are still
-   * `[CONFIRM]` and a structured-data price is the most quotable kind of
-   * invented number there is.
+   *  - It carried the v3 copy's three engagements (Connect / Build / Ongoing)
+   *    until 19 Aug 2026, by which point they appeared nowhere.
+   *  - It mapped over `services` in site.ts from then until 1 Sep 2026. Those
+   *    five build types were §02 of the old homepage, which is now /v1 and
+   *    noindex, so the schema would again have been describing a page no
+   *    visitor lands on.
+   *
+   * It now maps over `offers` in site-v2.ts — the three the homepage sells.
+   * This block is indexed, so it outlives page edits and has to change in the
+   * same commit as the page.
+   *
+   * ⚠️ Still no `priceSpecification`, and that is now a choice rather than a
+   * constraint. The three prices became real on 1 Sep 2026 and render on the
+   * page, so they COULD be stated here. They are not, because a structured
+   * price is the most quotable number a site emits and it is worth deciding
+   * that deliberately rather than as a side effect of this swap. Adding them
+   * is a one-block change if the owner wants it.
    */
-  makesOffer: services.map((service) => ({
+  makesOffer: offers.map((offer) => ({
     '@type': 'Offer',
     itemOffered: {
       '@type': 'Service',
-      name: service.title,
-      description: service.body,
+      name: offer.title,
+      description: offer.body,
     },
   })),
 };

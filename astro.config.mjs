@@ -32,10 +32,16 @@ export default defineConfig({
       // /work is a noindex placeholder and robots.txt disallows it — listing it
       // here would advertise a URL crawlers are told not to fetch. Drop this
       // clause in the same commit that removes the noindex and the Disallow.
+      //
+      // /v1 is the PREVIOUS homepage, kept live for reference after the swap
+      // on 1 Sep 2026. Same three-part gate as /work: the noindex prop in
+      // v1.astro, the robots.txt Disallow, and this line. All three go
+      // together if the page is ever deleted.
       filter: (page) =>
         !page.includes('/og') &&
         !page.includes('/thanks') &&
-        !page.includes('/work'),
+        !page.includes('/work') &&
+        !page.includes('/v1'),
     }),
   ],
 

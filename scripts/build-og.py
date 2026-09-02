@@ -15,11 +15,22 @@ same shipped font files, so the card can be rebuilt anywhere Python runs. If
 the two ever disagree, /og is the design and this is the renderer that has to
 catch up.
 
-⚠️ The headline is duplicated here, in src/pages/og.astro and in
-Hero.astro. All three must agree — a stale card outlives a page edit in every
-already-scraped cache.
+⚠️ The headline is duplicated here and nowhere else. src/pages/og.astro reads
+`hero.h1` from src/content/site-v2.ts directly since the homepage swap on
+1 Sep 2026; this file cannot, because it is Python and that is a .ts module. So
+the string below and site-v2.ts must agree, and a stale card outlives a page
+edit in every already-scraped cache.
+
+(Hero.astro is no longer one of the copies. It is the /v1 hero now and carries
+the previous headline on purpose.)
 
 Requirements: pillow, fonttools, brotli.
+
+    python3 -m venv .venv && .venv/bin/pip install fonttools brotli pillow
+    .venv/bin/python3 scripts/build-og.py
+
+⚠️ `npm run og:build` calls bare `python3`, so it only works if those three are
+on the system interpreter. From a venv, call the script directly as above.
 """
 
 from __future__ import annotations
@@ -39,12 +50,19 @@ OUT = ROOT / "public" / "og.png"
 PAPER, INK, FAINT, RULE = "#EDEEE9", "#171A18", "#767C76", "#D9DBD4"
 ACCENT, ACCENT_DARK = "#2E4FBF", "#253F99"
 
-HEADLINE = "Put your busywork on autopilot."
+# ⚠️ Must match `hero.h1` in src/content/site-v2.ts, which src/pages/og.astro
+# reads directly. This renderer cannot import a .ts module, so the string is
+# duplicated here and the two change in the same commit. Swapped with the
+# homepage on 1 Sep 2026.
+HEADLINE = "Custom software for small businesses tired of doing it by hand."
 EYEBROW = "Custom software and automation · Honolulu, Hawaiʻi"
 META = "CONNECT · BUILD · ONGOING"
 
 W, H = 1200, 630
 PAD_X, PAD_TOP, PAD_BOTTOM = 72, 62, 56
+
+# Headline size, mirroring `.middle h1` in src/pages/og.astro. See main().
+DISPLAY_PX = 56
 
 
 def load(name: str, size: int, weight: int | None = None) -> ImageFont.FreeTypeFont:
@@ -87,7 +105,17 @@ def main() -> int:
     d = ImageDraw.Draw(img)
 
     wordmark = load("petrona-latin-var.woff2", 40, 600)
-    display = load("petrona-latin-var.woff2", 74, 650)
+    # ⚠️ 56px / weight 500, matching `.middle h1` in src/pages/og.astro.
+    # /og is the design of record and this file is the renderer that catches up
+    # to it — both values changed on 1 Sep 2026 and for different reasons:
+    #
+    #   size: the headline went from 31 characters to 63 with the homepage
+    #         swap, and at 74px it no longer fits the card.
+    #   weight: this was 650 and the page has always said 500. The global h1
+    #         rule is 650 and og.astro overrides it; the renderer was reading
+    #         the global. The card has therefore shipped a heavier headline
+    #         than the design since this script was written.
+    display = load("petrona-latin-var.woff2", DISPLAY_PX, 500)
     sans = load("public-sans-latin-400.woff2", 15)
     mono = load("jetbrains-mono-latin-400.woff2", 14)
 
@@ -111,9 +139,16 @@ def main() -> int:
     d.ellipse([mx + 73, my + 7, mx + 83, my + 17], fill=ACCENT)
     d.line([mx + 86, my + 12, mx + 118, my + 12], fill=ACCENT_DARK, width=2)
 
-    # eyebrow and headline, sitting on the bottom bar
-    lines = wrap(d, HEADLINE, display, W - PAD_X * 2)
-    line_h = int(74 * 1.1)
+    # eyebrow and headline, sitting on the bottom bar.
+    #
+    # ⚠️ Wrapped at 21ch, not at the full column. og.astro caps the headline
+    # with `max-width: 21ch`, and `ch` is the advance of "0" in the display
+    # face — so measure that glyph rather than hardcoding a pixel width, and
+    # the two wrap identically at any size. Wrapping at the full 1056px column
+    # would give the same line count here but visibly longer lines.
+    max_w = min(d.textlength("0", font=display) * 21, W - PAD_X * 2)
+    lines = wrap(d, HEADLINE, display, max_w)
+    line_h = int(DISPLAY_PX * 1.12)
     block_h = len(lines) * line_h
     top = bottom_y - 60 - block_h
     tracked(d, (PAD_X, top - 40), EYEBROW, sans, FAINT, 2.4)
@@ -123,6 +158,7 @@ def main() -> int:
     img.save(OUT, optimize=True)
     print(f"  → og.png  {W}x{H}  {OUT.stat().st_size / 1024:.1f} KB")
     print(f"    headline: {HEADLINE!r}")
+    print(f"    {DISPLAY_PX}px, {len(lines)} lines, block top {top}px of {H}")
     return 0
 
 

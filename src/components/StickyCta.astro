@@ -1,5 +1,11 @@
 ---
-import { cta, ctaHref } from '../content/site';
+/* ⚠️ site-v1, not site. This component is used by /v1 and nothing else, and
+   /v1 is the retired homepage kept live for reference since the swap on
+   1 Sep 2026. site.ts's `cta`/`ctaHref` now carry the NEW homepage's label and
+   anchor; importing them here would put the new label on the old page and
+   point its button at a section that is not on it. If this component is ever
+   reused on another page it needs a prop, not this import. */
+import { cta, ctaHref } from '../content/site-v1';
 
 /**
  * The pinned CTA bar, phone only. New with "Thread Homepage - Mobile",
@@ -37,6 +43,24 @@ import { cta, ctaHref } from '../content/site';
 <div class="sticky-cta">
   <a href={ctaHref} class="sticky-cta-btn">{cta}</a>
 </div>
+
+{/* ⚠️ Global, and deliberately so: it sets a rule on `body`, which no scoped
+    stylesheet can reach. It moved here from global.css on 1 Sep 2026 when the
+    homepage swap left this component rendering on /v1 alone — a global body
+    rule for a bar that ships on one page put 72px of dead space under the
+    footer of every other page on a phone.
+
+    Astro only emits a component's CSS on pages that import it, so this rule
+    now lands exactly where the bar does. The number is the bar's own height:
+    12 + 50 + 10 of padding and button, plus whatever the device reserves for
+    its home indicator. If the padding or the button height below changes,
+    change this with it — they are in the same file now precisely so that is
+    hard to get wrong. */}
+<style is:global>
+  @media (max-width: 640px) {
+    body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+  }
+</style>
 
 <style>
   /* Hidden above the phone breakpoint entirely — `display: none` rather than

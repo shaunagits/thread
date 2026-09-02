@@ -1,0 +1,106 @@
+---
+import { offers } from '../../content/site-v2';
+import Placeholder from './Placeholder.astro';
+
+/**
+ * Three offer cards, one featured.
+ *
+ * ⚠️ THESE CARDS CARRY PRICES, which is a departure from the live site and is
+ * the owner's call, made 1 Sep 2026. The figures are theirs, from the
+ * wireframe. See the header of site-v2.ts. Do not add, round or extend one.
+ *
+ * The card shape follows ServiceCards.astro rather than the wireframe's
+ * rounded box: square corners, a 1px ink border, and the number-tab idea
+ * reused as the featured card's pill so the set reads as this site's cards.
+ */
+---
+
+<ol class="offers">
+  {offers.map((offer) => (
+    <li class={offer.featured ? 'offer featured' : 'offer'}>
+      {offer.pill && <span class="pill">{offer.pill}</span>}
+      <h3>{offer.title}</h3>
+      <p class="body">{offer.body}</p>
+
+      {offer.list && (
+        <ul class="pts">
+          {offer.list.map((item) => <li>{item}</li>)}
+        </ul>
+      )}
+
+      {offer.thumb && <Placeholder label={offer.thumb} minHeight="86px" class="v2ph-offer-thumb" />}
+
+      <p class="price">{offer.price}</p>
+      <a href={offer.action.href} class="btn offer-cta">{offer.action.label}</a>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .offers {
+    list-style: none; margin: 48px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px;
+    align-items: stretch;
+  }
+  .offer {
+    position: relative; display: flex; flex-direction: column;
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    padding: 30px;
+  }
+  /* The featured card is marked by weight of border and the pill, not by a
+     different ground. Two grounds in one row reads as two kinds of thing. */
+  .featured { border-width: 2px; }
+
+  /* Astride the top border, the same idea as ServiceCards' number tab, so the
+     two card sets on this site speak the same language. */
+  .pill {
+    position: absolute; top: -14px; left: 22px;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    background: var(--color-accent); color: var(--color-white);
+    padding: 5px 11px;
+  }
+  .offer h3 { margin: 6px 0 10px; }
+  .featured h3 { margin-top: 12px; }
+  .offer .body {
+    font-family: var(--font-serif); font-size: var(--text-ui);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+
+  .pts { list-style: none; margin: 16px 0 0; padding: 0; }
+  .pts li {
+    position: relative; padding-left: 18px; margin-bottom: 7px;
+    font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+  .pts li::before { content: '·'; position: absolute; left: 5px; color: var(--color-accent); }
+
+  /* ⚠️ :global(), and the class is prefixed so the global name cannot collide.
+     This targets Placeholder.astro's root element, which is rendered by that
+     component and therefore carries ITS scope id, not this file's. A scoped
+     `.v2ph-…` rule compiles to `.v2ph-…[data-astro-cid-THIS]` and silently
+     matches nothing — landmine 18, which has already cost this repo an accent
+     rule and a z-index fix. The tell here was a 240px-capped placeholder
+     rendering 470px wide. */
+  :global(.v2ph-offer-thumb) { margin: 16px 0 0; }
+
+  /* margin-top:auto is what levels the price and the button across three
+     cards of unequal content length; without it a short card's CTA floats
+     mid-row. The 22px is the floor, so `auto` is written as the top value
+     rather than added in a second rule that has to out-specify this one. */
+  .price {
+    margin: auto 0 0; padding-top: 16px; border-top: 1px solid var(--color-rule);
+    font-family: var(--font-display); font-weight: 600; font-size: var(--text-d4);
+    letter-spacing: -.01em; color: var(--color-ink);
+  }
+  .offer-cta { margin-top: 18px; width: 100%; }
+
+  @media (max-width: 1000px) {
+    .offers { grid-template-columns: 1fr; gap: 34px; }
+  }
+  @media (max-width: 640px) {
+    .offers { margin-top: 38px; }
+    .offer { padding: 24px 20px; }
+    .pill { top: -13px; left: 18px; }
+  }
+</style>

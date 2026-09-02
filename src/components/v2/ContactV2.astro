@@ -1,0 +1,87 @@
+---
+import IntakeForm from '../IntakeForm.astro';
+import Placeholder from './Placeholder.astro';
+import { contactV2 } from '../../content/site-v2';
+
+/**
+ * The wireframe's side-by-side contact: the message form on the left, a
+ * calendar on the right.
+ *
+ * IntakeForm.astro is reused unchanged. It posts to /api/contact with six
+ * fields and a honeypot, and its field names are a contract with that endpoint
+ * (landmine 14) — so this page gets the real, working form rather than a
+ * second copy of it that would drift.
+ *
+ * ⚠️ THERE IS STILL NO SCHEDULING LINK. CLAUDE.md has recorded this since
+ * 14 Aug 2026; it is why the site-wide CTA is not "Book a call". The wireframe
+ * draws a Calendly/Cal.com embed here and one renders as a labelled gap
+ * instead. Do not put an <iframe> here pointing at a guessed URL.
+ *
+ * The wireframe's four form fields (name, business, what's eating your time,
+ * best way to reach you) are close to IntakeForm's six but not identical. The
+ * six shipped ones win, because they are the ones the endpoint parses.
+ */
+---
+
+<div class="c2">
+  <div class="c2-form">
+    <h3 class="c2-h">Send a message</h3>
+    <IntakeForm />
+  </div>
+
+  <div class="c2-talk">
+    <h3 class="c2-h">{contactV2.talkHeading}</h3>
+    <p class="c2-body">{contactV2.talkBody}</p>
+    <Placeholder
+      label={contactV2.calendarEmbed}
+      note="No scheduling link exists yet. Supply one and this becomes the embed."
+      minHeight="220px"
+      class="v2ph-cal"
+    />
+  </div>
+</div>
+
+<p class="c2-reply">{contactV2.reply}</p>
+
+<style>
+  .c2 {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px; align-items: start; margin-top: 40px;
+  }
+  .c2-h {
+    margin: 0 0 16px;
+    font-family: var(--font-mono); font-weight: 500; font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .c2-talk {
+    background: var(--color-white); border: 1px solid var(--color-ink); padding: 30px;
+  }
+  .c2-body {
+    font-family: var(--font-serif); font-size: var(--text-ui);
+    line-height: var(--leading-body); color: var(--color-body); max-width: 40ch;
+  }
+  /* ⚠️ :global(), and the class is prefixed so the global name cannot collide.
+     This targets Placeholder.astro's root element, which is rendered by that
+     component and therefore carries ITS scope id, not this file's. A scoped
+     `.v2ph-…` rule compiles to `.v2ph-…[data-astro-cid-THIS]` and silently
+     matches nothing — landmine 18, which has already cost this repo an accent
+     rule and a z-index fix. The tell here was a 240px-capped placeholder
+     rendering 470px wide. */
+  :global(.v2ph-cal) { margin-top: 18px; }
+
+  .c2-reply {
+    margin-top: 30px; text-align: center;
+    font-family: var(--font-serif); font-size: var(--text-small);
+    color: var(--color-faint);
+  }
+
+  @media (max-width: 1000px) {
+    .c2 { grid-template-columns: 1fr; gap: 30px; }
+  }
+  @media (max-width: 640px) {
+    .c2-talk { padding: 22px 18px; }
+    .c2-body { max-width: none; }
+    .c2-reply { text-align: left; }
+  }
+</style>

@@ -9,11 +9,40 @@ import ServiceCards from '../components/ServiceCards.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 import StickyCta from '../components/StickyCta.astro';
-import { cta, ctaHref } from '../content/site';
+import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
+
+/**
+ * ⚠️ THE RETIRED HOMEPAGE. This was `/` from the Style C redesign on 29 Aug
+ * 2026 until 1 Sep 2026, when the owner swapped in the wireframe design. It is
+ * kept live at /v1, noindex, because the owner asked for the old homepage to
+ * stay available for reference — not because anything still links to it.
+ *
+ * Three things hold while it is here, and all three go together if it is ever
+ * deleted:
+ *
+ *  1. `noindex` below, so it cannot compete with `/` in search.
+ *  2. `Disallow: /v1` in robots.txt.ts.
+ *  3. The sitemap filter in astro.config.mjs.
+ *
+ * Its nav, CTA and footer come from `site-v1.ts`, not `site.ts`, so the page
+ * stays a faithful snapshot — see the header of that file. `Hero.astro` and
+ * `StickyCta.astro` import from there for the same reason, and both are used
+ * by this page and nothing else.
+ *
+ * ⚠️ Do not "fix" this page. It is a record. If something here looks stale
+ * against `/`, that is the point.
+ */
 ---
 
-<Base businessSchema>
-  <Header />
+<Base
+  noindex
+  title="Homepage, previous design · Thread"
+  description="The previous Thread homepage, kept for reference."
+>
+  {/* businessSchema is deliberately NOT set. The entity is stated once, on the
+      page it belongs to, and that is `/` — two URLs claiming the same
+      ProfessionalService is exactly the ambiguity the flag exists to avoid. */}
+  <Header navItems={nav} cta={cta} ctaHref={ctaHref} home="/v1#top" />
   <Hero />
   {/* Full-bleed band rather than a section, so it sits outside .wrap and
       supplies its own rules top and bottom. On the ink ground since the
@@ -94,7 +123,7 @@ import { cta, ctaHref } from '../content/site';
       contact grid rather than running the full width, so it cannot come from
       Section.astro. */}
   <ContactSection />
-  <Footer />
+  <Footer columns={footerColumns} />
   {/* Phone only, and the last thing in the document so it is last in the
       tab order too — it is a shortcut, not the primary path. */}
   <StickyCta />

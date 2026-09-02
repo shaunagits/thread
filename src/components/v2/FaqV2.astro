@@ -1,0 +1,67 @@
+---
+import { faq } from '../../content/site-v2';
+
+/**
+ * Six questions as native <details>. No client JavaScript: a disclosure widget
+ * is keyboard-operable and announced correctly by screen readers for free, and
+ * the phone menu in Header.astro already establishes the pattern on this site.
+ *
+ * The wireframe draws a "+" per row. That is a marker, so it is drawn with CSS
+ * on the summary rather than sitting in the markup where a screen reader would
+ * read it out as content.
+ *
+ * The first row is open by default, so the section does not read as six closed
+ * boxes with nothing in them.
+ */
+---
+
+<div class="faq">
+  {faq.map((item, i) => (
+    <details class="fq" open={i === 0}>
+      <summary>
+        <span class="q">{item.q}</span>
+        <span class="mk" aria-hidden="true"></span>
+      </summary>
+      <p class="a">{item.a}</p>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq { margin-top: 38px; border-top: 1px solid var(--color-rule); max-width: 78ch; }
+  .fq { border-bottom: 1px solid var(--color-rule); }
+  .fq summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 22px;
+    padding: 18px 0; min-height: 44px;
+    font-family: var(--font-serif); font-size: var(--text-body); font-weight: 600;
+    color: var(--color-ink);
+  }
+  .fq summary::-webkit-details-marker { display: none; }
+  .fq summary:hover { color: var(--color-accent-dark); }
+
+  /* Two bars, one rotated. The vertical one collapses on [open], so the plus
+     becomes a minus. Drawn rather than typed so it is never read aloud. */
+  .mk { position: relative; flex: none; width: 14px; height: 14px; }
+  .mk::before, .mk::after {
+    content: ''; position: absolute; background: var(--color-accent);
+    left: 0; right: 0; top: 50%; height: 1.5px; margin-top: -.75px;
+  }
+  .mk::after { transform: rotate(90deg); }
+  .fq[open] .mk::after { transform: rotate(90deg) scaleX(0); }
+  @media (prefers-reduced-motion: no-preference) {
+    .mk::after { transition: transform .22s cubic-bezier(.22,1,.36,1); }
+  }
+
+  .a {
+    margin: 0 0 20px; padding-right: 36px; max-width: 68ch;
+    font-family: var(--font-serif); font-size: var(--text-ui);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+
+  @media (max-width: 640px) {
+    .faq { margin-top: 28px; }
+    .fq summary { font-size: var(--text-ui); gap: 16px; }
+    .a { font-size: var(--text-small); padding-right: 0; }
+  }
+</style>

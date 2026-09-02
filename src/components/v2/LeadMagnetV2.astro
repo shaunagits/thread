@@ -1,0 +1,104 @@
+---
+import { leadMagnet } from '../../content/site-v2';
+import Placeholder from './Placeholder.astro';
+
+/**
+ * The checklist offer.
+ *
+ * ⚠️ NOT WIRED UP, deliberately and visibly. Two things do not exist:
+ *
+ *  1. The checklist itself. There is no "20 Tasks Your Business Is Still Doing
+ *     by Hand" PDF in public/.
+ *  2. Anywhere to send an email address. src/pages/api/contact.ts is a Resend
+ *     contact form with six required-ish fields and a honeypot; posting one
+ *     email address at it would produce a malformed notification, and adding a
+ *     branch to it means editing IntakeForm and contact.ts together (landmine
+ *     14) for an endpoint the owner has not asked for yet.
+ *
+ * So the field renders, the button renders, and neither submits: the form has
+ * no action and the button is type="button". The note under it says why. That
+ * is better than a form that silently drops addresses, which is precisely the
+ * failure landmine 16 exists to prevent.
+ *
+ * To finish it: add the PDF, decide where addresses go, then wire the form and
+ * delete the note and the disabled state in one commit.
+ */
+---
+
+<div class="lm">
+  <div class="lm-copy">
+    <h2>{leadMagnet.heading}</h2>
+    <p class="lead">{leadMagnet.body}</p>
+
+    <form class="lm-form" onsubmit="return false;">
+      <label class="sr" for="lm-email">Your email address</label>
+      <input id="lm-email" name="email" type="email" placeholder="you@yourbusiness.com" disabled />
+      <button type="button" class="btn" disabled>{leadMagnet.action}</button>
+    </form>
+    <p class="lm-note">
+      Not connected yet. This needs the checklist PDF and somewhere to send an
+      address — the contact endpoint is a message form, not a list.
+    </p>
+  </div>
+
+  <Placeholder
+    label="Checklist PDF mockup"
+    note="Angled, a few boxes ticked."
+    ratio="4/3"
+    class="v2ph-lm-art"
+  />
+</div>
+
+<style>
+  .lm {
+    display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
+    gap: 60px; align-items: center;
+  }
+  .lm h2 { margin: 0 0 14px; max-width: 20ch; }
+  .lm .lead { max-width: 52ch; }
+
+  .lm-form { display: flex; gap: 12px; margin-top: 24px; max-width: 460px; flex-wrap: wrap; }
+  .lm-form input {
+    flex: 1 1 200px; min-width: 0; padding: 11px 13px;
+    border: 1px solid var(--color-ink); border-radius: 0;
+    background: var(--color-paper);
+    font-family: var(--font-serif); font-size: var(--text-ui); color: var(--color-ink);
+  }
+  /* Visibly inert rather than looking live. */
+  .lm-form input:disabled, .lm-form .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .lm-form .btn:disabled:hover {
+    background: var(--color-ink); border-color: var(--color-ink); transform: none;
+    box-shadow: var(--shadow-flat);
+  }
+
+  .sr {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+
+  .lm-note {
+    margin-top: 14px; max-width: 46ch;
+    font-family: var(--font-mono); font-size: var(--text-nav);
+    letter-spacing: var(--tracking-mono); line-height: var(--leading-body);
+    color: var(--color-faint);
+  }
+
+  /* ⚠️ :global(), and the class is prefixed so the global name cannot collide.
+     This targets Placeholder.astro's root element, which is rendered by that
+     component and therefore carries ITS scope id, not this file's. A scoped
+     `.v2ph-…` rule compiles to `.v2ph-…[data-astro-cid-THIS]` and silently
+     matches nothing — landmine 18, which has already cost this repo an accent
+     rule and a z-index fix. The tell here was a 240px-capped placeholder
+     rendering 470px wide. */
+  :global(.v2ph-lm-art) { max-width: 240px; margin-left: auto; }
+
+  @media (max-width: 1000px) {
+    .lm { grid-template-columns: 1fr; gap: 34px; }
+    :global(.v2ph-lm-art) { margin-left: 0; }
+  }
+  @media (max-width: 640px) {
+    .lm h2, .lm .lead { max-width: none; }
+    .lm-form { flex-direction: column; }
+    .lm-form .btn { width: 100%; }
+  }
+</style>

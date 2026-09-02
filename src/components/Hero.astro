@@ -1,6 +1,12 @@
 ---
 import HeroGraphic from './HeroGraphic.astro';
-import { cta, ctaHref } from '../content/site';
+/* ⚠️ site-v1, not site. This component is used by /v1 and nothing else, and
+   /v1 is the retired homepage kept live for reference since the swap on
+   1 Sep 2026. site.ts's `cta`/`ctaHref` now carry the NEW homepage's label and
+   anchor; importing them here would put the new label on the old page and
+   point its button at a section that is not on it. If this component is ever
+   reused on another page it needs a prop, not this import. */
+import { cta, ctaHref } from '../content/site-v1';
 ---
 <section class="hero ruled ruled-fade" id="top">
   <div class="wrap hero-grid">
