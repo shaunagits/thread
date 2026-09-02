@@ -177,7 +177,12 @@ export const faq = [
     a: "That's what weekly demos are for. You see progress every week and we adjust as we go. Every project includes 30 days of fixes after launch.",
   },
   {
-    q: "What happens if you're unavailable or stop doing this?",
+    /* Shortened on the owner's instruction, 1 Sep 2026. It was "What happens
+       if you're unavailable or stop doing this?" — the second clause asked the
+       same thing twice and made the row the longest in the set. The question
+       mark is kept: every other entry in this array is a question and ends
+       with one. */
+    q: "What happens if you're unavailable?",
     a: 'You own the code and the accounts. Everything is built with common, well-documented tools, and I hand over full documentation so any competent developer can pick it up.',
   },
   {
