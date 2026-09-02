@@ -1,17 +1,20 @@
 ---
 /**
- * A visible gap. Renders where the wireframe draws media that does not exist
- * yet — the hero video poster, the app screenshots, the owner photo, the
- * checklist mockup, the calendar embed.
+ * A visible gap: something the page needs that does not exist yet.
+ *
+ * ⚠️ EVERY ONE OF THESE CARRIES A "FINISH LATER" FLAG, on the owner's
+ * instruction 1 Sep 2026, so unfinished work is findable on the page and in
+ * the source rather than something you have to remember. To find them all:
+ *
+ *     grep -rn "Placeholder" src/
  *
  * The point is that it looks unfinished. This repo's history is a fabricated
  * case study and a set of plausible placeholder prices that shipped, and the
  * fix both times was to leave an obvious hole rather than something that
- * passes at a glance. ContactSection.astro used exactly this treatment — a
- * dashed circle — to keep the owner photo visible as a gap in the layout.
+ * passes at a glance.
  *
  * `label` says what belongs here. `note` says anything a person needs in order
- * to supply it.
+ * to supply it. Keep both short: this is a work item, not documentation.
  */
 interface Props {
   label: string;
@@ -28,6 +31,7 @@ const style = [
 ---
 
 <div class={['ph', klass].filter(Boolean).join(' ')} style={style}>
+  <span class="ph-flag">Finish later</span>
   <span class="ph-label">{label}</span>
   {note && <span class="ph-note">{note}</span>}
 </div>
@@ -35,10 +39,19 @@ const style = [
 <style>
   .ph {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 6px; text-align: center; padding: 18px;
+    gap: 8px; text-align: center; padding: 18px;
     border: 1px dashed var(--color-hair);
     background: color-mix(in srgb, var(--color-hair) 8%, transparent);
     color: var(--color-quiet);
+  }
+  /* The flag reads first and reads as a task. Accent-filled rather than a
+     quiet grey: the whole point is that it should be impossible to mistake
+     for finished work, on the page or in a screenshot of it. */
+  .ph-flag {
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    background: var(--color-accent); color: var(--color-white);
+    padding: 3px 9px;
   }
   .ph-label {
     font-family: var(--font-mono); font-size: var(--text-nav);
@@ -46,6 +59,6 @@ const style = [
   }
   .ph-note {
     font-family: var(--font-serif); font-size: var(--text-small);
-    line-height: var(--leading-body); color: var(--color-faint); max-width: 34ch;
+    line-height: var(--leading-body); color: var(--color-quiet); max-width: 34ch;
   }
 </style>

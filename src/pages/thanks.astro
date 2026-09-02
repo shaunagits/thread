@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { contact } from '../content/site';
+import { auditThanks } from '../content/site-v2';
 
 // Server-rendered so it can show the outcome. The homepage stays fully
 // prerendered — only this page and /api/contact run on request.
@@ -11,6 +12,22 @@ export const prerender = false;
 // The `form` parameter and its `map` branch went with the systems map offer,
 // killed by the owner 14 Aug 2026. One form now, one message.
 const status = Astro.url.searchParams.get('status');
+
+/**
+ * A fourth state, added 1 Sep 2026 with the audit offer, and a fourth state
+ * rather than a second page on purpose: /thanks already owns the three failure
+ * and success shapes, and a second confirmation page would have to duplicate
+ * the header, the footer, the noindex and the layout to say one different
+ * paragraph.
+ *
+ * ⚠️ `kind` is orthogonal to `status`. A submission that fails validation or
+ * errors must still show the failure, not a cheerful audit confirmation, so
+ * `status` is tested first below and `kind` only decides which SUCCESS copy to
+ * use. api/contact.ts redirects to /thanks?kind=audit on success and to
+ * /thanks?status=invalid|error otherwise, so the two never arrive together
+ * today — this ordering is what keeps that true if they ever do.
+ */
+const isAudit = Astro.url.searchParams.get('kind') === 'audit';
 
 const STATES = {
   // "Got it.", not "Your request is in." (27 Aug 2026). Nothing was requested:
@@ -35,12 +52,29 @@ const STATES = {
     body: `Something broke on this end, not yours. Email ${contact.email} directly and it reaches the same place.`,
     back: 'Back to the homepage',
   },
+  /* Frame 1c. Copy lives in site-v2.ts with the rest of the audit's words. */
+  audit: {
+    eyebrow: auditThanks.eyebrow,
+    heading: auditThanks.heading,
+    body: auditThanks.body,
+    back: 'Back to the homepage',
+  },
 } as const;
 
 const state =
-  status === 'invalid' ? STATES.invalid : status === 'error' ? STATES.error : STATES.ok;
+  status === 'invalid'
+    ? STATES.invalid
+    : status === 'error'
+      ? STATES.error
+      : isAudit
+        ? STATES.audit
+        : STATES.ok;
 
 const backHref = state === STATES.invalid ? '/#contact' : '/#top';
+
+/* The "What happens next" panel is the audit confirmation's, and only its. On
+   the generic success state there is no audit to describe the arrival of. */
+const showNext = state === STATES.audit;
 ---
 
 {/* noindex since 19 Aug 2026: a form-result page is not content, and it was
@@ -61,7 +95,25 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
       <p class="lead">{state.body}</p>
       <div class="btn-row">
         <a href={backHref} class="btn">{state.back}</a>
+        <a href={`mailto:${contact.email}`} class="btn-ghost">
+          {contact.email}<span class="u" aria-hidden="true"></span>
+        </a>
       </div>
+
+      {showNext && (
+        <div class="next">
+          <h2 class="next-head">{auditThanks.nextHeading}</h2>
+          <ol class="next-steps">
+            {auditThanks.next.map((step, i) => (
+              <li>
+                <span class="next-num">{String(i + 1).padStart(2, '0')}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
+          <p class="next-note">{auditThanks.note}</p>
+        </div>
+      )}
     </div>
   </section>
 
@@ -76,12 +128,51 @@ const backHref = state === STATES.invalid ? '/#contact' : '/#top';
   .result h1 {
     font-size: var(--text-d1);
     margin: 0 0 20px;
+    /* 16ch suits the one- and two-word headings the other three states carry.
+       The audit heading is a full sentence and sets as a stranded column at
+       that measure, so it gets its own. */
     max-width: 16ch;
   }
+  .result:has(.next) h1 { max-width: 24ch; }
   .result .eyebrow { margin-bottom: 22px; }
   .result p.lead { max-width: 52ch; }
 
+  /* The panel repeats the section's own language: numerals on ink hairlines,
+     on the card ground. */
+  .next {
+    margin-top: 56px; max-width: 720px;
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    padding: 30px;
+  }
+  .next-head {
+    margin: 0 0 22px;
+    font-family: var(--font-mono); font-weight: 500; font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .next-steps {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px;
+  }
+  .next-steps li {
+    border-top: 1px solid var(--color-ink); padding-top: 14px;
+    font-family: var(--font-serif); font-size: var(--text-ui);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+  .next-num {
+    display: block; margin-bottom: 8px;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: var(--tracking-wide); color: var(--color-accent);
+  }
+  .next-note {
+    margin: 26px 0 0; padding-top: 18px; border-top: 1px solid var(--color-rule);
+    font-family: var(--font-serif); font-size: var(--text-small);
+    color: var(--color-faint);
+  }
+
   @media (max-width: 640px) {
     .result { padding: 76px 0 88px; }
+    .next { margin-top: 40px; padding: 22px 18px; }
+    .next-steps { grid-template-columns: 1fr; gap: 20px; }
   }
 </style>

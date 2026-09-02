@@ -46,7 +46,30 @@
  * button still opens a form. Change both this and `ctaHref` in the same commit
  * when a scheduler exists.
  */
-export const cta = "Tell me what's slowing you down";
+export const cta = 'Request my audit';
+
+/**
+ * ⚠️ `/#contact`, NOT `/automation-audit`, and this was a judgement call worth
+ * recording.
+ *
+ * The build brief asked for `/#contact` from the homepage and
+ * `/automation-audit` from everywhere else "if that is simple, otherwise
+ * /automation-audit everywhere". It is not simple: `Header` takes a `ctaHref`
+ * prop but `Footer` builds its Contact column out of `footerColumns` below, so
+ * a per-page href would mean threading the value through both on all six
+ * pages, and any page that forgot would point somewhere else.
+ *
+ * Of the two single-value options, this is the better one. `/#contact` is
+ * root-relative, so it resolves from every page: from `/` it scrolls to the
+ * audit section, and from /privacy, /terms, /thanks and /work it lands on that
+ * same section. `/automation-audit` everywhere would send a homepage visitor
+ * away from the page to a near-duplicate of a section three scrolls below
+ * them.
+ *
+ * /automation-audit still earns its place: it is the link for outreach, email
+ * signatures and profiles, which is what the brief built it for. It is just
+ * not where the site's own chrome should point.
+ */
 export const ctaHref = '/#contact';
 
 /**
@@ -65,6 +88,26 @@ export const ctaHref = '/#contact';
  */
 export const loginHref = 'https://app.threadhawaii.com';
 export const loginLabel = 'Log in';
+
+/**
+ * The scheduling link, real as of 1 Sep 2026. "Intro Call - Thread Hawaii",
+ * 20 minutes, Google Meet, Pacific/Honolulu.
+ *
+ * This retires a blocker CLAUDE.md has carried since 14 Aug 2026 — the reason
+ * the site-wide CTA was never allowed to say "Book a call" and the reason the
+ * contact section drew a placeholder where an embed should be.
+ *
+ * ⚠️ A PLAIN LINK, EVERYWHERE IT APPEARS. Do not embed Cal.com's script or an
+ * iframe. Everything a visitor interacts with on this site is scriptless, a
+ * link does the same job, and an embed would be the first third-party script
+ * on the site as well as the first cross-origin frame.
+ *
+ * It renders in page copy and in the auto-reply email, so it lives here rather
+ * than in site-v2.ts: the endpoint reads it too, and that is not homepage
+ * content.
+ */
+export const calHref = 'https://cal.com/byshauna/intro-call';
+export const calLabel = 'Book a 20-minute call';
 
 /**
  * Relabelled twice on 29 Aug 2026: What I do / How it works / What you get

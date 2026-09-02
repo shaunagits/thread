@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/Section.astro';
+import ContactV2 from '../components/v2/ContactV2.astro';
+import { audit } from '../content/site-v2';
+
+/**
+ * The audit offer as a page of its own, from frame 1b of
+ * `_docs/Automation Audit.dc.html`. Built 1 Sep 2026.
+ *
+ * Why it exists alongside the homepage section: it is the link to put in an
+ * email, a message or a profile. One form, two entry points, and the section
+ * component is shared so the two can never drift apart.
+ *
+ * ⚠️ INDEXED, unlike /work, /v1, /og and /thanks. It carries no `noindex`, it
+ * is not in robots.txt's Disallow list, and the sitemap filter in
+ * astro.config.mjs does not exclude it. That is deliberate — this is the page
+ * someone should find when they search for what it offers. It is also why it
+ * needs its own title and description rather than inheriting Base's defaults.
+ *
+ * ⚠️ The design draws the nav as Offers / Work / About, three items. The live
+ * nav is four: Offers / Work / About / Contact, pointing at /#offers, /#proof,
+ * /#about, /#contact. THE NAV IS NOT CHANGED TO MATCH THE DRAWING, per the
+ * build brief. Two reasons: the header and the footer must agree on labels and
+ * anchors site-wide, and dropping Contact would remove the only nav route to
+ * the one anchor with indexed inbound links. Raised, not silently resolved.
+ *
+ * The owner card is on this page and not on the homepage section, which is
+ * what the design draws. The homepage already has an About section with the
+ * same photo; a card there would be the third time that page says one person
+ * builds this.
+ */
+
+const title = 'Get a free automation audit · Thread';
+/* 145 characters. Base's default runs 144 and Google truncates near 155;
+   anything longer here gets cut mid-claim. Counted, not estimated. */
+const description =
+  'Tell me how your week runs and I’ll send back a short written audit, with a video naming the two things worth automating first. No cost, no pitch.';
+---
+
+<Base title={title} description={description}>
+  <Header />
+
+  {/* `noRule` because the header draws its own bottom hairline and a section
+      border-top directly under it would double the line. The hr inside
+      Section still renders, which is the hairline the eyebrow sits on. */}
+  <Section noRule>
+    <div class="eyebrow au-eyebrow">{audit.eyebrow}</div>
+    <ContactV2 />
+
+    <div class="owner">
+      {/* The real photo, already shipped for the homepage's About section.
+          `alt` is empty and it is aria-hidden: the name is in text beside it,
+          so announcing "Shauna" twice would be noise. */}
+      <img
+        class="owner-photo"
+        src="/shauna.jpg"
+        alt=""
+        aria-hidden="true"
+        width="64"
+        height="64"
+        loading="lazy"
+        decoding="async"
+      />
+      <p><strong>Shauna</strong> · {audit.ownerLine}</p>
+    </div>
+  </Section>
+
+  <Footer />
+</Base>
+
+<style>
+  .au-eyebrow { display: block; margin-bottom: 22px; }
+
+  .owner {
+    display: flex; gap: 18px; align-items: center;
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    padding: 22px; margin-top: 44px; max-width: 560px;
+  }
+  /* object-fit matters even though the file is square: it stops a replacement
+     of the wrong aspect ratio from stretching the face. */
+  .owner-photo {
+    width: 64px; height: 64px; flex: none; border-radius: 50%;
+    object-fit: cover; display: block; background: var(--color-wash);
+  }
+  .owner p {
+    margin: 0; font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+  .owner strong { color: var(--color-ink); font-weight: 600; }
+
+  @media (max-width: 640px) {
+    /* Stays a row rather than stacking. The card is a face beside a sentence;
+       stacked it becomes a photo above a paragraph, which is a worse object. */
+    .owner { gap: 16px; padding: 18px; margin-top: 34px; }
+    .owner-photo { width: 56px; height: 56px; }
+  }
+</style>

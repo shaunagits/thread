@@ -1,32 +1,44 @@
 ---
 /**
- * The intake form. Posts to /api/contact.
+ * The audit request form. Posts to /api/contact.
  *
- * There used to be two of these, switched on a `kind` prop: this short one and
- * a long research questionnaire on /systems-map. The owner killed the systems
- * map offer on 14 Aug 2026 and that page is gone, so the prop and the second
- * branch went with it. One form, six fields.
+ * Rebuilt 1 Sep 2026 from frame 1a of `_docs/Automation Audit.dc.html`. It was
+ * a general enquiry form ("Send"); the offer is now a free automation audit and
+ * the form is the way into it. Five fields, four required.
+ *
+ * ⚠️ SHARED BY TWO PAGES. `/` renders it through `v2/ContactV2.astro` and
+ * `/v1` through `ContactSection.astro`. There is deliberately one form and one
+ * endpoint, because the alternative is two forms drifting against a single
+ * `FIELDS` table — which is landmine 14 with extra steps. The visible
+ * consequence is that /v1's contact section now shows the audit form. That is
+ * accepted: /v1 is a record of a page's layout and copy, not of a form, it is
+ * noindex, and nothing links to it. Fork this component only if the owner
+ * wants /v1 frozen to the letter, and if you do, the old field set has to keep
+ * working in contact.ts or /v1 starts dropping submissions silently.
  *
  * ⚠️ Field names here must match LIMITS and FIELDS in src/pages/api/contact.ts.
- * Adding a field in one place and not the other collects the answer and
- * silently drops it. See CLAUDE.md landmine 14.
+ * Adding or removing a field in one place and not the other collects the
+ * answer and silently drops it. See CLAUDE.md landmine 14. This change removed
+ * `website` from both files in the same commit.
  *
  * Native POST, no client bundle, works with JavaScript disabled.
  */
 ---
 
 <form class="form" action="/api/contact" method="POST">
-  {/* ⚠️ Honeypot, and note the name.
+  {/* ⚠️ Honeypot, and note the name. Landmine 16.
 
-      It used to be `company_website`, labelled "Company website". The v3 copy
-      asks visitors for their company website as a real question, so that name
-      is now taken by a field real people fill in. Had both kept it, every
-      genuine submission would have tripped the bot check in contact.ts, been
-      dropped without an email, and still shown the visitor a success page.
-      Silent lead loss with no error anywhere.
+      It must never share a name with a real field. It was `company_website`
+      until 14 Aug 2026, when the copy began asking visitors for their company
+      website as a genuine question; had both kept that name, every real
+      submission would have tripped the bot check in contact.ts, been dropped
+      without an email, and still shown the sender a success page.
 
-      The trap is the label as much as the name, so this one is a fax number:
-      nothing on this site asks for one, and no visitor will ever see it.
+      That collision is gone twice over now — the `website` field was removed
+      entirely on 1 Sep 2026 — but the name stays `contact_fax` regardless. The
+      trap is the label as much as the name: nothing on this site asks for a fax
+      number, so no visitor will ever fill it in. If it ever changes it changes
+      in contact.ts in the same commit.
 
       Positioned off-screen rather than display:none, which bots check for.
       Hidden from assistive tech and skipped by the tab order. */}
@@ -41,60 +53,74 @@
     />
   </div>
 
-  <label for="f-name">Name</label>
-  <input id="f-name" name="name" type="text" autocomplete="name" required />
+  {/* ⚠️ Side by side, from the design. Both are short, and pairing them keeps
+      the card from opening with two near-empty full-width rows before the
+      questions that matter. They stack again below 640px — a 50% column on a
+      phone is not a name field, it is a stub. */}
+  <div class="row">
+    <div>
+      <label for="f-name">Name</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required />
+    </div>
+    <div>
+      <label for="f-email">Email</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required />
+    </div>
+  </div>
 
-  <label for="f-email">Email</label>
-  <input id="f-email" name="email" type="email" autocomplete="email" required />
-
-  <label for="f-website">Company website</label>
+  {/* Required as of the audit rebuild. The audit is written for a specific
+      business, so a request without one cannot be answered. */}
+  <label for="f-biz">Your business</label>
   <input
-    id="f-website"
-    name="website"
+    id="f-biz"
+    name="business"
     type="text"
-    autocomplete="url"
-    placeholder="threadhawaii.com"
+    autocomplete="organization"
+    placeholder="Kona HVAC, repair and install"
+    required
   />
 
-  {/* "your", not "the": every other question in the set says you. Label text
-      only; the field name is the contract with contact.ts (landmine 14). */}
-  <label for="f-biz">What does your business do?</label>
-  <input id="f-biz" name="business" type="text" autocomplete="organization" />
-
-  <label for="f-tools">What software are you running?</label>
-  <textarea
-    id="f-tools"
-    name="tools"
-    placeholder="A rough list is fine."
-  ></textarea>
-
-  <label for="f-timesink">What eats the most time right now?</label>
+  {/* The one that matters, so it is the tall field and it sits above the
+      optional one. This is the answer the whole audit is written from. */}
+  <label for="f-timesink">What eats the most time in your week?</label>
   <textarea
     id="f-timesink"
     name="timesink"
-    placeholder="The thing that made you open this form."
+    class="tall"
+    placeholder="Tell me what you or your team do by hand every week. Retyping orders, chasing invoices, scheduling, follow-ups, whatever it is."
+    required
   ></textarea>
 
-  {/* Just "Send", on the owner's instruction, 29 Aug 2026. It was "Show me
-      your busywork" from the design, and "Send it over" and "Book a call"
-      before that.
+  {/* ⚠️ A single-line input, not a textarea. It was a textarea when this asked
+      "What software are you running?"; the design draws one line and the
+      placeholder is three words long, so a five-row box invited an essay for
+      the least important answer. The 5000 cap in contact.ts is unchanged — an
+      input can still be pasted into. */}
+  <label for="f-tools">
+    What tools are you using now? <span class="opt">(optional)</span>
+  </label>
+  <input
+    id="f-tools"
+    name="tools"
+    type="text"
+    placeholder="Spreadsheets, QuickBooks, texts"
+  />
 
-      It stays deliberately different from the site-wide CTA: everywhere else
-      the label describes arriving at this form, and this one describes
-      sending it. The rule that has always applied here is that it must not
-      say "Book a call", because pressing it sends a message and no calendar
-      is involved — that mismatch is what the 19 Aug copy review raised.
+  {/* "Request my audit", from the design. It was "Send", and "Show me your
+      busywork" and "Book a call" before that. It still describes what pressing
+      it does rather than what arrives afterwards, which is the rule this
+      button has always followed — and unlike "Book a call" it is honest,
+      because nothing here books anything.
 
-      The arrow is a real glyph, not a pseudo-element, and resolves in
-      JetBrains Mono — see the U+2192 alias in global.css. */}
-  <button type="submit" class="btn">Send <span class="arw" aria-hidden="true">&#8594;</span></button>
+      The arrow glyph came off: the design draws none, and it was there to make
+      "Send" feel like an action. "Request my audit" does not need the help. */}
+  <button type="submit" class="btn">Request my audit</button>
 
-  {/* One reply-time string across the whole site since 27 Aug 2026. It existed
-      in three variants: this note said "usually same day", the §04 lead said
-      "within a business day, usually sooner", and /thanks said "within one
-      business day, usually the same day". Three promises for one behaviour. If
-      this changes, change it in ContactSection.astro and thanks.astro too. */}
-  <p class="form-note">One reply from a person, within one business day, usually sooner. No sales sequence.</p>
+  {/* From the design. Answers the three things that stop someone pressing it:
+      what it costs, what it commits them to, and what happens to their email.
+      Replaces the reply-time promise, which now lives in the section copy and
+      in the auto-reply. */}
+  <p class="form-note">No cost. No obligation. I won&rsquo;t add you to any list.</p>
 </form>
 
 <style>
@@ -108,15 +134,27 @@
     overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
   /* Sentence case at nav size, not uppercase micro. These labels are
-     questions ("What does your business do?"), and a question set in 11px
-     uppercase with .14em tracking reads as a system message rather than as
-     something a person is asking. --color-body, not --color-faint: faint is
-     3.66:1 on the card ground and fails AA for text at this size. */
+     questions, and a question set in 11px uppercase with .14em tracking reads
+     as a system message rather than as something a person is asking.
+     --color-body, not --color-faint: faint is 3.66:1 on the card ground and
+     fails AA for text at this size. Matches the design exactly (#3B423D at
+     12.5px/500). */
   .form label {
     font-family: var(--font-mono); font-size: var(--text-nav); font-weight: 500;
     letter-spacing: var(--tracking-mono); color: var(--color-body);
     display: block; margin-bottom: 7px;
   }
+  /* ⚠️ --color-quiet, not --color-faint. The design draws this at #767C76,
+     which is --color-faint and fails AA at 3.66:1; the build brief calls for
+     --color-quiet, which clears it at 5.49:1 and is a barely perceptible two
+     steps darker. Following the brief here rather than the drawing, because
+     the two disagree and only one of them passes. Raised with the owner. */
+  .opt { color: var(--color-quiet); font-weight: 400; }
+
+  /* 22px column gap, from the design. The fields keep their own 18px bottom
+     margin, so no row gap is needed here. */
+  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+
   .form input, .form textarea, .form select {
     width: 100%; padding: 11px 13px; border: 1px solid var(--color-ink);
     border-radius: 0; background: var(--color-paper);
@@ -128,25 +166,30 @@
     border-color: var(--color-accent-dark);
   }
   .form textarea { resize: vertical; min-height: 82px; }
+  /* The one tall field. 128px is four lines at --text-ui, which is enough to
+     show that a paragraph is wanted without the box dominating the card. */
+  .form textarea.tall { min-height: 128px; }
   /* 16px, not 17. --text-ui exists for this: 16 is the threshold at which iOS
      stops zooming the page when a field is focused, so this may not go lower.
      See the type scale in global.css. */
 
   .form .btn { width: 100%; box-sizing: border-box; min-height: 50px; text-align: center; }
-  .arw { margin-left: 9px; }
 
   /* Sits under the button, so it reads as a promise about what happens next
-     rather than as a field hint. Sans at the .cta-note size. */
+     rather than as a field hint. */
   .form-note {
     font-family: var(--font-serif); font-size: var(--text-small); line-height: var(--leading-body);
     color: var(--color-faint); margin-top: 16px; text-align: center;
   }
 
   @media (max-width: 640px) {
+    /* Full width again. A 50% column on a phone is not a name field. */
+    .row { grid-template-columns: 1fr; gap: 0; }
     .form { padding: 22px 18px; }
     .form input, .form textarea, .form select { padding: 13px; margin-bottom: 16px; }
     .form label { font-size: 12px; }
     .form textarea { min-height: 76px; }
+    .form textarea.tall { min-height: 118px; }
     .form-note { font-size: 14px; }
   }
 </style>

@@ -1,87 +1,141 @@
 ---
 import IntakeForm from '../IntakeForm.astro';
-import Placeholder from './Placeholder.astro';
-import { contactV2 } from '../../content/site-v2';
+import { audit } from '../../content/site-v2';
+import { calHref, calLabel, contact } from '../../content/site';
 
 /**
- * The wireframe's side-by-side contact: the message form on the left, a
- * calendar on the right.
+ * The audit section, built from frame 1a of `_docs/Automation Audit.dc.html`.
  *
- * IntakeForm.astro is reused unchanged. It posts to /api/contact with six
- * fields and a honeypot, and its field names are a contract with that endpoint
- * (landmine 14) — so this page gets the real, working form rather than a
- * second copy of it that would drift.
+ * Rebuilt 1 Sep 2026. It was a general contact section with the form on the
+ * right and an owner card on the left; the offer is now a free automation
+ * audit, so the section leads with the ask, explains it in three steps, and
+ * gives the form the wider column.
  *
- * ⚠️ THERE IS STILL NO SCHEDULING LINK. CLAUDE.md has recorded this since
- * 14 Aug 2026; it is why the site-wide CTA is not "Book a call". The wireframe
- * draws a Calendly/Cal.com embed here and one renders as a labelled gap
- * instead. Do not put an <iframe> here pointing at a guessed URL.
+ * ⚠️ THE SECTION KEEPS `id="contact"`, set by the caller in index.astro. Do
+ * not rename it. It is the only anchor on this site with an indexed inbound
+ * link: the hero CTA, the footer, /work and vercel.json's /systems-map 301 all
+ * target it. The brief suggested adding `id="audit"` as a second id "on the
+ * same element" — an element may only carry one id, so that is not available;
+ * an alias would need its own element, which is clutter for a nicer-looking
+ * fragment. Raised rather than invented.
  *
- * The wireframe's four form fields (name, business, what's eating your time,
- * best way to reach you) are close to IntakeForm's six but not identical. The
- * six shipped ones win, because they are the ones the endpoint parses.
+ * ⚠️ The Cal.com link is a plain `<a>`, never an embed. See `calHref` in
+ * site.ts: everything a visitor interacts with on this site is scriptless, and
+ * an embed would be the first third-party script and the first cross-origin
+ * frame on the site. This replaces the dashed "Calendar embed" placeholder
+ * that stood here from 1 Sep 2026 until the link existed.
+ *
+ * It renders on `/` and on `/automation-audit`, so it owns its own heading
+ * rather than taking one from the page.
  */
 ---
 
-<div class="c2">
-  <div class="c2-form">
-    <h3 class="c2-h">Send a message</h3>
-    <IntakeForm />
+<div class="au">
+  {/* Heading left, the promise right. 1.05/.95 from the design: the two
+      columns are near enough equal that the pair reads as one block, but the
+      heading still gets the wider one so it breaks where the design breaks. */}
+  <div class="au-top">
+    <h2 class="au-head">{audit.heading}</h2>
+    <p class="lead au-sub">{audit.sub}</p>
   </div>
 
-  <div class="c2-talk">
-    <h3 class="c2-h">{contactV2.talkHeading}</h3>
-    <p class="c2-body">{contactV2.talkBody}</p>
-    <Placeholder
-      label={contactV2.calendarEmbed}
-      note="No scheduling link exists yet. Supply one and this becomes the embed."
-      minHeight="220px"
-      class="v2ph-cal"
-    />
+  {/* Numerals are content here, not section markers — the site dropped section
+      numbering on 29 Aug 2026 and this is not a reprise of it. An <ol> because
+      the order is the meaning. */}
+  <ol class="au-steps">
+    {audit.steps.map((step, i) => (
+      <li>
+        <span class="au-num">{String(i + 1).padStart(2, '0')}</span>
+        {step}
+      </li>
+    ))}
+  </ol>
+
+  <div class="au-grid">
+    <IntakeForm />
+
+    <aside class="au-talk">
+      <h3 class="au-talk-head">{audit.talkHeading}</h3>
+      <p class="au-talk-body">{audit.talkBody}</p>
+      {/* Same 48px object as every other button on the site. Not target=_blank:
+          Cal.com is a destination, and a booking flow opened in a stray tab
+          strands people with no way back. */}
+      <a href={calHref} class="btn au-cta">{calLabel}</a>
+      <p class="au-email">
+        {audit.emailPrefix} <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </p>
+    </aside>
   </div>
 </div>
 
-<p class="c2-reply">{contactV2.reply}</p>
-
 <style>
-  .c2 {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 40px; align-items: start; margin-top: 40px;
+  .au-top {
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: 60px; align-items: start;
   }
-  .c2-h {
-    margin: 0 0 16px;
+  /* 16ch and 54ch, from the design. */
+  .au-head { margin: 0; max-width: 16ch; }
+  .au-sub { margin: 0; max-width: 54ch; }
+
+  /* Each step opens on an ink hairline, which is the same horizontal the whole
+     design is built out of. */
+  .au-steps {
+    list-style: none; margin: 64px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px;
+  }
+  .au-steps li {
+    border-top: 1px solid var(--color-ink); padding-top: 14px;
+    font-family: var(--font-serif); font-size: var(--text-ui);
+    line-height: var(--leading-body); color: var(--color-body);
+  }
+  .au-num {
+    display: block; margin-bottom: 8px;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+    letter-spacing: var(--tracking-wide); color: var(--color-accent);
+  }
+
+  /* The form takes the wider column: it is the thing the section is for. */
+  .au-grid {
+    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr);
+    gap: 60px; margin-top: 56px; align-items: start;
+  }
+
+  .au-talk {
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    padding: 30px;
+  }
+  .au-talk-head {
+    margin: 0 0 12px;
     font-family: var(--font-mono); font-weight: 500; font-size: var(--text-micro);
     letter-spacing: var(--tracking-wide); text-transform: uppercase;
     color: var(--color-accent);
   }
-  .c2-talk {
-    background: var(--color-white); border: 1px solid var(--color-ink); padding: 30px;
-  }
-  .c2-body {
+  .au-talk-body {
+    margin: 0; max-width: 34ch;
     font-family: var(--font-serif); font-size: var(--text-ui);
-    line-height: var(--leading-body); color: var(--color-body); max-width: 40ch;
+    line-height: var(--leading-body); color: var(--color-body);
   }
-  /* ⚠️ :global(), and the class is prefixed so the global name cannot collide.
-     This targets Placeholder.astro's root element, which is rendered by that
-     component and therefore carries ITS scope id, not this file's. A scoped
-     `.v2ph-…` rule compiles to `.v2ph-…[data-astro-cid-THIS]` and silently
-     matches nothing — landmine 18, which has already cost this repo an accent
-     rule and a z-index fix. The tell here was a 240px-capped placeholder
-     rendering 470px wide. */
-  :global(.v2ph-cal) { margin-top: 18px; }
-
-  .c2-reply {
-    margin-top: 30px; text-align: center;
-    font-family: var(--font-serif); font-size: var(--text-small);
-    color: var(--color-faint);
+  .au-cta { margin-top: 26px; width: 100%; }
+  .au-email {
+    margin: 16px 0 0;
+    font-family: var(--font-mono); font-size: var(--text-nav);
+    letter-spacing: var(--tracking-mono); color: var(--color-faint);
   }
+  .au-email a { color: var(--color-accent-dark); }
 
+  /* 1000px is where the rest of this page's two-column blocks stack. */
   @media (max-width: 1000px) {
-    .c2 { grid-template-columns: 1fr; gap: 30px; }
+    .au-top { grid-template-columns: 1fr; gap: 18px; }
+    /* ⚠️ The panel moves BELOW the form, which is the design's phone order and
+       the reason this is one column rather than a reversed two. The form is
+       the primary path; the call is the alternative, and an alternative above
+       the thing it is an alternative to reads as the main offer. */
+    .au-grid { grid-template-columns: 1fr; gap: 30px; margin-top: 40px; }
+    .au-head, .au-sub { max-width: none; }
   }
   @media (max-width: 640px) {
-    .c2-talk { padding: 22px 18px; }
-    .c2-body { max-width: none; }
-    .c2-reply { text-align: left; }
+    .au-steps { grid-template-columns: 1fr; gap: 20px; margin-top: 40px; }
+    .au-talk { padding: 22px 18px; }
+    .au-talk-body { max-width: none; }
   }
 </style>

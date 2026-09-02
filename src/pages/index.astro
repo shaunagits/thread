@@ -7,12 +7,11 @@ import HeroV2 from '../components/v2/HeroV2.astro';
 import StepsV2 from '../components/v2/StepsV2.astro';
 import OffersV2 from '../components/v2/OffersV2.astro';
 import ProofV2 from '../components/v2/ProofV2.astro';
-import LeadMagnetV2 from '../components/v2/LeadMagnetV2.astro';
 import FaqV2 from '../components/v2/FaqV2.astro';
 import ContactV2 from '../components/v2/ContactV2.astro';
 import Placeholder from '../components/v2/Placeholder.astro';
 import {
-  title, description, problem, about, contactV2,
+  title, description, problem, about,
 } from '../content/site-v2';
 
 /**
@@ -107,19 +106,29 @@ import {
     </div>
   </Section>
 
-  {/* The lead magnet, on the quiet ground so it reads as an aside rather than
-      as a fourth offer. ⚠️ Not wired up — see LeadMagnetV2.astro. */}
-  <Section id="checklist" wash>
-    <LeadMagnetV2 />
-  </Section>
+  {/* ⚠️ The lead-magnet section was DELETED here on 1 Sep 2026 with the audit
+      rebuild. It offered a "20 Tasks Your Business Is Still Doing by Hand"
+      checklist that never existed, behind a button that was never wired up,
+      and the audit is the same idea done properly: it asks for the same
+      information and gives back something written for that business.
+
+      LeadMagnetV2.astro and the `leadMagnet` export went in the same commit.
+      Recover both from git rather than rewriting them if the checklist ever
+      becomes real. Its three-step strip lives on inside the audit section. */}
 
   <Section id="faq">
     <h2 class="s-head">Common questions.</h2>
     <FaqV2 />
   </Section>
 
+  {/* ⚠️ KEEP `id="contact"`. It is the only anchor on this site with an
+      indexed inbound link — the hero CTA, the footer, /work and vercel.json's
+      /systems-map 301 all target it. The section is the audit now; the anchor
+      is a contract and does not follow the copy. See ContactV2.astro.
+
+      No heading here: the audit section pairs its heading with the promise in
+      a two-column block, so it owns both. */}
   <Section id="contact">
-    <h2 class="s-head">{contactV2.heading}</h2>
     <ContactV2 />
   </Section>
 

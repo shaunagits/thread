@@ -161,11 +161,6 @@ export const about = {
   backgroundTodo: "2 to 3 lines about your background and who you've built for.",
 };
 
-export const leadMagnet = {
-  heading: 'Not sure where to start? Grab the checklist.',
-  body: '“20 Tasks Your Business Is Still Doing by Hand” is a one-page checklist. Tick off what applies and you’ll see where automation would pay off first.',
-  action: 'Send me the checklist',
-};
 
 export const faq = [
   {
@@ -202,15 +197,78 @@ export const faq = [
   },
 ];
 
-export const contactV2 = {
-  heading: "Tell me what's slowing you down.",
+/**
+ * The audit section, from frame 1a of `_docs/Automation Audit.dc.html`.
+ *
+ * ⚠️ THE OFFER CHANGED 1 Sep 2026. This section was a general "Tell me what's
+ * slowing you down" contact form; it is now the way into a free automation
+ * audit, and the form, the endpoint, the auto-reply and the site-wide CTA all
+ * changed with it. The copy here is the design's own.
+ *
+ * It is "a free automation audit", never "a free 10-minute audit" — the offer
+ * has no stated duration, deliberately, because the reply is written and the
+ * video is three minutes and neither of those is a promise worth pinning a
+ * number to.
+ *
+ * The reply is written, with a video in it. That phrasing is load-bearing and
+ * appears in three places that must agree: here, the confirmation on /thanks,
+ * and the auto-reply in api/contact.ts.
+ */
+export const audit = {
+  /* Only the standalone page draws an eyebrow. Frame 1a (the homepage
+     section) has none, because the section already sits under a heading
+     hierarchy the page provides. */
+  eyebrow: 'Free automation audit',
+  heading: 'Get a free automation audit.',
+  sub: 'Tell me how your week actually runs. Within one business day I\u2019ll send back a short written reply, with a video walking through the two things worth automating first and what each would take. No cost, no pitch.',
+
+  /* Three steps, mono numerals on hairlines. Not a process diagram: the job is
+     to show that this costs the reader one message and commits them to
+     nothing. */
+  steps: [
+    'You describe your week.',
+    'I send a short audit.',
+    'You decide what to do next.',
+  ],
+
   talkHeading: 'Prefer to talk?',
-  talkBody:
-    'Pick a time for a free 20-minute call. No pitch, just a conversation about what’s possible.',
-  /* ⚠️ There is still no scheduling link. CLAUDE.md has recorded this since
-     14 Aug 2026 and it is why the site-wide CTA is not "Book a call". The
-     wireframe draws a Calendly/Cal.com embed here; until a real URL exists it
-     renders as a labelled placeholder, not an <iframe> pointing at nothing. */
-  calendarEmbed: 'Calendar embed (Calendly / Cal.com)',
-  reply: "You'll hear back from me within one business day.",
+  talkBody: 'If it is easier to say out loud than to type, book twenty minutes. I will ask the same questions and send the same audit afterwards.',
+  /* The fallback for someone who wants neither a form nor a calendar. */
+  emailPrefix: 'Or email',
+
+  /* Frame 1b only. The homepage already carries an About section with the same
+     photo, so a second owner card there would be the third time the page says
+     one person built this. On the standalone page it is the only such signal,
+     and the standalone page is what outreach links point at. Note the wording
+     is specific to this offer: "I read every audit request myself" is a
+     promise about the audit, not the general "I build every system myself" the
+     old contact card carried. */
+  ownerLine: 'Thread is one person, based in Honolulu. I read every audit request myself and I write the reply myself.',
+};
+
+/**
+ * The confirmation, from frame 1c. Shown at /thanks?kind=audit.
+ *
+ * ⚠️ The three steps here are NOT `audit.steps`. The section's strip describes
+ * what the visitor is about to do; this one describes what happens after they
+ * have done it, so step 01 is "I read what you sent" rather than "You describe
+ * your week". The build brief called them "the same three steps"; the design
+ * draws different ones, and the design is right — reprinting the pre-submit
+ * steps on a post-submit page tells someone to do a thing they just did.
+ *
+ * "a short written reply with a video" is load-bearing and appears in three
+ * places that must agree: this, the section copy, and the auto-reply in
+ * api/contact.ts.
+ */
+export const auditThanks = {
+  eyebrow: 'Request received',
+  heading: 'Got it. I\u2019ll send your audit within one business day.',
+  body: 'It\u2019ll be a short written reply with a video walking through the two things I\u2019d automate first for your business. Check your inbox, and your spam folder just in case.',
+  nextHeading: 'What happens next',
+  next: [
+    'I read what you sent.',
+    'You get the written audit and the video.',
+    'You decide what to do next.',
+  ],
+  note: 'No cost. No obligation. I won\u2019t add you to any list.',
 };
