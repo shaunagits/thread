@@ -51,17 +51,31 @@ export const description =
 
 export const hero = {
   h1: 'Custom software for small businesses tired of doing it by hand.',
-  sub: 'I replace the spreadsheets, sticky notes, and busywork with simple tools built around how you actually work. Fixed prices, plain English, one person you can call.',
-  secondary: { label: 'See pricing', href: `${P}#offers` },
+  /* ⚠️ Supplied by the owner 2 Sep 2026 as "the hero". It replaces the SUB,
+     not the h1: at 30 words it is four times the headline's length, and the
+     h1 is duplicated by hand in og.astro and scripts/build-og.py, neither of
+     which changed. The line it replaces made the same promise; what came out
+     with it is "Fixed prices, plain English, one person you can call." */
+  sub: 'I turn the spreadsheets, sticky notes, and repetitive work holding your business together into simple software built around how you actually work.',
+  secondary: { label: 'See ways to work together', href: `${P}#offers` },
 };
 
+/**
+ * ⚠️ REWRITTEN 2 Sep 2026, on the owner's instruction, and it NO LONGER HAS A
+ * HEADING. The section was a heading, two paragraphs and a closing claim; the
+ * owner cut all four and supplied one paragraph and one claim in their place.
+ * index.astro renders the h2 only when `heading` is set, so this section is
+ * currently the one on the page without one. Raised with the owner.
+ *
+ * What went with it: the evenings-on-admin heading, the symptom list
+ * (retyping orders, chasing invoices), and the two claims about agencies
+ * quoting six figures and hiring being a gamble.
+ */
 export const problem = {
-  heading: "You didn't start a business to spend your evenings on admin.",
   body: [
-    'Retyping orders. Chasing invoices. Answering the same question for the hundredth time. It all works, until it eats your week.',
-    'Off-the-shelf tools make you bend to them. Agencies quote six figures and vanish. Hiring is a gamble.',
+    'Off-the-shelf tools make you bend to them. Traditional custom software can be far more project than a small business actually needs.',
   ],
-  claim: "There's a better way.",
+  claim: 'There\u2019s a useful middle ground.',
 };
 
 export const steps = [
@@ -90,14 +104,19 @@ export const offers = [
     featured: true,
     pill: 'Best place to start',
     title: 'Automation quick win',
-    body: 'Automate your most annoying weekly task, built and running within 2 weeks. One fixed price, one clear result.',
+    /* Two paragraphs since 2 Sep 2026, the owner's own line break: a promise
+       first, then what it is. OffersV2 accepts a string or an array. */
+    body: [
+      "Take one repetitive task off your team's plate, for good.",
+      'I automate one annoying weekly workflow and get it running within two weeks. One fixed price, one clear result.',
+    ],
     list: [
       'Inquiries auto-create a quote and reminder',
       'Forms flow into your calendar and list',
       'AI drafts routine replies to approve',
     ],
     price: 'from $1,500',
-    action: { label: 'Book a free call', href: `${P}#contact` },
+    action: { label: 'Start with an audit', href: `${P}#contact` },
   },
   {
     featured: false,
@@ -133,19 +152,22 @@ export const proof = [
     placeholder: false,
     result: '6 hrs/week',
     body: 'HVAC company, Oahu. Replaced a text-thread dispatch with a job list.',
-    shot: 'App screenshot (data blurred)',
+    shot: 'Screenshot',
+  },
+  /* "Coming soon" wording since 2 Sep 2026, on the owner's instruction: the
+     site is live and the real case studies are being gathered. The wireframe's
+     "Same-day invoices" came out with it — it read as a result. */
+  {
+    placeholder: true,
+    result: 'Coming soon',
+    body: 'A second case study is on its way.',
+    shot: 'Screenshot',
   },
   {
     placeholder: true,
-    result: 'Same-day invoices',
-    body: 'Case study 2: business type, problem, result.',
-    shot: 'App screenshot',
-  },
-  {
-    placeholder: true,
-    result: 'Result',
-    body: 'Case study 3.',
-    shot: 'App screenshot',
+    result: 'Coming soon',
+    body: 'A third case study is on its way.',
+    shot: 'Screenshot',
   },
 ];
 
@@ -154,13 +176,17 @@ export const about = {
   body: [
     'You talk to the person building your software, not an account manager. I explain things in plain English, show progress every week, and stick around after launch.',
     "I work with businesses in Hawaii and across the mainland, and I price competitively because I don't have an office full of overhead to cover.",
+    /* The owner's own background copy, supplied 2 Sep 2026, replacing the
+       wireframe's bracketed "[Add 2 to 3 lines about your background]"
+       placeholder. Apple and Nike are named on the owner's instruction; they
+       are prior employers, not Thread clients, and the sentence says
+       "built for organizations including" rather than claiming them as
+       clients. Do not rewrite it to name projects — the owner cut that
+       detail deliberately as too much for a marketing page. */
+    'With 10+ years across technology, design, and operations, I\u2019ve built for organizations including Apple, Nike, local businesses, and nonprofits. Thread brings that experience to growing companies that need thoughtful, custom software without hiring a large agency or internal development team.',
   ],
   claim:
     "Everything I build is yours, documented, and built on tools any developer knows. You're never locked in to me.",
-  /* The wireframe's "[Add 2 to 3 lines about your background and who you've
-     built for.]" — a bracketed placeholder, so it renders as one rather than
-     being written on the owner's behalf. */
-  backgroundTodo: "2 to 3 lines about your background and who you've built for.",
 };
 
 

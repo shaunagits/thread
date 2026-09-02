@@ -20,7 +20,9 @@ import CustomAppGraphic from './CustomAppGraphic.astro';
     <li class={offer.featured ? 'offer featured' : 'offer'}>
       {offer.pill && <span class="pill">{offer.pill}</span>}
       <h3>{offer.title}</h3>
-      <p class="body">{offer.body}</p>
+      {(Array.isArray(offer.body) ? offer.body : [offer.body]).map((para) => (
+        <p class="body">{para}</p>
+      ))}
 
       {offer.list && (
         <ul class="pts">
@@ -63,9 +65,11 @@ import CustomAppGraphic from './CustomAppGraphic.astro';
   .offer h3 { margin: 6px 0 10px; }
   .featured h3 { margin-top: 12px; }
   .offer .body {
+    margin: 0 0 10px;
     font-family: var(--font-serif); font-size: var(--text-ui);
     line-height: var(--leading-body); color: var(--color-body);
   }
+  .offer .body:last-of-type { margin-bottom: 0; }
 
   .pts { list-style: none; margin: 16px 0 0; padding: 0; }
   .pts li {

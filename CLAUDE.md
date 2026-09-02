@@ -864,8 +864,8 @@ without one, ship it without the claim or stop and ask.
 |---|---|---|
 | GitHub | `shaunagits` → `shaunagits/thread` | public |
 | Vercel | `shaunagits` / `shaunagits-projects` | project `thread` |
-| Namecheap | `Sharnold83` | domain + email forwarding |
-| Resend | signed up as `shauna.coy@gmail.com` | `CONTACT_TO` **must** match this |
+| Namecheap | `<registrar-account>` | domain + email forwarding |
+| Resend | signed up as `<owner-account-email>` | `CONTACT_TO` **must** match this |
 
 The project was originally deployed to a **client's** Vercel account
 (`peopleengineers-projects`, used only for Gradient work) and migrated out. Never

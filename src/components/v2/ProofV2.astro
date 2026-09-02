@@ -20,14 +20,15 @@ import Placeholder from './Placeholder.astro';
 <ol class="proof">
   {proof.map((item) => (
     <li class={item.placeholder ? 'pf is-ph' : 'pf'}>
-      <Placeholder label={item.shot} minHeight="132px" />
+      {/* "Coming soon", not "Finish later", since 2 Sep 2026: the site is
+          live and the owner is gathering the case studies, so these gaps are
+          the one place a visitor is meant to read the flag. They are still
+          gaps — do not write results into them. */}
+      <Placeholder label={item.shot} minHeight="132px" flag="Coming soon" />
       {item.placeholder ? (
         <>
           <p class="result ph-result">{item.result}</p>
-          {/* Same wording as Placeholder.astro's flag, on the owner's
-              instruction 1 Sep 2026, so every unfinished thing on the site
-              says the same two words and one scan finds all of them. */}
-          <p class="body"><span class="ph-flag">Finish later</span>{item.body}</p>
+          <p class="body">{item.body}</p>
         </>
       ) : (
         <>
@@ -63,16 +64,6 @@ import Placeholder from './Placeholder.astro';
     line-height: var(--leading-body); color: var(--color-body);
   }
   .is-ph .body { color: var(--color-faint); }
-  /* Matches Placeholder.astro's flag exactly. Declared again rather than
-     shared because these two components render different markup and a shared
-     rule would have to be global for no benefit. */
-  .ph-flag {
-    display: inline-block; margin-right: 8px;
-    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
-    letter-spacing: var(--tracking-wide); text-transform: uppercase;
-    background: var(--color-accent); color: var(--color-white);
-    padding: 3px 9px;
-  }
 
   @media (max-width: 1000px) {
     .proof { grid-template-columns: 1fr; gap: 26px; }

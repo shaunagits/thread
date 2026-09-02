@@ -158,7 +158,7 @@ from the sitemap.
 | **Live** | **https://threadhawaii.com** |
 | Vercel | `shaunagits` / `shaunagits-projects`, project `thread` |
 | GitHub | `shaunagits/thread` — public |
-| Registrar | Namecheap (`Sharnold83`), nameservers unchanged |
+| Registrar | Namecheap (`<registrar-account>`), nameservers unchanged |
 | TLS | Let's Encrypt, both hostnames, expires 11 Nov 2026 |
 | `www` | 308 → apex, path-preserving |
 
@@ -197,7 +197,7 @@ account-level and survive both removals. Check
 
 ### Email
 
-`aloha@threadhawaii.com` and a catch-all forward to `shauna.coy@gmail.com` via
+`aloha@threadhawaii.com` and a catch-all forward to `<owner-account-email>` via
 Namecheap's free forwarding. Already configured; needs nothing.
 
 ---

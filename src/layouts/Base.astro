@@ -123,7 +123,11 @@ const businessLd = {
     itemOffered: {
       '@type': 'Service',
       name: offer.title,
-      description: offer.body,
+      /* ⚠️ schema.org description is a string. `body` became a string OR an
+         array of paragraphs on 2 Sep 2026 (see site-v2.ts), and an array here
+         emits a JSON array, which Google discards. Joined, not indexed to
+         [0], so a second paragraph is described rather than dropped. */
+      description: Array.isArray(offer.body) ? offer.body.join(' ') : offer.body,
     },
   })),
 };

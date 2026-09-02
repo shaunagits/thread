@@ -1,70 +1,70 @@
 # Thread
 
-Marketing site for Thread — a custom software, dashboards, and AI automation
-studio in Honolulu, Hawaiʻi. Astro + Tailwind, statically rendered, **no client
-JavaScript**.
+Marketing site for Thread, a custom software and automation practice in
+Honolulu, Hawaiʻi.
 
-**Live: https://threadhawaii.com**
+**Live at [threadhawaii.com](https://threadhawaii.com)**
 
-> ### ⚠️ Live with placeholder content
-> §04 Products and §05 Work contain **invented products, invented pricing, and a
-> fabricated client case study with fabricated metrics** — all isolated in
-> [`src/content/placeholders.ts`](src/content/placeholders.ts). This is
-> published and publicly indexable. Replacing it is the top outstanding task.
-> See [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md).
+Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com),
+statically prerendered and deployed on Vercel. Pages ship almost no client
+JavaScript: the navigation and FAQ are native `<details>` elements and the
+contact form is a native POST.
 
-Working on this? Start with [CLAUDE.md](CLAUDE.md) — constraints, accounts, and
-the landmines worth not rediscovering.
+## Requirements
 
-## Commands
+- Node.js 22 or later
+- Python 3 with `fonttools` and `brotli`, only for the font and asset scripts
+
+## Getting started
 
 ```bash
 npm install
-npm run dev              # local dev on :4321
-npm run build            # production build
-npm run assets:build     # regenerate og.png + favicons (needs Chrome, rsvg-convert, magick)
-npm run fonts:build      # rebuild font subsets (needs python3 + fonttools + brotli)
+npm run dev      # local dev server on :4321
+npm run build    # production build
 ```
 
-## Layout
+The contact form needs three environment variables. Copy `.env.example` to
+`.env` and fill them in; see that file for what each one does.
+
+## Scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build |
+| `npm run fonts:build` | Rebuild the self-hosted font subsets |
+| `npm run icons:build` | Regenerate the favicon and app icon set |
+| `npm run og:build` | Regenerate the Open Graph card |
+| `npm run assets:build` | Full asset rebuild (needs Chrome, rsvg-convert, ImageMagick) |
+
+## Project structure
 
 ```
-index.html               the approved design — source of truth, do not edit
 src/
-  components/            12 components; both plates are hand-authored inline SVG
-  content/
-    site.ts              real copy
-    placeholders.ts      ⚠️ invented copy — every item needs replacing
-  layouts/Base.astro     head, meta, Open Graph
-  pages/
-    index.astro          the homepage (prerendered)
-    thanks.astro         form result page (server-rendered)
-    og.astro             1200×630 social card generator
-    api/contact.ts       form endpoint → Resend
-  styles/global.css      design tokens + shared primitives
-scripts/                 font and asset build scripts
+  components/          shared UI, plus homepage components in components/v2/
+  content/             site copy, separated from markup
+  layouts/Base.astro   head, metadata, Open Graph, structured data
+  pages/               routes, including the contact API endpoint
+  styles/global.css    design tokens and shared primitives
+public/fonts/          self-hosted font subsets
+scripts/               font, icon and social-card build scripts
+licenses/              font licences
 ```
 
-## The rules this build follows
+Copy lives in `src/content` rather than in components, so wording can be
+changed without touching markup.
 
-- **`index.html` is the source of truth** for layout, type, colour and spacing,
-  and stays untouched in the repo as the reference. The build was verified
-  against it at 1440/1024/768/390 — identical apart from one deliberate 6.4px
-  fix, documented in the checklist.
-- **No hardcoded hex.** Every colour is a token in `global.css`.
-- **No client JavaScript.** The mobile menu is a `<details>` element; the contact
-  form is a native POST.
-- **No new colours, fonts, spacing scales, or components** beyond the design.
+## Design system
 
-## Further reading
+Colour, type, spacing and motion are defined as tokens in
+`src/styles/global.css`. Components reference tokens only, never literal
+values, which keeps a palette or type change to a single file.
 
-- [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) — placeholders to replace, open
-  decisions, deployment and DNS
-- [FONTS.md](FONTS.md) — why Newsreader and JetBrains Mono are patched (neither
-  ships a ʻokina, U+02BB) and the licence position
-- [BUILD-HANDOFF.md](BUILD-HANDOFF.md) — the original brief
+Type is set in Petrona, Public Sans and JetBrains Mono, self-hosted as latin
+subsets. See [FONTS.md](FONTS.md) for how the subsets are built and why
+Petrona and Newsreader are patched to include the ʻokina (U+02BB).
 
 ## Licence
 
-Fonts are SIL OFL 1.1; see [`licenses/`](licenses). Site code and content are
-proprietary to Thread.
+Fonts are licensed under the SIL Open Font License 1.1; the full texts are in
+[`licenses/`](licenses). Site code and content are proprietary to Thread.

@@ -18,12 +18,16 @@
  */
 interface Props {
   label: string;
+  /** The flag text. "Finish later" is the working default. "Coming soon" is
+   *  the one alternative, for a gap the owner has decided a visitor may see
+   *  while the site is live (the proof cards, 2 Sep 2026). */
+  flag?: string;
   note?: string;
   ratio?: string;
   minHeight?: string;
   class?: string;
 }
-const { label, note, ratio, minHeight, class: klass } = Astro.props;
+const { label, note, ratio, minHeight, class: klass, flag = 'Finish later' } = Astro.props;
 const style = [
   ratio && `aspect-ratio:${ratio}`,
   minHeight && `min-height:${minHeight}`,
@@ -31,7 +35,7 @@ const style = [
 ---
 
 <div class={['ph', klass].filter(Boolean).join(' ')} style={style}>
-  <span class="ph-flag">Finish later</span>
+  <span class="ph-flag">{flag}</span>
   <span class="ph-label">{label}</span>
   {note && <span class="ph-note">{note}</span>}
 </div>

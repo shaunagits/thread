@@ -9,7 +9,6 @@ import OffersV2 from '../components/v2/OffersV2.astro';
 import ProofV2 from '../components/v2/ProofV2.astro';
 import FaqV2 from '../components/v2/FaqV2.astro';
 import ContactV2 from '../components/v2/ContactV2.astro';
-import Placeholder from '../components/v2/Placeholder.astro';
 import {
   title, description, problem, about,
 } from '../content/site-v2';
@@ -54,7 +53,10 @@ import {
       page has no signal list, so the section earns its place again. ------ */}
   <Section id="problem">
     <div class="pb">
-      <h2>{problem.heading}</h2>
+      {/* ⚠️ The owner removed this section's heading 2 Sep 2026. Rendered
+          conditionally rather than deleted, so restoring it is one line in
+          site-v2.ts. See the comment over `problem` there. */}
+      {problem.heading && <h2>{problem.heading}</h2>}
       {problem.body.map((para) => <p class="lead">{para}</p>)}
       <p class="claim pb-claim">{problem.claim}</p>
     </div>
@@ -63,7 +65,7 @@ import {
   {/* How it works. The live site deleted its three-step arc with ProcessIndex
       on 29 Aug; this is the wireframe's version, not that component restored. */}
   <Section id="how">
-    <h2 class="s-head">Simple process, no tech degree required.</h2>
+    <h2 class="s-head">You bring the problem. I’ll figure out the software.</h2>
     <StepsV2 />
   </Section>
 
@@ -99,9 +101,6 @@ import {
         <h2>{about.heading}</h2>
         {about.body.map((para) => <p class="lead">{para}</p>)}
         <p class="claim claim-sm ab-claim">{about.claim}</p>
-        {/* The wireframe's own bracketed placeholder. Not written on the
-            owner's behalf — see "Content that must never be invented". */}
-        <Placeholder label="Background" note={about.backgroundTodo} class="v2ph-ab-todo" />
       </div>
     </div>
   </Section>
@@ -159,15 +158,6 @@ import {
   .ab-copy h2 { margin: 0 0 18px; max-width: 20ch; }
   .ab-copy .lead { margin-bottom: 12px; max-width: 60ch; }
   .ab-claim { margin-top: 20px; max-width: 52ch; }
-  /* ⚠️ :global(), and the class is prefixed so the global name cannot collide.
-     This targets Placeholder.astro's root element, which is rendered by that
-     component and therefore carries ITS scope id, not this file's. A scoped
-     `.v2ph-…` rule compiles to `.v2ph-…[data-astro-cid-THIS]` and silently
-     matches nothing — landmine 18, which has already cost this repo an accent
-     rule and a z-index fix. The tell here was a 240px-capped placeholder
-     rendering 470px wide. */
-  :global(.v2ph-ab-todo) { margin-top: 26px; max-width: 52ch; }
-
   @media (max-width: 820px) {
     .ab { grid-template-columns: 1fr; gap: 30px; }
     .ab-photo { width: 160px; height: 160px; }
@@ -175,6 +165,5 @@ import {
   @media (max-width: 640px) {
     .s-head, .pb h2, .ab-copy h2 { max-width: none; }
     .ab-copy .lead, .ab-claim { max-width: none; }
-    :global(.v2ph-ab-todo) { max-width: none; }
   }
 </style>
