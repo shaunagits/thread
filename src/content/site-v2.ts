@@ -65,17 +65,21 @@ export const hero = {
 };
 
 /**
- * ⚠️ REWRITTEN 2 Sep 2026, on the owner's instruction, and it NO LONGER HAS A
- * HEADING. The section was a heading, two paragraphs and a closing claim; the
- * owner cut all four and supplied one paragraph and one claim in their place.
- * index.astro renders the h2 only when `heading` is set, so this section is
- * currently the one on the page without one. Raised with the owner.
+ * Rewritten 2 Sep 2026, on the owner's instruction. What came out: the
+ * "evenings on admin" heading, the symptom list (retyping orders, chasing
+ * invoices), and the two claims about agencies quoting six figures and hiring
+ * being a gamble.
  *
- * What went with it: the evenings-on-admin heading, the symptom list
- * (retyping orders, chasing invoices), and the two claims about agencies
- * quoting six figures and hiring being a gamble.
+ * ⚠️ The section briefly shipped with no heading at all, and the section rule
+ * then opened nothing: two full-bleed rules bracketing a band that was
+ * two-thirds empty, with the next section's hairline right underneath. Every
+ * other section fills that space with a display heading, which is why they do
+ * not read that way. THE HEADING IS LOAD-BEARING FOR THE LAYOUT, not only for
+ * the document outline. Do not remove it again without also deciding what the
+ * rules should do.
  */
 export const problem = {
+  heading: 'Two ways to fix this, and neither one fits.',
   body: [
     'Off-the-shelf tools make you bend to them. Traditional custom software can be far more project than a small business actually needs.',
   ],

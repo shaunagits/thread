@@ -51,15 +51,9 @@ import {
       The problem. Cut from the live homepage on 29 Aug 2026 because §01's
       signal list was already naming the same symptoms one scroll down. This
       page has no signal list, so the section earns its place again. ------ */}
-  {/* ⚠️ noHairline because this section has no heading — see the prop's comment
-      in Section.astro. Restore the heading in site-v2.ts and this comes off in
-      the same edit. */}
-  <Section id="problem" noHairline>
+  <Section id="problem">
     <div class="pb">
-      {/* ⚠️ The owner removed this section's heading 2 Sep 2026. Rendered
-          conditionally rather than deleted, so restoring it is one line in
-          site-v2.ts. See the comment over `problem` there. */}
-      {problem.heading && <h2>{problem.heading}</h2>}
+      <h2>{problem.heading}</h2>
       {problem.body.map((para) => <p class="lead">{para}</p>)}
       <p class="claim pb-claim">{problem.claim}</p>
     </div>
