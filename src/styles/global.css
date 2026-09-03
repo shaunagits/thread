@@ -320,11 +320,6 @@ a:hover { text-decoration: underline; }
 
    Nothing references --tracking-marker any more; it is left in the scale
    because the scale is the contract, not a list of what happens to be used. */
-hr.section-rule {
-  border: 0; border-top: 1px solid var(--color-ink);
-  margin: 0 0 30px; height: 0;
-}
-
 /* ---------- the ruled ground ----------
    Vertical hairlines behind the hero and §03. `.ruled-fade` masks them in from
    the lower right so the hero copy sits on clean paper and the rules only

@@ -8,9 +8,16 @@
  * grid. None of those survive:
  *
  *  - The marker is gone entirely. It carried a label ("01 · What I do") under
- *    the ocean design, became a bare number with Style C, and lost the number
- *    too on 29 Aug 2026 on the owner's instruction. What is left is the
- *    hairline it sat on, which opens the section above the heading.
+ *    the ocean design, became a bare number with Style C, lost the number on
+ *    29 Aug 2026, and lost its hairline on 2 Sep 2026.
+ *
+ *    ⚠️ THAT LAST STEP IS WHY THERE IS NO <hr> HERE. The marker's rule read
+ *    correctly while it carried a number: a labelled hairline above the
+ *    heading, under the section's own full-bleed `border-top` at the boundary.
+ *    Dropping the number in 70a25b9 left a bare second rule, so every section
+ *    on the site drew two plain dividers about 100px apart. The section
+ *    boundary is the `border-top` in global.css; do not add another rule
+ *    inside the wrap unless it carries something.
  *  - Because the numbers are gone, the section wording now lives only in the
  *    nav and the footer, which must still agree with each other. See site.ts.
  *  - The heading moved into the sections themselves. Each of the three has a
@@ -44,7 +51,6 @@ const classes = [
 
 <section id={id} class={classes || undefined}>
   <div class="wrap">
-    <hr class="section-rule" />
     <slot />
   </div>
 </section>

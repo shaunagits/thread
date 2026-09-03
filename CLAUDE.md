@@ -181,9 +181,14 @@ who already has an account is not who the page is written for, and a login
 competing with the CTA sells to the wrong reader. The subdomain resolves and
 one of its A records is Vercel's.
 
-**Sections open on a bare hairline and carry no marker at all.** Style C made
-the marker a bare number above the heading; the number went too on 29 Aug 2026
-— see the phone section below. So the old rule that the nav must match the
+**Sections carry no marker at all, and open on nothing.** Style C made the
+marker a bare number above the heading; the number went on 29 Aug 2026 and its
+hairline went on 2 Sep 2026. ⚠️ That hairline is why every section on the site
+drew TWO plain dividers about 100px apart for four days: the section's own
+full-bleed `border-top` at the boundary, and then the marker's rule, which had
+read correctly only while it carried a number. The single divider per section
+is now the `border-top` in `global.css`. Do not put a rule inside a section's
+wrap unless it carries something. So the old rule that the nav must match the
 markers has nothing left to match. What still holds: the header and the footer
 point at the same three anchors and must label them identically.
 
@@ -196,7 +201,9 @@ labels, "Show me your busywork" and `[Owner name]`. Its *layout* was applied to
 the *current* content; do not read it as the copy of record.
 
 - **Section numbering is gone**, on the owner's instruction. `.marker` is now
-  `hr.section-rule`: the hairline survives, the number does not. The list
+  `hr.section-rule`: the hairline survives, the number does not. ⚠️ **The
+  hairline was itself removed 2 Sep 2026** — bare, it was a second divider
+  under the section boundary; see the section above. The list
   numerals in §01 and the card tabs in §02 are content, not section markers,
   and stayed.
 - **`StickyCta.astro`** is a pinned accent-filled CTA bar, phone only, and the
