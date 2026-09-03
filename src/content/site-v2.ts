@@ -80,8 +80,13 @@ export const hero = {
  */
 export const problem = {
   heading: 'Two ways to fix this, and neither one fits.',
+  /* Two paragraphs, not one, since 2 Sep 2026: the owner's two sentences set
+     as the two blocks this section has always had. The section is heading,
+     two paragraphs and a closing claim, and with one paragraph it read as an
+     under-filled version of the same layout. No words were added. */
   body: [
-    'Off-the-shelf tools make you bend to them. Traditional custom software can be far more project than a small business actually needs.',
+    'Off-the-shelf tools make you bend to them.',
+    'Traditional custom software can be far more project than a small business actually needs.',
   ],
   claim: 'There\u2019s a useful middle ground.',
 };
