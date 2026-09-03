@@ -65,30 +65,26 @@ export const hero = {
 };
 
 /**
- * Rewritten 2 Sep 2026, on the owner's instruction. What came out: the
- * "evenings on admin" heading, the symptom list (retyping orders, chasing
- * invoices), and the two claims about agencies quoting six figures and hiring
- * being a gamble.
+ * ⚠️ REVERTED 2 Sep 2026 to its state before 081b36e, on the owner's
+ * instruction: heading, two paragraphs and a closing claim, in the wording
+ * that shipped with the homepage swap on 1 Sep. The 2 Sep rewrite replaced all
+ * four with one paragraph and a shorter claim, and the section then read as an
+ * under-filled version of the same layout — same box, a third less copy.
  *
- * ⚠️ The section briefly shipped with no heading at all, and the section rule
- * then opened nothing: two full-bleed rules bracketing a band that was
- * two-thirds empty, with the next section's hairline right underneath. Every
- * other section fills that space with a display heading, which is why they do
- * not read that way. THE HEADING IS LOAD-BEARING FOR THE LAYOUT, not only for
- * the document outline. Do not remove it again without also deciding what the
- * rules should do.
+ * The replacement wording is not lost: it is in 081b36e and in this file's
+ * history at f102340. Recover it from git rather than retyping it if it comes
+ * back.
+ *
+ * ⚠️ The heading is load-bearing for the layout, not only for the document
+ * outline. Without it the section rule opens nothing. See 4c4c861.
  */
 export const problem = {
-  heading: 'Two ways to fix this, and neither one fits.',
-  /* Two paragraphs, not one, since 2 Sep 2026: the owner's two sentences set
-     as the two blocks this section has always had. The section is heading,
-     two paragraphs and a closing claim, and with one paragraph it read as an
-     under-filled version of the same layout. No words were added. */
+  heading: "You didn't start a business to spend your evenings on admin.",
   body: [
-    'Off-the-shelf tools make you bend to them.',
-    'Traditional custom software can be far more project than a small business actually needs.',
+    'Retyping orders. Chasing invoices. Answering the same question for the hundredth time. It all works, until it eats your week.',
+    'Off-the-shelf tools make you bend to them. Agencies quote six figures and vanish. Hiring is a gamble.',
   ],
-  claim: 'There\u2019s a useful middle ground.',
+  claim: "There's a better way.",
 };
 
 export const steps = [
