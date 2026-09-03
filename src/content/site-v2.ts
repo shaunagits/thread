@@ -65,26 +65,23 @@ export const hero = {
 };
 
 /**
- * ⚠️ REVERTED 2 Sep 2026 to its state before 081b36e, on the owner's
- * instruction: heading, two paragraphs and a closing claim, in the wording
- * that shipped with the homepage swap on 1 Sep. The 2 Sep rewrite replaced all
- * four with one paragraph and a shorter claim, and the section then read as an
- * under-filled version of the same layout — same box, a third less copy.
- *
- * The replacement wording is not lost: it is in 081b36e and in this file's
- * history at f102340. Recover it from git rather than retyping it if it comes
- * back.
+ * Rewritten 2 Sep 2026, the owner's own copy, replacing the "evenings on
+ * admin" wording that shipped with the homepage swap. The shape is unchanged
+ * and is the shape this section has always had: heading, two paragraphs, one
+ * closing claim.
  *
  * ⚠️ The heading is load-bearing for the layout, not only for the document
- * outline. Without it the section rule opens nothing. See 4c4c861.
+ * outline — without it the section has nothing to open on and reads as an
+ * under-filled box. Removing it once already cost a round trip. See 4c4c861.
  */
 export const problem = {
-  heading: "You didn't start a business to spend your evenings on admin.",
+  heading:
+    'Most small businesses don\u2019t need more software. They need better-fitting software.',
   body: [
-    'Retyping orders. Chasing invoices. Answering the same question for the hundredth time. It all works, until it eats your week.',
-    'Off-the-shelf tools make you bend to them. Agencies quote six figures and vanish. Hiring is a gamble.',
+    'Off-the-shelf tools leave gaps your team fills by hand.',
+    'Traditional custom development can turn a simple problem into a giant project.',
   ],
-  claim: "There's a better way.",
+  claim: 'Thread is built for everything in between.',
 };
 
 export const steps = [
