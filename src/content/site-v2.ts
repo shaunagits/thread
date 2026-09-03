@@ -46,8 +46,12 @@ export { cta, ctaHref } from './site';
 
 export const title =
   'Custom Software and Automation for Small Business | Hawaii and Mainland US';
+/* 155 characters, inside Google's ~160 truncation. Rewritten 2 Sep 2026 to
+   follow the hero: the old one opened "I replace spreadsheets and busywork
+   with simple tools", which is the sentence the owner replaced, so the search
+   snippet was a copy pass behind the page. */
 export const description =
-  'Custom software and automation for small businesses. I replace spreadsheets and busywork with simple tools built around how you already work. Fixed prices, plain English.';
+  'Custom software and automation for small businesses. I turn spreadsheets, sticky notes, and repetitive work into simple software built around how you work.';
 
 export const hero = {
   h1: 'Custom software for small businesses tired of doing it by hand.',

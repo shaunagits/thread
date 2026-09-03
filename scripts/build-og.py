@@ -56,7 +56,12 @@ ACCENT, ACCENT_DARK = "#2E4FBF", "#253F99"
 # homepage on 1 Sep 2026.
 HEADLINE = "Custom software for small businesses tired of doing it by hand."
 EYEBROW = "Custom software and automation · Honolulu, Hawaiʻi"
-META = "CONNECT · BUILD · ONGOING"
+# ⚠️ Must match the `.meta` span in src/pages/og.astro, which is the design of
+# record; this renderer follows it. Changed 2 Sep 2026: it read
+# "CONNECT · BUILD · ONGOING", the v3 copy's three engagements, retired
+# 19 Aug 2026 and by then named on no page at all. These are the three offers
+# the homepage actually sells. Measured at 435px in a 896px slot.
+META = "AUTOMATION · CUSTOM APPS · ONGOING SUPPORT"
 
 W, H = 1200, 630
 PAD_X, PAD_TOP, PAD_BOTTOM = 72, 62, 56
