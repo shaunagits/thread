@@ -24,6 +24,18 @@ interface Props {
   id?: string;
   /** drop the top rule — for a section that follows one that draws its own */
   noRule?: boolean;
+  /**
+   * Drop the opening hairline, keeping the full-bleed boundary rule.
+   *
+   * Every section draws two rules: the `<section>`'s own `border-top`, which
+   * is the boundary between sections and runs edge to edge, and this hairline
+   * 100px below it, at column width, which opens the section's heading. A
+   * section with no heading leaves the hairline opening nothing, and the two
+   * lines then read as one divider drawn twice — 100px of empty space between
+   * them and small body copy underneath. Added 2 Sep 2026 for #problem, whose
+   * heading the owner removed.
+   */
+  noHairline?: boolean;
   /** put the section on the quiet ground */
   wash?: boolean;
   /** draw the ruled background behind the section */
@@ -32,7 +44,7 @@ interface Props {
   class?: string;
 }
 
-const { id, noRule = false, wash = false, ruled = false, class: klass } = Astro.props;
+const { id, noRule = false, noHairline = false, wash = false, ruled = false, class: klass } = Astro.props;
 
 const classes = [
   noRule && 'no-rule',
@@ -44,7 +56,7 @@ const classes = [
 
 <section id={id} class={classes || undefined}>
   <div class="wrap">
-    <hr class="section-rule" />
+    {!noHairline && <hr class="section-rule" />}
     <slot />
   </div>
 </section>
