@@ -1,0 +1,314 @@
+---
+/**
+ * The first proof card's graphic: a dispatch app mid-route. The truck is
+ * between stops, the next job is pinned, and the ETA is on the map.
+ *
+ * A TAKE-DOWN of "Dispatch Route Graphic.dc.html", supplied by the owner
+ * 3 Sep 2026, not a port of it. The supplied drawing is a 420x910 phone in a
+ * 700px canvas: portrait, roughly 1:2.2. This card's graphic slot is ~303px
+ * wide at 1440, so dropping that phone in renders it 656px tall next to two
+ * 132px placeholder cards, with its 11px mono labels at 7.9px and the map's
+ * own 9px street labels at 3.9px. Same problem CustomAppGraphic had with the
+ * Custom App handoff, same answer: redraw for the slot.
+ *
+ * So this is a landscape recomposition at 3:2 on a 560x380 stage, matching
+ * CustomAppGraphic's stage and 400px cap so the page's two drawings scale
+ * identically. The device bezel, status bar, home indicator, quick-action
+ * row and up-next list are cut. What survives is the part that carries the
+ * idea: the route, the current position, the pinned next stop, the ETA, and
+ * enough of the app frame to read as software rather than as a map.
+ *
+ * Static inline SVG, no script. The supplied file's `thPulse` ring is NOT
+ * built, following CustomAppGraphic: the owner asked for static there and
+ * these two should behave the same way. It is a two-keyframe CSS loop if it
+ * is ever wanted, and it would need a prefers-reduced-motion guard, which the
+ * supplied file does not carry.
+ *
+ * ⚠️ TYPE IS STAGE-SPACE, NOT PIXELS — landmine 17. The stage is 560 wide and
+ * scales with the card, so a 13-unit street label renders at 7.0px in the
+ * 303px proof-card column and 9.3px at the 400px cap. Thumbnail sizes,
+ * measured against the shipped Public Sans and JetBrains Mono advances and
+ * accepted on the same terms as the offers drawing: the card's own copy says
+ * what the thing is, and the small type is texture.
+ *
+ * ⚠️ THE PLACE NAMES ARE NOT THE SUPPLIED FILE'S, and the reason is a font
+ * gap worth knowing about. The drawing arrived with "Kāhala Ave" (twice),
+ * "KĀHALA AVE" and "Kaimukī Bakery". Every subset this site ships carries
+ * U+02BB, the ʻokina, because scripts/build-fonts.py patches it in
+ * deliberately (landmine 2) — but NONE of them carries a macron vowel. I read
+ * the cmaps: Public Sans 400/500/600 and JetBrains Mono 400/500 all have
+ * U+02BB and none has ā, ī, ō or ū. No copy anywhere in src/ has ever used
+ * one, so this drawing would have been the first, and those three strings
+ * would have fallen back to a system face mid-word.
+ *
+ * Dropping the macrons was not an option: "Kahala" is not a spelling, it is a
+ * different word. So the drawing uses Oʻahu place names that are correct
+ * without one, and keeps one ʻokina ("KALANIANAʻOLE HWY") so the patched
+ * glyph is exercised where a reader can see it. THE REAL FIX IS AVAILABLE AND
+ * NOT DONE: @fontsource ships latin-ext subsets for both faces, already in
+ * node_modules, with every macron in them. Adding a second @font-face per
+ * face with `unicode-range: U+0100-024F` costs ~12 KB per weight and only
+ * downloads when a page actually uses one. Worth doing before any Hawaiian
+ * place name with a macron ships anywhere on this site.
+ *
+ * ⚠️ ONE COLOUR ROLE HAS NO TOKEN AND WAS MAPPED, NOT ADDED. The supplied
+ * file's map buildings are #E5E7E1, which sits between --color-wash #E2E4DE
+ * and --color-rule #D9DBD4. They render as --color-wash. Everything else maps
+ * exactly: eleven of the file's twelve hexes are already tokens.
+ *
+ * ⚠️ The stylesheet is `is:global` and every selector is `drg-` prefixed,
+ * following WindwardAir and CustomAppGraphic. Nothing here is built with
+ * innerHTML so scoped styles would work, but the three drawings on this page
+ * should fail the same way — landmine 18.
+ *
+ * ⚠️ Radii are kept as drawn, the same standing exception the hero and the
+ * offers drawing carry. Every other bounded object on this site is square.
+ *
+ * ⚠️ "Windward Air" is not named here and no business is. The addresses, the
+ * truck number and the job are invented, the same way Cedar Ridge Mechanical
+ * is. THIS ONE MATTERS MORE THAN THE OTHER TWO: it sits in the proof section,
+ * under a heading that reads "What this looks like in real businesses", above
+ * a real client result. That is why it carries a visible ILLUSTRATION caption
+ * rather than relying on a code comment, and why the card's label in
+ * site-v2.ts is no longer the word "Screenshot".
+ */
+---
+
+<figure class="drg-fig">
+  <svg
+    class="drg"
+    viewBox="0 0 560 380"
+    xmlns="http://www.w3.org/2000/svg"
+    role="presentation"
+    focusable="false"
+    aria-hidden="true"
+  >
+    <defs>
+      <clipPath id="drg-map-clip">
+        <rect x="0" y="70" width="560" height="216" />
+      </clipPath>
+    </defs>
+
+    <rect class="drg-surface" x="0" y="0" width="560" height="380" />
+
+    <!-- app header -->
+    <rect class="drg-logo" x="18" y="10" width="20" height="20" rx="5" />
+    <circle class="drg-logo-ring" cx="28" cy="20" r="4.5" />
+    <text class="drg-brand" x="46" y="26">Dispatch</text>
+    <rect class="drg-tag" x="470" y="11" width="72" height="18" rx="3" />
+    <text class="drg-tag-t drg-mid" x="506" y="23.5">TRUCK 2</text>
+
+    <line class="drg-rule" x1="0" y1="38" x2="560" y2="38" />
+
+    <!-- route header -->
+    <text class="drg-h" x="18" y="59">Today's route</text>
+    <text class="drg-meta drg-end" x="542" y="59">STOP 2 OF 5</text>
+
+    <!-- map -->
+    <g clip-path="url(#drg-map-clip)">
+      <rect class="drg-ground" x="0" y="70" width="560" height="216" />
+
+      <!-- water -->
+      <path
+        class="drg-water"
+        d="M0,240 C90,236 190,252 300,260 C400,267 480,272 560,266 L560,286 L0,286 Z"
+      />
+      <path
+        class="drg-coast"
+        d="M0,240 C90,236 190,252 300,260 C400,267 480,272 560,266"
+      />
+
+      <!-- blocks -->
+      <rect class="drg-block" x="330" y="118" width="70" height="34" rx="3" />
+      <rect class="drg-block" x="60" y="182" width="48" height="26" rx="3" />
+
+      <!-- the crater -->
+      <!-- rx is 60, not the 52 it was drawn at: the label inside it measures
+           103 units in the shipped mono, so 52 put the type flush against the
+           dashed edge on both sides. -->
+      <ellipse class="drg-crater" cx="128" cy="202" rx="60" ry="26" />
+
+      <!-- roads, widest first -->
+      <g class="drg-roads">
+        <path d="M0,140 C120,134 300,138 560,132" stroke-width="2.5" />
+        <path d="M200,70 L212,246" stroke-width="2.5" />
+        <path d="M420,70 L430,256" stroke-width="2.5" />
+        <path d="M500,70 L508,258" stroke-width="3" />
+        <path d="M90,70 L104,240" stroke-width="3.5" />
+        <path d="M310,70 L322,252" stroke-width="3.5" />
+        <path d="M0,170 C140,162 320,166 560,158" stroke-width="6" />
+        <path d="M0,222 C130,216 320,228 560,236" stroke-width="7" />
+        <path d="M0,110 C120,100 300,96 560,88" stroke-width="9" />
+      </g>
+
+      <g class="drg-label">
+        <text x="16" y="104">H-1 FWY</text>
+        <text x="16" y="166">WAIALAE AVE</text>
+        <text x="300" y="250">KALANIANAʻOLE HWY</text>
+        <text class="drg-mid" x="128" y="205">DIAMOND HEAD</text>
+        <text class="drg-end" x="470" y="277">MAUNALUA BAY</text>
+      </g>
+
+      <!-- the leg being driven -->
+      <path
+        class="drg-route"
+        d="M200,214 C250,205 320,192 386,170"
+      />
+
+      <!-- next stop -->
+      <rect class="drg-chip" x="328" y="80" width="140" height="24" rx="12" />
+      <text class="drg-chip-t drg-mid" x="398" y="96">4312 Hunakai St</text>
+      <path
+        class="drg-pin"
+        d="M398,116 C407.9,116 416,124.1 416,134 C416,145.7 398,164 398,164 C398,164 380,145.7 380,134 C380,124.1 388.1,116 398,116 Z"
+      />
+      <circle class="drg-pin-eye" cx="398" cy="133.5" r="5.5" />
+
+      <!-- eta on the leg -->
+      <rect class="drg-eta" x="268" y="178" width="56" height="22" rx="11" />
+      <text class="drg-eta-t drg-mid" x="296" y="193">12 min</text>
+
+      <!-- where the truck is now -->
+      <circle class="drg-here-halo" cx="200" cy="214" r="11" />
+      <circle class="drg-here" cx="200" cy="214" r="6" />
+
+      <!-- compass -->
+      <g class="drg-compass">
+        <circle class="drg-compass-face" cx="520" cy="248" r="15" />
+        <circle class="drg-compass-eye" cx="520" cy="248" r="3.5" />
+        <g class="drg-compass-tick">
+          <path d="M520,239 L520,242" />
+          <path d="M520,254 L520,257" />
+          <path d="M511,248 L514,248" />
+          <path d="M526,248 L529,248" />
+        </g>
+      </g>
+    </g>
+
+    <line class="drg-rule" x1="0" y1="286" x2="560" y2="286" />
+
+    <!-- the sheet, compressed to its first block -->
+    <text class="drg-meta" x="18" y="308">NEXT STOP</text>
+    <rect class="drg-eta-tag" x="448" y="294" width="94" height="19" rx="3" />
+    <text class="drg-eta-tag-t drg-mid" x="495" y="307.5">ETA 12 MIN</text>
+
+    <text class="drg-addr" x="18" y="340">4312 Hunakai St</text>
+    <text class="drg-sub" x="18" y="360">AC service call · quarterly maintenance</text>
+
+    <rect class="drg-btn" x="430" y="330" width="112" height="32" rx="8" />
+    <path class="drg-btn-i" d="M450,338 L461,362 L450,356 L439,362 Z" />
+    <text class="drg-btn-t" x="469" y="350.5">Navigate</text>
+  </svg>
+
+  <figcaption class="drg-cap">Illustration</figcaption>
+</figure>
+
+<style is:global>
+  .drg-fig {
+    margin: 0;
+    max-width: 400px;
+  }
+  .drg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--color-rule);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    fill: var(--color-ink);
+  }
+  .drg-end { text-anchor: end; }
+  .drg-mid { text-anchor: middle; }
+
+  /* The disclosure. It is the reason this drawing may sit in the proof
+     section at all, so it is a real caption in the DOM, not a title
+     attribute and not a comment. Quiet, but never absent. */
+  .drg-cap {
+    margin: 7px 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  /* The app chrome is the white card ground and only the map band is paper,
+     which is how the supplied file separates them (#F8F9F6 screen, #EDEEE9
+     map). Flattening both to paper made the sheet stop reading as a sheet. */
+  .drg-surface { fill: var(--color-white); }
+  .drg-ground { fill: var(--color-paper); }
+  .drg-rule { stroke: var(--color-rule); stroke-width: 1; }
+
+  /* header */
+  .drg-logo { fill: var(--color-accent); }
+  .drg-logo-ring {
+    fill: none; stroke: var(--color-white); stroke-width: 2;
+  }
+  .drg-brand { font-size: 19px; font-weight: 600; letter-spacing: -.015em; }
+  .drg-tag { fill: var(--color-wash); }
+  .drg-tag-t {
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: .09em; fill: var(--color-quiet);
+  }
+  .drg-h { font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+  .drg-meta {
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: .09em; fill: var(--color-faint);
+  }
+
+  /* map */
+  .drg-water { fill: var(--color-rule); }
+  .drg-coast { fill: none; stroke: var(--color-hair); stroke-width: 1; }
+  .drg-block { fill: var(--color-wash); }
+  .drg-crater {
+    fill: none; stroke: var(--color-hair);
+    stroke-width: 1; stroke-dasharray: 3 4;
+  }
+  .drg-roads path {
+    fill: none; stroke: var(--color-white); stroke-linecap: round;
+  }
+  .drg-label {
+    font-family: var(--font-mono); font-size: 13px;
+    letter-spacing: .06em; fill: var(--color-faint);
+  }
+
+  .drg-route {
+    fill: none; stroke: var(--color-accent); stroke-width: 2.5;
+    stroke-linecap: round; stroke-dasharray: 1 7;
+  }
+
+  .drg-chip { fill: var(--color-white); stroke: var(--color-rule); }
+  .drg-chip-t { font-size: 15px; font-weight: 600; }
+  .drg-pin { fill: var(--color-ink); }
+  .drg-pin-eye { fill: var(--color-white); }
+
+  .drg-eta { fill: var(--color-ink); }
+  .drg-eta-t { font-size: 14px; font-weight: 600; fill: var(--color-white); }
+
+  .drg-here-halo { fill: var(--color-accent); opacity: .18; }
+  .drg-here {
+    fill: var(--color-accent); stroke: var(--color-white); stroke-width: 2;
+  }
+
+  .drg-compass-face { fill: var(--color-white); stroke: var(--color-rule); }
+  .drg-compass-eye {
+    fill: none; stroke: var(--color-body); stroke-width: 1.4;
+  }
+  .drg-compass-tick path {
+    stroke: var(--color-body); stroke-width: 1.4; stroke-linecap: round;
+  }
+
+  /* sheet */
+  .drg-eta-tag { fill: var(--color-accent); opacity: .14; }
+  .drg-eta-tag-t {
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: .08em; fill: var(--color-accent-dark);
+  }
+  .drg-addr { font-size: 27px; font-weight: 600; letter-spacing: -.02em; }
+  .drg-sub { font-size: 14px; fill: var(--color-quiet); }
+  .drg-btn { fill: var(--color-accent); }
+  .drg-btn-i { fill: none; stroke: var(--color-white); stroke-width: 1.7; stroke-linejoin: round; }
+  .drg-btn-t { font-size: 15px; font-weight: 600; fill: var(--color-white); }
+</style>

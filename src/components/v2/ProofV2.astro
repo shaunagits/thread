@@ -1,30 +1,53 @@
 ---
 import { proof } from '../../content/site-v2';
 import Placeholder from './Placeholder.astro';
+import DispatchRouteGraphic from './DispatchRouteGraphic.astro';
 
 /**
- * ⚠️ ONE REAL RESULT, TWO VISIBLE GAPS.
+ * ⚠️ THREE VISIBLE GAPS, since 4 Sep 2026 — no results on this page.
  *
- * proof[0] is a real client outcome, confirmed by the owner 1 Sep 2026.
- * proof[1] and proof[2] are the wireframe's own bracketed placeholders and
- * render as such — dashed, labelled, obviously unfinished.
+ * The owner asked for the whole row to read "Coming soon" while the section's
+ * content is pulled together. Every card is dashed, labelled and obviously
+ * unfinished. The markup, the grid and the card geometry are unchanged: this
+ * is a state change in `proof`, not a layout change.
+ *
+ * History, because both branches below are still live code:
+ *
+ *  - proof[0] was a real, owner-confirmed client outcome from 1 Sep 2026 until
+ *    4 Sep 2026. Its exact copy is preserved in the comment over `proof` in
+ *    site-v2.ts. The non-placeholder branch is kept for it.
+ *  - proof[0] also rendered DispatchRouteGraphic from 3 Sep 2026 — a DRAWING,
+ *    not that client's app, which is why it carries its own visible caption.
+ *    The `graphic === 'dispatch'` switch and the component both survive, so
+ *    restoring it is one key in site-v2.ts. Keep the caption if it returns.
  *
  * Do not write copy into the placeholders to "balance the row". This site
  * carried a fabricated case study with fabricated metrics once, and deleting
  * it is the reason src/content/placeholders.ts does not exist any more. A
- * visibly empty third card costs nothing; an invented one costs the claim in
- * the first card too.
+ * visibly empty card costs nothing; an invented one costs every other claim on
+ * the page.
  */
 ---
 
 <ol class="proof">
   {proof.map((item) => (
     <li class={item.placeholder ? 'pf is-ph' : 'pf'}>
-      {/* "Coming soon", not "Finish later", since 2 Sep 2026: the site is
-          live and the owner is gathering the case studies, so these gaps are
-          the one place a visitor is meant to read the flag. They are still
-          gaps — do not write results into them. */}
-      <Placeholder label={item.shot} minHeight="132px" flag="Coming soon" />
+      {/* All three cards are gaps as of 4 Sep 2026. "Coming soon", not
+          "Finish later", since 2 Sep 2026: the site is live and the owner is
+          gathering the case studies, so these gaps are the one place a visitor
+          is meant to read the flag. They are still gaps — do not write results
+          into them.
+
+          ⚠️ The `dispatch` branch is dormant, not dead. If it is ever switched
+          back on: that drawing is an ILLUSTRATION and says so in its own
+          caption. It is not a screenshot of any business named in a card's
+          body copy, and nothing derived from this section may present it as
+          one. */}
+      {item.graphic === 'dispatch' ? (
+        <DispatchRouteGraphic />
+      ) : (
+        <Placeholder label={item.shot ?? 'Screenshot'} minHeight="132px" flag="Coming soon" />
+      )}
       {item.placeholder ? (
         <>
           <p class="result ph-result">{item.result}</p>

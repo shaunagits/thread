@@ -20,10 +20,11 @@
  *     the wireframe and were confirmed as real. They are still not to be
  *     invented, extended or rounded — a price that is not in the wireframe
  *     does not go in this file.
- *  2. ONE CASE-STUDY RESULT. `proof[0]` is a real client outcome, confirmed by
- *     the owner. Entries two and three are the wireframe's own bracketed
- *     placeholders and render as visible placeholder blocks, the way /work
- *     does. Do not write copy into them.
+ *  2. NO CASE-STUDY RESULTS, since 4 Sep 2026. All three `proof` entries are
+ *     placeholders and render as visible "Coming soon" blocks, the way /work
+ *     does. `proof[0]` was a real, owner-confirmed outcome until that date and
+ *     its exact copy is preserved in the comment over the array. Do not write
+ *     copy into any of them.
  *
  * Everything else in "Content that must never be invented" still applies.
  */
@@ -147,32 +148,64 @@ export const offers = [
 ];
 
 /**
- * ⚠️ Entry one is a real result, confirmed by the owner 1 Sep 2026. Entries
- * two and three are the wireframe's bracketed placeholders and `placeholder`
- * is what makes them render as visible gaps rather than as claims. Flip the
- * flag only when the owner supplies the real business, problem and result —
- * never to make the row look finished.
+ * ⚠️ ALL THREE CARDS ARE PLACEHOLDERS, on the owner's instruction 4 Sep 2026.
+ * The section is being rewritten and the owner asked for the whole row to read
+ * "Coming soon" while that happens. Layout, hierarchy and card geometry are
+ * unchanged — only the state of the entries.
+ *
+ * What came out, and what it costs to put back:
+ *
+ *  - Entry one was a REAL result: `result: '6 hrs/week'`, body 'HVAC company,
+ *    Oahu. Replaced a text-thread dispatch with a job list.', confirmed by the
+ *    owner 1 Sep 2026. It is the only real client outcome this site has ever
+ *    carried. Restoring it is this entry with `placeholder: false` and that
+ *    copy — do not paraphrase it, and do not restore it without the owner.
+ *  - Entry one also carried `graphic: 'dispatch'`, which rendered
+ *    DispatchRouteGraphic.astro (a DRAWING, not that client's app, with its
+ *    own visible ILLUSTRATION caption). ProofV2 still switches on that key, so
+ *    the drawing comes back by adding `graphic: 'dispatch'` here. The
+ *    component is untouched.
+ *
+ * The standing rule is unchanged and now applies to every card: flip
+ * `placeholder` only when the owner supplies the real business, problem and
+ * result. Never to make the row look finished.
  */
-export const proof = [
-  {
-    placeholder: false,
-    result: '6 hrs/week',
-    body: 'HVAC company, Oahu. Replaced a text-thread dispatch with a job list.',
-    shot: 'Screenshot',
-  },
+/** Explicit, because every `graphic` and every non-placeholder entry is
+ *  currently absent: without it TypeScript narrows the array to "three
+ *  placeholders with no graphic" and ProofV2's dormant `dispatch` branch stops
+ *  type-checking. The type is the shape this section supports, not the shape
+ *  it happens to hold today. */
+type ProofItem = {
+  placeholder: boolean;
+  result: string;
+  body: string;
+  shot?: string;
+  graphic?: 'dispatch';
+};
+
+export const proof: ProofItem[] = [
   /* "Coming soon" wording since 2 Sep 2026, on the owner's instruction: the
      site is live and the real case studies are being gathered. The wireframe's
-     "Same-day invoices" came out with it — it read as a result. */
+     "Same-day invoices" came out with it — it read as a result.
+
+     One identical body line across all three since 4 Sep 2026: three different
+     sentences saying the same thing implied three different states. */
   {
     placeholder: true,
     result: 'Coming soon',
-    body: 'A second case study is on its way.',
+    body: 'Case study on its way.',
     shot: 'Screenshot',
   },
   {
     placeholder: true,
     result: 'Coming soon',
-    body: 'A third case study is on its way.',
+    body: 'Case study on its way.',
+    shot: 'Screenshot',
+  },
+  {
+    placeholder: true,
+    result: 'Coming soon',
+    body: 'Case study on its way.',
     shot: 'Screenshot',
   },
 ];
