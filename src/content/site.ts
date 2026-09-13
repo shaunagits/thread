@@ -149,17 +149,14 @@ export const calLabel = 'Book a 20-minute call';
  */
 export const nav = [
   { label: 'Offers', href: '/#offers' },
-  { label: 'Work', href: '/#proof' },
+  /* Switched from '/#proof' to '/work' on 12 Sep 2026, the day the first case
+     study went up. The holding page's three-part gate (this line, the noindex
+     prop, the robots.txt Disallow, plus the sitemap filter) all flipped in
+     that commit. The homepage proof row still exists and its first card links
+     to the same page, so a visitor reaches the work either way. */
+  { label: 'Work', href: '/work' },
   { label: 'About', href: '/#about' },
   { label: 'Contact', href: '/#contact' },
-
-  /* Ready to go. The /work route, its layout and its footer entry all exist;
-     this line is the switch. It is commented out because a visitor who clicks
-     "Work" is looking for proof, and sending them to a holding page is worse
-     than not offering the link at all. Uncomment it in the same commit that
-     puts real work on the page, and remove both the `noindex` prop in
-     work.astro and the Disallow in robots.txt.ts. */
-  // { label: 'Work', href: '/work' },
 ];
 
 /** Real address — Namecheap forwards it. See CLAUDE.md landmine 9. */

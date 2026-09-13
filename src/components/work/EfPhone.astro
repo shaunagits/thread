@@ -1,0 +1,153 @@
+---
+/**
+ * EstimateFlow's customer intake, on a phone: step 3 of 5, the homeowner
+ * picking "Active leak" and attaching a photo. Cut from the phone half of
+ * _docs/designs_091226/Hero Visual.dc.html (owner, 12 Sep 2026) so the same
+ * drawing can stand alone as walkthrough step 01 and sit inside the hero
+ * composite (EfHero.astro) without being drawn twice.
+ *
+ * A fixed 308x612 object, as designed. It is placed absolutely by EfHero and
+ * centred by the walkthrough; in a 350px phone column it fits with 21px to
+ * spare on each side.
+ *
+ * `animated` runs the design's own loop (the option highlights, the check
+ * pops, the progress bar advances) on a 7s cycle. EfHero passes it so the
+ * hero moves; the walkthrough step does not, so the two copies on the page
+ * are not blinking in sync. Both respect prefers-reduced-motion.
+ *
+ * Same rules as EfBefore.astro: the app's own palette and sizes.
+ */
+interface Props { class?: string; animated?: boolean }
+const { class: klass, animated = false } = Astro.props;
+---
+
+<div class={['efp', animated && 'efp-anim', klass].filter(Boolean).join(' ')} aria-hidden="true">
+  <div class="efp-screen">
+    <div class="efp-status">
+      <span>9:41</span>
+      <div class="efp-status-icons"><span class="efp-sig"></span><span class="efp-bat"></span></div>
+    </div>
+
+    <div class="efp-nav">
+      <div class="efp-nav-row"><span class="efp-back">‹</span><span class="efp-step">Step 3 of 5</span></div>
+      <div class="efp-track"><div class="efp-progress"></div></div>
+    </div>
+
+    <div class="efp-q">
+      <div class="efp-q-h">What can we help with?</div>
+      <div class="efp-q-sub">Pick the closest match.</div>
+    </div>
+
+    <div class="efp-options">
+      <div class="efp-opt efp-opt-on"><span class="efp-radio efp-radio-on">✓</span><span class="efp-opt-l efp-opt-l-on">Active leak</span></div>
+      <div class="efp-opt"><span class="efp-radio"></span><span class="efp-opt-l">Missing shingles</span></div>
+      <div class="efp-opt"><span class="efp-radio"></span><span class="efp-opt-l">Storm damage</span></div>
+    </div>
+
+    <div class="efp-photo-row">
+      <div class="efp-label">Your photo</div>
+      <div class="efp-photos">
+        <div class="efp-photo"></div>
+        <div class="efp-add">+</div>
+        <div class="efp-cap">Added from camera</div>
+      </div>
+    </div>
+
+    <div class="efp-foot">
+      <div class="efp-cta">Continue</div>
+      <div class="efp-home"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .efp {
+    --ef-ink: #1A2320; --ef-text: #33443E; --ef-cap: #7C8A85; --ef-muted: #8A9792;
+    --ef-teal: #0F766E; --ef-teal-bg: #F0F8F6; --ef-line: #E3E6E4; --ef-line-2: #DCE2DF;
+    box-sizing: border-box; width: 308px; height: 612px; flex: none;
+    border-radius: 42px; background: var(--ef-ink); padding: 9px;
+    box-shadow: 0 46px 80px -22px rgba(14,32,28,.42), 0 6px 16px rgba(14,32,28,.14);
+    font-family: var(--font-sans); color: var(--ef-ink); line-height: 1.35;
+  }
+  .efp-screen {
+    width: 100%; height: 100%; border-radius: 34px; background: #fff; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .efp-status {
+    display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 6px;
+    font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  .efp-status-icons { display: flex; align-items: center; gap: 4px; }
+  .efp-sig { width: 16px; height: 8px; border-radius: 2px; background: var(--ef-ink); }
+  .efp-bat { width: 22px; height: 10px; border-radius: 3px; border: 1.5px solid var(--ef-ink); }
+
+  .efp-nav { padding: 12px 20px 0; display: flex; flex-direction: column; gap: 10px; }
+  .efp-nav-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--ef-cap); }
+  .efp-back { font-size: 16px; color: var(--ef-text); }
+  .efp-step { font-weight: 500; letter-spacing: .01em; }
+  .efp-track { height: 5px; border-radius: 3px; background: #EDF1EF; overflow: hidden; }
+  .efp-progress { height: 100%; border-radius: 3px; background: var(--ef-teal); width: 44%; }
+
+  .efp-q { padding: 22px 20px 0; display: flex; flex-direction: column; gap: 6px; }
+  .efp-q-h { font-size: 23px; font-weight: 600; letter-spacing: -.02em; line-height: 1.2; text-wrap: pretty; }
+  .efp-q-sub { font-size: 13px; color: var(--ef-cap); line-height: 1.4; }
+
+  .efp-options { padding: 18px 20px 0; display: flex; flex-direction: column; gap: 9px; }
+  .efp-opt {
+    display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 12px;
+    border: 1.5px solid var(--ef-line); background: #fff;
+  }
+  .efp-radio { width: 20px; height: 20px; flex: none; border-radius: 50%; border: 1.5px solid var(--ef-line-2); }
+  .efp-radio-on {
+    border: 0; background: var(--ef-teal); color: #fff; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .efp-opt-l { font-size: 15px; color: var(--ef-text); }
+  .efp-opt-l-on { font-weight: 600; color: var(--ef-ink); }
+
+  .efp-photo-row { padding: 20px 20px 0; display: flex; flex-direction: column; gap: 9px; }
+  .efp-label { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ef-muted); }
+  .efp-photos { display: flex; gap: 9px; align-items: center; }
+  .efp-photo {
+    width: 64px; height: 64px; flex: none; border-radius: 10px; border: 1px solid #E6EAE8;
+    background: linear-gradient(135deg, #E8EEEB 0%, #D5DEDA 55%, #C7D2CD 100%);
+  }
+  .efp-add {
+    width: 64px; height: 64px; flex: none; border-radius: 10px; border: 1.5px dashed var(--ef-line-2);
+    display: flex; align-items: center; justify-content: center; color: #A3AFAA; font-size: 20px;
+  }
+  .efp-cap { font-size: 12px; color: var(--ef-cap); line-height: 1.4; text-wrap: pretty; }
+
+  .efp-foot { margin-top: auto; padding: 16px 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .efp-cta {
+    display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600;
+    color: #fff; background: var(--ef-teal); border-radius: 12px; padding: 14px;
+  }
+  .efp-home { height: 4px; width: 110px; border-radius: 2px; background: var(--ef-line-2); margin: 0 auto; }
+
+  /* The design's loop, opt-in. Static copies show the settled frame. */
+  /* The settled frame is the picked state; when animated, the loop takes the
+     option from resting to picked and back, on the design's own timings. */
+  @media (prefers-reduced-motion: no-preference) {
+    .efp-anim .efp-opt-on { animation: efp-pick 7s ease-in-out infinite; }
+    .efp-anim .efp-radio-on { animation: efp-check 7s cubic-bezier(.2,.7,.2,1) infinite; }
+    .efp-anim .efp-progress { animation: efp-progress 7s cubic-bezier(.2,.7,.2,1) infinite; }
+  }
+  .efp-opt-on { border-color: var(--ef-teal); background: var(--ef-teal-bg); }
+  @keyframes efp-pick {
+    0%, 6%   { border-color: #E3E6E4; background: #FFFFFF; }
+    10%, 88% { border-color: #0F766E; background: #F0F8F6; }
+    94%,100% { border-color: #E3E6E4; background: #FFFFFF; }
+  }
+  @keyframes efp-check {
+    0%, 6%   { opacity: 0; transform: scale(.4); }
+    12%      { opacity: 1; transform: scale(1.14); }
+    16%, 88% { opacity: 1; transform: scale(1); }
+    94%,100% { opacity: 0; transform: scale(.4); }
+  }
+  @keyframes efp-progress {
+    0%, 8%   { width: 44%; }
+    20%, 92% { width: 68%; }
+    100%     { width: 44%; }
+  }
+</style>

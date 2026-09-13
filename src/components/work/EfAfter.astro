@@ -1,0 +1,149 @@
+---
+/**
+ * EstimateFlow, "after": the same inquiry as a project the estimator can
+ * review. Ported from _docs/designs_091226/After Project.dc.html, supplied by
+ * the owner 12 Sep 2026, and built as drawn.
+ *
+ * Same rules as EfBefore.astro: the app's own palette and sizes, the site's
+ * sans in place of Instrument Sans, `ef-` custom properties on the root.
+ *
+ * The two photo slots in the design were `<image-slot>` elements with no
+ * image behind them. They render here as a soft photo stand-in (.ef-photo)
+ * until there are roof photos to put in them; see the gap list in
+ * src/content/work.ts.
+ *
+ * ⚠️ EstimateFlow is a demonstration build, not a client. See work.ts.
+ */
+interface Props { class?: string }
+const { class: klass } = Astro.props;
+---
+
+<div class={['ef ef-after', klass].filter(Boolean).join(' ')} aria-hidden="true">
+  <div class="ef-head">
+    <div class="ef-tag ef-tag-teal">After</div>
+    <div class="ef-h">A project the estimator can review</div>
+  </div>
+
+  <div class="ef-card">
+    <div class="ef-rule"></div>
+
+    <div class="ef-sec ef-sec-top">
+      <div class="ef-field">
+        <div class="ef-name">Malia Santos</div>
+        <div class="ef-sub">Active residential leak · Pearl City</div>
+      </div>
+      <div class="ef-pills">
+        <div class="ef-pill ef-pill-red"><span class="ef-dot ef-dot-red"></span>High urgency</div>
+        <div class="ef-pill ef-pill-teal ef-num">92% ready</div>
+        <div class="ef-pill ef-pill-grey">New inquiry</div>
+      </div>
+    </div>
+
+    <div class="ef-sec">
+      <div class="ef-msg">Water began entering the kitchen during heavy rain last night. The customer reports dripping near a ceiling light fixture and visible staining.</div>
+    </div>
+
+    <div class="ef-sec ef-stack">
+      <div class="ef-label">Property &amp; availability</div>
+      <div class="ef-checks">
+        <div><span class="ef-check">✓</span>Sloped asphalt-shingle roof</div>
+        <div><span class="ef-check">✓</span>Approximately 18 years old</div>
+        <div><span class="ef-check">✓</span>Solar panels installed</div>
+        <div><span class="ef-check">✓</span>Two photos attached</div>
+        <div><span class="ef-check">✓</span>Available Tuesday morning</div>
+      </div>
+    </div>
+
+    <div class="ef-sec ef-photos">
+      <div class="ef-field"><div class="ef-photo"></div><div class="ef-cap">Interior ceiling damage</div></div>
+      <div class="ef-field"><div class="ef-photo"></div><div class="ef-cap">Exterior roof area</div></div>
+    </div>
+
+    <div class="ef-next">
+      <span class="ef-k">Next step</span>
+      <span class="ef-v">Review for residential repair inspection</span>
+    </div>
+
+    <div class="ef-actions">
+      <div class="ef-btn ef-btn-fill">Assign estimator</div>
+      <div class="ef-btn ef-btn-line">Request one missing detail</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ef {
+    --ef-ink: #14201C; --ef-text: #33443E; --ef-mid: #6E7C77; --ef-muted: #8A9792; --ef-cap: #7C8A85;
+    --ef-line: #E3E6E4; --ef-line-soft: #EAEDEB; --ef-ground: #F7F9F8; --ef-card: #FFFFFF;
+    --ef-teal: #0F766E; --ef-teal-bg: #F0F8F6; --ef-teal-line: #CFE5E0; --ef-teal-card-line: #D6E4E0;
+    --ef-red: #A8291C; --ef-red-bg: #FEF2F1; --ef-red-line: #F6D7D3; --ef-red-dot: #C2392A;
+    box-sizing: border-box; width: 100%; max-width: 620px; padding: 28px;
+    font-family: var(--font-sans); color: var(--ef-ink); line-height: 1.35;
+  }
+  .ef-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .ef-tag {
+    align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; border-radius: 999px; padding: 5px 11px;
+  }
+  .ef-tag-teal { color: var(--ef-teal); background: var(--ef-teal-bg); border: 1px solid var(--ef-teal-line); }
+  .ef-h { font-size: 19px; font-weight: 600; letter-spacing: -.015em; color: var(--ef-text); text-wrap: pretty; }
+
+  .ef-card {
+    border: 1px solid var(--ef-teal-card-line); border-radius: 14px; background: var(--ef-card);
+    box-shadow: 0 8px 24px -12px rgba(15,118,110,.22), 0 1px 2px rgba(16,24,32,.04); overflow: hidden;
+  }
+  .ef-rule { height: 3px; background: var(--ef-teal); }
+  .ef-sec { padding: 16px 18px 0; }
+  .ef-sec-top { padding-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .ef-stack { display: flex; flex-direction: column; gap: 10px; }
+  .ef-field { display: flex; flex-direction: column; gap: 3px; }
+  .ef-name { font-size: 21px; font-weight: 600; letter-spacing: -.02em; }
+  .ef-sub { font-size: 13px; color: var(--ef-mid); }
+
+  .ef-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ef-pill {
+    display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+    letter-spacing: .02em; text-transform: uppercase; border-radius: 999px; padding: 6px 11px;
+  }
+  .ef-pill-red { color: var(--ef-red); background: var(--ef-red-bg); border: 1px solid var(--ef-red-line); }
+  .ef-pill-teal { color: var(--ef-teal); background: var(--ef-teal-bg); border: 1px solid var(--ef-teal-line); }
+  .ef-pill-grey { color: #5D6B66; background: #F4F6F5; border: 1px solid var(--ef-line); }
+  .ef-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .ef-dot-red { background: var(--ef-red-dot); }
+  .ef-num { font-variant-numeric: tabular-nums; }
+
+  .ef-msg {
+    font-size: 15px; line-height: 1.55; color: var(--ef-text); background: var(--ef-ground);
+    border: 1px solid var(--ef-line-soft); border-radius: 10px; padding: 14px; text-wrap: pretty;
+  }
+  .ef-label { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ef-muted); }
+  .ef-checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 9px 18px; }
+  .ef-checks div { display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--ef-text); }
+  .ef-check { color: var(--ef-teal); font-weight: 700; }
+
+  .ef-photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .ef-photos .ef-field { gap: 6px; }
+  /* Photo stand-in: a soft gradient where a roof photo goes. Not a Placeholder
+     component on purpose; inside the drawing it needs to read as an image
+     thumbnail, not as a work item. The work item is listed in work.ts. */
+  .ef-photo {
+    height: 112px; border-radius: 10px; border: 1px solid #E6EAE8;
+    background: linear-gradient(135deg, #E8EEEB 0%, #D5DEDA 55%, #C7D2CD 100%);
+  }
+  .ef-cap { font-size: 12px; color: var(--ef-cap); }
+
+  .ef-next {
+    margin: 18px 18px 0; border-top: 1px solid var(--ef-line-soft); padding-top: 14px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .ef-k { font-size: 12px; color: var(--ef-muted); }
+  .ef-v { font-size: 15px; font-weight: 500; color: var(--ef-ink); text-wrap: pretty; }
+
+  .ef-actions { padding: 16px 18px 18px; display: flex; flex-wrap: wrap; gap: 9px; }
+  .ef-btn {
+    flex: 1; min-width: 150px; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; border-radius: 9px; padding: 12px 16px; text-align: center;
+  }
+  .ef-btn-fill { font-weight: 600; color: #fff; background: var(--ef-teal); }
+  .ef-btn-line { font-weight: 500; color: var(--ef-text); background: #fff; border: 1px solid #DCE2DF; }
+</style>

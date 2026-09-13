@@ -15,10 +15,81 @@ it as precedent. Everything a visitor *interacts with* is still scriptless: the
 phone menu is a `<details>`, so is the FAQ, and the contact form is a native
 POST.
 
-Pages: `/` · `/privacy` · `/terms` · `/thanks` · `/work` (placeholder, noindex,
-excluded in robots.txt) · `/og` (card generator, noindex, excluded in
-robots.txt) · `/v1` (**previous homepage**, noindex, excluded in robots.txt).
-`/systems-map` was deleted and 301s to `/#contact`.
+Pages: `/` · `/privacy` · `/terms` · `/thanks` · `/work` (**the Work index,
+live and indexed since 12 Sep 2026**) · `/work/[slug]` (**the case study
+template**; one page, `/work/estimateflow`) · `/og` (card generator, noindex,
+excluded in robots.txt) · `/v1` (**previous homepage**, noindex, excluded in
+robots.txt). `/systems-map` was deleted and 301s to `/#contact`.
+
+---
+
+## ⚠️⚠️ 12 Sep 2026 — /work went live with a DEMONSTRATION BUILD
+
+Read this before touching anything under `src/pages/work`, `src/content/work.ts`
+or the homepage proof row.
+
+**What shipped.** The case study template at `src/pages/work/[slug].astro`,
+built from structure 1a ("Scroll walkthrough") of the owner's design file
+`_docs/designs_091226/Custom App Graphic.dc.html` (misnamed: it holds the case
+study page in three structures, 1a/1b/1c, plus 1d, the phone stack). One entry
+in `src/content/work.ts`: **EstimateFlow**, a roofing intake and estimating
+app. Its four drawings are `src/components/work/Ef*.astro`, ported from the
+three `.dc.html` files beside the design (Before Inquiry, After Project, Hero
+Visual; the phone was cut out of the hero so it could stand alone as step 01).
+
+**The three-part gate flipped in one commit**, as `work.astro`'s own comment
+said it should: the nav entry in `site.ts` now points at `/work` (it pointed at
+`/#proof`), the `Disallow: /work` is gone from `robots.txt.ts`, the sitemap
+filter in `astro.config.mjs` no longer excludes it, and `work.astro` lost its
+`noindex`. The holding page's "Being written." copy is in git at `77e7e2a`.
+
+**⚠️ EstimateFlow is NOT a client project.** It is a demonstration build. The
+owner was asked, twice, how to handle that against the standing rule below
+("Content that must never be invented") and chose, 12 Sep 2026: **publish it,
+indexed, linked from the nav and from proof card one, with NO "sample project"
+label on the page.** That is the owner's call and it has been made. Do not add
+a label, do not noindex it and do not take it down on your own initiative. If
+you think the page is a problem, say so to the owner; do not "fix" it.
+
+**What the override does not cover, and what the code still refuses to do:**
+
+- **No results numbers.** `results: []` and the template omits the band
+  entirely rather than drawing three "Finish later" cards. A figure for a
+  demonstration build is a fabricated metric, which is the exact thing the
+  deleted `placeholders.ts` did.
+- **No client name, anywhere.** The copy says what the app does. Proof card
+  one's `result` line is the product name, not a number.
+- **No stack.** `builtOn: []` draws a visible gap until the owner supplies it.
+- Malia Santos, her phone number, her roof and Pearl City are the drawings'
+  own fiction, exactly like Windward Air and Cedar Ridge on the homepage. The
+  hero's customer was Dana Whitfield in Portland in the supplied file and was
+  changed to match the other two drawings, so the page follows one inquiry.
+
+**The drawings keep their own palette.** Teal, its own greys, 11–29px type: the
+owner's choice, 12 Sep 2026, because they are pictures of an app's UI and a
+screenshot would carry its own colours too. The only change on the way in was
+the face: Instrument Sans (a Google Fonts request) became `var(--font-sans)`.
+Their hexes are `--ef-*` custom properties on each drawing's root, **not** in
+`global.css`; nothing on the site may reach for them. The "no hex in
+components" rule has this one carve-out and it is limited to `Ef*.astro`.
+
+**The hero scales without script.** `EfHero` is a fixed 1200×900 stage inside
+`<svg viewBox><foreignObject>`, so the browser scales it like any SVG and the
+page stays scriptless (WindwardAir needed a `fit()` only because it already ran
+a script). Type inside is stage-space, landmine 17. **Raised, not fixed:**
+foreignObject with absolutely positioned children has had WebKit bugs; checked
+in Chrome at build, the owner should look once in Safari on a phone. Fallback
+is WindwardAir's three-line `fit()`.
+
+**The work order** for the page is the comment at the foot of `work.ts`. Every
+item on it is drawn on the live page with `Placeholder` ("Finish later"):
+three walkthrough screenshots, the clip, three detail crops, the stack, and
+roof photos for the stand-in gradients. `grep -rn Placeholder src/pages/work`.
+
+**Adding a second case study:** one more entry in `caseStudies`, a
+`WorkGraphic` key per new drawing, a case in the template's and the index's
+figure switches. The "More work" block at the foot of the template appears on
+its own once there are two.
 
 ---
 

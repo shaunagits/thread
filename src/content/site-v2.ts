@@ -180,7 +180,10 @@ type ProofItem = {
   result: string;
   body: string;
   shot?: string;
-  graphic?: 'dispatch';
+  /** 'estimateflow' draws the EstimateFlow hero composite (12 Sep 2026). */
+  graphic?: 'dispatch' | 'estimateflow';
+  /** The card becomes a link to a case study page. */
+  href?: string;
 };
 
 export const proof: ProofItem[] = [
@@ -190,11 +193,17 @@ export const proof: ProofItem[] = [
 
      One identical body line across all three since 4 Sep 2026: three different
      sentences saying the same thing implied three different states. */
+  /* Card one is EstimateFlow, a DEMONSTRATION BUILD, published on the
+     owner's explicit instruction 12 Sep 2026 without a sample label. The
+     result line is the study's title, not a number: no figure is claimed
+     here or on its page. See the header of src/content/work.ts before
+     changing either. */
   {
-    placeholder: true,
-    result: 'Coming soon',
-    body: 'Case study on its way.',
-    shot: 'Screenshot',
+    placeholder: false,
+    result: 'EstimateFlow',
+    body: 'Every roofing inquiry arrives ready to estimate. Follow one leak from the customer\u2019s phone to the quote.',
+    graphic: 'estimateflow',
+    href: '/work/estimateflow',
   },
   {
     placeholder: true,

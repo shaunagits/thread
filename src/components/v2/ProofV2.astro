@@ -2,6 +2,7 @@
 import { proof } from '../../content/site-v2';
 import Placeholder from './Placeholder.astro';
 import DispatchRouteGraphic from './DispatchRouteGraphic.astro';
+import EfHero from '../work/EfHero.astro';
 
 /**
  * ⚠️ THREE VISIBLE GAPS, since 4 Sep 2026 — no results on this page.
@@ -43,8 +44,15 @@ import DispatchRouteGraphic from './DispatchRouteGraphic.astro';
           caption. It is not a screenshot of any business named in a card's
           body copy, and nothing derived from this section may present it as
           one. */}
+      {/* 12 Sep 2026: card one is EstimateFlow and links to /work/estimateflow.
+          Its thumbnail is the same hero composite the case study page opens
+          with, scaled by its own SVG to the card column. A DEMONSTRATION
+          BUILD, published without a sample label on the owner's instruction;
+          see src/content/work.ts. */}
       {item.graphic === 'dispatch' ? (
         <DispatchRouteGraphic />
+      ) : item.graphic === 'estimateflow' ? (
+        <div class="thumb"><EfHero /></div>
       ) : (
         <Placeholder label={item.shot ?? 'Screenshot'} minHeight="132px" flag="Coming soon" />
       )}
@@ -52,6 +60,12 @@ import DispatchRouteGraphic from './DispatchRouteGraphic.astro';
         <>
           <p class="result ph-result">{item.result}</p>
           <p class="body">{item.body}</p>
+        </>
+      ) : item.href ? (
+        <>
+          <p class="result"><a href={item.href} class="card-link">{item.result}</a></p>
+          <p class="body">{item.body}</p>
+          <a href={item.href} class="btn-ghost more">Read the case study<span class="u" aria-hidden="true"></span></a>
         </>
       ) : (
         <>
@@ -82,6 +96,10 @@ import DispatchRouteGraphic from './DispatchRouteGraphic.astro';
     color: var(--color-ink);
   }
   .ph-result { color: var(--color-faint); }
+  .thumb { border: 1px solid var(--color-hair); overflow: hidden; background: var(--color-white); }
+  .card-link { color: inherit; }
+  .card-link:hover { color: var(--color-accent-dark); text-decoration: none; }
+  .more { margin-top: 14px; }
   .body {
     font-family: var(--font-serif); font-size: var(--text-small);
     line-height: var(--leading-body); color: var(--color-body);

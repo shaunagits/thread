@@ -29,9 +29,10 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Neither the social-card generator nor the form result page is content.
-      // /work is a noindex placeholder and robots.txt disallows it — listing it
-      // here would advertise a URL crawlers are told not to fetch. Drop this
-      // clause in the same commit that removes the noindex and the Disallow.
+      //
+      // /work was filtered here from 17 Aug 2026 until 12 Sep 2026, while it
+      // was a noindex holding page. It is content now, with /work/[slug]
+      // under it, and both are listed.
       //
       // /v1 is the PREVIOUS homepage, kept live for reference after the swap
       // on 1 Sep 2026. Same three-part gate as /work: the noindex prop in
@@ -40,7 +41,6 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/og') &&
         !page.includes('/thanks') &&
-        !page.includes('/work') &&
         !page.includes('/v1'),
     }),
   ],

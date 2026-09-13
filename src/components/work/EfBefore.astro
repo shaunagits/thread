@@ -1,0 +1,132 @@
+---
+/**
+ * EstimateFlow, "before": the two-line website inquiry the office has to
+ * chase. Ported from _docs/designs_091226/Before Inquiry.dc.html, supplied by
+ * the owner 12 Sep 2026, and built as drawn.
+ *
+ * ⚠️ THIS DRAWING KEEPS ITS OWN PALETTE AND SIZES, on the owner's instruction
+ * 12 Sep 2026. It is a picture of an app's UI, not a piece of this site's
+ * chrome, so its teal, its greys and its 11–19px type are the app's, the same
+ * way a screenshot's would be. The only change on the way in is the face:
+ * Instrument Sans (a Google Fonts request) became var(--font-sans). The
+ * hexes live in the `ef-` custom properties on the root of each EstimateFlow
+ * drawing rather than in global.css because they are not site tokens and
+ * must not be reached for by anything that is.
+ *
+ * ⚠️ EstimateFlow is a demonstration build, not a client. "Malia Santos" and
+ * her leak are invented. See src/content/work.ts.
+ */
+interface Props { class?: string }
+const { class: klass } = Astro.props;
+---
+
+<div class={['ef ef-before', klass].filter(Boolean).join(' ')} aria-hidden="true">
+  <div class="ef-head">
+    <div class="ef-tag ef-tag-amber">Before</div>
+    <div class="ef-h">A message the office has to investigate</div>
+  </div>
+
+  <div class="ef-card">
+    <div class="ef-card-bar">
+      <div class="ef-card-title">New website inquiry</div>
+      <div class="ef-muted">11:42 PM</div>
+    </div>
+    <div class="ef-card-body">
+      <div class="ef-grid-2">
+        <div class="ef-field"><span class="ef-k">Name</span><span class="ef-v">Malia Santos</span></div>
+        <div class="ef-field"><span class="ef-k">Phone</span><span class="ef-v ef-num">(808) 555-0148</span></div>
+      </div>
+      <div class="ef-field">
+        <span class="ef-k">Message</span>
+        <div class="ef-msg">My roof started leaking last night. Please call me.</div>
+      </div>
+      <div class="ef-pill ef-pill-amber"><span class="ef-dot"></span>Needs follow-up</div>
+    </div>
+  </div>
+
+  <div class="ef-block">
+    <div class="ef-label">Unanswered</div>
+    <div class="ef-chips">
+      <span>Is water still entering?</span>
+      <span>Where is the leak?</span>
+      <span>What type of roof?</span>
+      <span>How old is the roof?</span>
+      <span>Are solar panels installed?</span>
+      <span>Are photos available?</span>
+      <span>How urgent is it?</span>
+      <span>When is the customer available?</span>
+    </div>
+  </div>
+
+  <div class="ef-foot">
+    <div class="ef-grid-3">
+      <div class="ef-field"><span class="ef-k">Urgency</span><span class="ef-v ef-amber">Unknown</span></div>
+      <div class="ef-field"><span class="ef-k">Roof details</span><span class="ef-v ef-amber">Missing</span></div>
+      <div class="ef-field"><span class="ef-k">Photos</span><span class="ef-v ef-amber">None</span></div>
+    </div>
+    <div class="ef-field"><span class="ef-k">Next step</span><span class="ef-v">Call customer for more information</span></div>
+  </div>
+</div>
+
+<style>
+  .ef {
+    --ef-ink: #14201C; --ef-text: #33443E; --ef-mid: #6E7C77; --ef-muted: #8A9792;
+    --ef-line: #E3E6E4; --ef-line-soft: #EAEDEB; --ef-ground: #F7F8F8; --ef-card: #FFFFFF;
+    --ef-amber: #8A6A18; --ef-amber-bg: #FDF7E7; --ef-amber-line: #F0E2BC; --ef-amber-dot: #C79A28;
+    box-sizing: border-box; width: 100%; max-width: 620px; padding: 28px;
+    font-family: var(--font-sans); color: var(--ef-ink); line-height: 1.35;
+  }
+  .ef-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .ef-tag {
+    align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; border-radius: 999px; padding: 5px 11px;
+  }
+  .ef-tag-amber { color: var(--ef-amber); background: var(--ef-amber-bg); border: 1px solid var(--ef-amber-line); }
+  .ef-h { font-size: 19px; font-weight: 600; letter-spacing: -.015em; color: var(--ef-text); text-wrap: pretty; }
+
+  .ef-card {
+    border: 1px solid var(--ef-line); border-radius: 14px; background: var(--ef-card);
+    box-shadow: 0 1px 2px rgba(16,24,32,.04); overflow: hidden;
+  }
+  .ef-card-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 18px; background: var(--ef-ground); border-bottom: 1px solid var(--ef-line-soft);
+  }
+  .ef-card-title { font-size: 14px; font-weight: 600; color: var(--ef-text); }
+  .ef-muted { font-size: 12px; color: var(--ef-muted); }
+  .ef-card-body { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+
+  .ef-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .ef-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+  .ef-field { display: flex; flex-direction: column; gap: 3px; }
+  .ef-k { font-size: 12px; color: var(--ef-muted); }
+  .ef-v { font-size: 15px; font-weight: 500; }
+  .ef-foot .ef-v { font-size: 14px; color: var(--ef-text); text-wrap: pretty; }
+  .ef-num { font-variant-numeric: tabular-nums; }
+  .ef-amber { color: var(--ef-amber); }
+
+  .ef-msg {
+    font-size: 15px; line-height: 1.5; color: var(--ef-text); background: var(--ef-ground);
+    border: 1px solid var(--ef-line-soft); border-radius: 10px; padding: 12px 14px; text-wrap: pretty;
+  }
+  .ef-pill {
+    display: flex; align-items: center; gap: 8px; align-self: flex-start;
+    font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase;
+    border-radius: 999px; padding: 6px 12px;
+  }
+  .ef-pill-amber { color: var(--ef-amber); background: var(--ef-amber-bg); border: 1px solid var(--ef-amber-line); }
+  .ef-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ef-amber-dot); }
+
+  .ef-block { margin-top: 20px; display: flex; flex-direction: column; gap: 11px; }
+  .ef-label { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ef-muted); }
+  .ef-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ef-chips span {
+    font-size: 13px; color: var(--ef-mid); border: 1px dashed #D8DCD9; border-radius: 999px;
+    padding: 7px 12px; background: #FBFCFB;
+  }
+
+  .ef-foot {
+    margin-top: 20px; border-top: 1px solid var(--ef-line); padding-top: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+</style>
