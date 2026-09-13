@@ -3,7 +3,8 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { contact } from '../content/site';
-import { auditThanks } from '../content/site-v2';
+import { auditThanks, auditMore } from '../content/site-v2';
+import AuditMoreForm from '../components/AuditMoreForm.astro';
 
 // Server-rendered so it can show the outcome. The homepage stays fully
 // prerendered — only this page and /api/contact run on request.
@@ -29,6 +30,22 @@ const status = Astro.url.searchParams.get('status');
  */
 const isAudit = Astro.url.searchParams.get('kind') === 'audit';
 
+/**
+ * Step two of the audit request, 13 Sep 2026. Three more shapes, all under
+ * kind=audit:
+ *
+ *  - `r` present: step one just succeeded and api/contact.ts minted a
+ *    reference. Draw the confirmation AND the optional follow-up form.
+ *  - `step=2`: the follow-up posted. Draw the "added" confirmation, no form.
+ *  - `step=2&status=error`: the follow-up failed. Say the original request is
+ *    safe, because it is: step two never runs unless step one already sent.
+ *
+ * Tested before the generic `status` branches so a step-two error does not
+ * read as "That didn't go through" about the request itself.
+ */
+const ref = Astro.url.searchParams.get('r') ?? '';
+const isStep2 = isAudit && Astro.url.searchParams.get('step') === '2';
+
 const STATES = {
   // "Got it.", not "Your request is in." (27 Aug 2026). Nothing was requested:
   // the visitor sent a message. The old heading was the last survivor of the
@@ -43,7 +60,7 @@ const STATES = {
   invalid: {
     eyebrow: 'Incomplete',
     heading: 'A couple of things are missing.',
-    body: 'A name and a working email address are the two the form can’t do without. Nothing else was lost. Go back and the rest of it is still there.',
+    body: 'Your name, a working email address, your business and the one task that bothers you most are the four the form can’t do without. Nothing else was lost. Go back and the rest of it is still there.',
     back: 'Back to the form',
   },
   error: {
@@ -59,22 +76,30 @@ const STATES = {
     body: auditThanks.body,
     back: 'Back to the homepage',
   },
+  added: { ...auditMore.done, back: 'Back to the homepage' },
+  notAdded: { ...auditMore.error, back: 'Back to the homepage' },
 } as const;
 
 const state =
-  status === 'invalid'
-    ? STATES.invalid
-    : status === 'error'
-      ? STATES.error
-      : isAudit
-        ? STATES.audit
-        : STATES.ok;
+  isStep2
+    ? (status === 'error' ? STATES.notAdded : STATES.added)
+    : status === 'invalid'
+      ? STATES.invalid
+      : status === 'error'
+        ? STATES.error
+        : isAudit
+          ? STATES.audit
+          : STATES.ok;
+
+/* The follow-up form: only on a fresh step-one success, never on a page a
+   visitor could reach without a reference to post back. */
+const showMore = state === STATES.audit && ref.length > 0;
 
 const backHref = state === STATES.invalid ? '/#contact' : '/#top';
 
 /* The "What happens next" panel is the audit confirmation's, and only its. On
    the generic success state there is no audit to describe the arrival of. */
-const showNext = state === STATES.audit;
+const showNext = state === STATES.audit || state === STATES.added;
 ---
 
 {/* noindex since 19 Aug 2026: a form-result page is not content, and it was
@@ -99,6 +124,15 @@ const showNext = state === STATES.audit;
           {contact.email}<span class="u" aria-hidden="true"></span>
         </a>
       </div>
+
+      {showMore && (
+        <div class="more">
+          <p class="eyebrow more-eyebrow">{auditMore.eyebrow}</p>
+          <h2 class="more-head">{auditMore.heading}</h2>
+          <p class="lead more-body">{auditMore.body}</p>
+          <AuditMoreForm ref={ref} />
+        </div>
+      )}
 
       {showNext && (
         <div class="next">
@@ -134,6 +168,15 @@ const showNext = state === STATES.audit;
     max-width: 16ch;
   }
   .result:has(.next) h1 { max-width: 24ch; }
+
+  /* Step two, between the confirmation and the "what happens next" panel:
+     the visitor reads that the request is in, then is offered the follow-up,
+     then sees what arrives. The form matches the panel's 720px so the two
+     cards align. */
+  .more { margin-top: 56px; max-width: 720px; }
+  .more-eyebrow { margin-bottom: 12px; }
+  .more-head { margin: 0 0 12px; max-width: 24ch; font-size: var(--text-d3); }
+  .more-body { max-width: 56ch; margin-bottom: 24px; }
   .result .eyebrow { margin-bottom: 22px; }
   .result p.lead { max-width: 52ch; }
 
@@ -173,6 +216,8 @@ const showNext = state === STATES.audit;
   @media (max-width: 640px) {
     .result { padding: 76px 0 88px; }
     .next { margin-top: 40px; padding: 22px 18px; }
+    .more { margin-top: 40px; }
+    .more-head { max-width: none; }
     .next-steps { grid-template-columns: 1fr; gap: 20px; }
   }
 </style>

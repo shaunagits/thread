@@ -348,3 +348,27 @@ export const auditThanks = {
   ],
   note: 'No cost. No obligation. I won\u2019t add you to any list.',
 };
+
+/**
+ * Step two of the audit request, 13 Sep 2026. Drawn on /thanks?kind=audit
+ * under the confirmation, by AuditMoreForm.astro. The request is already in
+ * when the visitor reads this, and every line here has to keep saying so:
+ * this is an offer to sharpen the reply, not a second hurdle.
+ */
+export const auditMore = {
+  eyebrow: 'Optional',
+  heading: 'Want a sharper audit? Four more questions, about two minutes.',
+  body: 'Your request is already in. These tell me where the information lives and what breaks when it is done by hand, which is the difference between a reply about businesses like yours and a reply about yours.',
+  /* /thanks?kind=audit&step=2 */
+  done: {
+    eyebrow: 'Added',
+    heading: 'Got it. That goes in with your request.',
+    body: 'Same one business day, same written reply with a video. It will just be written from more.',
+  },
+  /* /thanks?kind=audit&step=2&status=error */
+  error: {
+    eyebrow: 'Not added',
+    heading: 'That last part didn\u2019t go through.',
+    body: 'Your original request is safe and I have it. If you want to add the extra detail, reply to the confirmation email with it and it reaches the same place.',
+  },
+};

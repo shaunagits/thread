@@ -1,0 +1,173 @@
+---
+/**
+ * The audit request form, step two of two. Rendered on /thanks?kind=audit
+ * after step one (IntakeForm.astro) has succeeded. Posts to /api/contact with
+ * `step=2` and the opaque `ref` the endpoint minted for step one, so the two
+ * emails carry the same business in their subject and thread together.
+ *
+ * Added 13 Sep 2026. Everything here is optional and the copy says so: the
+ * request is already in, and this is the visitor choosing to make the reply
+ * sharper. Nothing is required, and the endpoint accepts an all-empty step
+ * two rather than bouncing it.
+ *
+ * What it asks, and why each earns its place:
+ *  - `tools`: where the information lives today. This was step one's one
+ *    optional field and was usually blank; as chips it is three taps.
+ *  - `frequency` and `who`: how often the big task happens and who carries
+ *    it. The difference between "the owner, every day" and "an admin, once a
+ *    month" is the difference between the first thing to automate and the
+ *    thing to leave alone.
+ *  - `pain`: what goes wrong when it is done by hand. This is what the audit
+ *    is written against.
+ *  - `example`: a paste. The best audits come from seeing the actual
+ *    spreadsheet row or the actual email.
+ *
+ * ⚠️ Field names must match LIMITS and STEP2_FIELDS in api/contact.ts.
+ * Landmine 14 applies here exactly as it does to step one.
+ *
+ * Native POST, no script, like every form on the site.
+ */
+interface Props { ref: string }
+const { ref } = Astro.props;
+
+const tools = [
+  'QuickBooks or Xero',
+  'Google Sheets or Excel',
+  'Email',
+  'Text messages',
+  'Paper or a whiteboard',
+  'A scheduling app',
+  'A CRM',
+];
+
+const pains = [
+  'It gets done late',
+  'Mistakes creep in',
+  'The same thing gets typed twice',
+  'Nobody knows the status',
+  'It only works if one person is there',
+];
+---
+
+<form class="form" action="/api/contact" method="POST">
+  <input type="hidden" name="step" value="2" />
+  <input type="hidden" name="ref" value={ref} />
+
+  <fieldset class="chips">
+    <legend>Where does the information live now? <span class="opt">Tick any</span></legend>
+    <div class="chip-row">
+      {tools.map((t, i) => (
+        <label class="chip"><input type="checkbox" name="tools" value={t} id={`f-tool-${i}`} /><span>{t}</span></label>
+      ))}
+    </div>
+  </fieldset>
+  <label for="f-tools-other">Anything else you use <span class="opt">(optional)</span></label>
+  <input id="f-tools-other" name="tools_other" type="text" placeholder="Jobber, a custom Access database, a text thread with the crew" />
+
+  <div class="row">
+    <div>
+      <label for="f-frequency">How often does the big one happen?</label>
+      <select id="f-frequency" name="frequency">
+        <option value="">Choose one</option>
+        <option>Every day</option>
+        <option>A few times a week</option>
+        <option>Weekly</option>
+        <option>Monthly</option>
+        <option>Seasonally</option>
+      </select>
+    </div>
+    <div>
+      <label for="f-who">Who does it?</label>
+      <input id="f-who" name="who" type="text" placeholder="Me, or the office manager" />
+    </div>
+  </div>
+
+  <fieldset class="chips">
+    <legend>What goes wrong when it is done by hand? <span class="opt">Tick any</span></legend>
+    <div class="chip-row">
+      {pains.map((p, i) => (
+        <label class="chip"><input type="checkbox" name="pain" value={p} id={`f-pain-${i}`} /><span>{p}</span></label>
+      ))}
+    </div>
+  </fieldset>
+
+  <label for="f-example">Anything you want me to look at <span class="opt">(optional)</span></label>
+  <textarea
+    id="f-example"
+    name="example"
+    placeholder="Paste a sample row from the spreadsheet, the email you send every week, or a link to the form your customers fill in."
+  ></textarea>
+
+  <button type="submit" class="btn">Add this to my audit</button>
+  <p class="form-note">Skip this and the audit still comes. It will just be written from less.</p>
+</form>
+
+<style>
+  /* The same form language as IntakeForm.astro, duplicated rather than
+     shared because Astro scopes styles per component and the two forms
+     render on different pages. If the field styling changes, change both. */
+  .form {
+    background: var(--color-white); border: 1px solid var(--color-ink);
+    border-radius: 0; padding: 30px; max-width: 100%;
+  }
+  .form label, .form legend {
+    font-family: var(--font-mono); font-size: var(--text-nav); font-weight: 500;
+    letter-spacing: var(--tracking-mono); color: var(--color-body);
+    display: block; margin-bottom: 7px;
+  }
+  .opt { color: var(--color-quiet); font-weight: 400; }
+  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .form input, .form textarea, .form select {
+    width: 100%; padding: 11px 13px; border: 1px solid var(--color-ink);
+    border-radius: 0; background: var(--color-paper);
+    font-family: var(--font-serif); font-size: var(--text-ui);
+    color: var(--color-ink); margin-bottom: 18px;
+  }
+  .form input[type="hidden"] { display: none; }
+  .form select {
+    appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 38px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23171A18' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .form input:focus, .form textarea:focus, .form select:focus {
+    outline: 2px solid var(--color-accent-dark); outline-offset: -1px;
+    border-color: var(--color-accent-dark);
+  }
+  .form textarea { resize: vertical; min-height: 100px; }
+
+  .chips { border: 0; padding: 0; margin: 0 0 18px; min-width: 0; }
+  .chips legend { padding: 0; }
+  .form label.chip { margin-bottom: 0; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* `.form label.chip`, not `.chip`: the label rule above is 0,1,1 and a
+     bare .chip would lose to it, which turns the chips into mono block labels
+     with no gap. Measured, not guessed. */
+  .form label.chip {
+    display: inline-flex; align-items: center; gap: 8px; margin: 0;
+    padding: 8px 12px; border: 1px solid var(--color-hair); background: var(--color-paper);
+    font-family: var(--font-serif); font-size: var(--text-small); font-weight: 400;
+    letter-spacing: 0; color: var(--color-body); cursor: pointer; user-select: none;
+  }
+  .form .chip input { width: 14px; height: 14px; margin: 0; padding: 0; flex: none; accent-color: var(--color-accent); cursor: pointer; }
+  .form .chip:has(input:checked) {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 7%, var(--color-paper));
+    color: var(--color-ink);
+  }
+  .form .chip:has(input:focus-visible) { outline: 2px solid var(--color-accent-dark); outline-offset: 2px; }
+
+  .form .btn { width: 100%; box-sizing: border-box; min-height: 50px; text-align: center; }
+  .form-note {
+    font-family: var(--font-serif); font-size: var(--text-small); line-height: var(--leading-body);
+    color: var(--color-faint); margin-top: 16px; text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .row { grid-template-columns: 1fr; gap: 0; }
+    .form { padding: 22px 18px; }
+    .form input, .form textarea, .form select { padding: 13px; margin-bottom: 16px; }
+    .form label, .form legend { font-size: 12px; }
+    .form label.chip { padding: 9px 12px; font-size: 14px; }
+    .form-note { font-size: 14px; }
+  }
+</style>

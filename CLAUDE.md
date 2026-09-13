@@ -23,6 +23,53 @@ robots.txt). `/systems-map` was deleted and 301s to `/#contact`.
 
 ---
 
+## 13 Sep 2026 — the audit request is two steps
+
+The audit promises "the two things worth automating first and what each
+would take", and the five-field form could not collect enough to write that
+for a specific business. The owner chose a progressive flow over a longer
+form, because every field before the first submit costs leads.
+
+**Step one** is `IntakeForm.astro`, on `/`, `/automation-audit` and `/v1`.
+Name, email, business ("and what it does"), a `team` select, a `tasks`
+checkbox row (the vocabulary), and the `timesink` textarea, now asking "which
+one bothers you most, and what does it look like". **Required is still
+exactly name, email, business, timesink.** `tools` moved to step two.
+
+**Step two** is `AuditMoreForm.astro`, drawn on `/thanks?kind=audit&r=…` under
+the confirmation. `tools` chips, `tools_other`, `frequency`, `who`, `pain`
+chips, `example`. Everything optional; an all-empty post is accepted and
+ignored, never bounced. It posts to the same `/api/contact` with `step=2` and
+`ref`, which is the email and business base64url-encoded, minted by step one
+and put in the redirect URL. Not a secret and not a session: it exists so the
+step-two email can carry the same subject prefix ("Audit request · Business ·
+more detail") and reply_to, and so the address is not sitting in the URL in
+plain text. A forged ref can do what the public form already can, which is
+send the owner one email. No auto-reply on step two.
+
+**Landmine 14 now has two tables in `contact.ts`:** `FIELDS` (step one) and
+`STEP2_FIELDS` (step two), and a `MULTI` set for the three checkbox groups,
+which are joined with ", " and whose values are their visible labels. A field
+added to either form and not to its table is collected and dropped.
+
+**/thanks has two more states,** tested before `status`: `kind=audit&step=2`
+("Got it. That goes in with your request.") and the same with
+`status=error`, which says the original request is safe, because step two
+never runs unless step one already sent. Copy is `auditMore` in site-v2.ts.
+The follow-up form is drawn only when `r` is present, so a visitor landing on
+the audit confirmation without one is not shown a form that cannot post.
+
+**Chips are `label.chip` wrapping a native checkbox**, styled with `:has()`.
+The selector is `.form label.chip`, not `.chip`, because `.form label` is
+0,1,1 and wins otherwise, which turns the chips into mono block labels with
+no gap. Both forms carry the same stylesheet, duplicated because Astro
+scopes per component; change both.
+
+**Open:** the "Prefer to talk?" card promises "the same questions". The call
+script should be these ten questions, or that line changes.
+
+---
+
 ## ⚠️⚠️ 12 Sep 2026 — /work went live with a DEMONSTRATION BUILD
 
 Read this before touching anything under `src/pages/work`, `src/content/work.ts`
