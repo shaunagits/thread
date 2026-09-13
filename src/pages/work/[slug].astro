@@ -36,7 +36,7 @@ import { cta, ctaHref } from '../../content/site';
  * A new case study with its own screens adds a key to WorkGraphic and a case
  * to `Graphic` below.
  *
- * ⚠️ Read the header of work.ts before touching the first entry.
+ * Read the header of work.ts before touching the first entry.
  */
 export function getStaticPaths() {
   return caseStudies.map((study) => ({ params: { slug: study.slug }, props: { study } }));
@@ -45,7 +45,7 @@ const { study } = Astro.props;
 const more = caseStudies.filter((c) => c.slug !== study.slug);
 ---
 
-<Base title={`${study.name} · Work · Thread`} description={study.description}>
+<Base title={study.seoTitle} description={study.description}>
   <Header />
 
   {/* ---------- hero ---------- */}

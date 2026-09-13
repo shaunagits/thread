@@ -21,7 +21,7 @@ const status = Astro.url.searchParams.get('status');
  * the header, the footer, the noindex and the layout to say one different
  * paragraph.
  *
- * ⚠️ `kind` is orthogonal to `status`. A submission that fails validation or
+ * `kind` is orthogonal to `status`. A submission that fails validation or
  * errors must still show the failure, not a cheerful audit confirmation, so
  * `status` is tested first below and `kind` only decides which SUCCESS copy to
  * use. api/contact.ts redirects to /thanks?kind=audit on success and to
@@ -60,7 +60,11 @@ const STATES = {
   invalid: {
     eyebrow: 'Incomplete',
     heading: 'A couple of things are missing.',
-    body: 'Your name, a working email address, your business and the one task that bothers you most are the four the form can’t do without. Nothing else was lost. Go back and the rest of it is still there.',
+    /* The old wording promised "Nothing else was lost. Go back and the rest of
+       it is still there." That depends on the browser restoring form state
+       after a redirect, which most do and none guarantee, so the page was
+       making a promise it could not keep. Softened 13 Sep 2026. */
+    body: `Your name, a working email address, your business and the one task you want off your plate are the four the form can’t do without. Press back to return to the form; most browsers will still have your answers. If yours doesn’t, email ${contact.email} and it reaches the same place.`,
     back: 'Back to the form',
   },
   error: {

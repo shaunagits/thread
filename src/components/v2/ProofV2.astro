@@ -1,112 +1,100 @@
 ---
 import { proof } from '../../content/site-v2';
-import Placeholder from './Placeholder.astro';
 import DispatchRouteGraphic from './DispatchRouteGraphic.astro';
 import EfHero from '../work/EfHero.astro';
 
 /**
- * ⚠️ THREE VISIBLE GAPS, since 4 Sep 2026 — no results on this page.
+ * The homepage proof section.
  *
- * The owner asked for the whole row to read "Coming soon" while the section's
- * content is pulled together. Every card is dashed, labelled and obviously
- * unfinished. The markup, the grid and the card geometry are unchanged: this
- * is a state change in `proof`, not a layout change.
+ * Rebuilt 13 Sep 2026. It was a three-column row of equal cards, which meant
+ * one finished case study sat beside two empty dashed boxes: a layout that
+ * says "one client" louder than it says "here is the work". Now the finished
+ * work runs full width, two columns, with the drawing large enough to read,
+ * and what is still being written is one line of text instead of two holes.
  *
- * History, because both branches below are still live code:
+ * An entry is featured when it is not a placeholder. Placeholders are counted,
+ * not drawn. Nothing is invented to fill the space; the line under the feature
+ * says plainly that more are coming, which is true and costs no credibility.
  *
- *  - proof[0] was a real, owner-confirmed client outcome from 1 Sep 2026 until
- *    4 Sep 2026. Its exact copy is preserved in the comment over `proof` in
- *    site-v2.ts. The non-placeholder branch is kept for it.
- *  - proof[0] also rendered DispatchRouteGraphic from 3 Sep 2026 — a DRAWING,
- *    not that client's app, which is why it carries its own visible caption.
- *    The `graphic === 'dispatch'` switch and the component both survive, so
- *    restoring it is one key in site-v2.ts. Keep the caption if it returns.
- *
- * Do not write copy into the placeholders to "balance the row". This site
- * carried a fabricated case study with fabricated metrics once, and deleting
- * it is the reason src/content/placeholders.ts does not exist any more. A
- * visibly empty card costs nothing; an invented one costs every other claim on
- * the page.
+ * `graphic` picks the drawing. 'estimateflow' is the EstimateFlow hero
+ * composite, the same one the case study page opens with. 'dispatch' is
+ * DispatchRouteGraphic, unused since 4 Sep 2026 and kept because switching it
+ * back on is one key in site-v2.ts; it is an illustration and carries its own
+ * caption saying so.
  */
+const featured = proof.filter((item) => !item.placeholder);
+const pending = proof.filter((item) => item.placeholder).length;
 ---
 
-<ol class="proof">
-  {proof.map((item) => (
-    <li class={item.placeholder ? 'pf is-ph' : 'pf'}>
-      {/* All three cards are gaps as of 4 Sep 2026. "Coming soon", not
-          "Finish later", since 2 Sep 2026: the site is live and the owner is
-          gathering the case studies, so these gaps are the one place a visitor
-          is meant to read the flag. They are still gaps — do not write results
-          into them.
-
-          ⚠️ The `dispatch` branch is dormant, not dead. If it is ever switched
-          back on: that drawing is an ILLUSTRATION and says so in its own
-          caption. It is not a screenshot of any business named in a card's
-          body copy, and nothing derived from this section may present it as
-          one. */}
-      {/* 12 Sep 2026: card one is EstimateFlow and links to /work/estimateflow.
-          Its thumbnail is the same hero composite the case study page opens
-          with, scaled by its own SVG to the card column. A DEMONSTRATION
-          BUILD, published without a sample label on the owner's instruction;
-          see src/content/work.ts. */}
-      {item.graphic === 'dispatch' ? (
-        <DispatchRouteGraphic />
-      ) : item.graphic === 'estimateflow' ? (
-        <div class="thumb"><EfHero /></div>
-      ) : (
-        <Placeholder label={item.shot ?? 'Screenshot'} minHeight="132px" flag="Coming soon" />
-      )}
-      {item.placeholder ? (
-        <>
-          <p class="result ph-result">{item.result}</p>
-          <p class="body">{item.body}</p>
-        </>
-      ) : item.href ? (
-        <>
-          <p class="result"><a href={item.href} class="card-link">{item.result}</a></p>
-          <p class="body">{item.body}</p>
-          <a href={item.href} class="btn-ghost more">Read the case study<span class="u" aria-hidden="true"></span></a>
-        </>
-      ) : (
-        <>
-          <p class="result">{item.result}</p>
-          <p class="body">{item.body}</p>
-        </>
-      )}
-    </li>
+<div class="proof">
+  {featured.map((item) => (
+    <article class="pf">
+      <div class="pf-fig">
+        {item.graphic === 'dispatch' ? <DispatchRouteGraphic /> : null}
+        {item.graphic === 'estimateflow' ? <EfHero /> : null}
+      </div>
+      <div class="pf-copy">
+        <p class="eyebrow">Case study</p>
+        <h3 class="pf-name">{item.result}</h3>
+        <p class="pf-body">{item.body}</p>
+        {item.href && (
+          <a href={item.href} class="btn-ghost pf-more">
+            Read the case study<span class="u" aria-hidden="true"></span>
+          </a>
+        )}
+      </div>
+    </article>
   ))}
-</ol>
+
+  {pending > 0 && (
+    <p class="pf-pending">
+      More case studies are being written. If you want to know whether I have
+      solved a problem like yours, ask me and I will tell you straight.
+    </p>
+  )}
+</div>
 
 <style>
-  .proof {
-    list-style: none; margin: 44px 0 0; padding: 0;
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px;
-  }
-  .pf {
-    background: var(--color-white); border: 1px solid var(--color-ink); padding: 22px;
-  }
-  /* The two unwritten cards are dashed and set back, so the row reads as one
-     result and two gaps rather than three results of varying confidence. */
-  .is-ph { border-style: dashed; border-color: var(--color-hair); background: transparent; }
+  .proof { margin-top: 40px; }
 
-  .result {
-    margin: 18px 0 6px;
+  .pf {
+    display: grid; grid-template-columns: 1.35fr 1fr; gap: 40px; align-items: center;
+  }
+  .pf + .pf { margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--color-rule); }
+
+  /* An ink hairline and square corners, like every other bounded object on
+     the page. The drawing keeps its own radii inside. */
+  .pf-fig {
+    border: 1px solid var(--color-ink); background: var(--color-white); overflow: hidden;
+  }
+
+  .pf-copy .eyebrow { margin-bottom: 10px; }
+  .pf-name {
+    margin: 0 0 12px;
     font-family: var(--font-display); font-weight: 650; font-size: var(--text-d3);
     letter-spacing: var(--tracking-tight); line-height: var(--leading-snug);
     color: var(--color-ink);
   }
-  .ph-result { color: var(--color-faint); }
-  .thumb { border: 1px solid var(--color-hair); overflow: hidden; background: var(--color-white); }
-  .card-link { color: inherit; }
-  .card-link:hover { color: var(--color-accent-dark); text-decoration: none; }
-  .more { margin-top: 14px; }
-  .body {
-    font-family: var(--font-serif); font-size: var(--text-small);
-    line-height: var(--leading-body); color: var(--color-body);
+  .pf-body {
+    font-family: var(--font-serif); font-size: var(--text-body);
+    line-height: var(--leading-body); color: var(--color-body); max-width: 46ch;
   }
-  .is-ph .body { color: var(--color-faint); }
+  .pf-more { margin-top: 22px; }
+
+  /* One quiet line where two empty cards used to be. */
+  .pf-pending {
+    margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--color-rule);
+    font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-faint); max-width: 62ch;
+  }
 
   @media (max-width: 1000px) {
-    .proof { grid-template-columns: 1fr; gap: 26px; }
+    .pf { grid-template-columns: 1fr; gap: 24px; }
+    .pf-body { max-width: none; }
+  }
+  @media (max-width: 640px) {
+    .proof { margin-top: 28px; }
+    .pf + .pf { margin-top: 34px; padding-top: 34px; }
+    .pf-pending { margin-top: 32px; }
   }
 </style>

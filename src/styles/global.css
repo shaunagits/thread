@@ -17,7 +17,7 @@
 
      Unlike ocean, BOTH accent steps carry text safely on paper: 6.03:1 and
      8.00:1. That retires the fills-only restriction that governed --color-ochre
-     for two palettes (CLAUDE.md landmine 5) — there is no longer a brand colour
+     for two palettes (CLAUDE.md) — there is no longer a brand colour
      on this site that cannot hold a label. The one place it does not hold is
      light-on-accent-on-ink; see --color-foot-dot below. */
   --color-paper: #EDEEE9;   /* page ground */
@@ -57,7 +57,7 @@
   --color-foot-rule:       #3B423D; /* footer divider */
   /* The wordmark's full stop, on the ink footer only. The accent is 2.49:1
      there, so the mark's one detail would disappear on the one ground it sits
-     against most. Same problem landmine 5 records for the ocean palette, same
+     against most. Same problem the old ochre restriction records for the ocean palette, same
      fix: a different token in the footer than in the header. */
   --color-foot-dot:        #7E9AE8;
 
@@ -68,7 +68,7 @@
      markers and UI text are now set in a genuine mono face rather than in the
      body sans.
 
-     Nothing on the site may use a size that is not one of these. The rule that
+     Every size on the site comes from this scale. The rule that
      produced the seven still stands — the count went up because the design
      needs the range, not because sizes may be added ad hoc. */
   --text-d1:    clamp(40px, 4.2vw, 56px);  /* page heading */
@@ -324,8 +324,7 @@ a:hover { text-decoration: underline; }
    Vertical hairlines behind the hero and §03. `.ruled-fade` masks them in from
    the lower right so the hero copy sits on clean paper and the rules only
    appear under the drawing. Both need `isolation: isolate` on the section and
-   z-index -1 on the layer, or the layer paints over in-flow content: landmine
-   19, which cost §01's watermark under the ocean design. */
+   z-index -1 on the layer, or the layer paints over in-flow content: the z-index layering problem, which cost §01's watermark under the ocean design. */
 .ruled { position: relative; isolation: isolate; }
 .ruled::before {
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -471,10 +470,15 @@ p.mono-note {
    rather than the pale --color-rule: Style C draws hard hairlines between
    grounds, and a 1.2:1 rule between two different grounds reads as a smudge.
 
-   Landmine 23 still applies with force here — this styles the element, not a
+   The nested-section problem still applies with force here — this styles the element, not a
    class, so a <section> nested inside a page section silently inherits 100px
    of dead space and a stray rule. Group with a <div>. */
 section { padding: 100px 0; border-top: 1px solid var(--color-ink); }
+
+/* The header is sticky and 70px tall, so a fragment jump used to put the
+   section's own top edge underneath it. 90px is the header plus breathing
+   room. Only sections with an id are anchor targets. */
+section[id] { scroll-margin-top: 90px; }
 
 /* The hero sits directly under the header, which draws its own bottom rule,
    so it carries none of its own. 84/92 rather than the full 100: the busywork
@@ -562,7 +566,7 @@ section.on-wash { background: var(--color-wash); }
   .btn { width: 100%; min-height: 52px; }
   .btn-row { margin-top: 26px; }
 
-  /* ⚠️ The pinned CTA bar's body padding USED TO LIVE HERE and moved into
+  /* The pinned CTA bar's body padding USED TO LIVE HERE and moved into
      StickyCta.astro on 1 Sep 2026, as an `is:global` block in the component
      that draws the bar.
 

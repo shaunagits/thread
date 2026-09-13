@@ -24,13 +24,13 @@ import {
  * the palette, the section rhythm and the working contact endpoint cannot
  * drift from the rest of the site.
  *
- * ⚠️ Its nav, CTA and footer columns are in `site.ts`, NOT in site-v2.ts.
+ * Its nav, CTA and footer columns are in `site.ts`, NOT in site-v2.ts.
  * They moved there with the promotion, because `Header`, `Footer` and /work
  * render them with no props on every page: the moment this became `/` they
  * stopped being one page's content and became the site's. Everything else this
  * page says is in site-v2.ts.
  *
- * ⚠️ `#contact` is unchanged from the previous homepage and must stay so. The
+ * `#contact` is unchanged from the previous homepage and must stay so. The
  * hero CTA, the footer, /work and vercel.json's /systems-map 301 all target it.
  * The retired anchors `#busywork` and `#build` now land at the top of this
  * page, which is the harmless failure mode for a fragment.
@@ -66,13 +66,13 @@ import {
     <StepsV2 />
   </Section>
 
-  {/* Offers. ⚠️ Carries prices — see the header of site-v2.ts. */}
+  {/* Offers. Carries prices — see the header of site-v2.ts. */}
   <Section id="offers" wash>
     <h2 class="s-head">Three ways to work together.</h2>
     <OffersV2 />
   </Section>
 
-  {/* Proof. ⚠️ Three visible gaps since 4 Sep 2026 — no results on this page.
+  {/* Proof. Three visible gaps since 4 Sep 2026 — no results on this page.
       See ProofV2.astro. The heading below is left as written: it describes
       what the section will hold, and the owner asked to keep the layout and
       hierarchy intact while the content is gathered. */}
@@ -83,20 +83,30 @@ import {
 
   <Section id="about">
     <div class="ab">
-      {/* The real photo, already in public/ and used by the live contact card.
-          The wireframe asks for something different — "at a desk or on site,
-          not a grey-backdrop headshot" — so this is a real asset standing in
-          for a better one, not a placeholder. Swap the file, keep the markup. */}
-      <img
-        class="ab-photo"
-        src="/shauna.jpg"
-        alt=""
-        aria-hidden="true"
-        width="220"
-        height="220"
-        loading="lazy"
-        decoding="async"
-      />
+      {/* The photo now carries a caption naming her, added 13 Sep 2026: the
+          section is the whole argument for working with one person, and until
+          now that person was anonymous on her own site. First name only, on
+          the owner's instruction.
+
+          The wireframe asks for a different photo — "at a desk or on site, not
+          a grey-backdrop headshot" — so this is a real asset standing in for a
+          better one. Swap the file, keep the markup. */}
+      <figure class="ab-side">
+        <img
+          class="ab-photo"
+          src="/shauna.jpg"
+          alt=""
+          width="220"
+          height="220"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption class="ab-cap">
+          <span class="ab-cap-name">Shauna</span>
+          <span>Founder and builder</span>
+          <span>Honolulu, Hawai&#699;i</span>
+        </figcaption>
+      </figure>
       <div class="ab-copy">
         <h2>{about.heading}</h2>
         {about.body.map((para) => <p class="lead">{para}</p>)}
@@ -105,7 +115,7 @@ import {
     </div>
   </Section>
 
-  {/* ⚠️ The lead-magnet section was DELETED here on 1 Sep 2026 with the audit
+  {/* The lead-magnet section was DELETED here on 1 Sep 2026 with the audit
       rebuild. It offered a "20 Tasks Your Business Is Still Doing by Hand"
       checklist that never existed, behind a button that was never wired up,
       and the audit is the same idea done properly: it asks for the same
@@ -120,7 +130,7 @@ import {
     <FaqV2 />
   </Section>
 
-  {/* ⚠️ KEEP `id="contact"`. It is the only anchor on this site with an
+  {/* KEEP `id="contact"`. It is the only anchor on this site with an
       indexed inbound link — the hero CTA, the footer, /work and vercel.json's
       /systems-map 301 all target it. The section is the audit now; the anchor
       is a contract and does not follow the copy. See ContactV2.astro.
@@ -150,17 +160,27 @@ import {
     display: grid; grid-template-columns: 220px minmax(0, 1fr);
     gap: 56px; align-items: start;
   }
+  .ab-side { margin: 0; }
   .ab-photo {
     width: 220px; height: 220px; display: block;
     object-fit: cover; border: 1px solid var(--color-ink);
     background: var(--color-wash);
   }
+  /* Mono, the same register as every other label on the site. The name is one
+     step darker than the two lines under it so it reads first. */
+  .ab-cap {
+    display: flex; flex-direction: column; gap: 3px; margin-top: 12px;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    letter-spacing: var(--tracking-mono); line-height: 1.5; color: var(--color-faint);
+  }
+  .ab-cap-name { color: var(--color-ink); }
   .ab-copy h2 { margin: 0 0 18px; max-width: 20ch; }
   .ab-copy .lead { margin-bottom: 12px; max-width: 60ch; }
   .ab-claim { margin-top: 20px; max-width: 52ch; }
   @media (max-width: 820px) {
     .ab { grid-template-columns: 1fr; gap: 30px; }
     .ab-photo { width: 160px; height: 160px; }
+    .ab-cap { margin-top: 10px; }
   }
   @media (max-width: 640px) {
     .s-head, .pb h2, .ab-copy h2 { max-width: none; }

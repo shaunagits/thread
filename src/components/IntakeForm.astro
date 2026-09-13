@@ -29,14 +29,14 @@
  * Required: name, email, business, timesink. Exactly the four that were
  * required before. contact.ts REQUIRED mirrors this list and no more.
  *
- * ⚠️ SHARED BY TWO PAGES. `/` renders it through `v2/ContactV2.astro` and
+ * SHARED BY TWO PAGES. `/` renders it through `v2/ContactV2.astro` and
  * `/v1` through `ContactSection.astro`, and /automation-audit renders it too.
  * One form, one endpoint, on purpose: two forms drifting against a single
- * `FIELDS` table is landmine 14 with extra steps.
+ * `FIELDS` table is the same problem with extra steps.
  *
- * ⚠️ Field names here must match LIMITS and FIELDS in src/pages/api/contact.ts.
+ * Field names here must match LIMITS and FIELDS in src/pages/api/contact.ts.
  * Adding or removing a field in one place and not the other collects the
- * answer and silently drops it. See CLAUDE.md landmine 14.
+ * answer and silently drops it. See CLAUDE.md, "Things that will bite you".
  *
  * Native POST, no client bundle, works with JavaScript disabled.
  */
@@ -57,9 +57,9 @@ const tasks = [
 ---
 
 <form class="form" action="/api/contact" method="POST">
-  {/* ⚠️ Honeypot, and note the name. Landmine 16.
+  {/* Honeypot, and note the name. 
 
-      It must never share a name with a real field. It was `company_website`
+      It should not share a name with a real field. It was `company_website`
       until 14 Aug 2026, when the copy began asking visitors for their company
       website as a genuine question; had both kept that name, every real
       submission would have tripped the bot check in contact.ts, been dropped
@@ -138,14 +138,23 @@ const tasks = [
   </fieldset>
 
   {/* The one that matters, so it is the tall field. This is the answer the
-      audit is written from. The placeholder asks for a scene: who does it,
-      when, with what. */}
-  <label for="f-timesink">Which one bothers you most, and what does it look like?</label>
+      audit is written from.
+
+      The guidance is a real paragraph, not placeholder text: placeholder text
+      disappears the moment someone starts typing, which is exactly when they
+      need to know what to include. The placeholder is now one short example
+      and the instructions stay on screen. `aria-describedby` ties the two
+      together for screen readers. */}
+  <label for="f-timesink">What repetitive task would you most like to get off your plate?</label>
+  <p class="hint" id="f-timesink-hint">
+    A few sentences is enough. Who does it, how often, and where the information ends up.
+  </p>
   <textarea
     id="f-timesink"
     name="timesink"
     class="tall"
-    placeholder="Who does it, how often, and where the information ends up. For example: every Friday I copy the week's jobs from the calendar into a spreadsheet to build invoices, and it takes most of the afternoon."
+    aria-describedby="f-timesink-hint"
+    placeholder="Every Friday I copy the week's jobs from the calendar into a spreadsheet to build invoices."
     required
   ></textarea>
 
@@ -180,6 +189,15 @@ const tasks = [
   }
   /* --color-quiet, not --color-faint, for the same AA reason. */
   .opt { color: var(--color-quiet); font-weight: 400; }
+
+  /* Guidance that stays put. Body face, not mono: it is a sentence to read,
+     not a label. Sits between the question and the field, so it is read in
+     the order it is needed. */
+  .hint {
+    font-family: var(--font-serif); font-size: var(--text-small);
+    line-height: var(--leading-body); color: var(--color-quiet);
+    margin: -2px 0 8px; max-width: 52ch;
+  }
 
   /* 22px column gap, from the design. The fields keep their own 18px bottom
      margin, so no row gap is needed here. The business row is weighted toward
@@ -254,6 +272,7 @@ const tasks = [
     .form { padding: 22px 18px; }
     .form input, .form textarea, .form select { padding: 13px; margin-bottom: 16px; }
     .form label, .form legend { font-size: 12px; }
+    .hint { font-size: 14px; max-width: none; }
     .form textarea { min-height: 76px; }
     .form textarea.tall { min-height: 118px; }
     .form label.chip { padding: 9px 12px; font-size: 14px; }

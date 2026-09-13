@@ -13,7 +13,7 @@ import {
    never disagree. One export, six renders. See the note over `cta` in site.ts
    for why it is not "Book a call".
 
-   ⚠️ The three props below were added 1 Sep 2026 for the alternate homepage at
+   The three props below were added 1 Sep 2026 for the alternate homepage at
    /v2, which runs a different nav (Offers / Work / About / Contact) and a
    different CTA. EVERY DEFAULT IS THE site.ts VALUE, so `<Header />` with no
    props renders exactly what it rendered before — that is the point, and it is
@@ -92,6 +92,30 @@ const {
   </div>
 </header>
 
+{/* Closes the phone menu. It is a native <details>, and an in-page anchor
+    (/#offers, /#contact, the CTA) changes only the fragment, so nothing
+    reloads and the open panel stays sitting on top of the section it just
+    scrolled to. Fixed 13 Sep 2026 after reproducing it at 390px.
+
+    Also closes on Escape and on a tap outside, which people expect from a
+    menu and which <details> does not do by itself. */}
+<script is:inline>
+  (function () {
+    var menu = document.querySelector('details.menu');
+    if (!menu) return;
+    var close = function () { menu.open = false; };
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+    document.addEventListener('click', function (e) {
+      if (menu.open && !menu.contains(e.target)) close();
+    });
+  })();
+</script>
+
 <style>
   header.nav {
     position: sticky; top: 0; z-index: 50;
@@ -168,14 +192,14 @@ const {
      one weight, round caps, in the accent because it carries a label beside
      it. Both accent steps carry text on paper under the graphite palette, so
      the fills-only restriction that governed this choice under ocean is gone;
-     see landmine 5 and the palette note in global.css. */
+     see the old ochre restriction and the palette note in global.css. */
   .mi { display: block; width: 22px; height: 22px; overflow: visible; }
   .mi path {
     fill: none; stroke: var(--color-accent); stroke-width: 2; stroke-linecap: round;
   }
   /* Which path shows is decided by [open] alone, never by an animation. If
      motion never runs — reduced-motion, or a declaration dropped in minified
-     CSS the way landmine 22 describes — the icon is still correct in both
+     CSS the way a scroll-driven reveal can — the icon is still correct in both
      states. The dash draw below is decoration on top of a working toggle. */
   .mi-x { opacity: 0; }
   .menu[open] .mi-bars { opacity: 0; }
@@ -200,7 +224,7 @@ const {
 
      Every dash declaration lives inside this query on purpose. stroke-dashoffset
      is what hides a path, and a hidden state that survives while the thing
-     meant to undo it goes missing is exactly landmine 22. Outside this query
+     meant to undo it goes missing is the same failure. Outside this query
      there is no dasharray at all, so both states render fully drawn. */
   @keyframes mi-pull   { from { stroke-dashoffset: 0; opacity: 1; } to { stroke-dashoffset: 1; opacity: 0; } }
   @keyframes mi-thread { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }

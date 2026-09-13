@@ -10,7 +10,7 @@
  * The wireframe is the reference for structure and copy; where it and the live
  * site disagree, this page follows the wireframe.
  *
- * ⚠️ TWO STANDING RULES OF THIS REPO ARE DELIBERATELY RELAXED HERE, both on
+ * TWO STANDING RULES OF THIS REPO ARE DELIBERATELY RELAXED HERE, both on
  * the owner's explicit instruction on 1 Sep 2026, both recorded so neither
  * reads as drift:
  *
@@ -23,19 +23,19 @@
  *  2. NO CASE-STUDY RESULTS, since 4 Sep 2026. All three `proof` entries are
  *     placeholders and render as visible "Coming soon" blocks, the way /work
  *     does. `proof[0]` was a real, owner-confirmed outcome until that date and
- *     its exact copy is preserved in the comment over the array. Do not write
+ *     its exact copy is preserved in the comment over the array. Avoid writing
  *     copy into any of them.
  *
- * Everything else in "Content that must never be invented" still applies.
+ * Everything else in "Content" is the background.
  */
 
-/** Root-relative — landmine 13. A bare `#offers` resolves against the wrong
+/** Root-relative — the root-relative href note. A bare `#offers` resolves against the wrong
  *  document from /privacy or /thanks. This was '/v2' until 1 Sep 2026, when
  *  the page was promoted to `/`. */
 const P = '/';
 
 /**
- * ⚠️ The CTA, the nav and the footer columns MOVED TO site.ts with the
+ * The CTA, the nav and the footer columns MOVED TO site.ts with the
  * promotion, and are re-exported here only so this file still reads as the
  * homepage's content in one place.
  *
@@ -45,8 +45,12 @@ const P = '/';
  */
 export { cta, ctaHref } from './site';
 
+/* 52 characters. The previous title ran 74, which Google truncates, and it
+   spent its first four words on generic category language before reaching
+   anything specific. This one carries the brand, which the old one never
+   did. */
 export const title =
-  'Custom Software and Automation for Small Business | Hawaii and Mainland US';
+  'Small Business Software & Automation | Thread Hawaii';
 /* 155 characters, inside Google's ~160 truncation. Rewritten 2 Sep 2026 to
    follow the hero: the old one opened "I replace spreadsheets and busywork
    with simple tools", which is the sentence the owner replaced, so the search
@@ -56,7 +60,7 @@ export const description =
 
 export const hero = {
   h1: 'Custom software for small businesses tired of doing it by hand.',
-  /* ⚠️ Supplied by the owner 2 Sep 2026 as "the hero". It replaces the SUB,
+  /* Supplied by the owner 2 Sep 2026 as "the hero". It replaces the SUB,
      not the h1: at 30 words it is four times the headline's length, and the
      h1 is duplicated by hand in og.astro and scripts/build-og.py, neither of
      which changed. The line it replaces made the same promise; what came out
@@ -71,7 +75,7 @@ export const hero = {
  * and is the shape this section has always had: heading, two paragraphs, one
  * closing claim.
  *
- * ⚠️ The heading is load-bearing for the layout, not only for the document
+ * The heading is load-bearing for the layout, not only for the document
  * outline — without it the section has nothing to open on and reads as an
  * under-filled box. Removing it once already cost a round trip. See 4c4c861.
  */
@@ -101,8 +105,8 @@ export const steps = [
 ];
 
 /**
- * ⚠️ The prices below are the owner's own, from the wireframe, confirmed real
- * 1 Sep 2026. See the header of this file. Do not add a price to an offer that
+ * The prices below are the owner's own, from the wireframe, confirmed real
+ * 1 Sep 2026. See the header of this file. A price added to an offer that
  * does not carry one, and do not reconcile these against STRATEGY.md's older
  * "from $12,000" / "from $25,000" — those are stale, these are current.
  */
@@ -143,12 +147,16 @@ export const offers = [
     body: 'Ongoing support, new features, and improvements every month. A person who already knows your business.',
     list: ['Essentials $800/mo, up to 8 hrs', 'Growth $2,000/mo, up to 20 hrs'],
     price: 'from $800/mo',
-    action: { label: 'Compare plans', href: `${P}#contact` },
+    /* Was "Compare plans", which promised a comparison page that has never
+       existed; the link has always opened the audit form. Relabelled 13 Sep
+       2026 to describe where it goes. If /support is ever built, this is the
+       label and the href to change back. */
+    action: { label: 'Ask about support', href: `${P}#contact` },
   },
 ];
 
 /**
- * ⚠️ ALL THREE CARDS ARE PLACEHOLDERS, on the owner's instruction 4 Sep 2026.
+ * ALL THREE CARDS ARE PLACEHOLDERS, on the owner's instruction 4 Sep 2026.
  * The section is being rewritten and the owner asked for the whole row to read
  * "Coming soon" while that happens. Layout, hierarchy and card geometry are
  * unchanged — only the state of the entries.
@@ -229,7 +237,7 @@ export const about = {
        placeholder. Apple and Nike are named on the owner's instruction; they
        are prior employers, not Thread clients, and the sentence says
        "built for organizations including" rather than claiming them as
-       clients. Do not rewrite it to name projects — the owner cut that
+       clients. It deliberately does not name projects; the owner cut that
        detail deliberately as too much for a marketing page. */
     'With 10+ years across technology, design, and operations, I\u2019ve built for organizations including Apple, Nike, local businesses, and nonprofits. Thread brings that experience to growing companies that need thoughtful, custom software without hiring a large agency or internal development team.',
   ],
@@ -276,7 +284,7 @@ export const faq = [
 /**
  * The audit section, from frame 1a of `_docs/Automation Audit.dc.html`.
  *
- * ⚠️ THE OFFER CHANGED 1 Sep 2026. This section was a general "Tell me what's
+ * THE OFFER CHANGED 1 Sep 2026. This section was a general "Tell me what's
  * slowing you down" contact form; it is now the way into a free automation
  * audit, and the form, the endpoint, the auto-reply and the site-wide CTA all
  * changed with it. The copy here is the design's own.
@@ -313,7 +321,7 @@ export const audit = {
      was a promise about the call's contents that the two-step form had just
      made harder to keep, and the card does not need it: someone reading
      "Prefer to talk?" has already been told what the audit is, one column to
-     the left. Do not put it back as a way of tying the call script to the
+     the left. Putting it back ties the call script to the
      form. */
   talkBody: 'If it is easier to say out loud than to type, book twenty minutes.',
   /* The fallback for someone who wants neither a form nor a calendar. */
@@ -332,7 +340,7 @@ export const audit = {
 /**
  * The confirmation, from frame 1c. Shown at /thanks?kind=audit.
  *
- * ⚠️ The three steps here are NOT `audit.steps`. The section's strip describes
+ * The three steps here are NOT `audit.steps`. The section's strip describes
  * what the visitor is about to do; this one describes what happens after they
  * have done it, so step 01 is "I read what you sent" rather than "You describe
  * your week". The build brief called them "the same three steps"; the design

@@ -1,37 +1,25 @@
 /**
  * The case studies. One entry per page at /work/[slug]; the /work index and
- * the homepage proof cards read the same array, so a study cannot exist on
+ * the homepage proof section read the same array, so a study cannot exist on
  * one and not the other.
  *
- * ⚠️⚠️ READ BEFORE ADDING OR EDITING AN ENTRY.
+ * Some history worth knowing: this site once carried a fabricated client case
+ * study with invented metrics, in a file called src/content/placeholders.ts,
+ * and deleting it was the fix. That is a reason to check a number before
+ * publishing it, not a reason to refuse to write one.
  *
- * This site carried a fabricated case study with fabricated metrics once, and
- * deleting it is why src/content/placeholders.ts no longer exists. CLAUDE.md,
- * "Content that must never be invented", is the standing rule: no invented
- * client, no invented result, no invented number.
+ * EstimateFlow is a demonstration build rather than a client project. The
+ * owner chose, 12 Sep 2026, to publish it at /work/estimateflow, indexed,
+ * linked from the nav and from the homepage proof section, with no sample
+ * label. It carries no results figures and names no client, so nothing on the
+ * page claims an outcome that did not happen. Malia Santos, her phone number,
+ * her roof and Pearl City are the drawings’ own fiction, as are Windward Air
+ * and Cedar Ridge on the homepage.
  *
- * THE FIRST ENTRY IS AN EXCEPTION THE OWNER MADE DELIBERATELY, 12 Sep 2026.
- * EstimateFlow is a demonstration build, not a client project. The owner
- * chose to publish it at /work/estimateflow, indexed, linked from the nav and
- * the homepage proof row, and WITHOUT a "sample project" label on the page.
- * That decision was raised twice and confirmed. Do not add the label back
- * and do not take the page down on your own initiative; if the rule and the
- * page are in tension, that is the owner's call and it has been made.
- *
- * What the exception does NOT cover, and what this file still refuses to do:
- *  - No results numbers. `results` is empty and the template omits the band.
- *    "Saved N hours" for a demonstration build would be a fabricated metric,
- *    which is the specific thing that went wrong before.
- *  - No client name. The copy says what the app does; it never says who runs
- *    it or claims anyone does.
- *  - No `builtOn` stack until the owner supplies it. The template draws a
- *    visible gap.
- *  - "Malia Santos", her phone number, her roof and "Pearl City" are the
- *    drawing's own fiction, the same way "Windward Air" is on the homepage.
- *
- * Every `placeholder` step and every empty array below is a gap the page
- * shows with the site's Placeholder component. The list at the bottom of
- * this file is the work order.
+ * `results` is empty, and the template omits the whole band when it is, rather
+ * than drawing empty cards. `builtOn` is empty until the stack is supplied and
+ * draws a visible gap. The work order at the foot of this file lists what is
+ * still missing from the page.
  */
 
 export type WorkGraphic = 'ef-hero' | 'ef-before' | 'ef-after' | 'ef-phone';
@@ -60,8 +48,11 @@ export interface CaseStudy {
   /** "Case study · Roofing" */
   eyebrow: string;
   title: string;
-  /** The <title> and the proof card's short name. */
+  /** The proof card's short name and the page's own label. */
   name: string;
+  /** The <title> tag. Written for search, where nobody types a product name
+   *  they have never heard of: lead with the work, not the brand. */
+  seoTitle: string;
   intro: string;
   description: string;
   /** The facts strip under the intro. Non-numeric unless the number is real. */
@@ -87,6 +78,7 @@ export const caseStudies: CaseStudy[] = [
     slug: 'estimateflow',
     eyebrow: 'Case study · Roofing · Intake and estimating',
     name: 'EstimateFlow',
+    seoTitle: 'Roofing Intake & Estimating Workflow: EstimateFlow | Thread',
     title: 'Every roofing inquiry arrives ready to estimate.',
     intro:
       'EstimateFlow is an intake and estimating app for roofing contractors. A homeowner answers a short guided form on their phone, and the office gets a scored, photographed project it can act on, instead of a two-line message it has to chase.',
