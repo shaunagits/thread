@@ -65,8 +65,10 @@ The selector is `.form label.chip`, not `.chip`, because `.form label` is
 no gap. Both forms carry the same stylesheet, duplicated because Astro
 scopes per component; change both.
 
-**Open:** the "Prefer to talk?" card promises "the same questions". The call
-script should be these ten questions, or that line changes.
+**The "Prefer to talk?" card no longer promises "the same questions".** That
+sentence was cut the same day, on the owner's instruction: it tied the call
+script to whatever the form happened to ask, and the card reads better
+without it. Do not restore it.
 
 ---
 

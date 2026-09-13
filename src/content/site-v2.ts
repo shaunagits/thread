@@ -308,7 +308,14 @@ export const audit = {
   ],
 
   talkHeading: 'Prefer to talk?',
-  talkBody: 'If it is easier to say out loud than to type, book twenty minutes. I will ask the same questions and send the same audit afterwards.',
+  /* The second sentence ("I will ask the same questions and send the same
+     audit afterwards") was cut 13 Sep 2026, on the owner's instruction. It
+     was a promise about the call's contents that the two-step form had just
+     made harder to keep, and the card does not need it: someone reading
+     "Prefer to talk?" has already been told what the audit is, one column to
+     the left. Do not put it back as a way of tying the call script to the
+     form. */
+  talkBody: 'If it is easier to say out loud than to type, book twenty minutes.',
   /* The fallback for someone who wants neither a form nor a calendar. */
   emailPrefix: 'Or email',
 
