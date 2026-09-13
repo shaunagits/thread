@@ -20,14 +20,14 @@
  *     400/500/600 the drawing uses.
  *  3. The stylesheet is `is:global`. The job list is built by the script with
  *     innerHTML, so those cards never receive Astro's scope attribute and a
- *     scoped rule would silently match nothing — the same failure landmine 18
+ *     scoped rule would silently match nothing — the same failure the innerHTML scoping problem
  *     records, and the same fix DashboardPlate already uses. EVERY SELECTOR
  *     HERE MUST STAY `wa-` PREFIXED. There is no scope protecting them.
  *  4. A visually-hidden description and a caption, so the drawing is not a
  *     wall of unreadable text to a screen reader and so nobody mistakes it for
  *     a screenshot of a real client's dashboard.
  *
- * ⚠️ CLIENT JAVASCRIPT, and this is the exception rather than a new rule.
+ * CLIENT JAVASCRIPT, and this is the exception rather than a new rule.
  * CLAUDE.md records that this site ships two lines of client JS. This adds
  * roughly ninety, on the owner's explicit instruction 1 Sep 2026, and only
  * because the animation cannot be expressed in CSS: the cursor path is
@@ -39,14 +39,14 @@
  * settled frame and stops, and the loop pauses on visibilitychange so a
  * background tab costs nothing.
  *
- * ⚠️ TYPE INSIDE THE DRAWING IS STAGE-SPACE, NOT PIXELS — landmine 17. The
+ * TYPE INSIDE THE DRAWING IS STAGE-SPACE, NOT PIXELS — drawing-space type. The
  * stage is 1080px wide and scaled to its container, so a 27px title renders at
  * 14.0px against HeroV2's 560px cap and 8.4px in the 335px column a 375pt phone
  * leaves. The sizes below are the design's own and are exempt from the type
  * scale for the same reason the SVG drawings are — measured, not guessed, and
  * to be re-measured if the container cap changes.
  *
- * ⚠️ RAISED, NOT FIXED: the frame and cards are drawn with 16-18px corner
+ * RAISED, NOT FIXED: the frame and cards are drawn with 16-18px corner
  * radii. Every other bounded object on this site is square — .btn, .card, the
  * form fields and the panels all set border-radius: 0 explicitly. Built as
  * supplied rather than silently squared off, per the standing rule about
@@ -120,7 +120,7 @@
       </div>
     </div>
   </div>
-  {/* ⚠️ NO CAPTION, removed on the owner's instruction 1 Sep 2026. It read
+  {/* NO CAPTION, removed on the owner's instruction 1 Sep 2026. It read
       "An example dispatch board. Not a real customer."
 
       Worth knowing before anything is built on top of this: "Windward Air",
@@ -132,7 +132,7 @@
 </figure>
 
 <style is:global>
-  /* ⚠️ GLOBAL, and every selector is `wa-` prefixed for that reason. See the
+  /* GLOBAL, and every selector is `wa-` prefixed for that reason. See the
      note at the head of this file: the job list is built with innerHTML and
      carries no scope attribute, so scoped rules would match nothing. */
   .wa-fig { margin: 0; }
@@ -238,7 +238,7 @@
      Paper on accent is 6.75:1, so the label passes AA. The check badge
      inverts with the fill: a paper disc with an accent tick.
 
-     ⚠️ `bottom` is constrained and is not free to grow. With the new job in
+     `bottom` is constrained and is not free to grow. With the new job in
      place the list runs to about y=914 in the 1080 stage, so the toast has
      roughly 166px of clear board beneath it. At this size it stands about
      71px tall, which leaves ~50px of air above it at bottom:44. Raising

@@ -14,13 +14,13 @@ import { audit } from '../content/site-v2';
  * email, a message or a profile. One form, two entry points, and the section
  * component is shared so the two can never drift apart.
  *
- * ⚠️ INDEXED, unlike /work, /v1, /og and /thanks. It carries no `noindex`, it
+ * INDEXED, unlike /work, /v1, /og and /thanks. It carries no `noindex`, it
  * is not in robots.txt's Disallow list, and the sitemap filter in
  * astro.config.mjs does not exclude it. That is deliberate — this is the page
  * someone should find when they search for what it offers. It is also why it
  * needs its own title and description rather than inheriting Base's defaults.
  *
- * ⚠️ The design draws the nav as Offers / Work / About, three items. The live
+ * The design draws the nav as Offers / Work / About, three items. The live
  * nav is four: Offers / Work / About / Contact, pointing at /#offers, /#proof,
  * /#about, /#contact. THE NAV IS NOT CHANGED TO MATCH THE DRAWING, per the
  * build brief. Two reasons: the header and the footer must agree on labels and

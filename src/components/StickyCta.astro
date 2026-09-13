@@ -1,5 +1,5 @@
 ---
-/* ⚠️ site-v1, not site. This component is used by /v1 and nothing else, and
+/* site-v1, not site. This component is used by /v1 and nothing else, and
    /v1 is the retired homepage kept live for reference since the swap on
    1 Sep 2026. site.ts's `cta`/`ctaHref` now carry the NEW homepage's label and
    anchor; importing them here would put the new label on the old page and
@@ -21,7 +21,7 @@ import { cta, ctaHref } from '../content/site-v1';
  * is deliberate: it sits over the page rather than in it, and ink-on-paper
  * would read as a block of the page that had come loose.
  *
- * ⚠️ It is a real fixed element, so two things have to hold or it breaks the
+ * It is a real fixed element, so two things have to hold or it breaks the
  * page rather than helping it:
  *
  *   1. `body` carries bottom padding equal to the bar's height (see
@@ -33,7 +33,7 @@ import { cta, ctaHref } from '../content/site-v1';
  * pointing at the form you are already looking at. That is the one thing worth
  * revisiting, and it needs a scroll timeline rather than a listener.
  *
- * ⚠️ The hero's own button is hidden below 640px because this one duplicates
+ * The hero's own button is hidden below 640px because this one duplicates
  * it (see Hero.astro). So this bar is the only CTA above the fold on a phone:
  * if it is ever removed, or repointed at something other than the contact
  * form, Hero's `.btn-row { display:none }` has to come out in the same commit.
@@ -44,7 +44,7 @@ import { cta, ctaHref } from '../content/site-v1';
   <a href={ctaHref} class="sticky-cta-btn">{cta}</a>
 </div>
 
-{/* ⚠️ Global, and deliberately so: it sets a rule on `body`, which no scoped
+{/* Global, and deliberately so: it sets a rule on `body`, which no scoped
     stylesheet can reach. It moved here from global.css on 1 Sep 2026 when the
     homepage swap left this component rendering on /v1 alone — a global body
     rule for a bar that ships on one page put 72px of dead space under the

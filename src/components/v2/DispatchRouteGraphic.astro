@@ -24,18 +24,18 @@
  * is ever wanted, and it would need a prefers-reduced-motion guard, which the
  * supplied file does not carry.
  *
- * ⚠️ TYPE IS STAGE-SPACE, NOT PIXELS — landmine 17. The stage is 560 wide and
+ * TYPE IS STAGE-SPACE, NOT PIXELS — drawing-space type. The stage is 560 wide and
  * scales with the card, so a 13-unit street label renders at 7.0px in the
  * 303px proof-card column and 9.3px at the 400px cap. Thumbnail sizes,
  * measured against the shipped Public Sans and JetBrains Mono advances and
  * accepted on the same terms as the offers drawing: the card's own copy says
  * what the thing is, and the small type is texture.
  *
- * ⚠️ THE PLACE NAMES ARE NOT THE SUPPLIED FILE'S, and the reason is a font
+ * THE PLACE NAMES ARE NOT THE SUPPLIED FILE'S, and the reason is a font
  * gap worth knowing about. The drawing arrived with "Kāhala Ave" (twice),
  * "KĀHALA AVE" and "Kaimukī Bakery". Every subset this site ships carries
  * U+02BB, the ʻokina, because scripts/build-fonts.py patches it in
- * deliberately (landmine 2) — but NONE of them carries a macron vowel. I read
+ * deliberately (the same ʻokina problem the fonts have) — but NONE of them carries a macron vowel. I read
  * the cmaps: Public Sans 400/500/600 and JetBrains Mono 400/500 all have
  * U+02BB and none has ā, ī, ō or ū. No copy anywhere in src/ has ever used
  * one, so this drawing would have been the first, and those three strings
@@ -51,20 +51,20 @@
  * downloads when a page actually uses one. Worth doing before any Hawaiian
  * place name with a macron ships anywhere on this site.
  *
- * ⚠️ ONE COLOUR ROLE HAS NO TOKEN AND WAS MAPPED, NOT ADDED. The supplied
+ * ONE COLOUR ROLE HAS NO TOKEN AND WAS MAPPED, NOT ADDED. The supplied
  * file's map buildings are #E5E7E1, which sits between --color-wash #E2E4DE
  * and --color-rule #D9DBD4. They render as --color-wash. Everything else maps
  * exactly: eleven of the file's twelve hexes are already tokens.
  *
- * ⚠️ The stylesheet is `is:global` and every selector is `drg-` prefixed,
+ * The stylesheet is `is:global` and every selector is `drg-` prefixed,
  * following WindwardAir and CustomAppGraphic. Nothing here is built with
  * innerHTML so scoped styles would work, but the three drawings on this page
- * should fail the same way — landmine 18.
+ * should fail the same way — the innerHTML scoping problem.
  *
- * ⚠️ Radii are kept as drawn, the same standing exception the hero and the
+ * Radii are kept as drawn, the same standing exception the hero and the
  * offers drawing carry. Every other bounded object on this site is square.
  *
- * ⚠️ "Windward Air" is not named here and no business is. The addresses, the
+ * "Windward Air" is not named here and no business is. The addresses, the
  * truck number and the job are invented, the same way Cedar Ridge Mechanical
  * is. THIS ONE MATTERS MORE THAN THE OTHER TWO: it sits in the proof section,
  * under a heading that reads "What this looks like in real businesses", above

@@ -111,7 +111,7 @@ const businessLd = {
    * This block is indexed, so it outlives page edits and has to change in the
    * same commit as the page.
    *
-   * ⚠️ Still no `priceSpecification`, and that is now a choice rather than a
+   * Still no `priceSpecification`, and that is now a choice rather than a
    * constraint. The three prices became real on 1 Sep 2026 and render on the
    * page, so they COULD be stated here. They are not, because a structured
    * price is the most quotable number a site emits and it is worth deciding
@@ -123,7 +123,7 @@ const businessLd = {
     itemOffered: {
       '@type': 'Service',
       name: offer.title,
-      /* ⚠️ schema.org description is a string. `body` became a string OR an
+      /* schema.org description is a string. `body` became a string OR an
          array of paragraphs on 2 Sep 2026 (see site-v2.ts), and an array here
          emits a JSON array, which Google discards. Joined, not indexed to
          [0], so a second paragraph is described rather than dropped. */
@@ -151,7 +151,7 @@ const businessLd = {
         every load to start at the top, and `history.scrollRestoration` is the
         only switch for that.
 
-        ⚠️ It must be set unconditionally, on every load. The value lives on the
+        It must be set unconditionally, on every load. The value lives on the
         history entry and is read when the browser decides whether to restore,
         so setting it during a load is too late for that same load — it only
         takes effect from the next one. Scoping it to `navigation.type ===

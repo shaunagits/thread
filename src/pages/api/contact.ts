@@ -16,7 +16,7 @@ type FieldName = keyof typeof LIMITS;
 /**
  * What step one sends, in the order it should appear in the email. Must match
  * the fields rendered by IntakeForm.astro — a field added there and not here
- * is collected and silently dropped. See CLAUDE.md landmine 14.
+ * is collected and silently dropped. See CLAUDE.md, "Things that will bite you".
  *
  * There were two forms until 14 Aug 2026, switched on a `kind` parameter. The
  * owner killed the systems map offer and /systems-map is gone. Since 13 Sep
@@ -54,9 +54,10 @@ const MULTI: ReadonlySet<FieldName> = new Set(['tasks', 'tools', 'pain']);
  * a specific business and it answers a specific description of a week. A
  * request missing either is not a lead that can be replied to.
  *
- * ⚠️ Rejecting is a real cost — a bounced submission is a lost lead — so this
- * list stays exactly as long as the `required` attributes in IntakeForm.astro
- * and no longer. Do not add an optional field to it.
+ * Rejecting has a real cost: a bounced submission is a lost lead. So this list
+ * tracks the `required` attributes in IntakeForm.astro exactly. Adding a field
+ * here that the form marks optional turns a complete-looking submission into a
+ * silent rejection.
  */
 const REQUIRED: ReadonlyArray<FieldName> = ['business', 'timesink'];
 
@@ -147,10 +148,10 @@ async function send(
  * the brief asks of it — confirms the request arrived, sets the one business
  * day expectation, and offers the call.
  *
- * ⚠️ NO EM DASHES, first person, plain. Same rule as everything a visitor
+ * NO EM DASHES, first person, plain. Same rule as everything a visitor
  * reads on the site.
  *
- * ⚠️ Hex is hardcoded here and cannot be otherwise: email clients do not
+ * Hex is hardcoded here and cannot be otherwise: email clients do not
  * resolve CSS custom properties, and many strip <style> blocks entirely, so
  * every rule is inline. These four values must be kept in step with
  * global.css by hand. scripts/build-og.py carries the same caveat for the same
@@ -210,8 +211,8 @@ export const POST: APIRoute = async ({ request }) => {
   // Honeypot. Real people never see this field, so anything in it is a bot.
   // Answer as though it succeeded — telling a bot it failed just invites a retry.
   //
-  // ⚠️ `contact_fax`, and it must never share a name with a real field.
-  // Landmine 16. It was `company_website` until 14 Aug 2026, when the copy
+  // `contact_fax`, and it should not share a name with a real field.
+  //  It was `company_website` until 14 Aug 2026, when the copy
   // began asking visitors for their company website as a genuine question;
   // had both kept that name, every real submission would have tripped this
   // check, been dropped without an email, and still shown the sender a success
@@ -302,7 +303,7 @@ export const POST: APIRoute = async ({ request }) => {
   const business = values.get('business') || name;
 
   /**
-   * ⚠️ ORDER IS LOAD-BEARING, AND SO ARE THE TWO DIFFERENT FAILURE POLICIES.
+   * ORDER IS LOAD-BEARING, AND SO ARE THE TWO DIFFERENT FAILURE POLICIES.
    *
    * The owner notification goes first and its failure fails the request: a
    * lead that never reaches the owner is lost outright, and the visitor should
@@ -319,7 +320,7 @@ export const POST: APIRoute = async ({ request }) => {
       to: [CONTACT_TO],
       reply_to: email,
       /**
-       * ⚠️ The business, not the person, because the owner triages these by
+       * The business, not the person, because the owner triages these by
        * business and writes an audit per business. Falls back to the name:
        * `business` is required by both the form and REQUIRED above, so an
        * empty one should be impossible, but a subject line reading
@@ -348,7 +349,7 @@ export const POST: APIRoute = async ({ request }) => {
    * "Dr. Jane Smith"; using the full name instead reads stiffer in every other
    * case, so this is the better trade rather than an oversight.
    *
-   * ⚠️ This sends one fixed message to whatever address was typed in, so the
+   * This sends one fixed message to whatever address was typed in, so the
    * form can be used to mail a stranger exactly once, with copy the sender
    * cannot control. That is not an open relay and it is the normal cost of a
    * confirmation email, but it is the reason this must stay a fixed template
@@ -368,7 +369,7 @@ export const POST: APIRoute = async ({ request }) => {
     'auto-reply',
   );
 
-  /* ⚠️ `kind=audit`, which selects the audit confirmation on /thanks. The bare
+  /* `kind=audit`, which selects the audit confirmation on /thanks. The bare
      /thanks success state still exists for anything that lands there without
      the parameter. See the note over `isAudit` in thanks.astro.
 

@@ -23,7 +23,7 @@
  *    that expression actually gains a whole number, so the climb decelerates
  *    exactly as drawn rather than running linearly.
  *
- * ⚠️ The window is drawn flat — border, no drop shadow. The source carries
+ * The window is drawn flat — border, no drop shadow. The source carries
  * `0 40px 80px rgba(38,35,30,.13)`. Nothing else in this design has a shadow
  * on a drawing, and reproducing it means an SVG filter on the largest element
  * on the page. Raised with the owner as a deviation.
@@ -222,7 +222,7 @@ const label =
 
 <style>
   /* ============================================================
-     Drawing-space type. Landmine 17. The only text in this drawing is the
+     Drawing-space type. Drawing-space type. The only text in this drawing is the
      counter, so --fs-fig is the one role with a consumer; there is no label
      and no name here. Rendered size = value x (rendered width / viewBox
      width), and the column is min(1100, 100vw-40) with the plate capped at
@@ -259,7 +259,7 @@ const label =
      that broke the hero graphic on phones, and it should not be there to be
      found. At 18 the column ends at 461, inside the window. */
 
-  /* ⚠️ 900px, not the 1100px .wrap content width the old plate used. The
+  /* 900px, not the 1100px .wrap content width the old plate used. The
      source is a 1000x1000 square; at full column width that is 1100px of
      drawing and 1100px of height, which is a screen and a half on a laptop
      and pushes the five service cards above it clean out of view. Cropping
@@ -332,13 +332,13 @@ const label =
      ticked, every link drawn and lit, node 06 filled, the counter on 24 and
      the progress bar full. Every from-state lives inside a keyframe, so a
      dropped declaration renders this rather than an empty window.
-     Landmine 22. */
+     A scroll-driven animation must not put its hidden state in the base rule: without animation-timeline support the element never appears. */
   .bg-swap-out { opacity: 0; }
   .bg-count { transform: translateY(calc(var(--cl) * -24)); }
 
   @media (prefers-reduced-motion: no-preference) {
-    /* ⚠️ Longhands only, as in RepetitiveGraphic. Nothing here needs a
-       timeline, so landmine 22's exact failure cannot bite this file — but
+    /* Longhands only, as in RepetitiveGraphic. Nothing here needs a
+       timeline, so that exact failure cannot bite this file — but
        the two drawings are read together and a shorthand here would be the
        thing someone copies into a file where it does. */
     .bg-node, .bg-link, .bg-glow, .bg-boxfill, .bg-check, .bg-pop,

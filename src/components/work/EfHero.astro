@@ -10,12 +10,12 @@
  * fits its stage with a three-line fit() because it already carries a script;
  * this page carries none, so the stage sits inside an <svg viewBox="0 0 1200
  * 900"> in a <foreignObject>, which the browser scales like any other SVG.
- * Type inside is therefore stage-space, not pixels (landmine 17): a 15px
+ * Type inside is therefore stage-space, not pixels (drawing-space type): a 15px
  * field label renders at 13.7px in the 1100px column and 4.4px on a 350px
  * phone. On a phone the composite is a picture of an app, not a thing to
  * read; the walkthrough shows the same screens one at a time at full size.
  *
- * ⚠️ RAISED, NOT FIXED: foreignObject and Safari. Absolutely positioned
+ * RAISED, NOT FIXED: foreignObject and Safari. Absolutely positioned
  * children inside foreignObject have had bugs in older WebKit. Checked in
  * Chrome at build; the owner should look at it in Safari on the phone once.
  * If it misbehaves there, the fallback is the WindwardAir fit() script.
@@ -30,7 +30,7 @@
  * Same rules as EfBefore.astro: the app's own palette and sizes, `ef`
  * custom properties on the root, the site's sans in place of Instrument Sans.
  *
- * ⚠️ EstimateFlow is a demonstration build, not a client. See work.ts.
+ * EstimateFlow is a demonstration build, not a client. See work.ts.
  */
 import EfPhone from './EfPhone.astro';
 interface Props { class?: string }

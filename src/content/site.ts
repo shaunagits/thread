@@ -32,7 +32,7 @@
  * the same commit when the scheduler exists.
  */
 /**
- * ⚠️ REPLACED 1 Sep 2026, when the owner swapped the homepage. It was
+ * REPLACED 1 Sep 2026, when the owner swapped the homepage. It was
  * 'Start the conversation' → '/#contact' for the Style C page, and that pair
  * still ships, on /v1, out of site-v1.ts. Everything above this comment is the
  * history of THAT label; it is kept because the reasoning still applies.
@@ -49,7 +49,7 @@
 export const cta = 'Request my audit';
 
 /**
- * ⚠️ `/#contact`, NOT `/automation-audit`, and this was a judgement call worth
+ * `/#contact`, NOT `/automation-audit`, and this was a judgement call worth
  * recording.
  *
  * The build brief asked for `/#contact` from the homepage and
@@ -77,8 +77,8 @@ export const ctaHref = '/#contact';
  * separate deployment from this marketing site.
  *
  * Absolute and cross-origin, so unlike every other href in this file it is not
- * root-relative — landmine 13 is about fragments resolving against the wrong
- * document, and does not apply. Same tab deliberately: a login is a
+ * root-relative. The root-relative href note is about fragments resolving
+ * against the wrong document, and does not apply here. Same tab deliberately: a login is a
  * destination, not a side trip, and `target="_blank"` on an auth flow strands
  * people in a tab with no way back.
  *
@@ -97,7 +97,7 @@ export const loginLabel = 'Log in';
  * the site-wide CTA was never allowed to say "Book a call" and the reason the
  * contact section drew a placeholder where an embed should be.
  *
- * ⚠️ A PLAIN LINK, EVERYWHERE IT APPEARS. Do not embed Cal.com's script or an
+ * A plain link, everywhere it appears. Embedding Cal.com's script or an
  * iframe. Everything a visitor interacts with on this site is scriptless, a
  * link does the same job, and an embed would be the first third-party script
  * on the site as well as the first cross-origin frame.
@@ -120,7 +120,7 @@ export const calLabel = 'Book a 20-minute call';
  * where being unsurprising is worth more than being distinctive. The voice
  * still lives in the section headings, which are anything but generic.
  *
- * ⚠️ The labels no longer describe the anchors they point at (#busywork,
+ * The labels no longer describe the anchors they point at (#busywork,
  * #build). That is deliberate and not drift: the ids are contracts — the
  * footer, the hero CTA and vercel.json's /systems-map 301 target them — and
  * renaming ids to chase a label is how indexed links break. The same
@@ -133,7 +133,7 @@ export const calLabel = 'Book a 20-minute call';
  * identically. See footerColumns at the foot of this file.
  */
 /**
- * ⚠️ REPLACED 1 Sep 2026 with the homepage swap. The three labels this comment
+ * REPLACED 1 Sep 2026 with the homepage swap. The three labels this comment
  * block describes (The problem / The solution / Contact → #busywork / #build /
  * #contact) now live in site-v1.ts and render on /v1. The reasoning above is
  * still the reasoning: a nav is the one place where being unsurprising beats
@@ -159,7 +159,7 @@ export const nav = [
   { label: 'Contact', href: '/#contact' },
 ];
 
-/** Real address — Namecheap forwards it. See CLAUDE.md landmine 9. */
+/** Real address — Namecheap forwards it. See CLAUDE.md the Namecheap DNS note. */
 /**
  * The connects-to strip under the hero, restored 18 Aug 2026 on the owner's
  * instruction after being deleted with its component earlier the same day.
@@ -171,9 +171,9 @@ export const nav = [
  * rather than alphabetically: books, money, commerce, payroll, CRM, then the
  * tools work actually happens in.
  *
- * ⚠️ Every name here is a claim that Thread integrates with it. Adding one is
+ * Every name here is a claim that Thread integrates with it. Adding one is
  * the owner's call, not a gap to fill because a platform is popular or has an
- * API. See CLAUDE.md, "Content that must never be invented".
+ * API. See CLAUDE.md, "Content".
  */
 export const integrations = [
   'QuickBooks', 'Xero', 'Sage',
@@ -216,7 +216,7 @@ export const signals = [
  * RepetitiveGraphic.astro's visually-hidden list, which is what keeps all
  * eight strings indexed and readable once the rows stopped being HTML.
  *
- * ⚠️ THIS ARRAY AND `signals` ABOVE NOW DRIVE A DRAWING, not just a list.
+ * THIS ARRAY AND `signals` ABOVE NOW DRIVE A DRAWING, not just a list.
  * RepetitiveGraphic builds its typed phrases as `[...signals, signalOpen]`, so
  * adding, removing or rewording an entry changes what §01 animates. Two things
  * there are derived from this array and neither fails loudly if it goes stale:
@@ -263,7 +263,7 @@ export const signalOpen = 'Whatever your team keeps redoing';
  *    the arc idea ever returns.
  */
 /**
- * ⚠️ `steps` was deleted 29 Aug 2026 with the Style C redesign, along with
+ * `steps` was deleted 29 Aug 2026 with the Style C redesign, along with
  * ProcessIndex.astro, which was its only consumer. The three-step arc (Fit
  * call / Scope / Build) has no section in the new page: it ran four sections
  * and now runs three, and "How it works" is not one of them.
@@ -296,17 +296,16 @@ export const signalOpen = 'Whatever your team keeps redoing';
  * the owner's too, from STRATEGY.md: "Typical 3-6 / 6-10 / 2-6 / 4-8 weeks".
  * The terms are the meta lines the retired entries already carried.
  *
- * ⚠️ PRICES ARE DELIBERATELY ABSENT, and this is the standing rule for the file
+ * PRICES ARE DELIBERATELY ABSENT, and this is the standing rule for the file
  * rather than a note about one array. STRATEGY.md carries "from $12,000",
  * "from $25,000" and two more sitting right beside the durations above. The v3
  * draft carried $14,000, $28,000 and $2,400/month, and its own call-out marked
  * all three as placeholders. HOMEPAGE-COPY.md still marks them `[CONFIRM]`.
  *
  * The owner confirmed on 14 Aug 2026: durations and terms only until the real
- * numbers exist. Do not fill any of them in, and in particular do not add one
- * because you found it elsewhere in the repo. Inventing a plausible price is
- * how this site got into trouble the first time. See CLAUDE.md, "Content that
- * must never be invented".
+ * numbers exist. A price found elsewhere in the repo is not confirmation that
+ * it is current, and a plausible invented one is how this site got into
+ * trouble the first time. See CLAUDE.md, "Content".
  */
 /**
  * Meta terms deduplicated 19 Aug 2026 with the \u00a702/\u00a703 merge. The list now
@@ -336,9 +335,10 @@ export const signalOpen = 'Whatever your team keeps redoing';
  * for this file rather than a note about one array. STRATEGY.md carries "from
  * $12,000" and "from $25,000"; HOMEPAGE-COPY.md marks them [CONFIRM]. The
  * owner confirmed on 14 Aug 2026 that nothing ships until the real numbers
- * exist. Do not add one because you found it elsewhere in the repo. Inventing
- * a plausible price is how this site got into trouble the first time. See
- * CLAUDE.md, "Content that must never be invented".
+ * exist. A price found elsewhere in the repo is not confirmation that it is
+ * current, and a plausible invented one is how this site got into trouble the
+ * first time. See
+ * CLAUDE.md, "Content".
  *
  * `span` is the card's width in the six-column grid: three twos on the first
  * row, two threes on the second. It is layout, not content, and it lives here
@@ -416,7 +416,7 @@ export const questions = [
 ];
 
 /**
- * ⚠️ NOT APPROVED COPY, and gated so it cannot ship by accident.
+ * NOT APPROVED COPY, and gated so it cannot ship by accident.
  *
  * CLAUDE.md records the owner's decision that the guarantee ships as written:
  * working software in two weeks, either side can stop, nothing owed beyond
@@ -455,7 +455,7 @@ export const footerColumns = [
     /* Mirrors `nav` above exactly. Two navigations aimed at the same three
        anchors must not label them differently — relabelled and re-anchored
        together, 29 Aug 2026. */
-    /* ⚠️ Mirrors `nav` above exactly, and must keep doing so — relabelled and
+    /* Mirrors `nav` above exactly, and must keep doing so — relabelled and
        re-anchored together with the homepage swap, 1 Sep 2026. Written as a
        reference rather than a copy so the two cannot drift again; they were
        two hand-maintained lists until this change. */

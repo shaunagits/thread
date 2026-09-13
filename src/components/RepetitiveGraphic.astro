@@ -22,7 +22,7 @@
  *                     rest of the curve by more (measured: the best overshooting
  *                     fit was 1.5x worse across the whole range).
  *
- * ⚠️ PHRASES IS DERIVED FROM site.ts, NOT COPIED FROM THE SOURCE. The source's
+ * PHRASES IS DERIVED FROM site.ts, NOT COPIED FROM THE SOURCE. The source's
  * own array disagreed with `signals` in two ways: it dropped signals[6],
  * 'Following a 12-step process that should take two', and its seventh entry was
  * `signalOpen`, which is the open row's text rather than a signal. It was ported
@@ -35,7 +35,7 @@
  * the drawing and the visually-hidden list below are now fed from one array and
  * cannot drift apart again, which is exactly how the omission arose.
  *
- * ⚠️ Adding or removing a signal in site.ts therefore changes this drawing. Two
+ * Adding or removing a signal in site.ts therefore changes this drawing. Two
  * things must be re-derived in the same commit, and neither fails loudly:
  * `widths` below (the typewriter's clip geometry, measured per phrase) and the
  * per-phrase animation-range and steps() blocks in the stylesheet, which are
@@ -51,7 +51,7 @@ const PHRASES = [...signals, signalOpen];
  * widths, the checkbox, the ghost offsets and the phrase clip widths are all
  * authored per composition. A 912-unit canvas in a 350px phone column renders
  * at 0.38, which puts the labels near 5px — the same mistake that broke the
- * hero graphic on phones, and the reason CLAUDE.md landmine 17 exists.
+ * hero graphic on phones, and the reason CLAUDE.md drawing-space type exists.
  *
  * TWO width arrays per composition, and they are deliberately different numbers
  * for the same eight strings.
@@ -73,7 +73,7 @@ const PHRASES = [...signals, signalOpen];
  *   narrow, 13u advances 293.64 328.25 189.38 253.97 148.37 279.99 295.93 211.65
  *               rendered 290.94 327.87 189.10 255.30 147.92 278.42 295.83 211.13
  *
- * ⚠️ Measure each composition at ITS OWN phrase size rather than scaling one set
+ * Measure each composition at ITS OWN phrase size rather than scaling one set
  * by the size ratio. The same string is 21.27em at 19u and 22.38em at 13u — the
  * advance rounding differs with size, which is why the narrow numbers sit much
  * closer to the raw advances than the wide ones do. The rendered figures are
@@ -120,7 +120,7 @@ const label =
 ---
 
 <figure class="repetitive-graphic">
-  {/* ⚠️ The drawing replaces eight rows of indexable HTML, so the strings come
+  {/* The drawing replaces eight rows of indexable HTML, so the strings come
       back here rather than being lost to an <svg>. Same visually-hidden
       pattern as IntakeForm's honeypot label: in the accessibility tree and in
       the crawled source, absent from the page. This list is fed from site.ts
@@ -216,7 +216,7 @@ const label =
 
 <style>
   /* ============================================================
-     Drawing-space type. Landmine 17: the unit is the viewBox, not the screen,
+     Drawing-space type. Drawing-space type: the unit is the viewBox, not the screen,
      so a value that reads correctly in one column is wrong in another.
 
      Rendered size = value x (rendered width / viewBox width). The column is
@@ -241,7 +241,7 @@ const label =
      needs the 821-1000 bump because that is where the two-column layout is
      narrowest — the same band DashboardPlate bumps, for the same reason.
 
-     ⚠️ --fs-name is deliberately NOT re-valued per band. It is the only text
+     --fs-name is deliberately NOT re-valued per band. It is the only text
      here that is prose rather than a label, and more to the point the
      typewriter's clip rects are measured against it: changing the size per
      band would desynchronise the reveal from the glyphs it is meant to land
@@ -311,7 +311,7 @@ const label =
                 letter-spacing: var(--tracking-mono); fill: var(--color-hair);
                 dominant-baseline: central; }
 
-  /* ⚠️ The source sets the typed phrase in its `mute` grey, which is about
+  /* The source sets the typed phrase in its `mute` grey, which is about
      2.4:1 on its cream. This is --color-body instead. It is the one piece of
      real prose in the drawing, and --color-faint already fails AA at 3.66:1
      on paper (CLAUDE.md, Outstanding item 2) without going lighter still.
@@ -325,7 +325,7 @@ const label =
      leaves it at T=17.6: six rows built and ticked, the stacks gone, and the
      last phrase held in slot 07. Every from-state lives inside a keyframe, so
      if a declaration is ever dropped the drawing renders finished rather than
-     empty. Landmine 22. */
+     empty. A scroll-driven animation must not put its hidden state in the base rule: without animation-timeline support the element never appears. */
   .rw-typer   { transform: scaleX(1); transform-box: fill-box; transform-origin: left center; }
   .rw-caret-t { transform: translateX(var(--w)); }
   .rw-phrase  { opacity: 0; }
@@ -344,12 +344,12 @@ const label =
     }
 
     @supports (animation-timeline: view()) {
-      /* ⚠️ Longhands only in this block, and there must never be an
+      /* Longhands only in this block, and a shorthand here reintroduces the
          `animation` shorthand in it. Lightning CSS folds animation-timeline
          into the shorthand when both are present and emits
          `animation: ... view()`, which no browser parses, so the whole
          declaration is dropped in the production build and nowhere else.
-         Landmine 22, which already cost §02 a production deploy on 17 Aug.
+         That already cost §02 a production deploy on 17 Aug.
 
          The timeline is named once on the figure and every descendant walks up
          to find it. The source plays once for 17.6s on load; here the 17.6s is
@@ -486,7 +486,7 @@ const label =
 
   /* The repeat-stacks. Internal stops are 0.5/1.95 and 1.35/1.95 of the
      window: fan out, hold while the wave runs down the list, settle back. */
-  /* ⚠️ Four keyframes with literal values, not two parameterised with custom
+  /* Four keyframes with literal values, not two parameterised with custom
      properties. `transform: translate(var(--x), var(--y))` inside @keyframes
      is a pattern Safari has never handled reliably — it steps between stops
      instead of interpolating, or drops the transform entirely. It cost the

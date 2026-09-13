@@ -6,7 +6,7 @@
  * noindex route rather than deleted, because the owner asked for the old
  * homepage to stay available for reference.
  *
- * ⚠️ THIS FILE EXISTS SO /v1 STAYS A FAITHFUL SNAPSHOT. Its four exports were
+ * THIS FILE EXISTS SO /v1 STAYS A FAITHFUL SNAPSHOT. Its four exports were
  * `site.ts`'s own values until the swap; `site.ts` now carries the new
  * homepage's nav, CTA and footer, because those are what every shared
  * component and every other page must point at. Without this file /v1 would
@@ -21,7 +21,7 @@
  * Nothing here is new copy. Every string is what the page shipped with.
  */
 
-/** Page-qualified, not bare fragments — landmine 13. The footer renders on
+/** Page-qualified, not bare fragments — the root-relative href note. The footer renders on
  *  /privacy, /terms and /thanks, where `#busywork` resolves against the wrong
  *  document. It was `/#busywork` while this page was `/`. */
 const P = '/v1';
@@ -33,7 +33,7 @@ export const ctaHref = `${P}#contact`;
 
 /**
  * The plain, expected labels the owner picked from four directions on
- * 29 Aug 2026. ⚠️ They deliberately do not describe the anchors they point at
+ * 29 Aug 2026. They deliberately do not describe the anchors they point at
  * (`#busywork`, `#build`) — ids are contracts and renaming one to chase a
  * label is how indexed links break.
  */

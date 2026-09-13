@@ -18,7 +18,7 @@
  * supplied file's own.
  *
  * Inline SVG, no script. The stage is 560x380 and scales with the card, so
- * type inside is stage-space, not pixels (landmine 17): 16-unit table text
+ * type inside is stage-space, not pixels (drawing-space type): 16-unit table text
  * renders at 9.0px in the 313px card column and 11.4px at the 400px cap the
  * single-column layout gets. Those are thumbnail sizes, measured and
  * accepted; the card's own copy says what the thing is.
@@ -30,14 +30,14 @@
  * token to global.css is the one-line alternative if the drawing wants them.
  * The toast's dot uses --color-foot-dot, the palette's accent-on-ink step.
  *
- * ⚠️ The stylesheet is `is:global` and every selector is `cag-` prefixed,
+ * The stylesheet is `is:global` and every selector is `cag-` prefixed,
  * following WindwardAir.astro. Scoped styles would work here (nothing is
  * built with innerHTML) but the two drawings on this page should fail the
- * same way, and a prefixed global rule is the pattern landmine 18 records.
+ * same way, and a prefixed global rule is the pattern the innerHTML scoping problem records.
  *
- * ⚠️ RAISED, NOT FIXED: corner radii, as in the hero. Kept as drawn.
+ * RAISED, NOT FIXED: corner radii, as in the hero. Kept as drawn.
  *
- * ⚠️ "Cedar Ridge Mechanical", its parts and its truck are invented, the same
+ * "Cedar Ridge Mechanical", its parts and its truck are invented, the same
  * way Windward Air is. Fine as an illustration on the card; never present it
  * as a client, a case study or a screenshot.
  */

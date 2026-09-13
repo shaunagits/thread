@@ -12,7 +12,7 @@ import StickyCta from '../components/StickyCta.astro';
 import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
 
 /**
- * ⚠️ THE RETIRED HOMEPAGE. This was `/` from the Style C redesign on 29 Aug
+ * THE RETIRED HOMEPAGE. This was `/` from the Style C redesign on 29 Aug
  * 2026 until 1 Sep 2026, when the owner swapped in the wireframe design. It is
  * kept live at /v1, noindex, because the owner asked for the old homepage to
  * stay available for reference — not because anything still links to it.
@@ -29,7 +29,7 @@ import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
  * `StickyCta.astro` import from there for the same reason, and both are used
  * by this page and nothing else.
  *
- * ⚠️ Do not "fix" this page. It is a record. If something here looks stale
+ * This page is a record of the previous homepage rather than live work. If something here looks stale
  * against `/`, that is the point.
  */
 ---
@@ -67,7 +67,7 @@ import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
         load-bearing: flat, the DOM order is already the phone order, and the
         desktop arrangement is explicit grid placement instead.
 
-        ⚠️ Cut 29 Aug 2026 on the owner's instruction: the lead-in "Maybe your
+        Cut 29 Aug 2026 on the owner's instruction: the lead-in "Maybe your
         team is:" and the closing block ("These little inefficiencies add up."
         / "That's the busywork I build out of your business."). The section is
         now the heading and the drawing. `.bw-close` was the only thing in row
@@ -98,7 +98,7 @@ import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
 
       The one section on the quiet ground. Carries the five build types.
 
-      ⚠️ BuildGraphic.astro is finished and NOT rendered, on the owner's
+      BuildGraphic.astro is finished and NOT rendered, on the owner's
       instruction 29 Aug 2026 ("remove the graphic completely from the process
       section for now"). The component, its two compositions and its keyframes
       are kept rather than deleted because "for now" is explicit — putting it
@@ -141,10 +141,10 @@ import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
      desktop arrangement is the exception. One row now that the closing block
      is gone; the heading sits at the top of the narrow column beside it. */
   .bw-intro { grid-column:1; grid-row:1; }
-  /* ⚠️ Inside :global() in full. `.repetitive-graphic` is
+  /* Inside :global() in full. `.repetitive-graphic` is
      RepetitiveGraphic.astro's root element, so a scoped selector compiles to
      `.repetitive-graphic[data-astro-cid-THIS]` and silently matches nothing —
-     landmine 18, which already cost §01's accent rule once under the ocean
+     the innerHTML scoping problem, which already cost §01's accent rule once under the ocean
      design. */
   :global(.bw-grid > .repetitive-graphic) { grid-column:2; grid-row:1; }
   .bw-head { margin:0; }
@@ -177,7 +177,7 @@ import { cta, ctaHref, nav, footerColumns } from '../content/site-v1';
     :global(.bw-grid > .repetitive-graphic) { grid-column:auto; grid-row:auto; }
   }
 
-  /* ⚠️ §01's ask is hidden on phones for the same reason the hero's is:
+  /* §01's ask is hidden on phones for the same reason the hero's is:
      StickyCta carries the same label, pinned, from the moment the page loads,
      so this one sits a few hundred pixels above a permanent copy of itself.
 

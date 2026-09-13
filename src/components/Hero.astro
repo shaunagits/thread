@@ -1,6 +1,6 @@
 ---
 import HeroGraphic from './HeroGraphic.astro';
-/* ⚠️ site-v1, not site. This component is used by /v1 and nothing else, and
+/* site-v1, not site. This component is used by /v1 and nothing else, and
    /v1 is the retired homepage kept live for reference since the swap on
    1 Sep 2026. site.ts's `cta`/`ctaHref` now carry the NEW homepage's label and
    anchor; importing them here would put the new label on the old page and
@@ -29,7 +29,7 @@ import { cta, ctaHref } from '../content/site-v1';
           specific symptoms. §01's signal list names seven of them one scroll
           down, so the hero was doing that section's job in a paragraph.
 
-          ⚠️ The signature line ("Custom software, built in Honolulu, Hawaiʻi.")
+          The signature line ("Custom software, built in Honolulu, Hawaiʻi.")
           went with it, and that was the last mention of the location above the
           fold. The eyebrow that used to carry it was already dropped by the
           Style C redesign. The place still appears in the contact section, in
@@ -101,7 +101,7 @@ import { cta, ctaHref } from '../content/site-v1';
     .hero-grid { gap:30px; }
     .hero-figure { max-width:none; }
 
-    /* ⚠️ The hero's button is hidden on a phone, not restyled — StickyCta
+    /* The hero's button is hidden on a phone, not restyled — StickyCta
        renders the same label, pinned to the bottom of the viewport, and it is
        on screen from the moment the page loads. Two identical CTAs a thumb's
        width apart is not twice the invitation, it is a page that looks like it

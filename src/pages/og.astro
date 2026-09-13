@@ -29,7 +29,7 @@ import { hero } from '../content/site-v2';
 
       <div class="middle">
         <div class="eyebrow">Custom software and automation · Honolulu, Hawaiʻi</div>
-        {/* ⚠️ Mirrors the hero headline, and no longer by hand. It is read
+        {/* Mirrors the hero headline, and no longer by hand. It is read
             from site-v2.ts, which is where the homepage's hero copy lives
             since the swap on 1 Sep 2026. That closes the gap this comment used
             to describe: the card is the link preview everywhere the site gets
@@ -38,7 +38,7 @@ import { hero } from '../content/site-v2';
             remembering. The previous homepage kept its copy in Hero.astro's
             markup, which is why it could not be imported.
 
-            ⚠️ scripts/build-og.py still carries the string separately — it is
+            scripts/build-og.py still carries the string separately — it is
             a Python renderer and cannot import a .ts module. Change its
             HEADLINE constant in the same commit, and re-run `npm run og:build`
             or /og.png stays on the old headline. */}

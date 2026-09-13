@@ -83,14 +83,14 @@ import IntakeForm from './IntakeForm.astro';
   /* The ruled ground, unmasked here — under the hero it fades in diagonally so
      the headline sits on clean paper, but this section's copy column is narrow
      and the rules read as ledger lines behind a form, which is the point.
-     `.ruled` brings the background and the isolation with it (landmine 19). */
+     `.ruled` brings the background and the isolation with it (the z-index layering problem). */
   .cta-band { border-top: 1px solid var(--color-ink); }
 
   /* index.html had `.cta-in{padding:88px 0}` and `.wrap{padding:0 40px}` as two
      single-class selectors, so source order alone decided the winner, and §07
      sat 40px out of alignment above 640px and lost all its vertical padding
      below it. padding-block here, horizontal padding left to .wrap at every
-     width. Landmine 8: do not reintroduce a `padding` shorthand on this
+     width. A `padding` shorthand here re-collapses the side padding; use the longhands on this
      element. */
   /* The form is the point of this section, so it takes the wider column. */
   .cta-in {

@@ -5,9 +5,9 @@ import CustomAppGraphic from './CustomAppGraphic.astro';
 /**
  * Three offer cards, one featured.
  *
- * ⚠️ THESE CARDS CARRY PRICES, which is a departure from the live site and is
+ * THESE CARDS CARRY PRICES, which is a departure from the live site and is
  * the owner's call, made 1 Sep 2026. The figures are theirs, from the
- * wireframe. See the header of site-v2.ts. Do not add, round or extend one.
+ * wireframe. See the header of site-v2.ts. Adding, rounding or extending one makes it no longer the owner's figure.
  *
  * The card shape follows ServiceCards.astro rather than the wireframe's
  * rounded box: square corners, a 1px ink border, and the number-tab idea
@@ -82,7 +82,7 @@ import CustomAppGraphic from './CustomAppGraphic.astro';
   /* The Custom business app card's drawing. Its margin lives in its own
      file (CustomAppGraphic.astro, is:global, `cag-` prefixed), because a
      scoped rule here cannot reach markup another component renders —
-     landmine 18, which cost this file a 240px-capped placeholder rendering
+     the innerHTML scoping problem, which cost this file a 240px-capped placeholder rendering
      470px wide when the slot was a Placeholder. */
 
   /* margin-top:auto is what levels the price and the button across three

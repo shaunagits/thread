@@ -2,19 +2,16 @@
 /**
  * A visible gap: something the page needs that does not exist yet.
  *
- * ⚠️ EVERY ONE OF THESE CARRIES A "FINISH LATER" FLAG, on the owner's
- * instruction 1 Sep 2026, so unfinished work is findable on the page and in
- * the source rather than something you have to remember. To find them all:
+ * It is meant to look unfinished, so an unbuilt piece is findable on the page
+ * and in the source rather than something you have to remember. To find them
+ * all:
  *
  *     grep -rn "Placeholder" src/
  *
- * The point is that it looks unfinished. This repo's history is a fabricated
- * case study and a set of plausible placeholder prices that shipped, and the
- * fix both times was to leave an obvious hole rather than something that
- * passes at a glance.
- *
  * `label` says what belongs here. `note` says anything a person needs in order
- * to supply it. Keep both short: this is a work item, not documentation.
+ * to supply it. `flag` is the badge: "Finish later" for something a visitor
+ * should not be seeing, "Coming soon" for a gap the owner has decided is fine
+ * to show while the site is live.
  */
 interface Props {
   label: string;

@@ -11,7 +11,7 @@ import { calHref, calLabel, contact } from '../../content/site';
  * audit, so the section leads with the ask, explains it in three steps, and
  * gives the form the wider column.
  *
- * ⚠️ THE SECTION KEEPS `id="contact"`, set by the caller in index.astro. Do
+ * THE SECTION KEEPS `id="contact"`, set by the caller in index.astro. Do
  * not rename it. It is the only anchor on this site with an indexed inbound
  * link: the hero CTA, the footer, /work and vercel.json's /systems-map 301 all
  * target it. The brief suggested adding `id="audit"` as a second id "on the
@@ -19,7 +19,7 @@ import { calHref, calLabel, contact } from '../../content/site';
  * an alias would need its own element, which is clutter for a nicer-looking
  * fragment. Raised rather than invented.
  *
- * ⚠️ The Cal.com link is a plain `<a>`, never an embed. See `calHref` in
+ * The Cal.com link is a plain `<a>`, never an embed. See `calHref` in
  * site.ts: everything a visitor interacts with on this site is scriptless, and
  * an embed would be the first third-party script and the first cross-origin
  * frame on the site. This replaces the dashed "Calendar embed" placeholder
@@ -126,7 +126,7 @@ import { calHref, calLabel, contact } from '../../content/site';
   /* 1000px is where the rest of this page's two-column blocks stack. */
   @media (max-width: 1000px) {
     .au-top { grid-template-columns: 1fr; gap: 18px; }
-    /* ⚠️ The panel moves BELOW the form, which is the design's phone order and
+    /* The panel moves BELOW the form, which is the design's phone order and
        the reason this is one column rather than a reversed two. The form is
        the primary path; the call is the alternative, and an alternative above
        the thing it is an alternative to reads as the main offer. */

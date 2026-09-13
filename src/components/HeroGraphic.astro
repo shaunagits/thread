@@ -28,7 +28,7 @@
  *     no-motion state is the finished composition — window drawn, all nine
  *     rows stacked and complete. A visitor who suppresses motion sees the
  *     outcome, not an empty canvas or nine rows scattered at angles.
- *   - Time-based, so landmine 22 does not apply: that is about
+ *   - Time-based, so the scroll-timeline problem does not apply: that is about
  *     `animation-timeline: view()` being folded into the `animation`
  *     shorthand by Lightning CSS. There is no scroll timeline here. The
  *     scroll-driven work is in RepetitiveGraphic.
@@ -76,7 +76,7 @@ const rowsNarrow = [
    three positions in the row order of both compositions. */
 const ticked = [0, 2, 5];
 
-/* ⚠️ The row keyframes are generated as LITERAL values, not one shared
+/* The row keyframes are generated as LITERAL values, not one shared
    keyframe parameterised with custom properties.
 
    The shared version was tidier and is in git, but `transform: translate(var(--x),
@@ -176,7 +176,7 @@ ${restKf(rowsNarrow, 112)}
 </svg>
 
 {/* The phone composition. A separate drawing rather than the wide one scaled:
-    landmine 17 — SVG type is drawing-space, so shrinking the 640-unit canvas
+    drawing-space type — SVG type is drawing-space, so shrinking the 640-unit canvas
     to 350px would take its 11px labels to 6px. Same swap at the same
     breakpoint as everything else on the page. */}
 <svg
@@ -236,7 +236,7 @@ ${restKf(rowsNarrow, 112)}
 
 <style>
   /* ---------- type inside the drawing ----------
-     Landmine 17: SVG type is drawing-space, not pixels. Rendered size is
+     Drawing-space type: SVG type is drawing-space, not pixels. Rendered size is
      `value × (rendered width ÷ 640)`, so the same number is a different size in
      every column this drawing sits in.
 
