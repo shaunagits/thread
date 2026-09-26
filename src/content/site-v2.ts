@@ -45,12 +45,13 @@ const P = '/';
  */
 export { cta, ctaHref } from './site';
 
-/* 52 characters. The previous title ran 74, which Google truncates, and it
-   spent its first four words on generic category language before reaching
-   anything specific. This one carries the brand, which the old one never
-   did. */
+/* 55 characters, inside Google's truncation. Changed 13 Sep 2026 on the
+   owner's instruction: "AI" was absent from the title, the description and
+   every heading on the page, and it is tier-1 commercial search intent in
+   STRATEGY.md's own keyword table. The previous title ran
+   'Small Business Software & Automation | Thread Hawaii'. */
 export const title =
-  'Small Business Software & Automation | Thread Hawaii';
+  'Custom Software & AI for Small Business | Thread Hawaii';
 /* 155 characters, inside Google's ~160 truncation. Rewritten 2 Sep 2026 to
    follow the hero: the old one opened "I replace spreadsheets and busywork
    with simple tools", which is the sentence the owner replaced, so the search
@@ -139,7 +140,9 @@ export const offers = [
        component per offer. */
     graphic: 'customApp',
     price: 'from $6,000',
-    action: { label: 'See examples', href: `${P}#proof` },
+    /* Was 'See examples' to #proof until 25 Sep 2026, when the case studies
+       went to "Coming soon". Restore it when a study is published again. */
+    action: { label: 'Ask about an app', href: `${P}#contact` },
   },
   {
     featured: false,
@@ -206,8 +209,10 @@ export const proof: ProofItem[] = [
      result line is the study's title, not a number: no figure is claimed
      here or on its page. See the header of src/content/work.ts before
      changing either. */
+  /* Placeholder again from 25 Sep 2026: the study is unpublished while it is
+     finished (see `published` in work.ts). Flip back to false to feature it. */
   {
-    placeholder: false,
+    placeholder: true,
     result: 'EstimateFlow',
     body: 'Every roofing inquiry arrives ready to estimate. Follow one leak from the customer\u2019s phone to the quote.',
     graphic: 'estimateflow',

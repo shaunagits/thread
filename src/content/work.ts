@@ -45,6 +45,10 @@ export interface WorkDetail {
 
 export interface CaseStudy {
   slug: string;
+  /** false keeps the study off the site: no page is built, /work and the
+   *  homepage show "Coming soon", and vercel.json redirects the old URL to
+   *  /work (temporary, 302). Set true to publish, and remove that redirect. */
+  published: boolean;
   /** "Case study · Roofing" */
   eyebrow: string;
   title: string;
@@ -76,6 +80,9 @@ export interface CaseStudy {
 export const caseStudies: CaseStudy[] = [
   {
     slug: 'estimateflow',
+    /* Unpublished 25 Sep 2026 on the owner's instruction while the
+       screenshots, clip and stack are finished. */
+    published: false,
     eyebrow: 'Case study · Roofing · Intake and estimating',
     name: 'EstimateFlow',
     seoTitle: 'Roofing Intake & Estimating Workflow: EstimateFlow | Thread',
@@ -184,3 +191,7 @@ export const bySlug = (slug: string) => caseStudies.find((c) => c.slug === slug)
  *  9. A second case study, so "More work" at the foot of the page has
  *     something to point at. Until then that block is omitted.
  */
+
+/** The studies that are live. Everything on the site reads this, not
+ *  `caseStudies`, so an unpublished draft never renders. */
+export const publishedStudies = caseStudies.filter((c) => c.published);

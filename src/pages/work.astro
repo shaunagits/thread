@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Section from '../components/Section.astro';
 import EfHero from '../components/work/EfHero.astro';
-import { caseStudies } from '../content/work';
+import { publishedStudies } from '../content/work';
 import { cta, ctaHref } from '../content/site';
 import { audit } from '../content/site-v2';
 
@@ -22,6 +22,9 @@ import { audit } from '../content/site-v2';
  * The first entry is a demonstration build published on the owner's
  * explicit instruction. Read the header of work.ts before adding to it.
  *
+ * Reads `publishedStudies`. While none are published (from 25 Sep 2026) the
+ * list is replaced by a "Coming soon" note.
+ *
  * Cards are drawn by key, like the template: a case study whose hero is not
  * an EstimateFlow drawing needs a case added to the figure below.
  */
@@ -38,14 +41,24 @@ import { audit } from '../content/site-v2';
       <p class="eyebrow">Work</p>
       <h1>What this looks like, built.</h1>
       <p class="lead wk-intro">
-        One job at a time, from the first message to the finished screen. Each page follows a single piece of work through the software that now runs it.
+        One job at a time, from the first message to the finished screen.
       </p>
     </div>
   </section>
 
   <Section class="wk-list">
+    {publishedStudies.length === 0 ? (
+      <div class="wk-soon">
+        <p class="eyebrow">Case studies</p>
+        <h2 class="wk-soon-h">Coming soon.</h2>
+        <p class="wk-intro-sm">
+          I am writing up recent projects now. If you want to know whether I have
+          solved a problem like yours, ask me and I will tell you straight.
+        </p>
+      </div>
+    ) : (
     <ol class="wk-cards">
-      {caseStudies.map((study) => (
+      {publishedStudies.map((study) => (
         <li class="wk-card">
           <a href={`/work/${study.slug}`} class="wk-link">
             <div class="wk-fig">
@@ -61,6 +74,7 @@ import { audit } from '../content/site-v2';
         </li>
       ))}
     </ol>
+    )}
   </Section>
 
   <Section wash class="wk-cta">
@@ -79,6 +93,9 @@ import { audit } from '../content/site-v2';
 <style>
   .wk-hero h1 { max-width: 18ch; margin: 12px 0 16px; }
   .wk-intro { max-width: 56ch; }
+
+  .wk-soon { border-top: 1px solid var(--color-rule); padding-top: 28px; }
+  .wk-soon-h { margin: 12px 0 14px; font-size: var(--text-d3); }
 
   .wk-cards { list-style: none; display: grid; gap: 40px; }
   .wk-link {

@@ -46,7 +46,18 @@ const pending = proof.filter((item) => item.placeholder).length;
     </article>
   ))}
 
-  {pending > 0 && (
+  {featured.length === 0 && (
+    <div class="pf-soon">
+      <p class="eyebrow">Case studies</p>
+      <h3 class="pf-name">Coming soon.</h3>
+      <p class="pf-body">
+        I am writing up recent projects now. If you want to know whether I have
+        solved a problem like yours, ask me and I will tell you straight.
+      </p>
+    </div>
+  )}
+
+  {featured.length > 0 && pending > 0 && (
     <p class="pf-pending">
       More case studies are being written. If you want to know whether I have
       solved a problem like yours, ask me and I will tell you straight.
@@ -67,6 +78,9 @@ const pending = proof.filter((item) => item.placeholder).length;
   .pf-fig {
     border: 1px solid var(--color-ink); background: var(--color-white); overflow: hidden;
   }
+
+  .pf-soon { border-top: 1px solid var(--color-rule); padding-top: 28px; }
+  .pf-soon .eyebrow { margin-bottom: 10px; }
 
   .pf-copy .eyebrow { margin-bottom: 10px; }
   .pf-name {

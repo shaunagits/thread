@@ -8,7 +8,7 @@ import EfHero from '../../components/work/EfHero.astro';
 import EfBefore from '../../components/work/EfBefore.astro';
 import EfAfter from '../../components/work/EfAfter.astro';
 import EfPhone from '../../components/work/EfPhone.astro';
-import { caseStudies, type WorkGraphic } from '../../content/work';
+import { publishedStudies, type WorkGraphic } from '../../content/work';
 import { audit } from '../../content/site-v2';
 import { cta, ctaHref } from '../../content/site';
 
@@ -39,10 +39,10 @@ import { cta, ctaHref } from '../../content/site';
  * Read the header of work.ts before touching the first entry.
  */
 export function getStaticPaths() {
-  return caseStudies.map((study) => ({ params: { slug: study.slug }, props: { study } }));
+  return publishedStudies.map((study) => ({ params: { slug: study.slug }, props: { study } }));
 }
 const { study } = Astro.props;
-const more = caseStudies.filter((c) => c.slug !== study.slug);
+const more = publishedStudies.filter((c) => c.slug !== study.slug);
 ---
 
 <Base title={study.seoTitle} description={study.description}>

@@ -11,6 +11,11 @@
       "source": "/systems-map",
       "destination": "/#contact",
       "permanent": true
+    },
+    {
+      "source": "/work/estimateflow",
+      "destination": "/work",
+      "permanent": false
     }
   ],
   "headers": [
