@@ -2,20 +2,34 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.threadhawaii.com" }],
-      "destination": "https://threadhawaii.com/$1",
+      "source": "/work",
+      "destination": "https://shauna.digital/results/",
+      "permanent": true
+    },
+    {
+      "source": "/work/:path*",
+      "destination": "https://shauna.digital/results/",
+      "permanent": true
+    },
+    {
+      "source": "/automation-audit",
+      "destination": "https://shauna.digital/contact/",
       "permanent": true
     },
     {
       "source": "/systems-map",
-      "destination": "/#contact",
+      "destination": "https://shauna.digital/contact/",
       "permanent": true
     },
     {
-      "source": "/work/estimateflow",
-      "destination": "/work",
-      "permanent": false
+      "source": "/",
+      "destination": "https://shauna.digital/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://shauna.digital/",
+      "permanent": true
     }
   ],
   "headers": [
@@ -40,9 +54,18 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
